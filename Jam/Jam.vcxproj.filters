@@ -815,5 +815,11 @@
     <ClInclude Include="Scenes\TitleScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="System\InputManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\GameObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

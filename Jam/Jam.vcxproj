@@ -325,9 +325,11 @@
     <Xml Include="App\example\xml\test.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Objects\GameObject.h" />
     <ClInclude Include="Scenes\GameScene.h" />
     <ClInclude Include="Scenes\TitleScene.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="System\InputManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App\example\obj\blacksmith.obj">
