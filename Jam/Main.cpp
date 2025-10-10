@@ -1,6 +1,6 @@
 ﻿#include <Siv3D.hpp> // Siv3D v0.6.16
-#include "Scenes/TitleScene.h"
-#include "Scenes/GameScene.h"
+#include "src/Presentation/Scenes/TitleScene.h"
+#include "src/Presentation/Scenes/GameScene.h"
 
 using App = SceneManager<String>;
 
