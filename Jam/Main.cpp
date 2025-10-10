@@ -18,10 +18,10 @@ void Main()
 	App manager;
 
 	//デバッグ用に最初からInGameで
-	manager.add<Jam::Scenes::GameScene>(Jam::Scenes::ToSceneString(Jam::Scenes::SceneName::InGame));
+	manager.add<Jam::Presentation::Scenes::GameScene>(Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::InGame));
 
 	// タイトルシーンを登録
-	manager.add<Jam::Scenes::TitleScene>(Jam::Scenes::ToSceneString(Jam::Scenes::SceneName::Title));
+	manager.add<Jam::Presentation::Scenes::TitleScene>(Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::Title));
 
 	while (System::Update())
 	{

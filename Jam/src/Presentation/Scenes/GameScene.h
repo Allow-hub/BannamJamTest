@@ -3,29 +3,26 @@
 #include <HamFramework.hpp>
 #include "TitleScene.h"
 
-namespace Jam
+namespace Jam::Presentation::Scenes
 {
-	namespace Scenes
+	using App = SceneManager<String>;
+
+	class GameScene : public App::Scene
 	{
-		using App = SceneManager<String>;
 
-		class GameScene : public App::Scene
+	public:
+		GameScene(const InitData& init)
+			: IScene{ init }
 		{
+		}
 
-		public:
-			GameScene(const InitData& init)
-				: IScene{ init }
-			{
-			}
+		void update() override
+		{
+		}
 
-			void update() override
-			{
-			}
-
-			void draw() const override
-			{
-				Scene::SetBackground(ColorF{ 0.9, 0.9, 1.0 });
-			}
-		};
-	}
+		void draw() const override
+		{
+			Scene::SetBackground(ColorF{ 0.9, 0.9, 1.0 });
+		}
+	};
 }
