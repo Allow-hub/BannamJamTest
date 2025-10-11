@@ -4,8 +4,8 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:/Users/YutoImata/Documents/OpenSiv3D_0.6.16/include/**",
-                "C:/Users/YutoImata/Documents/OpenSiv3D_0.6.16/include/ThirdParty/**"
+                "${env:SIV3D_0_6_16}/include/**",
+                "${env:SIV3D_0_6_16}/include/ThirdParty/**"
             ],
             "defines": [
                 "_DEBUG",
