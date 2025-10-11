@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:/Users/YutoImata/Documents/OpenSiv3D_0.6.16/include/**",
+                "C:/Users/YutoImata/Documents/OpenSiv3D_0.6.16/include/ThirdParty/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE",
+                "_WINDOWS",
+                "_ENABLE_EXTENDED_ALIGNED_STORAGE",
+                "_SILENCE_CXX20_CISO646_REMOVED_WARNING",
+                "_SILENCE_ALL_CXX23_DEPRECATION_WARNINGS",
+                "_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS"
+            ],
+            "windowsSdkVersion": "10.0.26100.0",
+            "compilerPath": "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++20",
+            "intelliSenseMode": "windows-msvc-x64"
+        }
+    ],
+    "version": 4
+}

@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Siv3D Debug",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/Jam/Intermediate/Jam/Debug/Jam(debug).exe",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}/Jam",
+      "environment": [],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Siv3D Release",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/Jam/Intermediate/Jam/Release/Jam.exe",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}/Jam",
+      "environment": [],
+      "console": "integratedTerminal"
+    }
+  ]
+}
