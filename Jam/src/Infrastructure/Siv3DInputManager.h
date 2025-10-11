@@ -2,8 +2,11 @@
 #include <Siv3D.hpp>
 #include "../Domain/IInputService.h"
 
-namespace Jam::Infra
+namespace Jam::Infrastructure
 {
+	// Siv3Dの入力をDomainのIInputServiceに適合させるアダプター
+	// Siv3dのInputクラスを直接使うのではなく、このクラスを介して使う
+	// こうすることで、将来的に入力ライブラリを変更したい場合にも、Domain層やUseCase層に影響を与えずに済む
 	class Siv3DInputManager final : public Jam::Domain::IInputService
 	{
 	private:

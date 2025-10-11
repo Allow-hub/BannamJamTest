@@ -20,23 +20,8 @@ void Main()
 	manager.add<Jam::Presentation::Scenes::TitleScene>(
 		Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::Title));
 
-	// 物理ワールド
-	P2World world;
-	constexpr double StepTime = (1.0 / 200.0);
-	double accumulatedTime = 0.0;
-
 	while (System::Update())
 	{
-		// 経過時間を蓄積
-		accumulatedTime += Scene::DeltaTime();
-
-		// 固定ステップで物理更新
-		while (accumulatedTime >= StepTime)
-		{
-			world.update(StepTime);
-			accumulatedTime -= StepTime;
-		}
-
 		// シーン更新（falseなら終了）
 		if (!manager.update())
 			break;

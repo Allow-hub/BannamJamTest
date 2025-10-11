@@ -2,6 +2,7 @@
 
 namespace Jam::Domain
 {
+	// 入力状態を表す構造体
 	struct InputState
 	{
 		bool left = false;
@@ -9,6 +10,7 @@ namespace Jam::Domain
 		bool jump = false;
 	};
 
+	// 入力サービスのインターフェース
 	class IInputService
 	{
 	public:
