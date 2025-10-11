@@ -26,7 +26,7 @@ namespace Jam::Presentation::Scenes
 	public:
 		GameScene(const InitData& init)
 			: IScene{ init },
-			m_world({ 0, 0 }),//引数は重力
+			m_world({ 0, 980 }),//引数は重力
 			m_inputManager(),
 			m_player(std::make_shared<Domain::Player>(
 				std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(

@@ -10,7 +10,6 @@ namespace Jam::Domain
 
 	void Player::update(double deltaTime)
 	{
-		//applyGravity(deltaTime);
 		updateState();
 	}
 
@@ -28,11 +27,11 @@ namespace Jam::Domain
 
 	void Player::jump()
 	{
-		if (m_isGrounded)
-		{
+		//if (m_isGrounded)
+		//{
 			 m_body->applyImpulse({ 0, -m_jumpImpulse });
 			m_isGrounded = false;
-		}
+		//}
 	}
 
 	void Player::onGroundContact(bool grounded)
@@ -49,11 +48,6 @@ namespace Jam::Domain
 	{
 		return m_facingRight;
 	}
-
-	//void Player::applyGravity(double deltaTime)
-	//{
-	//	m_body->applyForce({ 0, m_gravity });
-	//}
 
 	void Player::updateState()
 	{

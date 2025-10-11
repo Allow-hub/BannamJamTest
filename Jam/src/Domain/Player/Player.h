@@ -27,7 +27,7 @@ namespace Jam::Domain
         bool m_facingRight = true;
 
         double m_moveForce = 1000.0;
-        double m_jumpImpulse = 10000.0;
+        double m_jumpImpulse = 400.0;
         //double m_gravity = 9.8 * 10.0;
 
         //void applyGravity(double deltaTime);
