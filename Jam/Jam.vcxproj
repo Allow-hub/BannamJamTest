@@ -117,6 +117,7 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="src\Domain\Player\Player.cpp" />
+    <ClCompile Include="src\Domain\Stage\Stage.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -332,6 +333,9 @@
     <ClInclude Include="src\Domain\Physics\IPhysicsWorld.h" />
     <ClInclude Include="src\Domain\Physics\PhysicsTypes.h" />
     <ClInclude Include="src\Domain\Player\Player.h" />
+    <ClInclude Include="src\Domain\Stage\CollisionData.h" />
+    <ClInclude Include="src\Domain\Stage\Stage.h" />
+    <ClInclude Include="src\Domain\Stage\StageTypes.h" />
     <ClInclude Include="src\Infrastructure\Siv3DInputManager.h" />
     <ClInclude Include="src\Infrastructure\Siv3DPhysicsBody.h" />
     <ClInclude Include="src\Presentation\PlayerManager.h" />
