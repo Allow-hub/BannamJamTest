@@ -6,6 +6,7 @@
 #include "../../UseCase/PlayerService.h"
 #include "../../Infrastructure/Siv3DInputManager.h"
 #include "../../Infrastructure/Siv3DPhysicsBody.h"
+#include "../../Domain/Stage/Stage.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -22,6 +23,9 @@ namespace Jam::Presentation::Scenes
 		Jam::Infrastructure::Siv3DInputManager m_inputManager;
 		// デバッグ用の床
 		std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody> m_ground;
+		
+		// Stage テスト用
+		std::unique_ptr<Jam::Domain::Stage::Stage> m_stage;
 
 	public:
 		GameScene(const InitData& init)
@@ -34,7 +38,8 @@ namespace Jam::Presentation::Scenes
 				)
 			)),
 			m_playerService(m_player, m_inputManager),
-			m_playerManager(m_player)
+			m_playerManager(m_player),
+			m_stage(std::make_unique<Jam::Domain::Stage::Stage>())
 		{
 			m_ground = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
 			m_world,
@@ -42,6 +47,12 @@ namespace Jam::Presentation::Scenes
 			SizeF{ 1280, 40 },       // 幅・高さ
 			s3d::P2BodyType::Static   // 動かない床
 			);
+			
+			// Stage JSONファイルを読み込み
+			if (!m_stage->loadFromJson(U"App/Stage/stage1.json"))
+			{
+				Console << U"Stage JSONファイルの読み込みに失敗しました";
+			}
 		}
 
 		void update() override
@@ -65,6 +76,12 @@ namespace Jam::Presentation::Scenes
 		{
 			Scene::SetBackground(ColorF{ 0.9, 0.9, 1.0 });
 			RectF{ 0, 680, 1280, 40 }.draw(Palette::Gray);
+
+			// Stageの描画
+			if (m_stage)
+			{
+				m_stage->draw();
+			}
 
 			// Playerの描画
 			m_playerManager.draw();
