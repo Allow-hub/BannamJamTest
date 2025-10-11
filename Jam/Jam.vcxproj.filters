@@ -809,16 +809,22 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scenes\GameScene.h">
+    <ClInclude Include="src\Presentation\Scenes\GameScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scenes\TitleScene.h">
+    <ClInclude Include="src\Presentation\Scenes\TitleScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="System\InputManager.h">
+    <ClInclude Include="src\Domain\GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\GameObject.h">
+    <ClInclude Include="src\Domain\IInputService.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Infrastructure\Siv3DInputManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UseCase\PlayerService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
