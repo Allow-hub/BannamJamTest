@@ -2,7 +2,7 @@
 #include <memory>
 #include "../Physics/IPhysicsBody.h"
 
-namespace Jam::Domain
+namespace Jam::Domain::Player
 {
 	// プレイヤーキャラクターを表すクラス
 	// 他クラスに依存しない
@@ -27,10 +27,7 @@ namespace Jam::Domain
         bool m_facingRight = true;
 
         double m_moveForce = 1000.0;
-        double m_jumpImpulse = 400.0;
-        //double m_gravity = 9.8 * 10.0;
-
-        //void applyGravity(double deltaTime);
+        double m_jumpImpulse = 200.0;
         void updateState();
     };
 }

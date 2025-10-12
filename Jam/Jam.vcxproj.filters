@@ -221,6 +221,21 @@
     <Image Include="App\example\obj\siv3d-kun-eye.png">
       <Filter>Resource Files\example\obj</Filter>
     </Image>
+    <Image Include="Assets\Player\idle_0.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Player\run_0.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Player\idle_1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Player\idle_2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Player\run_1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc">
@@ -768,6 +783,7 @@
     <None Include="App\engine\shader\glsl\quad_warp.frag">
       <Filter>Resource Files\engine\shader\glsl</Filter>
     </None>
+    <None Include="Assets\Player\player_animation.json" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="App\example\test.mp3">
@@ -846,6 +862,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Presentation\PlayerManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Infrastructure\PhysicsConverter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Presentation\Animator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Presentation\AnimatorLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

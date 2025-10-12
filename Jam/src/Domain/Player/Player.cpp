@@ -1,7 +1,7 @@
 ﻿#include "Player.h"
 #include "../Physics/IPhysicsBody.h"
 
-namespace Jam::Domain
+namespace Jam::Domain::Player
 {
 	Player::Player(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body)
 		: m_body(std::move(body))

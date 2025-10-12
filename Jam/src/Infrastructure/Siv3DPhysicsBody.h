@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
 #include "../Domain/Physics/IPhysicsBody.h"
+#include "PhysicsConverter.h"
 
 namespace Jam::Infrastructure::Physics
 {
@@ -13,8 +14,9 @@ namespace Jam::Infrastructure::Physics
 	public:
 		Siv3DPhysicsBody(P2World& world, const Vec2& pos,
 						 const SizeF& size = SizeF{ 40, 80 },
-						 s3d::P2BodyType bodyType = s3d::P2BodyType::Dynamic)
-			: m_body(world.createRect(bodyType, pos, size))
+						 s3d::P2BodyType bodyType = s3d::P2BodyType::Dynamic,
+						 const Jam::Domain::Physics::PhysicsMaterial& material= Jam::Domain::Physics::PhysicsMaterial{ 0.2 ,0.0,1.0})//P2MaterialをもらうとGameScene側での依存が高くなるのでConvert
+			: m_body(world.createRect(bodyType, pos, size, Jam::Infrastructure::Physics::ToSiv3DMaterial(material)))
 		{
 		}
 

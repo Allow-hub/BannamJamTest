@@ -1,0 +1,58 @@
+{
+    "clips": [
+        {
+            "name": "Idle",
+            "loop": true,
+            "frames": [
+                {
+                    "path": "../Assets/Player/idle_0.png",
+                    "duration": 0.5,
+                    "width": 64,
+                    "height" : 113
+                },
+                {
+                    "path": "../Assets/Player/idle_1.png",
+                    "duration": 0.3,
+                    "width": 64,
+                    "height": 113
+                },
+                {
+                    "path": "../Assets/Player/idle_2.png",
+                    "duration": 0.4,
+                    "width": 64,
+                    "height": 113
+                },
+                {
+                    "path": "../Assets/Player/idle_1.png",
+                    "duration": 0.3,
+                    "width": 64,
+                    "height": 113
+                },
+                {
+                    "path": "../Assets/Player/idle_0.png",
+                    "duration": 0.5,
+                    "width": 64,
+                    "height": 113
+                }
+            ]
+        },
+        {
+            "name": "Run",
+            "loop": true,
+            "frames": [
+                {
+                    "path": "../Assets/Player/run_0.png",
+                    "duration": 0.08,
+                    "width": 64,
+                    "height": 113
+                },
+                {
+                    "path": "../Assets/Player/run_1.png",
+                    "duration": 0.08,
+                    "width": 64,
+                    "height": 113
+                }
+            ]
+        }
+    ]
+}

@@ -16,7 +16,7 @@ namespace Jam::Presentation::Scenes
 	private:
 		P2World m_world;
 		double m_accumulatedTime = 0.0;//2D 物理演算のシミュレーション蓄積時間（秒）
-		std::shared_ptr<Domain::Player> m_player;
+		std::shared_ptr<Domain::Player::Player> m_player;
 		Jam::UseCase::PlayerService m_playerService;
 		Jam::Presentation::PlayerManager m_playerManager;
 		Jam::Infrastructure::Siv3DInputManager m_inputManager;
@@ -28,13 +28,13 @@ namespace Jam::Presentation::Scenes
 			: IScene{ init },
 			m_world({ 0, 980 }),//引数は重力
 			m_inputManager(),
-			m_player(std::make_shared<Domain::Player>(
+			m_player(std::make_shared<Domain::Player::Player>(
 				std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
 					m_world, Vec2{ 100,300 }, SizeF{ 50, 80 }
 				)
 			)),
-			m_playerService(m_player, m_inputManager),
-			m_playerManager(m_player)
+			m_playerManager(m_player),
+			m_playerService(m_player, m_inputManager,m_playerManager)
 		{
 			m_ground = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
 			m_world,
@@ -48,7 +48,7 @@ namespace Jam::Presentation::Scenes
 		{
 			// 入力→PlayerService更新→Playerの状態更新
 			m_playerService.update(Scene::DeltaTime());
-
+			m_playerManager.update();
 			// 累積時間で固定ステップ物理
 			constexpr double StepTime = 1.0 / 200.0;
 			m_accumulatedTime += Scene::DeltaTime();
@@ -69,7 +69,12 @@ namespace Jam::Presentation::Scenes
 			// Playerの描画
 			m_playerManager.draw();
 
-			// Stageや敵も描画
+			// Ground描画（m_groundの位置からRectを取得）
+			if (m_ground)
+			{
+				const auto t = m_ground->getTransform();
+				RectF(t.position.x - 640, t.position.y - 20, 1280, 40).draw(Palette::Gray);
+			}
 		}
 	};
 }
