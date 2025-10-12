@@ -15,38 +15,23 @@ namespace Jam::Infrastructure::Physics
 		Siv3DPhysicsBody(P2World& world, const Vec2& pos,
 						 const SizeF& size = SizeF{ 40, 80 },
 						 s3d::P2BodyType bodyType = s3d::P2BodyType::Dynamic,
-						 const Jam::Domain::Physics::PhysicsMaterial& material= Jam::Domain::Physics::PhysicsMaterial{ 0.2 ,0.0,1.0})//P2MaterialをもらうとGameScene側での依存が高くなるのでConvert
+						 const Jam::Domain::Physics::PhysicsMaterial& material = Jam::Domain::Physics::PhysicsMaterial{ 0.2 ,0.0,1.0 })
 			: m_body(world.createRect(bodyType, pos, size, Jam::Infrastructure::Physics::ToSiv3DMaterial(material)))
 		{
+			m_body.setDamping(2.0);
+			m_body.setAngularDamping(2.0);
+			m_body.setFixedRotation(true);
+			m_body.setSleepEnabled(true);
 		}
 
-
-		void applyForce(const Vec2& force) override
-		{
-			m_body.applyForce(force);
-		}
-
-		void applyImpulse(const Vec2& impulse)
-		{
-			m_body.applyLinearImpulse(impulse);
-		}
-
-		void setVelocity(const Vec2& v) override
-		{
-			m_body.setVelocity(v);
-		}
-
-		Vec2 getVelocity() const override
-		{
-			return m_body.getVelocity();
-		}
+		void applyForce(const Vec2& force) override { m_body.applyForce(force); }
+		void applyImpulse(const Vec2& impulse) { m_body.applyLinearImpulse(impulse); }
+		void setVelocity(const Vec2& v) override { m_body.setVelocity(v); }
+		Vec2 getVelocity() const override { return m_body.getVelocity(); }
 
 		Jam::Domain::Physics::PhysicsTransform getTransform() const override
 		{
-			return {
-				.position = m_body.getPos(),
-				.rotation = m_body.getAngle()
-			};
+			return { .position = m_body.getPos(), .rotation = m_body.getAngle() };
 		}
 
 		void setTransform(const Jam::Domain::Physics::PhysicsTransform& t) override
@@ -55,9 +40,35 @@ namespace Jam::Infrastructure::Physics
 			m_body.setAngle(t.rotation);
 		}
 
-		bool isGrounded() const override
+		[[nodiscard]]
+		P2BodyID getBodyID() const noexcept { return m_body.id(); }
+		const P2Body& getBody() const { return m_body; }
+		bool isGrounded() const { return m_grounded; }
+
+		void updateContacts(const Array<P2BodyID>& groundIDs,
+					const HashTable<P2ContactPair, P2Collision>& collisions)
 		{
-			return m_grounded; // TODO: 判定は接触コールバックで更新予定
+			m_grounded = false;
+
+			for (auto& [pair, collision] : collisions)
+			{
+				P2BodyID otherID = 0;
+
+				if (pair.a == m_body.id())
+					otherID = pair.b;
+				else if (pair.b == m_body.id())
+					otherID = pair.a;
+				else
+					continue; // 自分が衝突していない場合はスキップ
+				// 接地判定: 衝突相手が groundIDs に含まれる場合
+				if (std::any_of(groundIDs.begin(), groundIDs.end(),
+					[&](P2BodyID gid) { return gid == otherID; }))
+				{
+					m_grounded = true;
+				}
+			}
 		}
+
+
 	};
 }

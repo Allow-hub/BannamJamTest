@@ -784,6 +784,7 @@
       <Filter>Resource Files\engine\shader\glsl</Filter>
     </None>
     <None Include="Assets\Player\player_animation.json" />
+    <None Include="Assets\Player\player_stats.json" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="App\example\test.mp3">

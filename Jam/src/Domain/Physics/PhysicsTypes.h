@@ -14,5 +14,6 @@ namespace Jam::Domain::Physics
 		double friction = 0.2;
 		double restitution = 0.0;
 		double density = 1.0;
+		double restitutionThreshold = 1.0;
 	};
 }

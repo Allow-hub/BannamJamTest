@@ -50,5 +50,6 @@ namespace Jam::UseCase
 		}
 
 		std::shared_ptr<Domain::Player::Player> getPlayer() const { return m_player; }
+
 	};
 }
