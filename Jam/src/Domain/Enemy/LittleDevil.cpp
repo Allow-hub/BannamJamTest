@@ -9,8 +9,8 @@ namespace Jam::Domain::Enemy
 
 	void LittleDevil::update(double deltaTime)
 	{
-		//if (!isAlive()) return;
-
+		if (!isAlive()) return;
+		moveRight();
 		//m_patrolTimer += deltaTime;
 
 		//switch (m_state)

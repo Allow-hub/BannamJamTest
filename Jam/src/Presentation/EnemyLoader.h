@@ -51,9 +51,10 @@ namespace Jam::Presentation
 				if (pm.getType() == JSONValueType::Object)
 				{
 					status.physicsMaterial = {
-						pm[U"density"].get<double>(),
-						pm[U"friction"].get<double>(),
-						pm[U"restitution"].get<double>()
+						pm[U"density"].getOr<double>(1.0),
+						pm[U"friction"].getOr<double>(0.2),
+						pm[U"restitution"].getOr<double>(0.0),
+						pm[U"restitutionThreshold"].getOr<double>(1.0)
 					};
 				}
 

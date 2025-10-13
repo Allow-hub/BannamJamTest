@@ -24,5 +24,6 @@ namespace Jam::Domain::Physics
 		virtual void setGravityScale(const double& s) = 0;
 		virtual PhysicsLayer getLayer() const = 0;
 		virtual void setLayer(PhysicsLayer layer) = 0;
+		virtual void drawFrame(const double thickness = 1.0, const ColorF& color = Palette::White) = 0;
 	};
 }

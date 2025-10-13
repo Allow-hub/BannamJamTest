@@ -100,7 +100,7 @@ namespace Jam::Presentation::Scenes
 				Vec2{ 400, 300 },  // 初期位置
 				SizeF{ 50, 100 },   // サイズ
 				s3d::P2BodyType::Dynamic,
-				Jam::Domain::Physics::PhysicsMaterial{ 1.0, 0.3, 0.0 }
+				Jam::Domain::Physics::PhysicsMaterial{ 0.2, 0.0, 1.0,1.0 }
 			);
 
 			auto enemy = m_enemyFactory->createEnemy(

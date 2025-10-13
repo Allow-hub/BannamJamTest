@@ -23,6 +23,12 @@ namespace Jam::Infrastructure::Physics
 			m_body.setAngularDamping(2.0);
 			m_body.setFixedRotation(true);
 			m_body.setSleepEnabled(true);
+			switch (m_body.getBodyType())
+			{
+			case P2BodyType::Dynamic:   Print(U"Dynamic", m_body.getMass(), U" Inertia = ", m_body.getInertia()); break;
+			case P2BodyType::Kinematic: Print(U"Kinematic"); break;
+			case P2BodyType::Static:    Print(U"Static"); break;
+			}
 		}
 
 		void applyForce(const Vec2& force) override { m_body.applyForce(force); }
@@ -31,6 +37,7 @@ namespace Jam::Infrastructure::Physics
 		Vec2 getVelocity() const override { return m_body.getVelocity(); }
 		void setPos(const Vec2& p) { m_body.setPos(p); }
 		void setLayer(Jam::Domain::Physics::PhysicsLayer layer) override { m_layer = layer; }
+		void drawFrame(const double thickness = 1.0, const ColorF& color = Palette::White) { m_body.drawFrame(thickness, color); }
 		Jam::Domain::Physics::PhysicsLayer getLayer() const override { return m_layer; }
 
 

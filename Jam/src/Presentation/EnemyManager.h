@@ -65,6 +65,7 @@ namespace Jam::Presentation
 				}
 
 				auto body = enemy->getPhysicsBody();
+				body->drawFrame(2.0, Palette::Red);
 				if (!body)
 				{
 					continue;
