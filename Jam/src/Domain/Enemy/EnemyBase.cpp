@@ -4,7 +4,7 @@
 namespace Jam::Domain::Enemy
 {
 	EnemyBase::EnemyBase(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body)
-		: m_body(std::move(body))
+		: m_body(body)
 		, m_isAlive(true)
 	{
 	}
@@ -41,12 +41,12 @@ namespace Jam::Domain::Enemy
 	{
 		return m_body ? m_body->getPosition() : s3d::Vec2{ 0, 0 };
 	}
-	void EnemyBase::setPos(Vec2 p) const
+	void EnemyBase::setPos(Vec2 p)
 	{
 		m_body->setPos(p);
 	}
 
-	void EnemyBase::setGravityScale(double s) const
+	void EnemyBase::setGravityScale(double s)
 	{
 		m_body->setGravityScale(s);
 	}

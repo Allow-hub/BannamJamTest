@@ -318,7 +318,7 @@
     <None Include="App\example\toml\config.toml" />
     <None Include="App\example\toml\test.toml" />
     <None Include="App\example\zip\zip_test.zip" />
-    <None Include="Assets\Enemy\EnemyStatus.json" />
+    <None Include="Assets\Enemy\enemy_stats.json" />
     <None Include="Assets\Enemy\LittleDevil\littleDevil_animation.json" />
     <None Include="Assets\Player\player_animation.json" />
     <None Include="Assets\Player\player_stats.json" />

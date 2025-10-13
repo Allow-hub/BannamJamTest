@@ -73,7 +73,6 @@ namespace Jam::Presentation
 				}
 			}
 
-			//Console << U"[EnemyLoader] ✅ Enemy status loaded from: " << jsonPath;
 			return true;
 		}
 	};

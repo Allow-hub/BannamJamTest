@@ -89,6 +89,19 @@ namespace Jam::Presentation
 			UpdateCurrentClip(); // 変更があればクリップを切り替え
 		}
 
+		void SetBoolExclusive(const String& name) {
+			// すべてのBoolをfalseにリセット
+			for (auto& [key, val] : boolParams) {
+				val = false;
+			}
+
+			// 指定したBoolだけtrueに
+			boolParams[name] = true;
+
+			// クリップ更新
+			UpdateCurrentClip();
+		}
+
 		// 条件を登録
 		void AddCondition(const BoolCondition& cond) {
 			conditionList.push_back(cond);

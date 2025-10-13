@@ -5,35 +5,44 @@ namespace Jam::UseCase
 {
 	using namespace Jam::Domain::Enemy;
 
-	 std::shared_ptr<EnemyBase> EnemyFactory::CreateEnemy(
+	std::shared_ptr<EnemyBase> EnemyFactory::createEnemy(
 		EnemyType type,
-		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body)
+		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body) const
 	{
 		std::shared_ptr<EnemyBase> enemy = nullptr;
 
 		switch (type)
 		{
 		case EnemyType::LittleDevil:
-			enemy = std::make_shared<LittleDevil>(std::move(body));
+			enemy = std::make_shared<LittleDevil>(body);
 			break;
 
+		case EnemyType::Ribbon:
+			// TODO: Ribbonの実装
+			return nullptr;
+
 		default:
-			Console << U"[EnemyFactory] ⚠ Unknown enemy type!";
+			Print << U"[EnemyFactory] ⚠ Unknown enemy type!";
 			return nullptr;
 		}
-		auto enemyBody = enemy->getPhysicsBody();
-		Console << U"Enemy Body ptr == body ptr ? " << (enemyBody.get() == body.get());
-		// ステータステーブルに登録があれば適用
-		if (auto it = m_statusTable.find(type); it != m_statusTable.end())
+
+		if (!enemy)
 		{
-			enemy->setStatus(it->second);
-		}
-		else
-		{
-			Console << U"[EnemyFactory] ⚠ No status found for enemy type!";
+			Print << U"[EnemyFactory] ❌ Failed to create enemy instance";
+			return nullptr;
 		}
 
+		auto enemyBody = enemy->getPhysicsBody();
+		Print << U"[EnemyFactory] Enemy Body ptr == body ptr ? " << (enemyBody.get() == body.get());
+
+		// ステータステーブルに登録があれば適用
+		auto it = m_statusTable.find(type);
+		if (it != m_statusTable.end())
+		{
+			enemy->setStatus(it->second);
+			Print << U"[EnemyFactory] ✅ Applied status: HP=" << it->second.hp
+				<< U", Speed=" << it->second.moveSpeed;
+		}
 		return enemy;
 	}
-	 std::unordered_map<EnemyType, Jam::Domain::Enemy::EnemyStatus> EnemyFactory::m_statusTable;
 }

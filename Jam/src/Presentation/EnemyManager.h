@@ -1,9 +1,7 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
 #include <unordered_map>
-#include <memory>
 #include "../Domain/Enemy/EnemyBase.h"
-#include "../UseCase/EnemyFactory.h"
 #include "Animator.h"
 #include "AnimatorLoader.h"
 
@@ -12,9 +10,6 @@ namespace Jam::Presentation
 	class EnemyManager
 	{
 	public:
-		EnemyManager() : m_nextID(0) {}
-
-		// Enemy と Animator を同時に登録
 		int AddEnemy(const std::shared_ptr<Jam::Domain::Enemy::EnemyBase>& enemy,
 					 const s3d::FilePath& animJsonPath)
 		{
@@ -24,17 +19,24 @@ namespace Jam::Presentation
 			Animator animator;
 			if (!AnimatorLoader::LoadAnimatorFromJSON(animator, animJsonPath))
 			{
-				Console << U"[EnemyManager] ⚠ Failed to load animator for enemy ID " << id;
+				Print << U"[EnemyManager] ⚠ Failed to load animator for enemy ID " << id;
+			}
+			else
+			{
+				Print << U"[EnemyManager] ✅ Animator loaded for enemy ID " << id;
 			}
 			m_animators[id] = animator;
 
+			// 🔹 Enemy → Animator イベント接続
+			enemy->setOnAnimationChange([this, id](const s3d::String& animName) {
+				auto it = m_animators.find(id);
+				if (it != m_animators.end())
+				{
+					it->second.SetBoolExclusive(animName);
+					Print << U"[EnemyManager] ▶ Enemy " << id << U" animation changed to: " << animName;
+				}
+			});
 			return id;
-		}
-
-		void RemoveEnemy(int id)
-		{
-			m_enemies.erase(id);
-			m_animators.erase(id);
 		}
 
 		void update(double deltaTime)
@@ -42,35 +44,54 @@ namespace Jam::Presentation
 			for (auto& [id, enemy] : m_enemies)
 			{
 				if (!enemy->isAlive()) continue;
+				enemy->update(deltaTime);
 
-				m_animators[id].Update(deltaTime);
+				auto it = m_animators.find(id);
+				if (it != m_animators.end())
+				{
+					it->second.Update(deltaTime);
+				}
 			}
 		}
 
 		void draw() const
 		{
+
 			for (auto& [id, enemy] : m_enemies)
 			{
-				if (!enemy->isAlive()) continue;
-				auto pos = enemy->getPhysicsBody()->getPosition();
-				m_animators.at(id).Draw(pos);
+				if (!enemy->isAlive())
+				{
+					continue;
+				}
+
+				auto body = enemy->getPhysicsBody();
+				if (!body)
+				{
+					continue;
+				}
+
+				auto pos = body->getPosition();
+
+				auto it = m_animators.find(id);
+				if (it != m_animators.end())
+				{
+					it->second.Draw(pos);
+				}
+				else
+				{
+					Console << U"[EnemyManager] ⚠ No animator found for enemy " << id;
+					// フォールバック: 赤い円を描画
+					Circle(pos, 25).draw(Palette::Red);
+				}
 			}
 		}
 
-		std::shared_ptr<Jam::Domain::Enemy::EnemyBase> GetEnemy(int id)
-		{
-			auto it = m_enemies.find(id);
-			if (it != m_enemies.end()) return it->second;
-			return nullptr;
-		}
-
-		Animator& GetAnimator(int id)
-		{
+		Animator& getAnimator(int id) {
 			return m_animators.at(id);
 		}
 
 	private:
-		int m_nextID;
+		int m_nextID = 0;
 		std::unordered_map<int, std::shared_ptr<Jam::Domain::Enemy::EnemyBase>> m_enemies;
 		std::unordered_map<int, Animator> m_animators;
 	};
