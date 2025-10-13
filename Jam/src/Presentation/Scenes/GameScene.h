@@ -7,6 +7,8 @@
 #include "../../Infrastructure/Siv3DInputManager.h"
 #include "../../Infrastructure/Siv3DPhysicsBody.h"
 #include "../../Domain/Stage/Stage.h"
+#include "../../Infrastructure/JsonStageLoader.h"
+#include "../../Infrastructure/StagePhysicsManager.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -26,6 +28,8 @@ namespace Jam::Presentation::Scenes
 		
 		// Stage テスト用
 		std::unique_ptr<Jam::Domain::Stage::Stage> m_stage;
+		std::unique_ptr<Jam::Infrastructure::JsonStageLoader> m_stageLoader;
+		std::unique_ptr<Jam::Infrastructure::StagePhysicsManager> m_stagePhysicsManager;
 
 	public:
 		GameScene(const InitData& init)
@@ -39,7 +43,9 @@ namespace Jam::Presentation::Scenes
 			)),
 			m_playerService(m_player, m_inputManager),
 			m_playerManager(m_player),
-			m_stage(std::make_unique<Jam::Domain::Stage::Stage>())
+			m_stage(std::make_unique<Jam::Domain::Stage::Stage>()),
+			m_stageLoader(std::make_unique<Jam::Infrastructure::JsonStageLoader>()),
+			m_stagePhysicsManager(std::make_unique<Jam::Infrastructure::StagePhysicsManager>(m_world))
 		{
 			m_ground = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
 			m_world,
@@ -48,8 +54,8 @@ namespace Jam::Presentation::Scenes
 			s3d::P2BodyType::Static   // 動かない床
 			);
 			
-			// Stage JSONファイルを読み込み
-			if (!m_stage->loadFromJson(U"../App/Stage/stage1.json"))
+			// Stage JSONファイルを読み込み（依存性注入）
+			if (!m_stage->loadFromJson(U"../App/Stage/stage1.json", *m_stageLoader, *m_stagePhysicsManager))
 			{
 				Console << U"Stage JSONファイルの読み込みに失敗しました";
 			}
