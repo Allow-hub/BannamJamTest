@@ -6,12 +6,11 @@ namespace Jam::Domain::Player
 	Player::Player(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body)
 		: m_body(std::move(body))
 	{
-		m_isGrounded = m_body->isGrounded();
+		m_body->setLayer(Jam::Domain::Physics::PhysicsLayer::Player);
 	}
 
 	void Player::update(double deltaTime)
 	{
-		m_isGrounded = m_body->isGrounded();
 		updateState();
 	}
 
@@ -29,17 +28,11 @@ namespace Jam::Domain::Player
 
 	void Player::jump()
 	{
-		Print(m_isGrounded);
 		if (m_isGrounded)
 		{
 			 m_body->applyImpulse({ 0, -m_stats.jumpPower });
 			m_isGrounded = false;
 		}
-	}
-
-	void Player::onGroundContact(bool grounded)
-	{
-		m_isGrounded = grounded;
 	}
 
 	s3d::Vec2 Player::getPosition() const
@@ -55,4 +48,24 @@ namespace Jam::Domain::Player
 	void Player::updateState()
 	{
 	}
+
+	void Player::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
+	{
+		switch (other->getLayer())
+		{
+		case Jam::Domain::Physics::PhysicsLayer::Ground:
+			auto v = m_body->getVelocity();
+			m_body->setVelocity({ v.x, 0.0 });
+			m_isGrounded = true;
+			break;
+		case Jam::Domain::Physics::PhysicsLayer::Enemy:
+			break;
+		default:
+			Print(U"Not match tag");
+			break;
+		}
+	}
+
+	void Player::onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) {}
+	void Player::onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) {}
 }

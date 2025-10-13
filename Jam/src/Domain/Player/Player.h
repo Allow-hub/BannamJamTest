@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <memory>
 #include "../Physics/IPhysicsBody.h"
+#include "../Physics/ICollisionListener.h"
 
 namespace Jam::Domain::Player
 {
@@ -13,7 +14,7 @@ namespace Jam::Domain::Player
 
 	// プレイヤーキャラクターを表すクラス
 	// 他クラスに依存しない
-	class Player
+	class Player :public Jam::Domain::Physics::ICollisionListener
 	{
 	public:
 		explicit Player(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body);
@@ -23,7 +24,6 @@ namespace Jam::Domain::Player
 		void moveLeft();
 		void moveRight();
 		void jump();
-		void onGroundContact(bool grounded);
 
 		s3d::Vec2 getPosition() const;
 		bool isFacingRight() const;
@@ -31,6 +31,12 @@ namespace Jam::Domain::Player
 		void setSpeed(double s) { m_stats.moveSpeed = s; }
 		void setJumpPower(double j) { m_stats.jumpPower = j; }
 		std::shared_ptr<Domain::Physics::IPhysicsBody> getPhysicsBody() { return m_body; }
+
+		// ICollisionListener
+		void onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
+		void onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
+		void onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
+
 	private:
 		PlayerStats m_stats;
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_body;

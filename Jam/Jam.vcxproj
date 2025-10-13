@@ -335,6 +335,7 @@
   <ItemGroup>
     <ClInclude Include="src\Domain\GameObject.h" />
     <ClInclude Include="src\Domain\IInputService.h" />
+    <ClInclude Include="src\Domain\Physics\ICollisionListener.h" />
     <ClInclude Include="src\Domain\Physics\IPhysicsBody.h" />
     <ClInclude Include="src\Domain\Physics\IPhysicsWorld.h" />
     <ClInclude Include="src\Domain\Physics\PhysicsTypes.h" />

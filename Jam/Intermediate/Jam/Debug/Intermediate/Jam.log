@@ -3,6 +3,12 @@
 C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Player.cpp(12,29): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Player.cpp(69,83): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Player.cpp(70,83): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
      ライブラリ C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Jam(debug).lib とオブジェクト C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Jam(debug).exp を作成中
   Jam.vcxproj -> C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Jam(debug).exe
   C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Jam(debug).exe

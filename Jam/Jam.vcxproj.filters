@@ -874,5 +874,8 @@
     <ClInclude Include="src\Presentation\AnimatorLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Domain\Physics\ICollisionListener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

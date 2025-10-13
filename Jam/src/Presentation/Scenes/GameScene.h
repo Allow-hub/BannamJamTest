@@ -22,7 +22,8 @@ namespace Jam::Presentation::Scenes
 		std::unique_ptr<Jam::Presentation::PlayerManager> m_playerManager;
 		Jam::Infrastructure::Siv3DInputManager m_inputManager;
 		std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody> m_ground;
-
+		// 前フレームで接触していた相手の BodyID 一覧
+		HashSet<P2ContactPair> m_previousContacts;
 	public:
 		GameScene(const InitData& init)
 			: IScene{ init }, m_world({ 0, 980 }), m_inputManager()
@@ -30,15 +31,16 @@ namespace Jam::Presentation::Scenes
 			auto stats = Jam::Infrastructure::Physics::LoadFromJSON(U"../Assets/Player/player_stats.json");
 
 			// Player
-			m_player = std::make_shared<Domain::Player::Player>(
-				std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
-					m_world,
-					Vec2{ 100, 300 },
-					SizeF{ 50, 80 },
-					s3d::P2BodyType::Dynamic,
-					stats.physicsMaterial
-				)
+			auto playerBody = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
+				m_world,
+				Vec2{ 100, 300 },
+				SizeF{ 50, 80 },
+				s3d::P2BodyType::Dynamic,
+				stats.physicsMaterial
 			);
+			m_player = std::make_shared<Domain::Player::Player>(playerBody);
+			playerBody->setCollisionListener(m_player);
+
 			m_physicsBodies.push_back(
 				std::dynamic_pointer_cast<Infrastructure::Physics::Siv3DPhysicsBody>(
 					m_player->getPhysicsBody()
@@ -63,6 +65,7 @@ namespace Jam::Presentation::Scenes
 				s3d::P2BodyType::Static,
 				Jam::Domain::Physics::PhysicsMaterial{ 1.0,0.0,0.0 }
 			);
+			m_ground->setLayer(Jam::Domain::Physics::PhysicsLayer::Ground);
 			m_physicsBodies.push_back(m_ground);
 		}
 
@@ -77,19 +80,7 @@ namespace Jam::Presentation::Scenes
 			while (StepTime <= m_accumulatedTime)
 			{
 				const auto collisions = m_world.getCollisions();
-
-				// 地面IDリスト
-				Array<P2BodyID> groundIDs;
-				if (m_ground) groundIDs << m_ground->getBodyID();
-
-				// 各 PhysicsBody に通知
-				for (auto& body : m_physicsBodies)
-				{
-					if (auto sbody = dynamic_cast<Jam::Infrastructure::Physics::Siv3DPhysicsBody*>(body.get()))
-					{
-						sbody->updateContacts(groundIDs, collisions);
-					}
-				}
+				notifyCollisionEvents(collisions);//当たり判定を持つオブジェクトにイベントを通知
 
 				m_world.update(StepTime);
 				m_accumulatedTime -= StepTime;
@@ -108,6 +99,54 @@ namespace Jam::Presentation::Scenes
 				const auto t = m_ground->getTransform();
 				RectF(t.position.x - 640, t.position.y - 20, 1280, 40).draw(Palette::Gray);
 			}
+		}
+
+	private :
+		void notifyCollisionEvents(const HashTable<P2ContactPair, P2Collision>& collisions)
+		{
+			HashSet<P2ContactPair> currentContacts;
+			for (const auto& [pair, _] : collisions)
+				currentContacts.insert(pair);
+
+			// Enter = 新しく発生した接触
+			for (const auto& [pair, col] : collisions)
+			{
+				if (!m_previousContacts.contains(pair))
+				{
+					auto a = findBodyByID(pair.a);
+					auto b = findBodyByID(pair.b);
+					if (a && b)
+					{
+						a->notifyCollisionEnter(b);
+						b->notifyCollisionEnter(a);
+					}
+				}
+			}
+
+			// Exit = 前フレームあって今ない
+			for (const auto& pair : m_previousContacts)
+			{
+				if (!currentContacts.contains(pair))
+				{
+					auto a = findBodyByID(pair.a);
+					auto b = findBodyByID(pair.b);
+					if (a && b)
+					{
+						a->notifyCollisionExit(b);
+						b->notifyCollisionExit(a);
+					}
+				}
+			}
+
+			m_previousContacts = std::move(currentContacts);
+		}
+
+		std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody> findBodyByID(P2BodyID id)
+		{
+			for (auto& body : m_physicsBodies)
+				if (body->getBodyID() == id)
+					return body;
+			return nullptr;
 		}
 	};
 }

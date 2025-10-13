@@ -9,7 +9,8 @@ namespace Jam::Infrastructure::Physics
 	{
 	private:
 		P2Body m_body;
-		bool m_grounded = false;
+		std::weak_ptr<Jam::Domain::Physics::ICollisionListener> m_listener;
+		Jam::Domain::Physics::PhysicsLayer m_layer = Jam::Domain::Physics::PhysicsLayer::None;
 
 	public:
 		Siv3DPhysicsBody(P2World& world, const Vec2& pos,
@@ -28,6 +29,9 @@ namespace Jam::Infrastructure::Physics
 		void applyImpulse(const Vec2& impulse) { m_body.applyLinearImpulse(impulse); }
 		void setVelocity(const Vec2& v) override { m_body.setVelocity(v); }
 		Vec2 getVelocity() const override { return m_body.getVelocity(); }
+		void setLayer(Jam::Domain::Physics::PhysicsLayer layer) override { m_layer = layer; }
+		Jam::Domain::Physics::PhysicsLayer getLayer() const override { return m_layer; }
+
 
 		Jam::Domain::Physics::PhysicsTransform getTransform() const override
 		{
@@ -43,32 +47,28 @@ namespace Jam::Infrastructure::Physics
 		[[nodiscard]]
 		P2BodyID getBodyID() const noexcept { return m_body.id(); }
 		const P2Body& getBody() const { return m_body; }
-		bool isGrounded() const { return m_grounded; }
 
-		void updateContacts(const Array<P2BodyID>& groundIDs,
-					const HashTable<P2ContactPair, P2Collision>& collisions)
+		void setCollisionListener(const std::shared_ptr<Jam::Domain::Physics::ICollisionListener>& listener)
 		{
-			m_grounded = false;
-
-			for (auto& [pair, collision] : collisions)
-			{
-				P2BodyID otherID = 0;
-
-				if (pair.a == m_body.id())
-					otherID = pair.b;
-				else if (pair.b == m_body.id())
-					otherID = pair.a;
-				else
-					continue; // 自分が衝突していない場合はスキップ
-				// 接地判定: 衝突相手が groundIDs に含まれる場合
-				if (std::any_of(groundIDs.begin(), groundIDs.end(),
-					[&](P2BodyID gid) { return gid == otherID; }))
-				{
-					m_grounded = true;
-				}
-			}
+			m_listener = listener;
 		}
 
+		void notifyCollisionEnter(const std::shared_ptr<IPhysicsBody>& other)
+		{
+			if (auto l = m_listener.lock())
+				l->onCollisionEnter(other);
+		}
+
+		void notifyCollisionStay(const std::shared_ptr<IPhysicsBody>& other)
+		{
+			if (auto l = m_listener.lock())
+				l->onCollisionStay(other);
+		}
+		void notifyCollisionExit(const std::shared_ptr<IPhysicsBody>& other)
+		{
+			if (auto l = m_listener.lock())
+				l->onCollisionExit(other);
+		}
 
 	};
 }
