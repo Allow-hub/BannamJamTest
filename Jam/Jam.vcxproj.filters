@@ -147,6 +147,15 @@
     <ClCompile Include="src\Domain\Player\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Domain\Enemy\EnemyBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Domain\Enemy\LittleDevil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UseCase\EnemyFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -234,6 +243,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Assets\Player\run_1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Enemy\LittleDevil\idle_0.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Enemy\LittleDevil\idle_1.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
@@ -788,6 +803,8 @@
     <None Include="Assets\Player\player_stats.json" />
     <None Include="src\Infrastructure\InfrastructureDoc.md" />
     <None Include="src\Presentation\Presentation.md" />
+    <None Include="Assets\Enemy\EnemyStatus.json" />
+    <None Include="Assets\Enemy\LittleDevil\littleDevil_animation.json" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="App\example\test.mp3">
@@ -872,6 +889,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Domain\Physics\ICollisionListener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Domain\Enemy\EnemyBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Domain\Enemy\LittleDevil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UseCase\EnemyFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Presentation\EnemyLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Presentation\EnemyManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

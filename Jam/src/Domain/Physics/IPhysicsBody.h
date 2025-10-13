@@ -20,6 +20,8 @@ namespace Jam::Domain::Physics
 			return getTransform().position;
 		}
 		virtual void setTransform(const PhysicsTransform& t) = 0;
+		virtual void setPos(const Vec2& p) = 0;
+		virtual void setGravityScale(const double& s) = 0;
 		virtual PhysicsLayer getLayer() const = 0;
 		virtual void setLayer(PhysicsLayer layer) = 0;
 	};

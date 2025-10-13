@@ -118,7 +118,6 @@ namespace Jam::Presentation
 			if (clips.find(currentClip) == clips.end()) return;
 			const auto& frame = clips.at(currentClip).frames[currentFrame];
 			if (!frame.texture) return;
-
 			frame.texture.resized(frame.size).drawAt(pos);
 		}
 	};

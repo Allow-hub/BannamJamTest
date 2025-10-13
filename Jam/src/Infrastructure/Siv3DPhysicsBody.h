@@ -29,6 +29,7 @@ namespace Jam::Infrastructure::Physics
 		void applyImpulse(const Vec2& impulse) { m_body.applyLinearImpulse(impulse); }
 		void setVelocity(const Vec2& v) override { m_body.setVelocity(v); }
 		Vec2 getVelocity() const override { return m_body.getVelocity(); }
+		void setPos(const Vec2& p) { m_body.setPos(p); }
 		void setLayer(Jam::Domain::Physics::PhysicsLayer layer) override { m_layer = layer; }
 		Jam::Domain::Physics::PhysicsLayer getLayer() const override { return m_layer; }
 
@@ -43,6 +44,8 @@ namespace Jam::Infrastructure::Physics
 			m_body.setPos(t.position);
 			m_body.setAngle(t.rotation);
 		}
+
+		void setGravityScale(const double& s) { m_body.setGravityScale(s); }
 
 		[[nodiscard]]
 		P2BodyID getBodyID() const noexcept { return m_body.id(); }

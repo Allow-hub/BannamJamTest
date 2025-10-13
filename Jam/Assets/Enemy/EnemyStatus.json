@@ -1,0 +1,13 @@
+{
+    "LittleDevil": {
+        "hp": 50,
+        "attackPower": 10.5,
+        "moveSpeed": 2.0,
+        "jumpPower": 5.0,
+        "physicsMaterial": {
+            "density": 10.0,
+            "friction": 0.4,
+            "restitution": 0.0
+        }
+    }
+}

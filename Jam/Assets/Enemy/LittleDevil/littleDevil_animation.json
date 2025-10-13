@@ -1,0 +1,22 @@
+{
+    "clips": [
+        {
+            "name": "Idle",
+            "loop": true,
+            "frames": [
+                {
+                    "path": "../Assets/Enemy/LittleDevil/idle_0.png",
+                    "duration": 1.5,
+                    "width": 200,
+                    "height": 400
+                },
+                {
+                    "path": "../Assets/Enemy/LittleDevil/idle_1.png",
+                    "duration": 0.5,
+                    "width": 200,
+                    "height": 400
+                }
+            ]
+        }
+    ]
+}

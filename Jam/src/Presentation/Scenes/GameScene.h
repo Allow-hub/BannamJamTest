@@ -6,6 +6,9 @@
 #include "../../Infrastructure/Siv3DInputManager.h"
 #include "../../Infrastructure/Siv3DPhysicsBody.h"
 #include "../../Infrastructure/PhysicsConverter.h"
+#include "../EnemyManager.h"
+#include "../../UseCase/EnemyFactory.h"
+#include "../EnemyLoader.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -20,6 +23,9 @@ namespace Jam::Presentation::Scenes
 		std::shared_ptr<Domain::Player::Player> m_player;
 		std::unique_ptr<Jam::UseCase::PlayerService> m_playerService;
 		std::unique_ptr<Jam::Presentation::PlayerManager> m_playerManager;
+		std::unique_ptr<Jam::Presentation::EnemyManager> m_enemyManager;
+		std::unordered_map<Jam::UseCase::EnemyType, Jam::Domain::Enemy::EnemyStatus> m_enemyStatusTable;
+
 		Jam::Infrastructure::Siv3DInputManager m_inputManager;
 		std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody> m_ground;
 		// 前フレームで接触していた相手の BodyID 一覧
@@ -67,12 +73,45 @@ namespace Jam::Presentation::Scenes
 			);
 			m_ground->setLayer(Jam::Domain::Physics::PhysicsLayer::Ground);
 			m_physicsBodies.push_back(m_ground);
+
+			// Enemyステータス読み込み
+			Jam::Presentation::EnemyLoader::LoadEnemyStatusFromJSON(U"../Assets/Enemy/EnemyStatus.json", m_enemyStatusTable);
+
+			// Factory に反映
+			Jam::UseCase::EnemyFactory::SetStatusTable(m_enemyStatusTable);
+
+			// EnemyManager初期化
+			m_enemyManager = std::make_unique<Jam::Presentation::EnemyManager>();
+
+			// PhysicsBody 作成
+			auto body = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
+				m_world,
+				Vec2{ 200, 200 },
+				SizeF{ 64, 120 },
+				s3d::P2BodyType::Dynamic,
+				m_enemyStatusTable[Jam::UseCase::EnemyType::LittleDevil].physicsMaterial
+			);
+
+			// Enemy 生成
+			auto enemy = Jam::UseCase::EnemyFactory::CreateEnemy(Jam::UseCase::EnemyType::LittleDevil, body);
+
+			// CollisionListener 設定
+			body->setCollisionListener(enemy);
+
+			// ここで World に登録済みなので、m_physicsBodies に push するだけ
+			m_physicsBodies.push_back(body);
+
+			// Animator を読み込んで EnemyManager に登録
+			int enemyID = m_enemyManager->AddEnemy(enemy, U"../Assets/Enemy/LittleDevil/littleDevil_animation.json");
+			m_enemyManager->GetAnimator(enemyID).AddCondition({ { {U"isRunning", false} }, U"Idle", 0 });
+			m_enemyManager->GetAnimator(enemyID).SetBool(U"isRunning", false);
 		}
 
 		void update() override
 		{
 			m_playerService->update(Scene::DeltaTime());
 			m_playerManager->update();
+			m_enemyManager->update(Scene::DeltaTime());
 
 			constexpr double StepTime = 1.0 / 400.0;
 			m_accumulatedTime += Scene::DeltaTime();
@@ -93,6 +132,7 @@ namespace Jam::Presentation::Scenes
 			RectF{ 0, 680, 1280, 40 }.draw(Palette::Gray);
 
 			m_playerManager->draw();
+			m_enemyManager->draw();
 
 			if (m_ground)
 			{
