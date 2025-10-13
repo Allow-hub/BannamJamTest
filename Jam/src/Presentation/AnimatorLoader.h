@@ -8,7 +8,7 @@ namespace Jam::Presentation
 	{
 	public:
 		// JSON から Animator にクリップを登録
-		 // JSON ファイルから Animator のクリップをロードする
+		// JSON ファイルから Animator のクリップをロードする
 		static	bool LoadAnimatorFromJSON(Animator& animator, const String& jsonPath)
 		{
 			const JSON json = JSON::Load(jsonPath);

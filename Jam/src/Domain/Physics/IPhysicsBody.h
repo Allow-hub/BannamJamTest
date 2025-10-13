@@ -3,14 +3,6 @@
 
 namespace Jam::Domain::Physics
 {
-	enum class PhysicsLayer
-	{
-		None,
-		Player,
-		Enemy,
-		Ground,
-		Weapon,
-	};
 
 	class IPhysicsBody
 	{

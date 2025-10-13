@@ -6,6 +6,7 @@
 
 namespace Jam::Presentation
 {
+	//プレイヤーの描画をメインに担当
     class PlayerManager
     {
     private:

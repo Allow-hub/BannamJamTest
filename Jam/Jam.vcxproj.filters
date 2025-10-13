@@ -291,6 +291,7 @@
     <Text Include="App\example\LICENSE.txt">
       <Filter>Resource Files\example</Filter>
     </Text>
+    <Text Include="src\Domain\Physics\Domain_PhysicsDoc.md" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App\dll\soundtouch\SoundTouch_x64.dll">
@@ -785,6 +786,8 @@
     </None>
     <None Include="Assets\Player\player_animation.json" />
     <None Include="Assets\Player\player_stats.json" />
+    <None Include="src\Infrastructure\InfrastructureDoc.md" />
+    <None Include="src\Presentation\Presentation.md" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="App\example\test.mp3">
@@ -835,9 +838,6 @@
     <ClInclude Include="src\Presentation\Scenes\TitleScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Domain\GameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Domain\IInputService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -848,9 +848,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Domain\Player\Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Domain\Physics\IPhysicsWorld.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Domain\Physics\IPhysicsBody.h">
