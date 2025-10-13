@@ -3,6 +3,7 @@
 
 namespace Jam::Domain::Physics
 {
+
 	class IPhysicsBody
 	{
 	public:
@@ -19,7 +20,7 @@ namespace Jam::Domain::Physics
 			return getTransform().position;
 		}
 		virtual void setTransform(const PhysicsTransform& t) = 0;
-
-		virtual bool isGrounded() const = 0;
+		virtual PhysicsLayer getLayer() const = 0;
+		virtual void setLayer(PhysicsLayer layer) = 0;
 	};
 }
