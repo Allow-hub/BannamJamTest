@@ -49,7 +49,7 @@ namespace Jam::Presentation::Scenes
 			);
 			
 			// Stage JSONファイルを読み込み
-			if (!m_stage->loadFromJson(U"App/Stage/stage1.json"))
+			if (!m_stage->loadFromJson(U"../App/Stage/stage1.json"))
 			{
 				Console << U"Stage JSONファイルの読み込みに失敗しました";
 			}

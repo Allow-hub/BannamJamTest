@@ -16,7 +16,12 @@ namespace Jam::Domain::Stage {
         
         // ステージ情報の設定
         m_info.id = FileSystem::BaseName(jsonPath);
-        m_info.name = json[U"name"].getString();
+        
+        if (json.hasElement(U"name")) {
+            m_info.name = json[U"name"].getString();
+        } else {
+            m_info.name = U"Unknown";
+        }
         
         // ステージサイズの読み込み
         if (json.hasElement(U"size")) {
