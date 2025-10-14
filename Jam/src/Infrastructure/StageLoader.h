@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
 #include "../Domain/Stage/StageTypes.h"
+#include "../Domain/Stage/ColorUtils.h"
 
 namespace Jam::Infrastructure::Stage {
     
@@ -20,7 +21,7 @@ namespace Jam::Infrastructure::Stage {
             return loadFromJson(stagePath, outObjects);
         }
         
-        // JSON読み込み（エラーハンドリング強化版）
+        // JSON読み込み
         static bool loadFromJson(const String& jsonPath, Array<StageObject>& outObjects) {
             // ファイル存在確認
             if (!FileSystem::Exists(jsonPath)) {
@@ -122,23 +123,9 @@ namespace Jam::Infrastructure::Stage {
             }
         }
         
-        // 16進数カラーコード解析（例: "#FF0000"）
+        // 色解析（ドメイン層のColorUtilsに委譲）
         static Color parseColor(const String& colorStr) {
-            if (!colorStr.starts_with(U'#') || colorStr.length() != HEX_COLOR_LENGTH) {
-                return Palette::Gray;
-            }
-            
-            try {
-                const String hexStr = colorStr.substr(1);
-                const uint32 colorValue = ParseInt<uint32>(hexStr, 16);
-                return Color(
-                    static_cast<uint8>((colorValue >> 16) & 0xFF),
-                    static_cast<uint8>((colorValue >> 8) & 0xFF),
-                    static_cast<uint8>(colorValue & 0xFF)
-                );
-            } catch (...) {
-                return Palette::Gray;
-            }
+            return Jam::Domain::Stage::ColorUtils::parseColorString(colorStr);
         }
     };
 }

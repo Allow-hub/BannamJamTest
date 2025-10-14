@@ -12,32 +12,32 @@
     {
       "rect": [0, 680, 1280, 40],
       "type": "solid",
-      "color": "#8B4513",
+      "color": "brown",
       "metadata": "ground"
     },
     {
       "rect": [200, 500, 200, 20],
       "type": "solid",
-      "color": "#654321",
+      "color": "saddlebrown",
       "metadata": "platform1"
     },
     {
       "rect": [500, 400, 150, 20],
-      "type": "platform",
-      "color": "#32CD32",
+      "type": "solid",
+      "color": "limegreen",
       "metadata": "jump_platform"
     },
     {
       "rect": [800, 300, 180, 25],
-      "type": "breakable",
-      "color": "#FF4500",
+      "type": "solid",
+      "color": "orangered",
       "metadata": "breakable_wall1",
       "destructible": true
     },
     {
       "rect": [1000, 200, 50, 100],
-      "type": "breakable",
-      "color": "#FF6347",
+      "type": "solid",
+      "color": "tomato",
       "metadata": "breakable_wall2",
       "destructible": true
     }
