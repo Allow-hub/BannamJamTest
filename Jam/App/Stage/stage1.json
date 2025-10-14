@@ -1,53 +1,45 @@
 {
-  "name": "テストステージ1",
-  "size": {
-    "width": 1280,
-    "height": 720
+  "_comment": "当たり判定専用ステージ定義",
+  "_使い方": {
+    "説明": "当たり判定オブジェクトを簡略記法で定義します。",
+    "rect": "[x, y, width, height] 形式の配列で位置とサイズを指定します。",
+    "type": "当たり判定の種類を指定します。solid(壁), platform(上から乗れる床), breakable(破壊可能), hazard(ダメージ), trigger(イベント)など。",
+    "color": "デバッグ描画用の色コード (例: #FF4500)。",
+    "metadata": "識別用の任意文字列（スクリプトやイベントで使用）。",
+    "destructible": "trueにすると破壊可能オブジェクトとして扱います（省略時はfalse）。"
   },
   "objects": [
     {
-      "rect": {
-        "x": 0,
-        "y": 680,
-        "width": 1280,
-        "height": 40
-      },
+      "rect": [0, 680, 1280, 40],
       "type": "solid",
       "color": "#8B4513",
       "metadata": "ground"
     },
     {
-      "rect": {
-        "x": 200,
-        "y": 500,
-        "width": 200,
-        "height": 20
-      },
+      "rect": [200, 500, 200, 20],
       "type": "solid",
       "color": "#654321",
       "metadata": "platform1"
     },
     {
-      "rect": {
-        "x": 500,
-        "y": 400,
-        "width": 150,
-        "height": 20
-      },
+      "rect": [500, 400, 150, 20],
       "type": "platform",
       "color": "#32CD32",
       "metadata": "jump_platform"
     },
     {
-      "rect": {
-        "x": 800,
-        "y": 300,
-        "width": 180,
-        "height": 25
-      },
-      "type": "solid",
-      "color": "#8B4513",
-      "metadata": "platform2"
+      "rect": [800, 300, 180, 25],
+      "type": "breakable",
+      "color": "#FF4500",
+      "metadata": "breakable_wall1",
+      "destructible": true
+    },
+    {
+      "rect": [1000, 200, 50, 100],
+      "type": "breakable",
+      "color": "#FF6347",
+      "metadata": "breakable_wall2",
+      "destructible": true
     }
   ]
 }
