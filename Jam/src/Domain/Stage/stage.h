@@ -8,6 +8,7 @@ namespace Jam::Domain::Stage {
     private:
         StageInfo m_info;
         bool m_isLoaded;
+        HashSet<String> m_destroyedObjects;  // 破壊されたオブジェクトのID
 
     public:
         Stage();
@@ -19,6 +20,11 @@ namespace Jam::Domain::Stage {
         // ゲッター
         const StageInfo& getStageInfo() const { return m_info; }
         const Array<StageObject>& getObjects() const { return m_info.objects; }
+        
+        // 破壊機能
+        void destroyObject(const String& objectId);
+        bool isObjectDestroyed(const String& objectId) const;
+        void resetDestroyedObjects();  // 破壊状態をリセット
         
         // 描画
         void draw() const;

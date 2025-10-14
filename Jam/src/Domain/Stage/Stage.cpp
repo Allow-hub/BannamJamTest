@@ -17,8 +17,29 @@ namespace Jam::Domain::Stage {
         // 物理マネージャーを使って物理ボディを作成
         physicsManager.createPhysicsBodies(m_info.objects);
         
+        // 破壊状態をリセット
+        m_destroyedObjects.clear();
+        
         m_isLoaded = true;
         return true;
+    }
+    
+    void Stage::destroyObject(const String& objectId) {
+        // 破壊可能なオブジェクトかチェック
+        for (const auto& obj : m_info.objects) {
+            if (obj.metadata == objectId && obj.destructible) {
+                m_destroyedObjects.insert(objectId);
+                break;
+            }
+        }
+    }
+    
+    bool Stage::isObjectDestroyed(const String& objectId) const {
+        return m_destroyedObjects.contains(objectId);
+    }
+    
+    void Stage::resetDestroyedObjects() {
+        m_destroyedObjects.clear();
     }
     
     void Stage::draw() const {
@@ -26,9 +47,16 @@ namespace Jam::Domain::Stage {
             return;
         }
         
-        // 全オブジェクトを描画
+        // 破壊されていないオブジェクトのみを描画
         for (const auto& obj : m_info.objects) {
-            obj.rect.draw(obj.color);
+            if (!isObjectDestroyed(obj.metadata)) {
+                obj.rect.draw(obj.color);
+                
+                // 破壊可能なオブジェクトには枠を表示
+                if (obj.destructible) {
+                    obj.rect.drawFrame(2, Palette::Red);
+                }
+            }
         }
     }
 }

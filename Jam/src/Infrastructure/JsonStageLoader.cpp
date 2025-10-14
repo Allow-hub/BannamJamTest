@@ -19,17 +19,6 @@ namespace Jam::Infrastructure {
             outInfo.name = U"Unknown";
         }
         
-        // ステージサイズの読み込み
-        if (json.hasElement(U"size")) {
-            const auto& sizeJson = json[U"size"];
-            outInfo.size = Size(
-                sizeJson[U"width"].get<int32>(),
-                sizeJson[U"height"].get<int32>()
-            );
-        } else {
-            outInfo.size = Size(1280, 720); // デフォルトサイズ
-        }
-        
         // オブジェクトの読み込み
         if (json.hasElement(U"objects")) {
             outInfo.objects = parseObjects(json[U"objects"]);
@@ -49,15 +38,33 @@ namespace Jam::Infrastructure {
         for (const auto& objJson : objectsJson.arrayView()) {
             Domain::Stage::StageObject obj;
             
-            // 矩形の読み込み
+            // 矩形の読み込み（配列形式 [x, y, width, height] をサポート）
             if (objJson.hasElement(U"rect")) {
                 const auto& rectJson = objJson[U"rect"];
-                obj.rect = RectF(
-                    rectJson[U"x"].get<double>(),
-                    rectJson[U"y"].get<double>(),
-                    rectJson[U"width"].get<double>(),
-                    rectJson[U"height"].get<double>()
-                );
+                if (rectJson.isArray()) {
+                    // 配列形式: [x, y, width, height]
+                    const auto& arr = rectJson.arrayView();
+                    Array<JSON> elements;
+                    for (const auto& elem : arr) {
+                        elements << elem;
+                    }
+                    if (elements.size() >= 4) {
+                        obj.rect = RectF(
+                            elements[0].get<double>(),
+                            elements[1].get<double>(),
+                            elements[2].get<double>(),
+                            elements[3].get<double>()
+                        );
+                    }
+                } else if (rectJson.isObject()) {
+                    // オブジェクト形式（従来互換性のため）: {x, y, width, height}
+                    obj.rect = RectF(
+                        rectJson[U"x"].get<double>(),
+                        rectJson[U"y"].get<double>(),
+                        rectJson[U"width"].get<double>(),
+                        rectJson[U"height"].get<double>()
+                    );
+                }
             }
             
             // タイプの読み込み
@@ -77,6 +84,11 @@ namespace Jam::Infrastructure {
                 obj.metadata = objJson[U"metadata"].getString();
             }
             
+            // 破壊可能フラグの読み込み
+            if (objJson.hasElement(U"destructible")) {
+                obj.destructible = objJson[U"destructible"].get<bool>();
+            }
+
             objects << obj;
         }
         
@@ -88,6 +100,7 @@ namespace Jam::Infrastructure {
         if (typeStr == U"platform") return Domain::Stage::CollisionType::Platform;
         if (typeStr == U"hazard") return Domain::Stage::CollisionType::Hazard;
         if (typeStr == U"trigger") return Domain::Stage::CollisionType::Trigger;
+        if (typeStr == U"breakable") return Domain::Stage::CollisionType::Breakable;
         return Domain::Stage::CollisionType::None;
     }
     

@@ -8,7 +8,8 @@ namespace Jam::Domain::Stage {
         Solid = 1,      // 壁・床
         Platform = 2,   // 足場
         Hazard = 3,     // ダメージゾーン
-        Trigger = 4     // イベントトリガー
+        Trigger = 4,    // イベントトリガー
+        Breakable = 5   // 破壊可能な壁
     };
 
     // ステージオブジェクト（床・壁・足場など）
@@ -17,13 +18,13 @@ namespace Jam::Domain::Stage {
         CollisionType type;   // 当たり判定種別
         Color color;          // 描画色
         String metadata;      // 追加情報
+        bool destructible = false;  // 破壊可能フラグ
     };
 
     // ステージ全体の情報
     struct StageInfo {
         String id;                    // ステージID
         String name;                  // ステージ名
-        Size size;                    // ステージサイズ
         Array<StageObject> objects;   // ステージオブジェクト一覧
     };
 }
