@@ -2,13 +2,12 @@
 #include <Siv3D.hpp>
 #include "StageTypes.h"
 
-/**
- * ステージデバッグ表示機能
- * 当たり判定の可視化とデバッグ情報表示
- */
 namespace Jam::Domain::Stage {
-    
-    // デバッグ表示設定
+	
+	/**
+	 * ステージデバッグ表示機能
+	 * 当たり判定の可視化とデバッグ情報表示
+	 */
     namespace DebugConfig {
         // デバッグビルド時のみ有効（リリースビルドでは完全に無効化）
 #ifdef _DEBUG
