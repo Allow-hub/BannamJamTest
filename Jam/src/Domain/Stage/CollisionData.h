@@ -47,7 +47,7 @@ namespace Jam::Domain::Stage {
             return results;
         }
         
-        // アクセサ
+        // アクセサメソッド
         const Array<StageObject>& getObjects() const { 
             return m_objects; 
         }

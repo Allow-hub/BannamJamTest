@@ -51,7 +51,7 @@ namespace Jam::Domain::Stage {
             const Color outlineColor = DebugConfig::getCollisionOutlineColor(obj.type);
             obj.rect.drawFrame(2, outlineColor);
             
-            // ラベル表示
+            // タイプラベル表示
             if constexpr (DebugConfig::SHOW_COLLISION_LABELS) {
                 const String label = collisionTypeToString(obj.type);
                 const Vec2 labelPos = obj.rect.pos.movedBy(2, -18);

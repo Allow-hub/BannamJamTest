@@ -53,7 +53,7 @@ namespace Jam::Domain::Stage {
             return m_collisionData.getCollisions(rect, typeFilter, m_destroyedObjects);
         }
         
-        // アクセサ
+        // アクセサメソッド
         const Array<StageObject>& getObjects() const { 
             return m_collisionData.getObjects(); 
         }
@@ -70,7 +70,7 @@ namespace Jam::Domain::Stage {
             return m_collisionData.getObjectCount();
         }
         
-        // 描画データ取得（改善版：フィルタリング済み）
+        // 描画データ取得（破壊オブジェクトを除外したフィルタリング済み）
         Array<StageObject> getRenderableObjects() const {
             if (m_destroyedObjects.empty()) {
                 return m_collisionData.getObjects(); // 破壊オブジェクトがない場合は直接返す
@@ -87,7 +87,7 @@ namespace Jam::Domain::Stage {
             return renderable;
         }
         
-        // デバッグ描画（改善版）
+        // デバッグ描画機能
         void drawCollisionDebug() const {
             if constexpr (DebugConfig::SHOW_COLLISION_BOXES) {
                 for (const auto& obj : getRenderableObjects()) {

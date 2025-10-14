@@ -25,7 +25,7 @@ namespace Jam::Presentation::Scenes
 		// デバッグ用の床
 		std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody> m_ground;
 		
-		// Stage テスト用
+		// Stage用
 		std::unique_ptr<Jam::Domain::Stage::Stage> m_stage;
 		
 		// Stage用物理ボディ管理
@@ -78,7 +78,7 @@ namespace Jam::Presentation::Scenes
 					obj.type == Jam::Domain::Stage::CollisionType::Platform ||
 					obj.type == Jam::Domain::Stage::CollisionType::Breakable) {
 					
-					// P2Bodyを直接作成 (既存コードと同じパターン)
+					// P2Bodyを直接作成
 					P2Body body = m_world.createRect(
 						P2BodyType::Static,
 						obj.rect.center(),
@@ -104,17 +104,6 @@ namespace Jam::Presentation::Scenes
 				m_world.update(StepTime);   // 物理演算を StepTime 秒進める
 				m_accumulatedTime -= StepTime;
 			}
-			
-			// デバッグ用：Spaceキーでステージオブジェクトの破壊テスト
-			if (KeySpace.down() && m_stage && !m_stage->getObjects().empty()) {
-				const auto& firstObject = m_stage->getObjects()[0];
-				if (firstObject.destructible && !m_stage->isObjectDestroyed(firstObject.metadata)) {
-					m_stage->destroyObject(firstObject.metadata);
-					// 物理ボディを再作成
-					createStagePhysicsBodies();
-				}
-			}
-
 		}
 
 		void draw() const override

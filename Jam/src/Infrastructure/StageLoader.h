@@ -20,56 +20,72 @@ namespace Jam::Infrastructure::Stage {
             return loadFromJson(stagePath, outObjects);
         }
         
-        // JSON読み込み
+        // JSON読み込み（エラーハンドリング強化版）
         static bool loadFromJson(const String& jsonPath, Array<StageObject>& outObjects) {
+            // ファイル存在確認
             if (!FileSystem::Exists(jsonPath)) {
+                Print << U"ステージファイルが見つかりません: " + jsonPath;
                 return false;
             }
             
+            // JSON読み込み
             const JSON json = JSON::Load(jsonPath);
-            if (!json || !json.hasElement(U"objects")) {
+            if (!json) {
+                Print << U"JSONの解析に失敗しました: " + jsonPath;
+                return false;
+            }
+            
+            if (!json.hasElement(U"objects")) {
+                Print << U"'objects' 要素が見つかりません: " + jsonPath;
                 return false;
             }
             
             const auto objectsArray = json[U"objects"].arrayView();
             outObjects.clear();
-            // reserve は配列サイズが分からないのでスキップ
+            
+            size_t successCount = 0;
+            size_t totalCount = 0;
             
             for (const auto& objJson : objectsArray) {
+                totalCount++;
                 if (auto obj = parseStageObject(objJson)) {
                     outObjects << *obj;
+                    successCount++;
+                } else {
+                    Print << U"オブジェクト " + ToString(totalCount) + U" の解析に失敗しました";
                 }
             }
             
+            Print << U"ステージオブジェクトの読み込み完了: " + ToString(successCount) + U"/" + ToString(totalCount);
             return !outObjects.empty();
         }
-        
+
     private:
         // ステージオブジェクト解析
         static Optional<StageObject> parseStageObject(const JSON& objJson) {
             StageObject obj;
             
-            // rect解析（必須）
+            // 矩形データ解析（必須項目）
             if (!parseRect(objJson, obj.rect)) {
                 return none;
             }
             
-            // type解析
+            // 当たり判定タイプ解析
             obj.type = objJson.hasElement(U"type") 
                 ? Jam::Domain::Stage::stringToCollisionType(objJson[U"type"].getString())
                 : CollisionType::None;
             
-            // color解析
+            // 色情報解析
             obj.color = objJson.hasElement(U"color") 
                 ? parseColor(objJson[U"color"].getString())
                 : Palette::Gray;
             
-            // metadata解析
+            // メタデータ解析
             obj.metadata = objJson.hasElement(U"metadata") 
                 ? objJson[U"metadata"].getString()
                 : U"";
             
-            // destructible解析
+            // 破壊可能フラグ解析
             obj.destructible = objJson.hasElement(U"destructible") 
                 ? objJson[U"destructible"].get<bool>()
                 : false;
@@ -77,7 +93,7 @@ namespace Jam::Infrastructure::Stage {
             return obj;
         }
         
-        // rect配列解析（改善版）
+        // 矩形配列解析（配列形式[x,y,width,height]）
         static bool parseRect(const JSON& objJson, RectF& rect) {
             if (!objJson.hasElement(U"rect") || !objJson[U"rect"].isArray()) {
                 return false;
@@ -85,7 +101,6 @@ namespace Jam::Infrastructure::Stage {
             
             const auto rectArray = objJson[U"rect"].arrayView();
             
-            // 直接アクセスで中間配列を回避
             try {
                 double values[RECT_ARRAY_SIZE];
                 size_t index = 0;
@@ -107,7 +122,7 @@ namespace Jam::Infrastructure::Stage {
             }
         }
         
-        // 色解析（改善版）
+        // 16進数カラーコード解析（例: "#FF0000"）
         static Color parseColor(const String& colorStr) {
             if (!colorStr.starts_with(U'#') || colorStr.length() != HEX_COLOR_LENGTH) {
                 return Palette::Gray;
