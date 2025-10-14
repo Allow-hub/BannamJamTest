@@ -22,13 +22,14 @@ namespace Jam::Domain::Stage {
         bool isLoaded() const { return m_isLoaded; }
         
         // 破壊機能
-        void destroyObject(const String& objectId) {
+        bool destroyObject(const String& objectId) {
             for (const auto& obj : m_collisionData.getObjects()) {
                 if (obj.metadata == objectId && obj.destructible) {
                     m_destroyedObjects.insert(objectId);
-                    break;
+                    return true; // 破壊成功
                 }
             }
+            return false; // 破壊失敗
         }
         
         bool isObjectDestroyed(const String& objectId) const {
@@ -37,6 +38,10 @@ namespace Jam::Domain::Stage {
         
         void resetDestroyedObjects() {
             m_destroyedObjects.clear();
+        }
+        
+        size_t getDestroyedObjectCount() const {
+            return m_destroyedObjects.size();
         }
         
         // 当たり判定アクセス（破壊状態考慮）
@@ -65,9 +70,15 @@ namespace Jam::Domain::Stage {
             return m_collisionData.getObjectCount();
         }
         
-        // 描画データ取得（描画責任はPresentation層へ移譲）
+        // 描画データ取得（改善版：フィルタリング済み）
         Array<StageObject> getRenderableObjects() const {
+            if (m_destroyedObjects.empty()) {
+                return m_collisionData.getObjects(); // 破壊オブジェクトがない場合は直接返す
+            }
+            
             Array<StageObject> renderable;
+            renderable.reserve(m_collisionData.getObjectCount() - m_destroyedObjects.size());
+            
             for (const auto& obj : m_collisionData.getObjects()) {
                 if (!isObjectDestroyed(obj.metadata)) {
                     renderable << obj;
@@ -76,13 +87,12 @@ namespace Jam::Domain::Stage {
             return renderable;
         }
         
-        // デバッグ描画用の関数
+        // デバッグ描画（改善版）
         void drawCollisionDebug() const {
-            if constexpr (!DebugConfig::SHOW_COLLISION_BOXES) return;
-            
-            for (const auto& obj : m_collisionData.getObjects()) {
-                if (isObjectDestroyed(obj.metadata)) continue;
-                DebugRenderer::drawObjectDebug(obj);
+            if constexpr (DebugConfig::SHOW_COLLISION_BOXES) {
+                for (const auto& obj : getRenderableObjects()) {
+                    DebugRenderer::drawObjectDebug(obj);
+                }
             }
         }
     };

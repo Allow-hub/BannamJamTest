@@ -133,6 +133,9 @@ namespace Jam::Presentation::Scenes
 						obj.rect.drawFrame(2, Palette::Red);
 					}
 				}
+				
+				// デバッグ描画（ヘッダの設定で制御）
+				m_stage->drawCollisionDebug();
 			}
 
 			// Playerの描画
