@@ -16,26 +16,26 @@
       "metadata": "ground"
     },
     {
-      "rect": [200, 500, 200, 20],
+      "rect": [200, 580, 200, 20],
       "type": "solid",
       "color": "saddlebrown",
       "metadata": "platform1"
     },
     {
-      "rect": [500, 400, 150, 20],
+      "rect": [500, 500, 150, 20],
       "type": "solid",
       "color": "limegreen",
       "metadata": "jump_platform"
     },
     {
-      "rect": [800, 300, 180, 25],
+      "rect": [800, 420, 180, 25],
       "type": "solid",
       "color": "orangered",
       "metadata": "breakable_wall1",
       "destructible": true
     },
     {
-      "rect": [1000, 200, 50, 100],
+      "rect": [1000, 320, 50, 100],
       "type": "solid",
       "color": "tomato",
       "metadata": "breakable_wall2",

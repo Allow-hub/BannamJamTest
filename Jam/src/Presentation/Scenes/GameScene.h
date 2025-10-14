@@ -37,8 +37,8 @@ namespace Jam::Presentation::Scenes
 		// Stage用
 		std::unique_ptr<Jam::Domain::Stage::Stage> m_stage;
 		
-		// Stage用物理ボディ管理
-		Array<P2Body> m_stagePhysicsBodies;
+		// Stage用物理ボディ管理（統一）
+		std::vector<std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody>> m_stagePhysicsBodies;
 		
 		// Enemy用（main側から追加）
 		HashSet<P2ContactPair> m_previousContacts;
@@ -81,15 +81,16 @@ namespace Jam::Presentation::Scenes
 			);
 
 			// === Ground 初期化 ===
-			m_ground = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
-				m_world,
-				Vec2{ 640, 700 },
-				SizeF{ 1280, 40 },
-				s3d::P2BodyType::Static,
-				Jam::Domain::Physics::PhysicsMaterial{ 1.0, 0.0, 0.0 }
-			);
-			m_ground->setLayer(Jam::Domain::Physics::PhysicsLayer::Ground);
-			m_physicsBodies.push_back(m_ground);
+			// Stage側で地面を管理するため、個別の地面は作成しない
+			// m_ground = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
+			//	m_world,
+			//	Vec2{ 640, 700 },
+			//	SizeF{ 1280, 40 },
+			//	s3d::P2BodyType::Static,
+			//	Jam::Domain::Physics::PhysicsMaterial{ 1.0, 0.0, 0.0 }
+			// );
+			// m_ground->setLayer(Jam::Domain::Physics::PhysicsLayer::Ground);
+			// m_physicsBodies.push_back(m_ground);
 
 			// === Enemy 初期化 ===
 			m_enemyFactory = std::make_unique<Jam::UseCase::EnemyFactory>();
@@ -150,7 +151,7 @@ namespace Jam::Presentation::Scenes
 				Console << U"[GameScene] ❌ Failed to create enemy";
 			}
 			
-			// === Stage 初期化 ===（HEAD側の実装を追加）
+			// === Stage 初期化 ===
 			// Stage JSONファイルを読み込み
 			Array<Jam::Domain::Stage::StageObject> objects;
 			if (Jam::Infrastructure::Stage::StageLoader::loadStageFromFile(U"stage1.json", objects)) {
@@ -159,6 +160,72 @@ namespace Jam::Presentation::Scenes
 			
 			// ステージオブジェクト用の物理ボディを作成
 			createStagePhysicsBodies();
+		}
+
+		void update() override
+		{
+			m_playerService->update(Scene::DeltaTime());
+			m_playerManager->update();
+
+			// 敵の更新
+			if (m_enemyManager)
+			{
+				m_enemyManager->update(Scene::DeltaTime());
+			}
+
+			constexpr double StepTime = 1.0 / 400.0;
+			m_accumulatedTime += Scene::DeltaTime();
+
+			while (StepTime <= m_accumulatedTime)
+			{
+				const auto collisions = m_world.getCollisions();
+				notifyCollisionEvents(collisions);
+
+				m_world.update(StepTime);
+				m_accumulatedTime -= StepTime;
+			}
+		}
+
+		void draw() const override
+		{
+			Scene::SetBackground(ColorF{ 0.9, 0.9, 1.0 });
+
+			// Stageの描画
+			if (m_stage && m_stage->isLoaded())
+			{
+				Print << U"[GameScene] Drawing " << m_stage->getObjects().size() << U" stage objects";
+				for (const auto& obj : m_stage->getRenderableObjects()) {
+					obj.rect.draw(obj.color);
+					
+					// 破壊可能なオブジェクトには枠を表示
+					if (obj.destructible) {
+						obj.rect.drawFrame(2, Palette::Red);
+					}
+				}
+				
+				// デバッグ描画（ヘッダの設定で制御）
+				m_stage->drawCollisionDebug();
+			}
+			else
+			{
+				Print << U"[GameScene] Stage not loaded or empty";
+			}
+
+			// Playerの描画
+			m_playerManager->draw();
+
+			// 敵の描画
+			if (m_enemyManager)
+			{
+				m_enemyManager->draw();
+			}
+
+			// Stage側で地面を管理するため、個別の地面描画は不要
+			// if (m_ground)
+			// {
+			//	const auto t = m_ground->getTransform();
+			//	RectF(t.position.x - 640, t.position.y - 20, 1280, 40).draw(Palette::Gray);
+			// }
 		}
 
 	private:
@@ -177,14 +244,21 @@ namespace Jam::Presentation::Scenes
 					obj.type == Jam::Domain::Stage::CollisionType::Platform ||
 					obj.type == Jam::Domain::Stage::CollisionType::Breakable) {
 					
-					// P2Bodyを直接作成
-					P2Body body = m_world.createRect(
-						P2BodyType::Static,
+					// Siv3DPhysicsBodyとして作成
+					auto stageBody = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
+						m_world,
 						obj.rect.center(),
-						obj.rect.size
+						obj.rect.size,
+						s3d::P2BodyType::Static,
+						Jam::Domain::Physics::PhysicsMaterial{ 1.0, 0.0, 0.0 }
 					);
 					
-					m_stagePhysicsBodies << body;
+					// Groundレイヤーに設定（Playerとの衝突判定用）
+					stageBody->setLayer(Jam::Domain::Physics::PhysicsLayer::Ground);
+					
+					// 管理リストに追加
+					m_stagePhysicsBodies.push_back(stageBody);
+					m_physicsBodies.push_back(stageBody);
 				}
 			}
 		}
