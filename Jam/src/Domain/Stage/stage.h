@@ -4,6 +4,10 @@
 #include "StageDebug.h"
 
 namespace Jam::Domain::Stage {
+    /**
+     * ステージ全体を管理するドメインエンティティ
+     * 当たり判定とオブジェクトの破壊状態を統合管理
+     */
     class Stage {
     private:
         CollisionData m_collisionData;

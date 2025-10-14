@@ -4,10 +4,12 @@
 #include "../Domain/Stage/ColorUtils.h"
 
 namespace Jam::Infrastructure::Stage {
-    
-    using StageObject = Jam::Domain::Stage::StageObject;
+	using StageObject = Jam::Domain::Stage::StageObject;
     using CollisionType = Jam::Domain::Stage::CollisionType;
-    
+	/**
+	 * ステージデータJSONローダー
+	 * ファイル読み込みとオブジェクト解析を担当
+	 */
     class StageLoader {
     private:
         // 定数定義

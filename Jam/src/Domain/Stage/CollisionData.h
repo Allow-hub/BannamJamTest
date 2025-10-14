@@ -2,8 +2,12 @@
 #include "StageTypes.h"
 
 namespace Jam::Domain::Stage {
+    /**
+     * ステージオブジェクトの当たり判定を管理するクラス
+     */
     class CollisionData {
     private:
+	// データメンバー
         Array<StageObject> m_objects;
 
     public:
@@ -20,7 +24,7 @@ namespace Jam::Domain::Stage {
             m_objects.clear(); 
         }
         
-        // 当たり判定（統一インターフェース）
+        // 当たり判定
         bool checkCollision(
             const RectF& rect, 
             CollisionType typeFilter = CollisionType::None,
@@ -57,7 +61,7 @@ namespace Jam::Domain::Stage {
         }
         
     private:
-        // フィルタリングロジックの統一
+       // ヘルパーメソッド
         bool shouldCheckObject(
             const StageObject& obj,
             CollisionType typeFilter,

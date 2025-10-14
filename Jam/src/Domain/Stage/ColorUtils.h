@@ -3,8 +3,9 @@
 
 namespace Jam::Domain::Stage {
     
-    // 色変換ユーティリティクラス
-    // ドメイン層で色に関するビジネスルールを管理
+    /**
+     * 色変換ユーティリティクラス
+     */
     class ColorUtils {
     public:
         // 文字列から色を解析（16進数またはSiv3D色名）

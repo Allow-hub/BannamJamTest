@@ -1,6 +1,10 @@
 #pragma once
 #include <Siv3D.hpp>
 
+/**
+ * ステージ関連の型定義
+ * 当たり判定種別とステージオブジェクト構造体
+ */
 namespace Jam::Domain::Stage {
     // 当たり判定の種類
     enum class CollisionType {

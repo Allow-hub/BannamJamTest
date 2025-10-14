@@ -2,6 +2,10 @@
 #include <Siv3D.hpp>
 #include "StageTypes.h"
 
+/**
+ * ステージデバッグ表示機能
+ * 当たり判定の可視化とデバッグ情報表示
+ */
 namespace Jam::Domain::Stage {
     
     // デバッグ表示設定
@@ -9,9 +13,9 @@ namespace Jam::Domain::Stage {
         // デバッグビルド時のみ有効（リリースビルドでは完全に無効化）
 #ifdef _DEBUG
         // 当たり判定ボックスの表示制御（true: 表示, false: 非表示）
-        constexpr bool SHOW_COLLISION_BOXES = true;
+        constexpr bool SHOW_COLLISION_BOXES = false;
         // 当たり判定タイプラベルの表示制御（true: 表示, false: 非表示）
-        constexpr bool SHOW_COLLISION_LABELS = true;
+        constexpr bool SHOW_COLLISION_LABELS = false;
 #else
         // リリースビルドでは強制的に無効
         constexpr bool SHOW_COLLISION_BOXES = false;
