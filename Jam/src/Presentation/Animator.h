@@ -43,6 +43,8 @@ namespace Jam::Presentation
 		int currentFrame = 0; // 現在のフレームインデックス
 		double frameTimer = 0.0; // 現在フレームの経過時間
 
+		bool m_facingLeft = false;
+
 		// 現在のBoolパラメータに応じてクリップを切り替える
 		void UpdateCurrentClip() {
 			std::optional<BoolCondition> selected;   // 選択された条件
@@ -89,6 +91,10 @@ namespace Jam::Presentation
 			UpdateCurrentClip(); // 変更があればクリップを切り替え
 		}
 
+		void SetFacingLeft(bool b) {
+			m_facingLeft = b;
+		}
+
 		void SetBoolExclusive(const String& name) {
 			// すべてのBoolをfalseにリセット
 			for (auto& [key, val] : boolParams) {
@@ -131,7 +137,11 @@ namespace Jam::Presentation
 			if (clips.find(currentClip) == clips.end()) return;
 			const auto& frame = clips.at(currentClip).frames[currentFrame];
 			if (!frame.texture) return;
-			frame.texture.resized(frame.size).drawAt(pos);
+
+			if (m_facingLeft)
+				frame.texture.resized(frame.size).mirrored().drawAt(pos);
+			else
+				frame.texture.resized(frame.size).drawAt(pos);
 		}
 	};
 }

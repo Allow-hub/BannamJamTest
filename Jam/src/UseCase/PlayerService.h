@@ -31,11 +31,13 @@ namespace Jam::UseCase
 			if (inputState.left)
 			{
 				m_player->moveLeft();
+				m_manager.setFacingLeft(true);//左向きにテクスチャを反転
 				isRunning = true;
 			}
 			if (inputState.right)
 			{
 				m_player->moveRight();
+				m_manager.setFacingLeft(false);
 				isRunning = true;
 			}
 			if (inputState.jump)

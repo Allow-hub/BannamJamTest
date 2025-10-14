@@ -37,6 +37,10 @@ namespace Jam::Presentation
 			anim.Update(Scene::DeltaTime());
 		}
 
+		void setFacingLeft(bool b) {
+			anim.SetFacingLeft(b);
+		}
+
         void draw() const
         {
             Vec2 pos = m_player->getPosition();
