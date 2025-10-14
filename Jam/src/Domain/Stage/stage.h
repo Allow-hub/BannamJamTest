@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "StageTypes.h"
 #include "CollisionData.h"
+#include "StageDebug.h"
 
 namespace Jam::Domain::Stage {
     class Stage {
@@ -73,6 +74,16 @@ namespace Jam::Domain::Stage {
                 }
             }
             return renderable;
+        }
+        
+        // デバッグ描画用の関数
+        void drawCollisionDebug() const {
+            if constexpr (!DebugConfig::SHOW_COLLISION_BOXES) return;
+            
+            for (const auto& obj : m_collisionData.getObjects()) {
+                if (isObjectDestroyed(obj.metadata)) continue;
+                DebugRenderer::drawObjectDebug(obj);
+            }
         }
     };
 }
