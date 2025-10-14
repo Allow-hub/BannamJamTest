@@ -11,6 +11,7 @@ namespace Jam::Domain::Enemy
 		double attackPower;
 		double moveSpeed;
 		double jumpPower;
+		SizeF colSize;
 		Jam::Domain::Physics::PhysicsMaterial physicsMaterial;
 	};
 

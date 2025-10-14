@@ -46,7 +46,7 @@ namespace Jam::Presentation
 				status.attackPower = value[U"attackPower"].get<double>();
 				status.moveSpeed = value[U"moveSpeed"].get<double>();
 				status.jumpPower = value[U"jumpPower"].get<double>();
-
+				status.colSize = { value[U"colX"].get<double>(), value[U"colY"].get<double>() };
 				const auto& pm = value[U"physicsMaterial"];
 				if (pm.getType() == JSONValueType::Object)
 				{

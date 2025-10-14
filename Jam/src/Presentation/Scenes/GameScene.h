@@ -111,7 +111,7 @@ namespace Jam::Presentation::Scenes
 			auto enemyBody = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
 				m_world,
 				Vec2{ 400, 300 },  // 初期位置
-				SizeF{ 50, 100 },   // サイズ
+				status.colSize,   // サイズ
 				s3d::P2BodyType::Dynamic,
 				status.physicsMaterial
 			);
@@ -134,7 +134,6 @@ namespace Jam::Presentation::Scenes
 			{
 				Console << U"[GameScene] ❌ Failed to create enemy";
 			}
-
 		}
 
 		void update() override
