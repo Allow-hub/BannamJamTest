@@ -7,6 +7,7 @@
 #include "../../Infrastructure/Siv3DInputManager.h"
 #include "../../Infrastructure/Siv3DPhysicsBody.h"
 #include "../../Domain/Stage/Stage.h"
+#include "../../Infrastructure/StageLoader.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -52,12 +53,9 @@ namespace Jam::Presentation::Scenes
 			);
 			
 			// Stage JSONファイルを読み込み
-			if (!m_stage->loadFromJson(U"../App/Stage/stage1.json"))
-			{
-				// 絶対パスでも試してみる
-				if (!m_stage->loadFromJson(U"App/Stage/stage1.json")) {
-					// 読み込み失敗時の処理（必要に応じて）
-				}
+			Array<Jam::Domain::Stage::StageObject> objects;
+			if (Jam::Infrastructure::Stage::StageLoader::loadStageFromFile(U"stage1.json", objects)) {
+				m_stage->setObjects(objects);
 			}
 			
 			// ステージオブジェクト用の物理ボディを作成
@@ -122,12 +120,19 @@ namespace Jam::Presentation::Scenes
 		void draw() const override
 		{
 			Scene::SetBackground(ColorF{ 0.9, 0.9, 1.0 });
-			RectF{ 0, 680, 1280, 40 }.draw(Palette::Gray);
+			// RectF{ 0, 680, 1280, 40 }.draw(Palette::Gray); Stageの描画を優先
 
 			// Stageの描画
-			if (m_stage)
+			if (m_stage && m_stage->isLoaded())
 			{
-				m_stage->draw();
+				for (const auto& obj : m_stage->getRenderableObjects()) {
+					obj.rect.draw(obj.color);
+					
+					// 破壊可能なオブジェクトには枠を表示
+					if (obj.destructible) {
+						obj.rect.drawFrame(2, Palette::Red);
+					}
+				}
 			}
 
 			// Playerの描画

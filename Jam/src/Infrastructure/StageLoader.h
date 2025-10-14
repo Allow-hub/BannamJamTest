@@ -9,23 +9,43 @@ namespace Jam::Infrastructure::Stage {
 
 	class StageLoader {
 	public:
+		// ステージファイル読み込み（相対パス使用）
+		static bool loadStageFromFile(const String& stageFileName, Array<StageObject>& outObjects) {
+			String stagePath = U"Stage/" + stageFileName;  // App/は削除
+			Print << U"StageLoader::loadStageFromFile: 試行パス = " << stagePath;
+			bool result = loadFromJson(stagePath, outObjects);
+			Print << U"StageLoader::loadStageFromFile: 結果 = " << (result ? U"成功" : U"失敗");
+			return result;
+		}
+		
 		// JSON読み込み（静的メソッドで単純化）
 		static bool loadFromJson(const String& jsonPath, Array<StageObject>& outObjects) {
+			Print << U"StageLoader::loadFromJson: パス = " << jsonPath;
+			
 			// ファイル存在確認
 			if (!FileSystem::Exists(jsonPath)) {
+				Print << U"StageLoader::loadFromJson: ファイルが存在しません";
+				Print << U"StageLoader::loadFromJson: カレントディレクトリ = " << FileSystem::CurrentDirectory();
 				return false;
 			}
+			
+			Print << U"StageLoader::loadFromJson: ファイル存在確認OK";
 
 			JSON json = JSON::Load(jsonPath);
 			if (!json) {
+				Print << U"StageLoader::loadFromJson: JSON解析に失敗";
 				return false;
 			}
-
+			
+			Print << U"StageLoader::loadFromJson: JSON解析成功";
 			outObjects.clear();
 
 			if (!json.hasElement(U"objects")) {
+				Print << U"StageLoader::loadFromJson: 'objects'要素が見つかりません";
 				return false;
 			}
+			
+			Print << U"StageLoader::loadFromJson: 'objects'要素が見つかりました";
 
 			for (const auto& objJson : json[U"objects"].arrayView()) {
 				StageObject obj;
@@ -73,6 +93,7 @@ namespace Jam::Infrastructure::Stage {
 				outObjects << obj;
 			}
 
+			Print << U"StageLoader::loadFromJson: " << outObjects.size() << U"個のオブジェクトを読み込み完了";
 			return true;
 		}
 

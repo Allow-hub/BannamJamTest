@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "StageTypes.h"
 #include "CollisionData.h"
-#include "../../Infrastructure/StageLoader.h"
 
 namespace Jam::Domain::Stage {
     class Stage {
@@ -13,17 +12,10 @@ namespace Jam::Domain::Stage {
     public:
         Stage() = default;
         
-        // JSON読み込み（Infrastructure::StageLoaderに委譲）
-        bool loadFromJson(const String& jsonPath) {
-            Array<StageObject> objects;
-            if (!Infrastructure::Stage::StageLoader::loadFromJson(jsonPath, objects)) {
-                return false;
-            }
-            
+        void setObjects(const Array<StageObject>& objects) {
             m_collisionData.setObjects(objects);
             m_destroyedObjects.clear();
             m_isLoaded = true;
-            return true;
         }
         
         bool isLoaded() const { return m_isLoaded; }
@@ -48,32 +40,39 @@ namespace Jam::Domain::Stage {
         
         // 当たり判定アクセス（破壊状態考慮）
         bool checkCollision(const RectF& rect, CollisionType typeFilter = CollisionType::None) const {
-            return m_collisionData.checkCollision(rect, m_destroyedObjects, typeFilter);
+            return m_collisionData.checkCollision(rect, typeFilter, m_destroyedObjects);
         }
         
         Array<StageObject> getCollisions(const RectF& rect, CollisionType typeFilter = CollisionType::None) const {
-            return m_collisionData.getCollisions(rect, m_destroyedObjects, typeFilter);
+            return m_collisionData.getCollisions(rect, typeFilter, m_destroyedObjects);
         }
         
         // アクセサ
-        const Array<StageObject>& getObjects() const { return m_collisionData.getObjects(); }
-        const CollisionData& getCollisionData() const { return m_collisionData; }
-        const HashSet<String>& getDestroyedObjects() const { return m_destroyedObjects; }
+        const Array<StageObject>& getObjects() const { 
+            return m_collisionData.getObjects(); 
+        }
         
-        // 描画
-        void draw() const {
-            if (!m_isLoaded) return;
-            
+        const CollisionData& getCollisionData() const { 
+            return m_collisionData; 
+        }
+        
+        const HashSet<String>& getDestroyedObjects() const { 
+            return m_destroyedObjects; 
+        }
+        
+        size_t getObjectCount() const {
+            return m_collisionData.getObjectCount();
+        }
+        
+        // 描画データ取得（描画責任はPresentation層へ移譲）
+        Array<StageObject> getRenderableObjects() const {
+            Array<StageObject> renderable;
             for (const auto& obj : m_collisionData.getObjects()) {
                 if (!isObjectDestroyed(obj.metadata)) {
-                    obj.rect.draw(obj.color);
-                    
-                    // 破壊可能なオブジェクトには枠を表示
-                    if (obj.destructible) {
-                        obj.rect.drawFrame(2, Palette::Red);
-                    }
+                    renderable << obj;
                 }
             }
+            return renderable;
         }
     };
 }
