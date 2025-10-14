@@ -7,8 +7,6 @@
 #include "../../Infrastructure/Siv3DInputManager.h"
 #include "../../Infrastructure/Siv3DPhysicsBody.h"
 #include "../../Domain/Stage/Stage.h"
-#include "../../Infrastructure/JsonStageLoader.h"
-#include "../../Infrastructure/StagePhysicsManager.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -28,8 +26,9 @@ namespace Jam::Presentation::Scenes
 		
 		// Stage テスト用
 		std::unique_ptr<Jam::Domain::Stage::Stage> m_stage;
-		std::unique_ptr<Jam::Infrastructure::JsonStageLoader> m_stageLoader;
-		std::unique_ptr<Jam::Infrastructure::StagePhysicsManager> m_stagePhysicsManager;
+		
+		// Stage用物理ボディ管理
+		Array<P2Body> m_stagePhysicsBodies;
 
 	public:
 		GameScene(const InitData& init)
@@ -43,9 +42,7 @@ namespace Jam::Presentation::Scenes
 			)),
 			m_playerService(m_player, m_inputManager),
 			m_playerManager(m_player),
-			m_stage(std::make_unique<Jam::Domain::Stage::Stage>()),
-			m_stageLoader(std::make_unique<Jam::Infrastructure::JsonStageLoader>()),
-			m_stagePhysicsManager(std::make_unique<Jam::Infrastructure::StagePhysicsManager>(m_world))
+			m_stage(std::make_unique<Jam::Domain::Stage::Stage>())
 		{
 			m_ground = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
 			m_world,
@@ -54,10 +51,44 @@ namespace Jam::Presentation::Scenes
 			s3d::P2BodyType::Static   // 動かない床
 			);
 			
-			// Stage JSONファイルを読み込み（依存性注入）
-			if (!m_stage->loadFromJson(U"../App/Stage/stage1.json", *m_stageLoader, *m_stagePhysicsManager))
+			// Stage JSONファイルを読み込み
+			if (!m_stage->loadFromJson(U"../App/Stage/stage1.json"))
 			{
-				Console << U"Stage JSONファイルの読み込みに失敗しました";
+				// 絶対パスでも試してみる
+				if (!m_stage->loadFromJson(U"App/Stage/stage1.json")) {
+					// 読み込み失敗時の処理（必要に応じて）
+				}
+			}
+			
+			// ステージオブジェクト用の物理ボディを作成
+			createStagePhysicsBodies();
+		}
+
+	private:
+		// ステージオブジェクト用の物理ボディを作成
+		void createStagePhysicsBodies() {
+			m_stagePhysicsBodies.clear();
+			
+			if (!m_stage || !m_stage->isLoaded()) return;
+			
+			for (const auto& obj : m_stage->getObjects()) {
+				// 破壊されたオブジェクトは物理ボディを作成しない
+				if (m_stage->isObjectDestroyed(obj.metadata)) continue;
+				
+				// 当たり判定が必要なタイプのみ物理ボディを作成
+				if (obj.type == Jam::Domain::Stage::CollisionType::Solid || 
+					obj.type == Jam::Domain::Stage::CollisionType::Platform ||
+					obj.type == Jam::Domain::Stage::CollisionType::Breakable) {
+					
+					// P2Bodyを直接作成 (既存コードと同じパターン)
+					P2Body body = m_world.createRect(
+						P2BodyType::Static,
+						obj.rect.center(),
+						obj.rect.size
+					);
+					
+					m_stagePhysicsBodies << body;
+				}
 			}
 		}
 
@@ -75,6 +106,16 @@ namespace Jam::Presentation::Scenes
 				m_world.update(StepTime);   // 物理演算を StepTime 秒進める
 				m_accumulatedTime -= StepTime;
 			}
+			
+			// デバッグ用：Spaceキーでステージオブジェクトの破壊テスト
+			if (KeySpace.down() && m_stage && !m_stage->getObjects().empty()) {
+				const auto& firstObject = m_stage->getObjects()[0];
+				if (firstObject.destructible && !m_stage->isObjectDestroyed(firstObject.metadata)) {
+					m_stage->destroyObject(firstObject.metadata);
+					// 物理ボディを再作成
+					createStagePhysicsBodies();
+				}
+			}
 
 		}
 
@@ -91,8 +132,6 @@ namespace Jam::Presentation::Scenes
 
 			// Playerの描画
 			m_playerManager.draw();
-
-			// Stageや敵も描画
 		}
 	};
 }
