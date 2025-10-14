@@ -1,0 +1,12 @@
+{
+    "stats": {
+        "moveSpeed": 1000.0,
+        "jumpPower": 300.0
+    },
+    "physics": {
+        "friction": 0.5,
+        "restitution": 0.0,
+        "density": 1.0,
+        "restitutionThreshold" : 5.0
+    }
+}

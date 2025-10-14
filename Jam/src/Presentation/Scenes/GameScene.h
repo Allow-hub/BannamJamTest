@@ -1,13 +1,16 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
 #include <HamFramework.hpp>
-#include "TitleScene.h"
 #include "../PlayerManager.h"
 #include "../../UseCase/PlayerService.h"
 #include "../../Infrastructure/Siv3DInputManager.h"
 #include "../../Infrastructure/Siv3DPhysicsBody.h"
 #include "../../Domain/Stage/Stage.h"
 #include "../../Infrastructure/StageLoader.h"
+#include "../../Infrastructure/PhysicsConverter.h"
+#include "../EnemyManager.h"
+#include "../../UseCase/EnemyFactory.h"
+#include "../EnemyLoader.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -17,12 +20,18 @@ namespace Jam::Presentation::Scenes
 	{
 	private:
 		P2World m_world;
-		double m_accumulatedTime = 0.0;//2D 物理演算のシミュレーション蓄積時間（秒）
-		std::shared_ptr<Domain::Player> m_player;
-		Jam::UseCase::PlayerService m_playerService;
-		Jam::Presentation::PlayerManager m_playerManager;
+		std::vector<std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody>> m_physicsBodies;
+		double m_accumulatedTime = 0.0;
+
+		// Player
+		std::shared_ptr<Domain::Player::Player> m_player;
+		std::unique_ptr<Jam::UseCase::PlayerService> m_playerService;
+		std::unique_ptr<Jam::Presentation::PlayerManager> m_playerManager;
+
+		std::unique_ptr<Jam::Presentation::EnemyManager> m_enemyManager;
+		std::unique_ptr<Jam::UseCase::EnemyFactory> m_enemyFactory;
+
 		Jam::Infrastructure::Siv3DInputManager m_inputManager;
-		// デバッグ用の床
 		std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody> m_ground;
 		
 		// Stage用
@@ -30,28 +39,118 @@ namespace Jam::Presentation::Scenes
 		
 		// Stage用物理ボディ管理
 		Array<P2Body> m_stagePhysicsBodies;
+		
+		// Enemy用（main側から追加）
+		HashSet<P2ContactPair> m_previousContacts;
 
 	public:
 		GameScene(const InitData& init)
 			: IScene{ init },
 			m_world({ 0, 980 }),//引数は重力
 			m_inputManager(),
-			m_player(std::make_shared<Domain::Player>(
-				std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
-					m_world, Vec2{ 100,300 }, SizeF{ 50, 80 }
-				)
-			)),
-			m_playerService(m_player, m_inputManager),
-			m_playerManager(m_player),
 			m_stage(std::make_unique<Jam::Domain::Stage::Stage>())
 		{
-			m_ground = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
-			m_world,
-			Vec2{ 640, 700 },        // 中心座標
-			SizeF{ 1280, 40 },       // 幅・高さ
-			s3d::P2BodyType::Static   // 動かない床
+			// === Player 初期化 ===
+			auto stats = Jam::Infrastructure::Physics::LoadFromJSON(U"../Assets/Player/player_stats.json");
+
+			auto playerBody = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
+				m_world,
+				Vec2{ 100, 300 },
+				SizeF{ 50, 80 },
+				s3d::P2BodyType::Dynamic,
+				stats.physicsMaterial
 			);
 			
+			// === Player 初期化 ===（main側の実装を採用）
+			m_player = std::make_shared<Jam::Domain::Player::Player>(playerBody);
+			playerBody->setCollisionListener(m_player);
+
+			m_physicsBodies.push_back(
+				std::dynamic_pointer_cast<Infrastructure::Physics::Siv3DPhysicsBody>(
+					m_player->getPhysicsBody()
+				)
+			);
+			m_player->setSpeed(stats.moveSpeed);
+			m_player->setJumpPower(stats.jumpPower);
+
+			m_playerManager = std::make_unique<Jam::Presentation::PlayerManager>(m_player);
+			m_playerService = std::make_unique<Jam::UseCase::PlayerService>(
+				m_player,
+				m_inputManager,
+				*m_playerManager
+			);
+
+			// === Ground 初期化 ===
+			m_ground = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
+				m_world,
+				Vec2{ 640, 700 },
+				SizeF{ 1280, 40 },
+				s3d::P2BodyType::Static,
+				Jam::Domain::Physics::PhysicsMaterial{ 1.0, 0.0, 0.0 }
+			);
+			m_ground->setLayer(Jam::Domain::Physics::PhysicsLayer::Ground);
+			m_physicsBodies.push_back(m_ground);
+
+			// === Enemy 初期化 ===
+			m_enemyFactory = std::make_unique<Jam::UseCase::EnemyFactory>();
+			m_enemyManager = std::make_unique<Jam::Presentation::EnemyManager>();
+
+			// 敵ステータスをJSONからロード
+			std::unordered_map<Jam::UseCase::EnemyType, Jam::Domain::Enemy::EnemyStatus> enemyStatusTable;
+			if (Jam::Presentation::EnemyLoader::LoadEnemyStatusFromJSON(
+				U"../Assets/Enemy/enemy_stats.json",
+				enemyStatusTable))
+			{
+				m_enemyFactory->setStatusTable(enemyStatusTable);
+			}
+			else
+			{
+				Console << U"[GameScene] ⚠ Failed to load enemy status";
+			}
+
+			// EnemyType を指定
+			const auto enemyType = Jam::UseCase::EnemyType::LittleDevil;
+
+			// ステータステーブルから該当データを探す
+			auto it = enemyStatusTable.find(enemyType);
+			if (it == enemyStatusTable.end())
+			{
+				Print << U"[GameScene] ⚠ Enemy status not found for type LittleDevil";
+				return;
+			}
+
+			// ステータス取得
+			const auto& status = it->second;
+
+			// 敵を生成して配置
+			auto enemyBody = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
+				m_world,
+				Vec2{ 400, 300 },  // 初期位置
+				status.colSize,   // サイズ
+				s3d::P2BodyType::Dynamic,
+				status.physicsMaterial
+			);
+
+			auto enemy = m_enemyFactory->createEnemy(
+				Jam::UseCase::EnemyType::LittleDevil,
+				enemyBody
+			);
+
+			if (enemy)
+			{
+				enemyBody->setCollisionListener(enemy);
+				m_physicsBodies.push_back(enemyBody);
+				// EnemyManagerに登録
+				int enemyId = m_enemyManager->AddEnemy(enemy, U"../Assets/Enemy/LittleDevil/littleDevil_animation.json");
+				m_enemyManager->getAnimator(enemyId).AddCondition({ { {U"isRunning", false} }, U"Idle", 0 });
+				m_enemyManager->getAnimator(enemyId).SetBool(U"isRunning", false);
+			}
+			else
+			{
+				Console << U"[GameScene] ❌ Failed to create enemy";
+			}
+			
+			// === Stage 初期化 ===（HEAD側の実装を追加）
 			// Stage JSONファイルを読み込み
 			Array<Jam::Domain::Stage::StageObject> objects;
 			if (Jam::Infrastructure::Stage::StageLoader::loadStageFromFile(U"stage1.json", objects)) {
@@ -90,45 +189,51 @@ namespace Jam::Presentation::Scenes
 			}
 		}
 
-		void update() override
+		void notifyCollisionEvents(const HashTable<P2ContactPair, P2Collision>& collisions)
 		{
-			// 入力→PlayerService更新→Playerの状態更新
-			m_playerService.update(Scene::DeltaTime());
+			HashSet<P2ContactPair> currentContacts;
+			for (const auto& [pair, _] : collisions)
+				currentContacts.insert(pair);
 
-			// 累積時間で固定ステップ物理
-			constexpr double StepTime = 1.0 / 200.0;
-			m_accumulatedTime += Scene::DeltaTime();
-
-			while (StepTime <= m_accumulatedTime)
+			// Enter = 新しく発生した接触
+			for (const auto& [pair, col] : collisions)
 			{
-				m_world.update(StepTime);   // 物理演算を StepTime 秒進める
-				m_accumulatedTime -= StepTime;
-			}
-		}
-
-		void draw() const override
-		{
-			Scene::SetBackground(ColorF{ 0.9, 0.9, 1.0 });
-			// RectF{ 0, 680, 1280, 40 }.draw(Palette::Gray); Stageの描画を優先
-
-			// Stageの描画
-			if (m_stage && m_stage->isLoaded())
-			{
-				for (const auto& obj : m_stage->getRenderableObjects()) {
-					obj.rect.draw(obj.color);
-					
-					// 破壊可能なオブジェクトには枠を表示
-					if (obj.destructible) {
-						obj.rect.drawFrame(2, Palette::Red);
+				if (!m_previousContacts.contains(pair))
+				{
+					auto a = findBodyByID(pair.a);
+					auto b = findBodyByID(pair.b);
+					if (a && b)
+					{
+						a->notifyCollisionEnter(b);
+						b->notifyCollisionEnter(a);
 					}
 				}
-				
-				// デバッグ描画（ヘッダの設定で制御）
-				m_stage->drawCollisionDebug();
 			}
 
-			// Playerの描画
-			m_playerManager.draw();
+			// Exit = 前フレームあって今ない
+			for (const auto& pair : m_previousContacts)
+			{
+				if (!currentContacts.contains(pair))
+				{
+					auto a = findBodyByID(pair.a);
+					auto b = findBodyByID(pair.b);
+					if (a && b)
+					{
+						a->notifyCollisionExit(b);
+						b->notifyCollisionExit(a);
+					}
+				}
+			}
+
+			m_previousContacts = std::move(currentContacts);
+		}
+
+		std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody> findBodyByID(P2BodyID id)
+		{
+			for (auto& body : m_physicsBodies)
+				if (body->getBodyID() == id)
+					return body;
+			return nullptr;
 		}
 	};
 }

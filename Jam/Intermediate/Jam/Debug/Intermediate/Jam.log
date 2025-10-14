@@ -1,12 +1,52 @@
-﻿  Main.cpp
+﻿  stdafx.cpp
+  Main.cpp
+  EnemyBase.cpp
+  LittleDevil.cpp
   Player.cpp
-C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Player.cpp(11,29): warning C4100: 'deltaTime': 参照されないパラメーター
+  EnemyFactory.cpp
+C:\Siv3D\BananaJam\Jam\src\Domain\Player\Player.cpp(12,29): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
-C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\PlayerManager.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Siv3D\BananaJam\Jam\src\Domain\Player\Player.cpp(69,83): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Siv3D\BananaJam\Jam\src\Domain\Enemy\LittleDevil.cpp(10,34): warning C4100: 'deltaTime': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  
+C:\Siv3D\BananaJam\Jam\src\Domain\Player\Player.cpp(70,83): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Siv3D\BananaJam\Jam\src\Domain\Enemy\LittleDevil.cpp(47,89): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  
+C:\Siv3D\BananaJam\Jam\src\Domain\Enemy\EnemyBase.cpp(59,87): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+  
+C:\Siv3D\BananaJam\Jam\src\Domain\Enemy\LittleDevil.cpp(53,88): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  
+C:\Siv3D\BananaJam\Jam\src\Domain\Enemy\LittleDevil.cpp(58,88): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  
+C:\Siv3D\BananaJam\Jam\src\Domain\Enemy\EnemyBase.cpp(64,86): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+  
+C:\Siv3D\BananaJam\Jam\src\Domain\Enemy\EnemyBase.cpp(65,86): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+  
+C:\Siv3D\BananaJam\Jam\src\Domain\Stage\StageTypes.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-     ライブラリ C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Jam(debug).lib とオブジェクト C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Jam(debug).exp を作成中
-  Jam.vcxproj -> C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Jam(debug).exe
-  C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Jam(debug).exe
+C:\Siv3D\BananaJam\Jam\src\Domain\Stage\CollisionData.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Siv3D\BananaJam\Jam\src\Domain\Stage\StageDebug.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Siv3D\BananaJam\Jam\src\Domain\Stage\ColorUtils.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+     ライブラリ C:\Siv3D\BananaJam\Jam\Intermediate\Jam\Debug\Jam(debug).lib とオブジェクト C:\Siv3D\BananaJam\Jam\Intermediate\Jam\Debug\Jam(debug).exp を作成中
+  Jam.vcxproj -> C:\Siv3D\BananaJam\Jam\Intermediate\Jam\Debug\Jam(debug).exe
+  C:\Siv3D\BananaJam\Jam\Intermediate\Jam\Debug\Jam(debug).exe
   1 個のファイルをコピーしました

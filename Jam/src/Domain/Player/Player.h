@@ -1,36 +1,48 @@
 ﻿#pragma once
 #include <memory>
 #include "../Physics/IPhysicsBody.h"
+#include "../Physics/ICollisionListener.h"
 
-namespace Jam::Domain
+namespace Jam::Domain::Player
 {
+	struct PlayerStats
+	{
+		double moveSpeed;
+		double jumpPower;
+		Jam::Domain::Physics::PhysicsMaterial physicsMaterial;
+	};
+
 	// プレイヤーキャラクターを表すクラス
 	// 他クラスに依存しない
-    class Player
-    {
-    public:
-        explicit Player(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body);
+	class Player :public Jam::Domain::Physics::ICollisionListener
+	{
+	public:
+		explicit Player(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body);
 
-        void update(double deltaTime);
+		void update(double deltaTime);
 
-        void moveLeft();
-        void moveRight();
-        void jump();
-        void onGroundContact(bool grounded);
+		void moveLeft();
+		void moveRight();
+		void jump();
 
-        s3d::Vec2 getPosition() const;
-        bool isFacingRight() const;
+		s3d::Vec2 getPosition() const;
+		bool isFacingRight() const;
 
-    private:
-        std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_body;
-        bool m_isGrounded = false;
-        bool m_facingRight = true;
+		void setSpeed(double s) { m_stats.moveSpeed = s; }
+		void setJumpPower(double j) { m_stats.jumpPower = j; }
+		std::shared_ptr<Domain::Physics::IPhysicsBody> getPhysicsBody() { return m_body; }
 
-        double m_moveForce = 1000.0;
-        double m_jumpImpulse = 400.0;
-        //double m_gravity = 9.8 * 10.0;
+		// ICollisionListener
+		void onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
+		void onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
+		void onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 
-        //void applyGravity(double deltaTime);
-        void updateState();
-    };
+	private:
+		PlayerStats m_stats;
+		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_body;
+		bool m_isGrounded = false;
+		bool m_facingRight = true;
+
+		void updateState();
+	};
 }
