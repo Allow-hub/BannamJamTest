@@ -19,11 +19,11 @@ namespace Jam::Presentation
 			Animator animator;
 			if (!AnimatorLoader::LoadAnimatorFromJSON(animator, animJsonPath))
 			{
-				Print << U"[EnemyManager] ⚠ Failed to load animator for enemy ID " << id;
+				//Print << U"[EnemyManager] ⚠ Failed to load animator for enemy ID " << id;
 			}
 			else
 			{
-				Print << U"[EnemyManager] ✅ Animator loaded for enemy ID " << id;
+				//Print << U"[EnemyManager] ✅ Animator loaded for enemy ID " << id;
 			}
 			m_animators[id] = animator;
 
@@ -33,7 +33,7 @@ namespace Jam::Presentation
 				if (it != m_animators.end())
 				{
 					it->second.SetBoolExclusive(animName);
-					Print << U"[EnemyManager] ▶ Enemy " << id << U" animation changed to: " << animName;
+					//Print << U"[EnemyManager] ▶ Enemy " << id << U" animation changed to: " << animName;
 				}
 			});
 			return id;

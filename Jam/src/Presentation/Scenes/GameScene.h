@@ -87,12 +87,25 @@ namespace Jam::Presentation::Scenes
 				enemyStatusTable))
 			{
 				m_enemyFactory->setStatusTable(enemyStatusTable);
-				Print << U"[GameScene] ✅ Enemy status table loaded";
 			}
 			else
 			{
 				Console << U"[GameScene] ⚠ Failed to load enemy status";
 			}
+
+			// EnemyType を指定
+			const auto enemyType = Jam::UseCase::EnemyType::LittleDevil;
+
+			// ステータステーブルから該当データを探す
+			auto it = enemyStatusTable.find(enemyType);
+			if (it == enemyStatusTable.end())
+			{
+				Print << U"[GameScene] ⚠ Enemy status not found for type LittleDevil";
+				return;
+			}
+
+			// ステータス取得
+			const auto& status = it->second;
 
 			// 敵を生成して配置
 			auto enemyBody = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
@@ -100,7 +113,7 @@ namespace Jam::Presentation::Scenes
 				Vec2{ 400, 300 },  // 初期位置
 				SizeF{ 50, 100 },   // サイズ
 				s3d::P2BodyType::Dynamic,
-				Jam::Domain::Physics::PhysicsMaterial{ 0.2, 0.0, 1.0,1.0 }
+				status.physicsMaterial
 			);
 
 			auto enemy = m_enemyFactory->createEnemy(
@@ -116,8 +129,6 @@ namespace Jam::Presentation::Scenes
 				int enemyId = m_enemyManager->AddEnemy(enemy, U"../Assets/Enemy/LittleDevil/littleDevil_animation.json");
 				m_enemyManager->getAnimator(enemyId).AddCondition({ { {U"isRunning", false} }, U"Idle", 0 });
 				m_enemyManager->getAnimator(enemyId).SetBool(U"isRunning", false);
-
-				Print << U"[GameScene] ✅ Enemy created successfully with ID: " << enemyId;
 			}
 			else
 			{

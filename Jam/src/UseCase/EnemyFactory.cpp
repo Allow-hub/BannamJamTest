@@ -28,20 +28,20 @@ namespace Jam::UseCase
 
 		if (!enemy)
 		{
-			Print << U"[EnemyFactory] ❌ Failed to create enemy instance";
+			//Print << U"[EnemyFactory] ❌ Failed to create enemy instance";
 			return nullptr;
 		}
 
 		auto enemyBody = enemy->getPhysicsBody();
-		Print << U"[EnemyFactory] Enemy Body ptr == body ptr ? " << (enemyBody.get() == body.get());
+		//Print << U"[EnemyFactory] Enemy Body ptr == body ptr ? " << (enemyBody.get() == body.get());
 
 		// ステータステーブルに登録があれば適用
 		auto it = m_statusTable.find(type);
 		if (it != m_statusTable.end())
 		{
 			enemy->setStatus(it->second);
-			Print << U"[EnemyFactory] ✅ Applied status: HP=" << it->second.hp
-				<< U", Speed=" << it->second.moveSpeed;
+			//Print << U"[EnemyFactory] ✅ Applied status: HP=" << it->second.hp
+				//<< U", Speed=" << it->second.moveSpeed;
 		}
 		return enemy;
 	}
