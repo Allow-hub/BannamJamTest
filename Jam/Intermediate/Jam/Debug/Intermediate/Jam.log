@@ -1,11 +1,11 @@
 ﻿  Ribbon.cpp
-C:\Users\gomix\Documents\GitHub\banana_jam\BannamJamTest\Jam\src\Domain\Enemy\Ribbon.cpp(112,84): warning C4100: 'other': 参照されないパラメーター
+C:\Users\gomix\Documents\GitHub\banana_jam\BannamJamTest\Jam\src\Domain\Enemy\Ribbon.cpp(115,84): warning C4100: 'other': 参照されないパラメーター
   (ソース ファイル '/src/Domain/Enemy/Ribbon.cpp' をコンパイルしています)
   
-C:\Users\gomix\Documents\GitHub\banana_jam\BannamJamTest\Jam\src\Domain\Enemy\Ribbon.cpp(118,83): warning C4100: 'other': 参照されないパラメーター
+C:\Users\gomix\Documents\GitHub\banana_jam\BannamJamTest\Jam\src\Domain\Enemy\Ribbon.cpp(121,83): warning C4100: 'other': 参照されないパラメーター
   (ソース ファイル '/src/Domain/Enemy/Ribbon.cpp' をコンパイルしています)
   
-C:\Users\gomix\Documents\GitHub\banana_jam\BannamJamTest\Jam\src\Domain\Enemy\Ribbon.cpp(123,83): warning C4100: 'other': 参照されないパラメーター
+C:\Users\gomix\Documents\GitHub\banana_jam\BannamJamTest\Jam\src\Domain\Enemy\Ribbon.cpp(126,83): warning C4100: 'other': 参照されないパラメーター
   (ソース ファイル '/src/Domain/Enemy/Ribbon.cpp' をコンパイルしています)
   
   Jam.vcxproj -> C:\Users\gomix\Documents\GitHub\banana_jam\BannamJamTest\Jam\Intermediate\Jam\Debug\Jam(debug).exe

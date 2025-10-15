@@ -2,13 +2,14 @@
 
 namespace Jam::Domain::Enemy
 {
-	Ribbon::Ribbon(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body)
-		: EnemyBase(body)
+	Ribbon::Ribbon(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, std::shared_ptr<Jam::Domain::Player::Player>& player)
+		: EnemyBase(body,player)
 	{
 	}
 
 	void Ribbon::update(double deltaTime)
 	{
+		Print << m_player->getPosition();
 		if (!isAlive()) return;
 
 		m_patrolTimer += deltaTime;
@@ -26,6 +27,7 @@ namespace Jam::Domain::Enemy
 		break;
 		case State::Patrol:
 		{
+			//往復移動
 			switch (ActionPt_i)
 			{
 			case 0:
@@ -71,6 +73,7 @@ namespace Jam::Domain::Enemy
 		break;
 		case State::Attack:
 		{
+
 			m_state = State::Idle;
 		}
 		break;

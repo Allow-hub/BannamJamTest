@@ -8,7 +8,7 @@ namespace Jam::Domain::Enemy
 	class Ribbon : public EnemyBase
 	{
 	public:
-		explicit Ribbon(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body);
+		explicit Ribbon(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, std::shared_ptr<Jam::Domain::Player::Player>& player);
 		virtual ~Ribbon() = default;
 
 		// 毎フレームの更新（AI挙動など）

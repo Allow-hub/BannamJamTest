@@ -118,7 +118,8 @@ namespace Jam::Presentation::Scenes
 
 			auto enemy = m_enemyFactory->createEnemy(
 				Jam::UseCase::EnemyType::Ribbon,
-				enemyBody
+				enemyBody,
+				m_player
 			);
 
 			if (enemy)

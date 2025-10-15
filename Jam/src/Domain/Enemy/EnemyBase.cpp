@@ -3,9 +3,10 @@
 
 namespace Jam::Domain::Enemy
 {
-	EnemyBase::EnemyBase(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body)
+	EnemyBase::EnemyBase(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, std::shared_ptr<Jam::Domain::Player::Player>& player)
 		: m_body(body)
 		, m_isAlive(true)
+		, m_player(player)
 	{
 	}
 

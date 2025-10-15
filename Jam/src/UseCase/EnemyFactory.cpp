@@ -1,6 +1,7 @@
 ﻿#include "EnemyFactory.h"
 #include "../Domain/Enemy/LittleDevil.h"
 #include "../Domain/Enemy/Ribbon.h"
+#include "../Domain/Player/Player.h"
 
 namespace Jam::UseCase
 {
@@ -8,18 +9,19 @@ namespace Jam::UseCase
 
 	std::shared_ptr<EnemyBase> EnemyFactory::createEnemy(
 		EnemyType type,
-		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body) const
+		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body,
+		std::shared_ptr<Domain::Player::Player>& player) const
 	{
 		std::shared_ptr<EnemyBase> enemy = nullptr;
 
 		switch (type)
 		{
 		case EnemyType::LittleDevil:
-			enemy = std::make_shared<LittleDevil>(body);
+			enemy = std::make_shared<LittleDevil>(body,player);
 			break;
 
 		case EnemyType::Ribbon:
-			enemy = std::make_shared<Ribbon>(body);
+			enemy = std::make_shared<Ribbon>(body, player);
 			break;
 
 		default:

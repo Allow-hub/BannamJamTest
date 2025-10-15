@@ -2,8 +2,8 @@
 
 namespace Jam::Domain::Enemy
 {
-	LittleDevil::LittleDevil(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body)
-		: EnemyBase(body)
+	LittleDevil::LittleDevil(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, std::shared_ptr<Jam::Domain::Player::Player>& player)
+		: EnemyBase(body,player)
 	{
 	}
 

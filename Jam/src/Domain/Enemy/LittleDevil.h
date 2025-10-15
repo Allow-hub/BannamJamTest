@@ -8,7 +8,7 @@ namespace Jam::Domain::Enemy
 	class LittleDevil : public EnemyBase
 	{
 	public:
-		explicit LittleDevil(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body);
+		explicit LittleDevil(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, std::shared_ptr<Jam::Domain::Player::Player>& player);
 		virtual ~LittleDevil() = default;
 
 		// 毎フレームの更新（AI挙動など）

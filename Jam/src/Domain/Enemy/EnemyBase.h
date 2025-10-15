@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../Physics/ICollisionListener.h"
 #include "../Physics/PhysicsTypes.h"
+#include "../Player/Player.h"
 #include <functional>
 
 namespace Jam::Domain::Enemy
@@ -20,7 +21,7 @@ namespace Jam::Domain::Enemy
 	public:
 		using AnimationEvent = std::function<void(const s3d::String&)>;
 
-		explicit EnemyBase(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body);
+		explicit EnemyBase(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, std::shared_ptr<Jam::Domain::Player::Player>& player);
 		virtual ~EnemyBase() = default;
 
 		virtual void update(double deltaTime) = 0;
@@ -57,6 +58,8 @@ namespace Jam::Domain::Enemy
 		}
 
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_body;
+		std::shared_ptr<Jam::Domain::Player::Player>& m_player;
+
 		EnemyStatus m_status;
 		bool m_isAlive = true;
 		AnimationEvent m_onAnimChange;
