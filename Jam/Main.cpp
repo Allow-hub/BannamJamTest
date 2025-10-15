@@ -14,11 +14,13 @@ void Main()
 
 	App manager;
 
-
 	manager.add<Jam::Presentation::Scenes::GameScene>(
 		Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::InGame));
 	manager.add<Jam::Presentation::Scenes::TitleScene>(
 		Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::Title));
+
+	// GameSceneから開始するように明示的に指定
+	manager.init(Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::InGame));
 
 	while (System::Update())
 	{

@@ -5,6 +5,8 @@
 #include "../../UseCase/PlayerService.h"
 #include "../../Infrastructure/Siv3DInputManager.h"
 #include "../../Infrastructure/Siv3DPhysicsBody.h"
+#include "../../Domain/Stage/NormalStage.h"
+#include "../../Infrastructure/StageLoader.h"
 #include "../../Infrastructure/PhysicsConverter.h"
 #include "../EnemyManager.h"
 #include "../../UseCase/EnemyFactory.h"
@@ -31,11 +33,22 @@ namespace Jam::Presentation::Scenes
 
 		Jam::Infrastructure::Siv3DInputManager m_inputManager;
 		std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody> m_ground;
+		
+		// Stage用
+		std::unique_ptr<Jam::Domain::Stage::NormalStage> m_stage;
+		
+		// Stage用物理ボディ管理
+		std::vector<std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody>> m_stagePhysicsBodies;
+		
+		// Enemy用
 		HashSet<P2ContactPair> m_previousContacts;
 
 	public:
 		GameScene(const InitData& init)
-			: IScene{ init }, m_world({ 0, 980 }), m_inputManager()
+			: IScene{ init },
+			m_world({ 0, 980 }),//引数は重力
+			m_inputManager(),
+			m_stage(std::make_unique<Jam::Domain::Stage::NormalStage>())
 		{
 			// === Player 初期化 ===
 			auto stats = Jam::Infrastructure::Physics::LoadFromJSON(U"../Assets/Player/player_stats.json");
@@ -47,7 +60,9 @@ namespace Jam::Presentation::Scenes
 				s3d::P2BodyType::Dynamic,
 				stats.physicsMaterial
 			);
-			m_player = std::make_shared<Domain::Player::Player>(playerBody);
+			
+			// === Player 初期化 ===
+			m_player = std::make_shared<Jam::Domain::Player::Player>(playerBody);
 			playerBody->setCollisionListener(m_player);
 
 			m_physicsBodies.push_back(
@@ -66,15 +81,16 @@ namespace Jam::Presentation::Scenes
 			);
 
 			// === Ground 初期化 ===
-			m_ground = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
-				m_world,
-				Vec2{ 640, 700 },
-				SizeF{ 1280, 40 },
-				s3d::P2BodyType::Static,
-				Jam::Domain::Physics::PhysicsMaterial{ 1.0, 0.0, 0.0 }
-			);
-			m_ground->setLayer(Jam::Domain::Physics::PhysicsLayer::Ground);
-			m_physicsBodies.push_back(m_ground);
+			// Stage側で地面を管理するため、個別の地面は作成しない
+			// m_ground = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
+			//	m_world,
+			//	Vec2{ 640, 700 },
+			//	SizeF{ 1280, 40 },
+			//	s3d::P2BodyType::Static,
+			//	Jam::Domain::Physics::PhysicsMaterial{ 1.0, 0.0, 0.0 }
+			// );
+			// m_ground->setLayer(Jam::Domain::Physics::PhysicsLayer::Ground);
+			// m_physicsBodies.push_back(m_ground);
 
 			// === Enemy 初期化 ===
 			m_enemyFactory = std::make_unique<Jam::UseCase::EnemyFactory>();
@@ -134,6 +150,31 @@ namespace Jam::Presentation::Scenes
 			{
 				Console << U"[GameScene] ❌ Failed to create enemy";
 			}
+			
+			// === Stage 初期化 ===
+			// 物理ボディのラムダの定義
+			// json
+			auto physicsBodyFactory = [this](const RectF& rect, Jam::Domain::Physics::PhysicsLayer layer) 
+				-> std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> {
+				auto body = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
+					m_world,
+					rect.center(),
+					rect.size,
+					s3d::P2BodyType::Static,
+					Jam::Domain::Physics::PhysicsMaterial{ 1.0, 0.0, 0.0 }
+				);
+				body->setLayer(layer);
+				m_physicsBodies.push_back(body);
+				return body;
+			};
+			
+			// Stage JSONファイルを読み込み
+			Array<Jam::Domain::Stage::StageObject> objects;
+			if (Jam::Infrastructure::Stage::StageLoader::loadStageFromFile(U"stage1.json", objects)) {
+				m_stage->setObjects(objects, physicsBodyFactory);
+			} else {
+				Print << U"[GameScene] ❌ Failed to load stage1.json";
+			}
 		}
 
 		void update() override
@@ -163,8 +204,22 @@ namespace Jam::Presentation::Scenes
 		void draw() const override
 		{
 			Scene::SetBackground(ColorF{ 0.9, 0.9, 1.0 });
-			RectF{ 0, 680, 1280, 40 }.draw(Palette::Gray);
 
+			// Stageの描画
+			if (m_stage && m_stage->isLoaded())
+			{
+				//Print << U"[GameScene] Drawing " << m_stage->getObjects().size() << U" stage objects";
+				for (const auto& obj : m_stage->getRenderableObjects()) {
+					obj.rect.drawFrame(1, Palette::Blue);
+				}
+				
+			}
+			else
+			{
+				Print << U"[GameScene] Stage not loaded or empty";
+			}
+
+			// Playerの描画
 			m_playerManager->draw();
 
 			// 敵の描画
@@ -173,14 +228,16 @@ namespace Jam::Presentation::Scenes
 				m_enemyManager->draw();
 			}
 
-			if (m_ground)
-			{
-				const auto t = m_ground->getTransform();
-				RectF(t.position.x - 640, t.position.y - 20, 1280, 40).draw(Palette::Gray);
-			}
+			// Stage側で地面を管理するため、個別の地面描画は不要
+			// if (m_ground)
+			// {
+			//	const auto t = m_ground->getTransform();
+			//	RectF(t.position.x - 640, t.position.y - 20, 1280, 40).draw(Palette::Gray);
+			// }
 		}
 
 	private:
+
 		void notifyCollisionEvents(const HashTable<P2ContactPair, P2Collision>& collisions)
 		{
 			HashSet<P2ContactPair> currentContacts;
