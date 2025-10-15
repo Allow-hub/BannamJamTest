@@ -20,15 +20,12 @@ namespace Jam::Domain::Stage {
     struct StageObject {
         RectF rect;                     // 位置・サイズ
         StageType type;             // 当たり判定種別
-        Color color;                    // 描画色
         String metadata;                // 識別用ID（破壊時などで使用）
-        bool destructible = false;      // 破壊可能フラグ
         
         // デフォルトコンストラクタ（JSONパース時の安全な初期化用）
         StageObject() 
             : rect(0, 0, 0, 0)
             , type(StageType::None)
-            , color(Palette::Gray)
             , metadata(U"") {}
     };
 

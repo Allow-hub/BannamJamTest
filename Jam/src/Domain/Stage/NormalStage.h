@@ -55,7 +55,7 @@ namespace Jam::Domain::Stage {
         // IStage実装 - override付きメソッド
         bool destroyObject(const String& objectId) override {
             for (auto& obj : m_objects) {
-                if (obj.visualData.metadata == objectId && obj.visualData.destructible) {
+                if (obj.visualData.metadata == objectId) {
                     m_destroyedObjects.insert(objectId);
                     // 物理ボディを無効化（削除ではなく無効化）
                     if (obj.physicsBody) {

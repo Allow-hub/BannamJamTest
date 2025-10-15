@@ -209,13 +209,7 @@ namespace Jam::Presentation::Scenes
 			{
 				//Print << U"[GameScene] Drawing " << m_stage->getObjects().size() << U" stage objects";
 				for (const auto& obj : m_stage->getRenderableObjects()) {
-					obj.rect.draw(obj.color);
 					obj.rect.drawFrame(1, Palette::Blue);
-
-					// 破壊可能なオブジェクトには枠を表示
-					if (obj.destructible) {
-						obj.rect.drawFrame(2, Palette::Red);
-					}
 				}
 				
 			}

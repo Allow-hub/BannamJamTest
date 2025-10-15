@@ -12,32 +12,27 @@
     {
       "rect": [0, 680, 1280, 40],
       "type": "solid",
-      "color": "gray",
       "metadata": "Platform_1"
     },
     {
       "rect": [200, 580, 200, 20],
       "type": "solid",
-      "color": "saddlebrown",
       "metadata": "Platform_2"
     },
     {
       "rect": [500, 500, 150, 20],
       "type": "solid",
-      "color": "limegreen",
       "metadata": "Platform_3"
     },
     {
       "rect": [800, 420, 180, 25],
       "type": "solid",
-      "color": "orangered",
       "metadata": "Platform_4",
       "destructible": true
     },
     {
       "rect": [1000, 320, 50, 100],
       "type": "solid",
-      "color": "tomato",
       "metadata": "Platform_5",
       "destructible": true
     }

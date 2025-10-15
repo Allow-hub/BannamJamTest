@@ -83,11 +83,6 @@ namespace Jam::Infrastructure::Stage {
                 ? objJson[U"metadata"].getString()
                 : U"";
             
-            // 破壊可能フラグ解析
-            obj.destructible = objJson.hasElement(U"destructible") 
-                ? objJson[U"destructible"].get<bool>()
-                : false;
-            
             return obj;
         }
         
