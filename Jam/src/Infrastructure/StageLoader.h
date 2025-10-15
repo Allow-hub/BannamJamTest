@@ -19,7 +19,7 @@ namespace Jam::Infrastructure::Stage {
     public:
         // ステージファイル読み込み
         static bool loadStageFromFile(const String& stageFileName, Array<StageObject>& outObjects) {
-            const String stagePath = U"Stage/" + stageFileName;
+            const String stagePath = U"../Assets/Stage/" + stageFileName;
             return loadFromJson(stagePath, outObjects);
         }
         

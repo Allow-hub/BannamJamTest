@@ -193,7 +193,7 @@ namespace Jam::Presentation::Scenes
 			// Stageの描画
 			if (m_stage && m_stage->isLoaded())
 			{
-				Print << U"[GameScene] Drawing " << m_stage->getObjects().size() << U" stage objects";
+				//Print << U"[GameScene] Drawing " << m_stage->getObjects().size() << U" stage objects";
 				for (const auto& obj : m_stage->getRenderableObjects()) {
 					obj.rect.draw(obj.color);
 					
