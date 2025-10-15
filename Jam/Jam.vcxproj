@@ -345,6 +345,7 @@
   <ItemGroup>
     <ClInclude Include="src\Domain\Enemy\EnemyBase.h" />
     <ClInclude Include="src\Domain\Enemy\LittleDevil.h" />
+    <ClInclude Include="src\Domain\Events\GameEvents.h" />
     <ClInclude Include="src\Domain\IInputService.h" />
     <ClInclude Include="src\Domain\Physics\ICollisionListener.h" />
     <ClInclude Include="src\Domain\Physics\IPhysicsBody.h" />
@@ -355,12 +356,16 @@
     <ClInclude Include="src\Infrastructure\Siv3DPhysicsBody.h" />
     <ClInclude Include="src\Presentation\Animator.h" />
     <ClInclude Include="src\Presentation\AnimatorLoader.h" />
+    <ClInclude Include="src\Presentation\CameraManager.h" />
     <ClInclude Include="src\Presentation\EnemyLoader.h" />
     <ClInclude Include="src\Presentation\EnemyManager.h" />
     <ClInclude Include="src\Presentation\PlayerManager.h" />
     <ClInclude Include="src\Presentation\Scenes\GameScene.h" />
     <ClInclude Include="src\Presentation\Scenes\TitleScene.h" />
+    <ClInclude Include="src\UseCase\CameraEvent.h" />
+    <ClInclude Include="src\UseCase\CameraService.h" />
     <ClInclude Include="src\UseCase\EnemyFactory.h" />
+    <ClInclude Include="src\UseCase\GameEventHandler.h" />
     <ClInclude Include="src\UseCase\PlayerService.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>

@@ -803,8 +803,8 @@
     <None Include="Assets\Player\player_stats.json" />
     <None Include="src\Infrastructure\InfrastructureDoc.md" />
     <None Include="src\Presentation\Presentation.md" />
-    <None Include="Assets\Enemy\EnemyStatus.json" />
     <None Include="Assets\Enemy\LittleDevil\littleDevil_animation.json" />
+    <None Include="Assets\Enemy\enemy_stats.json" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="App\example\test.mp3">
@@ -904,6 +904,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Presentation\EnemyManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UseCase\CameraService.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Presentation\CameraManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Domain\Events\GameEvents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UseCase\CameraEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UseCase\GameEventHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

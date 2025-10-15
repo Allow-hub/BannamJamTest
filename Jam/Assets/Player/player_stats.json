@@ -1,7 +1,7 @@
 {
     "stats": {
-        "moveSpeed": 1000.0,
-        "jumpPower": 300.0
+        "moveSpeed": 5000.0,
+        "jumpPower": 400.0
     },
     "physics": {
         "friction": 0.5,

@@ -3,8 +3,8 @@
 
 namespace Jam::Domain::Player
 {
-	Player::Player(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body)
-		: m_body(std::move(body))
+	Player::Player(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Events::GameEventQueue& eventQueue)
+		: m_body(std::move(body)), m_eventQueue(eventQueue)
 	{
 		m_body->setLayer(Jam::Domain::Physics::PhysicsLayer::Player);
 	}
@@ -28,6 +28,11 @@ namespace Jam::Domain::Player
 
 	void Player::jump()
 	{
+		m_eventQueue.push(Events::PlayerAttackedEvent{
+					{0,0},
+					true,
+					50.0
+				});
 		if (m_isGrounded)
 		{
 			 m_body->applyImpulse({ 0, -m_stats.jumpPower });
