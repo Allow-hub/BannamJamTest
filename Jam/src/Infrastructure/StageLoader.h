@@ -59,7 +59,7 @@ namespace Jam::Infrastructure::Stage {
                 }
             }
             
-            Print << U"ステージオブジェクトの読み込み完了: " + ToString(successCount) + U"/" + ToString(totalCount);
+            // Print << U"ステージオブジェクトの読み込み完了: " + ToString(successCount) + U"/" + ToString(totalCount);
             return !outObjects.empty();
         }
 
