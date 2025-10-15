@@ -118,6 +118,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="src\Domain\Enemy\EnemyBase.cpp" />
     <ClCompile Include="src\Domain\Enemy\LittleDevil.cpp" />
+    <ClCompile Include="src\Domain\Enemy\Ribbon.cpp" />
     <ClCompile Include="src\Domain\Player\Player.cpp" />
     <ClCompile Include="src\UseCase\EnemyFactory.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -152,6 +153,8 @@
     <Image Include="App\icon.ico" />
     <Image Include="Assets\Enemy\LittleDevil\idle_0.png" />
     <Image Include="Assets\Enemy\LittleDevil\idle_1.png" />
+    <Image Include="Assets\Enemy\Ribbon\idle_0.png" />
+    <Image Include="Assets\Enemy\Ribbon\idle_1.png" />
     <Image Include="Assets\Player\idle_0.png" />
     <Image Include="Assets\Player\idle_1.png" />
     <Image Include="Assets\Player\idle_2.png" />
@@ -320,6 +323,7 @@
     <None Include="App\example\zip\zip_test.zip" />
     <None Include="Assets\Enemy\enemy_stats.json" />
     <None Include="Assets\Enemy\LittleDevil\littleDevil_animation.json" />
+    <None Include="Assets\Enemy\Ribbon\Ribbon_animation.json" />
     <None Include="Assets\Player\player_animation.json" />
     <None Include="Assets\Player\player_stats.json" />
     <None Include="src\Infrastructure\InfrastructureDoc.md" />
@@ -345,6 +349,7 @@
   <ItemGroup>
     <ClInclude Include="src\Domain\Enemy\EnemyBase.h" />
     <ClInclude Include="src\Domain\Enemy\LittleDevil.h" />
+    <ClInclude Include="src\Domain\Enemy\Ribbon.h" />
     <ClInclude Include="src\Domain\IInputService.h" />
     <ClInclude Include="src\Domain\Physics\ICollisionListener.h" />
     <ClInclude Include="src\Domain\Physics\IPhysicsBody.h" />

@@ -156,6 +156,9 @@
     <ClCompile Include="src\UseCase\EnemyFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Domain\Enemy\Ribbon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -249,6 +252,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Assets\Enemy\LittleDevil\idle_1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Enemy\Ribbon\idle_1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Enemy\Ribbon\idle_0.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
@@ -803,8 +812,9 @@
     <None Include="Assets\Player\player_stats.json" />
     <None Include="src\Infrastructure\InfrastructureDoc.md" />
     <None Include="src\Presentation\Presentation.md" />
-    <None Include="Assets\Enemy\EnemyStatus.json" />
     <None Include="Assets\Enemy\LittleDevil\littleDevil_animation.json" />
+    <None Include="Assets\Enemy\enemy_stats.json" />
+    <None Include="Assets\Enemy\Ribbon\Ribbon_animation.json" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="App\example\test.mp3">
@@ -904,6 +914,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Presentation\EnemyManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Domain\Enemy\Ribbon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

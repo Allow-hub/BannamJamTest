@@ -94,7 +94,7 @@ namespace Jam::Presentation::Scenes
 			}
 
 			// EnemyType を指定
-			const auto enemyType = Jam::UseCase::EnemyType::LittleDevil;
+			const auto enemyType = Jam::UseCase::EnemyType::Ribbon;
 
 			// ステータステーブルから該当データを探す
 			auto it = enemyStatusTable.find(enemyType);
@@ -117,7 +117,7 @@ namespace Jam::Presentation::Scenes
 			);
 
 			auto enemy = m_enemyFactory->createEnemy(
-				Jam::UseCase::EnemyType::LittleDevil,
+				Jam::UseCase::EnemyType::Ribbon,
 				enemyBody
 			);
 
@@ -126,7 +126,7 @@ namespace Jam::Presentation::Scenes
 				enemyBody->setCollisionListener(enemy);
 				m_physicsBodies.push_back(enemyBody);
 				// EnemyManagerに登録
-				int enemyId = m_enemyManager->AddEnemy(enemy, U"../Assets/Enemy/LittleDevil/littleDevil_animation.json");
+				int enemyId = m_enemyManager->AddEnemy(enemy, U"../Assets/Enemy/Ribbon/Ribbon_animation.json");
 				m_enemyManager->getAnimator(enemyId).AddCondition({ { {U"isRunning", false} }, U"Idle", 0 });
 				m_enemyManager->getAnimator(enemyId).SetBool(U"isRunning", false);
 			}

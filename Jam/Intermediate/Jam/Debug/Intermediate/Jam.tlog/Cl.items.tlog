@@ -1,6 +1,7 @@
-C:\Users\PC_User\Documents\BannamJamTest\Jam\Main.cpp;C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Intermediate\Main.obj
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.cpp;C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Intermediate\EnemyBase.obj
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\LittleDevil.cpp;C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Intermediate\LittleDevil.obj
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Player.cpp;C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Intermediate\Player.obj
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\UseCase\EnemyFactory.cpp;C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Intermediate\EnemyFactory.obj
-C:\Users\PC_User\Documents\BannamJamTest\Jam\stdafx.cpp;C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Intermediate\stdafx.obj
+C:\Users\gomix\Documents\GitHub\banana_jam\BannamJamTest\Jam\Main.cpp;C:\Users\gomix\Documents\GitHub\banana_jam\BannamJamTest\Jam\Intermediate\Jam\Debug\Intermediate\Main.obj
+C:\Users\gomix\Documents\GitHub\banana_jam\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.cpp;C:\Users\gomix\Documents\GitHub\banana_jam\BannamJamTest\Jam\Intermediate\Jam\Debug\Intermediate\EnemyBase.obj
+C:\Users\gomix\Documents\GitHub\banana_jam\BannamJamTest\Jam\src\Domain\Enemy\LittleDevil.cpp;C:\Users\gomix\Documents\GitHub\banana_jam\BannamJamTest\Jam\Intermediate\Jam\Debug\Intermediate\LittleDevil.obj
+C:\Users\gomix\Documents\GitHub\banana_jam\BannamJamTest\Jam\src\Domain\Enemy\Ribbon.cpp;C:\Users\gomix\Documents\GitHub\banana_jam\BannamJamTest\Jam\Intermediate\Jam\Debug\Intermediate\Ribbon.obj
+C:\Users\gomix\Documents\GitHub\banana_jam\BannamJamTest\Jam\src\Domain\Player\Player.cpp;C:\Users\gomix\Documents\GitHub\banana_jam\BannamJamTest\Jam\Intermediate\Jam\Debug\Intermediate\Player.obj
+C:\Users\gomix\Documents\GitHub\banana_jam\BannamJamTest\Jam\src\UseCase\EnemyFactory.cpp;C:\Users\gomix\Documents\GitHub\banana_jam\BannamJamTest\Jam\Intermediate\Jam\Debug\Intermediate\EnemyFactory.obj
+C:\Users\gomix\Documents\GitHub\banana_jam\BannamJamTest\Jam\stdafx.cpp;C:\Users\gomix\Documents\GitHub\banana_jam\BannamJamTest\Jam\Intermediate\Jam\Debug\Intermediate\stdafx.obj

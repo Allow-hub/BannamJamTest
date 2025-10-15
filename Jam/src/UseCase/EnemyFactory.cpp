@@ -1,5 +1,6 @@
 ﻿#include "EnemyFactory.h"
 #include "../Domain/Enemy/LittleDevil.h"
+#include "../Domain/Enemy/Ribbon.h"
 
 namespace Jam::UseCase
 {
@@ -18,8 +19,8 @@ namespace Jam::UseCase
 			break;
 
 		case EnemyType::Ribbon:
-			// TODO: Ribbonの実装
-			return nullptr;
+			enemy = std::make_shared<Ribbon>(body);
+			break;
 
 		default:
 			Print << U"[EnemyFactory] ⚠ Unknown enemy type!";
