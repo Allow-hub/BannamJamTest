@@ -37,10 +37,10 @@ namespace Jam::Presentation::Scenes
 		// Stage用
 		std::unique_ptr<Jam::Domain::Stage::Stage> m_stage;
 		
-		// Stage用物理ボディ管理（統一）
+		// Stage用物理ボディ管理
 		std::vector<std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody>> m_stagePhysicsBodies;
 		
-		// Enemy用（main側から追加）
+		// Enemy用
 		HashSet<P2ContactPair> m_previousContacts;
 
 	public:
@@ -61,7 +61,7 @@ namespace Jam::Presentation::Scenes
 				stats.physicsMaterial
 			);
 			
-			// === Player 初期化 ===（main側の実装を採用）
+			// === Player 初期化 ===
 			m_player = std::make_shared<Jam::Domain::Player::Player>(playerBody);
 			playerBody->setCollisionListener(m_player);
 
@@ -152,14 +152,28 @@ namespace Jam::Presentation::Scenes
 			}
 			
 			// === Stage 初期化 ===
+			// 物理ボディファクトリ作成
+			auto physicsBodyFactory = [this](const RectF& rect, Jam::Domain::Physics::PhysicsLayer layer) 
+				-> std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> {
+				auto body = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
+					m_world,
+					rect.center(),
+					rect.size,
+					s3d::P2BodyType::Static,
+					Jam::Domain::Physics::PhysicsMaterial{ 1.0, 0.0, 0.0 }
+				);
+				body->setLayer(layer);
+				m_physicsBodies.push_back(body);
+				return body;
+			};
+			
 			// Stage JSONファイルを読み込み
 			Array<Jam::Domain::Stage::StageObject> objects;
 			if (Jam::Infrastructure::Stage::StageLoader::loadStageFromFile(U"stage1.json", objects)) {
-				m_stage->setObjects(objects);
+				m_stage->setObjects(objects, physicsBodyFactory);
+			} else {
+				Print << U"[GameScene] ❌ Failed to load stage1.json";
 			}
-			
-			// ステージオブジェクト用の物理ボディを作成
-			createStagePhysicsBodies();
 		}
 
 		void update() override
@@ -229,39 +243,6 @@ namespace Jam::Presentation::Scenes
 		}
 
 	private:
-		// ステージオブジェクト用の物理ボディを作成
-		void createStagePhysicsBodies() {
-			m_stagePhysicsBodies.clear();
-			
-			if (!m_stage || !m_stage->isLoaded()) return;
-			
-			for (const auto& obj : m_stage->getObjects()) {
-				// 破壊されたオブジェクトは物理ボディを作成しない
-				if (m_stage->isObjectDestroyed(obj.metadata)) continue;
-				
-				// 当たり判定が必要なタイプのみ物理ボディを作成
-				if (obj.type == Jam::Domain::Stage::CollisionType::Solid || 
-					obj.type == Jam::Domain::Stage::CollisionType::Platform ||
-					obj.type == Jam::Domain::Stage::CollisionType::Breakable) {
-					
-					// Siv3DPhysicsBodyとして作成
-					auto stageBody = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
-						m_world,
-						obj.rect.center(),
-						obj.rect.size,
-						s3d::P2BodyType::Static,
-						Jam::Domain::Physics::PhysicsMaterial{ 1.0, 0.0, 0.0 }
-					);
-					
-					// Groundレイヤーに設定（Playerとの衝突判定用）
-					stageBody->setLayer(Jam::Domain::Physics::PhysicsLayer::Ground);
-					
-					// 管理リストに追加
-					m_stagePhysicsBodies.push_back(stageBody);
-					m_physicsBodies.push_back(stageBody);
-				}
-			}
-		}
 
 		void notifyCollisionEvents(const HashTable<P2ContactPair, P2Collision>& collisions)
 		{

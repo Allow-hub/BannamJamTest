@@ -1,25 +1,60 @@
 ﻿#pragma once
 #include "StageTypes.h"
-#include "CollisionData.h"
 #include "StageDebug.h"
+#include "../Physics/IPhysicsBody.h"
 
 namespace Jam::Domain::Stage {
     /**
      * ステージ全体を管理するドメインエンティティ
-     * 当たり判定とオブジェクトの破壊状態を統合管理
+     * 物理ボディとゲームロジックを統合管理
      */
     class Stage {
     private:
-        CollisionData m_collisionData;
+        struct StagePhysicsObject {
+            StageObject visualData;
+            std::shared_ptr<Physics::IPhysicsBody> physicsBody;
+        };
+        
+        Array<StagePhysicsObject> m_objects;
         HashSet<String> m_destroyedObjects;
         bool m_isLoaded = false;
 
     public:
         Stage() = default;
         
-        void setObjects(const Array<StageObject>& objects) {
-            m_collisionData.setObjects(objects);
+        // 物理ボディファクトリを使用してステージを読み込み
+        using PhysicsBodyFactory = std::function<std::shared_ptr<Physics::IPhysicsBody>(const RectF&, Physics::PhysicsLayer)>;
+        
+        void setObjects(const Array<StageObject>& objects, PhysicsBodyFactory bodyFactory) {
+            m_objects.clear();
             m_destroyedObjects.clear();
+            
+            for (const auto& obj : objects) {
+                // 当たり判定が必要なタイプのみ物理ボディを作成
+                if (obj.type == CollisionType::Solid || 
+                    obj.type == CollisionType::Platform ||
+                    obj.type == CollisionType::Breakable) {
+                    
+                    auto physicsBody = bodyFactory(obj.rect, Physics::PhysicsLayer::Ground);
+                    m_objects.push_back({obj, physicsBody});
+                } else {
+                    // 物理ボディが不要なオブジェクト（装飾等）
+                    m_objects.push_back({obj, nullptr});
+                }
+            }
+            
+            m_isLoaded = true;
+        }
+        
+        // 従来のインターフェース（互換性維持 - 物理ボディなし）
+        void setObjects(const Array<StageObject>& objects) {
+            m_objects.clear();
+            m_destroyedObjects.clear();
+            
+            for (const auto& obj : objects) {
+                m_objects.push_back({obj, nullptr});
+            }
+            
             m_isLoaded = true;
         }
         
@@ -27,9 +62,13 @@ namespace Jam::Domain::Stage {
         
         // 破壊機能
         bool destroyObject(const String& objectId) {
-            for (const auto& obj : m_collisionData.getObjects()) {
-                if (obj.metadata == objectId && obj.destructible) {
+            for (auto& obj : m_objects) {
+                if (obj.visualData.metadata == objectId && obj.visualData.destructible) {
                     m_destroyedObjects.insert(objectId);
+                    // 物理ボディを無効化（削除ではなく無効化）
+                    if (obj.physicsBody) {
+                        obj.physicsBody->setLayer(Physics::PhysicsLayer::None);
+                    }
                     return true; // 破壊成功
                 }
             }
@@ -42,28 +81,63 @@ namespace Jam::Domain::Stage {
         
         void resetDestroyedObjects() {
             m_destroyedObjects.clear();
+            // 物理ボディも復元
+            for (auto& obj : m_objects) {
+                if (obj.physicsBody && 
+                    (obj.visualData.type == CollisionType::Solid || 
+                     obj.visualData.type == CollisionType::Platform ||
+                     obj.visualData.type == CollisionType::Breakable)) {
+                    obj.physicsBody->setLayer(Physics::PhysicsLayer::Ground);
+                }
+            }
         }
         
         size_t getDestroyedObjectCount() const {
             return m_destroyedObjects.size();
         }
         
-        // 当たり判定アクセス（破壊状態考慮）
-        bool checkCollision(const RectF& rect, CollisionType typeFilter = CollisionType::None) const {
-            return m_collisionData.checkCollision(rect, typeFilter, m_destroyedObjects);
+        // 物理ボディアクセス（PlayerのGroundレイヤー判定で使用）
+        Array<std::shared_ptr<Physics::IPhysicsBody>> getPhysicsBodies() const {
+            Array<std::shared_ptr<Physics::IPhysicsBody>> bodies;
+            for (const auto& obj : m_objects) {
+                if (obj.physicsBody && !isObjectDestroyed(obj.visualData.metadata)) {
+                    bodies.push_back(obj.physicsBody);
+                }
+            }
+            return bodies;
         }
         
-        Array<StageObject> getCollisions(const RectF& rect, CollisionType typeFilter = CollisionType::None) const {
-            return m_collisionData.getCollisions(rect, typeFilter, m_destroyedObjects);
+        // 衝突判定（物理エンジンベース）
+        Array<StageObject> getCollisions(const RectF& rect, std::optional<CollisionType> typeFilter = std::nullopt) const {
+            Array<StageObject> results;
+            
+            for (const auto& obj : m_objects) {
+                // 破壊されたオブジェクトはスキップ
+                if (isObjectDestroyed(obj.visualData.metadata)) continue;
+                
+                // 型フィルタ
+                if (typeFilter && obj.visualData.type != *typeFilter) continue;
+                
+                // 矩形衝突判定
+                if (obj.visualData.rect.intersects(rect)) {
+                    results.push_back(obj.visualData);
+                }
+            }
+            
+            return results;
+        }
+        
+        bool checkCollision(const RectF& rect, std::optional<CollisionType> typeFilter = std::nullopt) const {
+            return !getCollisions(rect, typeFilter).empty();
         }
         
         // アクセサメソッド
-        const Array<StageObject>& getObjects() const { 
-            return m_collisionData.getObjects(); 
-        }
-        
-        const CollisionData& getCollisionData() const { 
-            return m_collisionData; 
+        Array<StageObject> getObjects() const { 
+            Array<StageObject> objects;
+            for (const auto& obj : m_objects) {
+                objects.push_back(obj.visualData);
+            }
+            return objects;
         }
         
         const HashSet<String>& getDestroyedObjects() const { 
@@ -71,21 +145,17 @@ namespace Jam::Domain::Stage {
         }
         
         size_t getObjectCount() const {
-            return m_collisionData.getObjectCount();
+            return m_objects.size();
         }
         
         // 描画データ取得（破壊オブジェクトを除外したフィルタリング済み）
         Array<StageObject> getRenderableObjects() const {
-            if (m_destroyedObjects.empty()) {
-                return m_collisionData.getObjects(); // 破壊オブジェクトがない場合は直接返す
-            }
-            
             Array<StageObject> renderable;
-            renderable.reserve(m_collisionData.getObjectCount() - m_destroyedObjects.size());
+            renderable.reserve(m_objects.size() - m_destroyedObjects.size());
             
-            for (const auto& obj : m_collisionData.getObjects()) {
-                if (!isObjectDestroyed(obj.metadata)) {
-                    renderable << obj;
+            for (const auto& obj : m_objects) {
+                if (!isObjectDestroyed(obj.visualData.metadata)) {
+                    renderable.push_back(obj.visualData);
                 }
             }
             return renderable;
