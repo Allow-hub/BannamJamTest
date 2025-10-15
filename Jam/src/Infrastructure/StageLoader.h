@@ -77,11 +77,59 @@ namespace Jam::Infrastructure::Stage {
                 ? Jam::Domain::Stage::stringToCollisionType(objJson[U"type"].getString())
                 : Jam::Domain::Stage::StageType::None;
             
-            
             // メタデータ解析
             obj.metadata = objJson.hasElement(U"metadata") 
                 ? objJson[U"metadata"].getString()
                 : U"";
+            
+            // 動くプラットフォーム用のデータ解析
+            if (obj.type == Jam::Domain::Stage::StageType::MovingPlatform) {
+                // 移動速度の解析
+                if (objJson.hasElement(U"movementSpeed") && objJson[U"movementSpeed"].isArray()) {
+                    const auto speedArray = objJson[U"movementSpeed"].arrayView();
+                    // range-based forループで要素を取得
+                    int index = 0;
+                    for (const auto& element : speedArray) {
+                        if (index == 0) {
+                            obj.movementSpeed.x = element.get<double>();
+                        } else if (index == 1) {
+                            obj.movementSpeed.y = element.get<double>();
+                            break; // 2つ目まで取得したら終了
+                        }
+                        index++;
+                    }
+                }
+                
+                // 移動パスの解析
+                if (objJson.hasElement(U"movementPath") && objJson[U"movementPath"].isArray()) {
+                    const auto pathArray = objJson[U"movementPath"].arrayView();
+                    for (const auto& pointJson : pathArray) {
+                        if (pointJson.isArray()) {
+                            const auto pointArray = pointJson.arrayView();
+                            int index = 0;
+                            double x = 0, y = 0;
+                            for (const auto& coord : pointArray) {
+                                if (index == 0) {
+                                    x = coord.get<double>();
+                                } else if (index == 1) {
+                                    y = coord.get<double>();
+                                    break;
+                                }
+                                index++;
+                            }
+                            if (index >= 1) { // 少なくともx座標が取得できた場合
+                                Vec2 point(x, y);
+                                obj.movementPath.push_back(point);
+                            }
+                        }
+                    }
+                }
+                
+                // ループ設定の解析
+                if (objJson.hasElement(U"loopMovement")) {
+                    obj.loopMovement = objJson[U"loopMovement"].get<bool>();
+                }
+            }
             
             return obj;
         }

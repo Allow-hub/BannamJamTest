@@ -17,12 +17,13 @@ namespace Jam::Domain::Stage {
         bool m_isLoaded = false;
 
     public:
-        // IPhysicsBodyの配列を注入
         NormalStage() = default;
-        explicit NormalStage(const Array<std::shared_ptr<Physics::IPhysicsBody>>& physicsBodies) {
-            // 現在は空実装
-            m_isLoaded = true;
-        }
+		explicit NormalStage(std::shared_ptr<Physics::IPhysicsBody> physicsBody)
+			: m_isLoaded(true)
+		{
+			m_body = physicsBody;
+			// m_bodyを使用する処理を実装予定
+		}
         
         // GameScene.hで使用されているメソッド
         using PhysicsBodyFactory = std::function<std::shared_ptr<Physics::IPhysicsBody>(const RectF&, Physics::PhysicsLayer)>;

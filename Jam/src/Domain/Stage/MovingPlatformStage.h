@@ -2,209 +2,79 @@
 #include "IStage.h"
 #include "StageTypes.h"
 #include "../Physics/IPhysicsBody.h"
-#include "../Physics/ICollisionListener.h"
 
 namespace Jam::Domain::Stage {
     
     /**
      * 動的ステージの実装
-     * 動く床・エレベーター・移動プラットフォームを管理
      */
-    class MovingPlatformStage : public IStage, public Physics::ICollisionListener {
+    class MovingPlatformStage : public IStage {
     private:
-        struct MovingStageObject {
-            StageObject visualData;
-            std::shared_ptr<Physics::IPhysicsBody> physicsBody;
-            Vec2 movementSpeed = {0, 0};
-            Array<Vec2> movementPath;
-            size_t currentPathIndex = 0;
-            bool isDestroyed = false;
-            bool isMoving = false;
-            double pathTimer = 0.0;
-        };
-        
-        Array<MovingStageObject> m_objects;
-        HashSet<String> m_destroyedObjects;
+        Vec2 m_movementSpeed = {50.0, 0.0}; // デフォルトの移動速度
         bool m_isLoaded = false;
         
     public:
         MovingPlatformStage() = default;
-        explicit MovingPlatformStage(const Array<std::shared_ptr<Physics::IPhysicsBody>>& physicsBodies) {
-            // TODO: 物理ボディ配列からMovingStageObjectを構築
-            m_isLoaded = true;
-        }
-        
-        // 動く床用のオブジェクト設定
-        using PhysicsBodyFactory = std::function<std::shared_ptr<Physics::IPhysicsBody>(const RectF&, Physics::PhysicsLayer)>;
-        
-        void setObjects(const Array<StageObject>& objects, PhysicsBodyFactory bodyFactory) {
-            m_objects.clear();
-            m_destroyedObjects.clear();
-            
-            for (const auto& obj : objects) {
-                MovingStageObject movingObj;
-                movingObj.visualData = obj;
-                movingObj.isDestroyed = false;
-                
-                // 当たり判定が必要なタイプのみ物理ボディを作成
-                if (obj.type == StageType::Solid || 
-                    obj.type == StageType::Platform ||
-                    obj.type == StageType::Breakable) {
-                    
-                    // Kinematic Bodyとして作成（プログラム制御で動く）
-                    auto physicsBody = bodyFactory(obj.rect, Physics::PhysicsLayer::Ground);
-                    movingObj.physicsBody = physicsBody;
-                } else {
-                    movingObj.physicsBody = nullptr;
-                }
-                
-                m_objects.push_back(movingObj);
-            }
-            
-            m_isLoaded = true;
+        explicit MovingPlatformStage(std::shared_ptr<Physics::IPhysicsBody> physicsBody) 
+            : m_isLoaded(true)
+        {
+            m_body = physicsBody;
         }
         
         // IStage実装
         Array<StageObject> getRenderableObjects() const override {
             Array<StageObject> renderable;
-            for (const auto& obj : m_objects) {
-                if (!isObjectDestroyed(obj.visualData.metadata)) {
-                    renderable.push_back(obj.visualData);
-                }
+            // m_bodyから位置を取得して描画用オブジェクトを返す
+            if (m_body) {
+                StageObject obj;
+                obj.rect = RectF(Arg::center = m_body->getPosition(), 100, 20); // 100x20のプラットフォーム
+                obj.type = StageType::Platform;
+                obj.metadata = U"moving_platform";
+                renderable.push_back(obj);
             }
             return renderable;
         }
         
         Array<std::shared_ptr<Physics::IPhysicsBody>> getPhysicsBodies() const override {
             Array<std::shared_ptr<Physics::IPhysicsBody>> bodies;
-            for (const auto& obj : m_objects) {
-                if (obj.physicsBody && !isObjectDestroyed(obj.visualData.metadata)) {
-                    bodies.push_back(obj.physicsBody);
-                }
+            if (m_body) {
+                bodies.push_back(m_body);
             }
             return bodies;
         }
         
         bool destroyObject(const String& objectId) override {
-            for (auto& obj : m_objects) {
-                if (obj.visualData.metadata == objectId && obj.visualData.destructible) {
-                    m_destroyedObjects.insert(objectId);
-                    obj.isDestroyed = true;
-                    if (obj.physicsBody) {
-                        obj.physicsBody->setLayer(Physics::PhysicsLayer::None);
-                    }
-                    return true;
-                }
-            }
-            return false;
+            return false; // 動くプラットフォームは破壊不可
         }
         
         bool isObjectDestroyed(const String& objectId) const override {
-            return m_destroyedObjects.contains(objectId);
+            return false;
+        }
+        
+        bool isLoaded() const {
+            return m_isLoaded;
         }
         
         // 動的機能実装
         void update(double deltaTime) override {
-            for (auto& obj : m_objects) {
-                if (!obj.isDestroyed && obj.isMoving && obj.physicsBody) {
-                    updateMovement(obj, deltaTime);
+            if (m_body) {
+                // setVelocityを使って実際に動かす
+                m_body->setVelocity(m_movementSpeed);
+                
+                // 画面端で反転
+                Vec2 pos = m_body->getPosition();
+                if (pos.x > 800 || pos.x < 200) {
+                    m_movementSpeed.x *= -1;
                 }
             }
         }
         
         void setMovementSpeed(const String& objectId, Vec2 speed) override {
-            for (auto& obj : m_objects) {
-                if (obj.visualData.metadata == objectId) {
-                    obj.movementSpeed = speed;
-                    obj.isMoving = (speed.length() > 0);
-                    break;
-                }
-            }
+            m_movementSpeed = speed;
         }
         
         void setMovementPath(const String& objectId, Array<Vec2> path) override {
-            for (auto& obj : m_objects) {
-                if (obj.visualData.metadata == objectId) {
-                    obj.movementPath = path;
-                    obj.currentPathIndex = 0;
-                    obj.pathTimer = 0.0;
-                    obj.isMoving = !path.empty();
-                    break;
-                }
-            }
-        }
-        
-        // ICollisionListener実装
-        void onCollisionEnter(std::shared_ptr<Physics::IPhysicsBody> other) override {
-            // Player が動く床に乗った時の処理
-            if (other->getLayer() == Physics::PhysicsLayer::Player) {
-                // TODO: Player追従開始の処理
-            }
-        }
-        
-        void onCollisionStay(std::shared_ptr<Physics::IPhysicsBody> other) override {
-            // Player が動く床に乗り続けている時の処理
-            if (other->getLayer() == Physics::PhysicsLayer::Player) {
-                // Playerを床と一緒に移動させる
-                for (const auto& obj : m_objects) {
-                    if (obj.physicsBody && obj.isMoving && !obj.isDestroyed) {
-                        // 床の移動量をPlayerに適用
-                        Vec2 platformMovement = obj.movementSpeed * Scene::DeltaTime();
-                        Vec2 currentPos = other->getPosition();
-                        // other->setPosition(currentPos + platformMovement);
-                    }
-                }
-            }
-        }
-        
-        void onCollisionExit(std::shared_ptr<Physics::IPhysicsBody> other) override {
-            // Player が動く床から離れた時の処理
-            if (other->getLayer() == Physics::PhysicsLayer::Player) {
-                // TODO: Player追従終了の処理
-            }
-        }
-        
-    private:
-        void updateMovement(MovingStageObject& obj, double deltaTime) {
-            if (obj.movementPath.empty()) {
-                // 単純な速度ベース移動
-                if (obj.physicsBody && obj.movementSpeed.length() > 0) {
-                    Vec2 newPos = obj.physicsBody->getPosition() + obj.movementSpeed * deltaTime;
-                    // obj.physicsBody->setPosition(newPos);
-                    // 描画用データも更新
-                    obj.visualData.rect.setCenter(newPos);
-                }
-            } else {
-                // パスベース移動
-                followPath(obj, deltaTime);
-            }
-        }
-        
-        void followPath(MovingStageObject& obj, double deltaTime) {
-            if (obj.movementPath.size() < 2) return;
-            
-            Vec2 currentTarget = obj.movementPath[obj.currentPathIndex];
-            Vec2 currentPos = obj.physicsBody->getPosition();
-            
-            // 目標地点までの距離
-            Vec2 direction = currentTarget - currentPos;
-            double distance = direction.length();
-            
-            if (distance < 5.0) { // 目標地点に到達
-                obj.currentPathIndex = (obj.currentPathIndex + 1) % obj.movementPath.size();
-                currentTarget = obj.movementPath[obj.currentPathIndex];
-                direction = currentTarget - currentPos;
-            }
-            
-            // 移動
-            if (direction.length() > 0) {
-                Vec2 moveDirection = direction.normalized();
-                double moveSpeed = obj.movementSpeed.length() > 0 ? obj.movementSpeed.length() : 100.0;
-                Vec2 newPos = currentPos + moveDirection * moveSpeed * deltaTime;
-                
-                // obj.physicsBody->setPosition(newPos);
-                obj.visualData.rect.setCenter(newPos);
-            }
+            // 簡略化のため実装なし
         }
     };
 }
