@@ -1,12 +1,11 @@
 ﻿#pragma once
 #include "IStage.h"
 #include "StageTypes.h"
-#include "StageDebug.h"
 #include "../Physics/IPhysicsBody.h"
 
 namespace Jam::Domain::Stage {
     
-    class Stage : public IStage {
+    class NormalStage : public IStage {
     private:
         struct StagePhysicsObject {
             StageObject visualData;
@@ -19,8 +18,8 @@ namespace Jam::Domain::Stage {
 
     public:
         // IPhysicsBodyの配列を注入
-        Stage() = default;
-        explicit Stage(const Array<std::shared_ptr<Physics::IPhysicsBody>>& physicsBodies) {
+        NormalStage() = default;
+        explicit NormalStage(const Array<std::shared_ptr<Physics::IPhysicsBody>>& physicsBodies) {
             // 現在は空実装
             m_isLoaded = true;
         }
@@ -164,13 +163,5 @@ namespace Jam::Domain::Stage {
             return renderable;
         }
         
-        // デバッグ描画機能
-        void drawCollisionDebug() const {
-            if constexpr (DebugConfig::SHOW_COLLISION_BOXES) {
-                for (const auto& obj : getRenderableObjects()) {
-                    DebugRenderer::drawObjectDebug(obj);
-                }
-            }
-        }
     };
 }

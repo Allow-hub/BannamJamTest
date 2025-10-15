@@ -1,11 +1,10 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
 #include "../Domain/Stage/StageTypes.h"
-#include "../Domain/Stage/ColorUtils.h"
 
 namespace Jam::Infrastructure::Stage {
 	using StageObject = Jam::Domain::Stage::StageObject;
-    using CollisionType = Jam::Domain::Stage::CollisionType;
+    using CollisionType = Jam::Domain::Stage::StageType;
 	/**
 	 * ステージデータJSONローダー
 	 * ファイル読み込みとオブジェクト解析を担当
@@ -76,12 +75,8 @@ namespace Jam::Infrastructure::Stage {
             // 当たり判定タイプ解析
             obj.type = objJson.hasElement(U"type") 
                 ? Jam::Domain::Stage::stringToCollisionType(objJson[U"type"].getString())
-                : CollisionType::None;
+                : Jam::Domain::Stage::StageType::None;
             
-            // 色情報解析
-            obj.color = objJson.hasElement(U"color") 
-                ? parseColor(objJson[U"color"].getString())
-                : Palette::Gray;
             
             // メタデータ解析
             obj.metadata = objJson.hasElement(U"metadata") 
@@ -125,9 +120,5 @@ namespace Jam::Infrastructure::Stage {
             }
         }
         
-        // 色解析（ドメイン層のColorUtilsに委譲）
-        static Color parseColor(const String& colorStr) {
-            return Jam::Domain::Stage::ColorUtils::parseColorString(colorStr);
-        }
     };
 }

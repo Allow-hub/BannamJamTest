@@ -7,7 +7,7 @@
  */
 namespace Jam::Domain::Stage {
     // 当たり判定の種類
-    enum class CollisionType {
+    enum class StageType {
         None = 0,
         Solid = 1,      // 壁・床（完全ブロック）
         Platform = 2,   // 足場（上からのみ乗れる）
@@ -19,7 +19,7 @@ namespace Jam::Domain::Stage {
     // ステージオブジェクト（床・壁・足場など）
     struct StageObject {
         RectF rect;                     // 位置・サイズ
-        CollisionType type;             // 当たり判定種別
+        StageType type;             // 当たり判定種別
         Color color;                    // 描画色
         String metadata;                // 識別用ID（破壊時などで使用）
         bool destructible = false;      // 破壊可能フラグ
@@ -27,29 +27,29 @@ namespace Jam::Domain::Stage {
         // デフォルトコンストラクタ（JSONパース時の安全な初期化用）
         StageObject() 
             : rect(0, 0, 0, 0)
-            , type(CollisionType::None)
+            , type(StageType::None)
             , color(Palette::Gray)
             , metadata(U"") {}
     };
 
     // 文字列からCollisionTypeへの変換（StageLoaderで使用）
-    inline CollisionType stringToCollisionType(const String& typeStr) {
-        if (typeStr == U"solid") return CollisionType::Solid;
-        if (typeStr == U"platform") return CollisionType::Platform;
-        if (typeStr == U"hazard") return CollisionType::Hazard;
-        if (typeStr == U"trigger") return CollisionType::Trigger;
-        if (typeStr == U"breakable") return CollisionType::Breakable;
-        return CollisionType::None;
+    inline StageType stringToCollisionType(const String& typeStr) {
+        if (typeStr == U"solid") return StageType::Solid;
+        if (typeStr == U"platform") return StageType::Platform;
+        if (typeStr == U"hazard") return StageType::Hazard;
+        if (typeStr == U"trigger") return StageType::Trigger;
+        if (typeStr == U"breakable") return StageType::Breakable;
+        return StageType::None;
     }
 
     // CollisionTypeから文字列への変換（デバッグ用）
-    inline String collisionTypeToString(CollisionType type) {
+    inline String collisionTypeToString(StageType type) {
         switch (type) {
-        case CollisionType::Solid: return U"solid";
-        case CollisionType::Platform: return U"platform";
-        case CollisionType::Hazard: return U"hazard";
-        case CollisionType::Trigger: return U"trigger";
-        case CollisionType::Breakable: return U"breakable";
+        case StageType::Solid: return U"solid";
+        case StageType::Platform: return U"platform";
+        case StageType::Hazard: return U"hazard";
+        case StageType::Trigger: return U"trigger";
+        case StageType::Breakable: return U"breakable";
         default: return U"none";
         }
     }

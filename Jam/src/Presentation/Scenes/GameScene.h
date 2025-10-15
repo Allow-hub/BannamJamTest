@@ -5,7 +5,7 @@
 #include "../../UseCase/PlayerService.h"
 #include "../../Infrastructure/Siv3DInputManager.h"
 #include "../../Infrastructure/Siv3DPhysicsBody.h"
-#include "../../Domain/Stage/Stage.h"
+#include "../../Domain/Stage/NormalStage.h"
 #include "../../Infrastructure/StageLoader.h"
 #include "../../Infrastructure/PhysicsConverter.h"
 #include "../EnemyManager.h"
@@ -35,7 +35,7 @@ namespace Jam::Presentation::Scenes
 		std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody> m_ground;
 		
 		// Stage用
-		std::unique_ptr<Jam::Domain::Stage::Stage> m_stage;
+		std::unique_ptr<Jam::Domain::Stage::NormalStage> m_stage;
 		
 		// Stage用物理ボディ管理
 		std::vector<std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody>> m_stagePhysicsBodies;
@@ -48,7 +48,7 @@ namespace Jam::Presentation::Scenes
 			: IScene{ init },
 			m_world({ 0, 980 }),//引数は重力
 			m_inputManager(),
-			m_stage(std::make_unique<Jam::Domain::Stage::Stage>())
+			m_stage(std::make_unique<Jam::Domain::Stage::NormalStage>())
 		{
 			// === Player 初期化 ===
 			auto stats = Jam::Infrastructure::Physics::LoadFromJSON(U"../Assets/Player/player_stats.json");
@@ -210,15 +210,14 @@ namespace Jam::Presentation::Scenes
 				//Print << U"[GameScene] Drawing " << m_stage->getObjects().size() << U" stage objects";
 				for (const auto& obj : m_stage->getRenderableObjects()) {
 					obj.rect.draw(obj.color);
-					
+					obj.rect.drawFrame(1, Palette::Blue);
+
 					// 破壊可能なオブジェクトには枠を表示
 					if (obj.destructible) {
 						obj.rect.drawFrame(2, Palette::Red);
 					}
 				}
 				
-				// デバッグ描画（ヘッダの設定で制御）
-				m_stage->drawCollisionDebug();
 			}
 			else
 			{
