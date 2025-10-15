@@ -1,6 +1,7 @@
 #pragma once
 #include <Siv3D.hpp>
 
+/* このクラスはステージの描画関係で使用しているデバック用のため、使用しなくなったら削除すること */
 namespace Jam::Domain::Stage {
     
     /**

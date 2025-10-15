@@ -1,14 +1,12 @@
 ﻿#pragma once
+#include "IStage.h"
 #include "StageTypes.h"
 #include "StageDebug.h"
 #include "../Physics/IPhysicsBody.h"
 
 namespace Jam::Domain::Stage {
-    /**
-     * ステージ全体を管理するドメインエンティティ
-     * 物理ボディとゲームロジックを統合管理
-     */
-    class Stage {
+    
+    class Stage : public IStage {
     private:
         struct StagePhysicsObject {
             StageObject visualData;
@@ -20,7 +18,12 @@ namespace Jam::Domain::Stage {
         bool m_isLoaded = false;
 
     public:
+        // Playerと同じパターン：IPhysicsBodyの配列を注入
         Stage() = default;
+        explicit Stage(const Array<std::shared_ptr<Physics::IPhysicsBody>>& physicsBodies) {
+            // 現在は空実装
+            m_isLoaded = true;
+        }
         
         // 物理ボディファクトリを使用してステージを読み込み
         using PhysicsBodyFactory = std::function<std::shared_ptr<Physics::IPhysicsBody>(const RectF&, Physics::PhysicsLayer)>;
@@ -61,7 +64,7 @@ namespace Jam::Domain::Stage {
         bool isLoaded() const { return m_isLoaded; }
         
         // 破壊機能
-        bool destroyObject(const String& objectId) {
+        bool destroyObject(const String& objectId) override {
             for (auto& obj : m_objects) {
                 if (obj.visualData.metadata == objectId && obj.visualData.destructible) {
                     m_destroyedObjects.insert(objectId);
@@ -75,7 +78,7 @@ namespace Jam::Domain::Stage {
             return false; // 破壊失敗
         }
         
-        bool isObjectDestroyed(const String& objectId) const {
+        bool isObjectDestroyed(const String& objectId) const override {
             return m_destroyedObjects.contains(objectId);
         }
         
@@ -97,7 +100,7 @@ namespace Jam::Domain::Stage {
         }
         
         // 物理ボディアクセス（PlayerのGroundレイヤー判定で使用）
-        Array<std::shared_ptr<Physics::IPhysicsBody>> getPhysicsBodies() const {
+        Array<std::shared_ptr<Physics::IPhysicsBody>> getPhysicsBodies() const override {
             Array<std::shared_ptr<Physics::IPhysicsBody>> bodies;
             for (const auto& obj : m_objects) {
                 if (obj.physicsBody && !isObjectDestroyed(obj.visualData.metadata)) {
@@ -149,7 +152,7 @@ namespace Jam::Domain::Stage {
         }
         
         // 描画データ取得（破壊オブジェクトを除外したフィルタリング済み）
-        Array<StageObject> getRenderableObjects() const {
+        Array<StageObject> getRenderableObjects() const override {
             Array<StageObject> renderable;
             renderable.reserve(m_objects.size() - m_destroyedObjects.size());
             
