@@ -322,6 +322,7 @@
     <None Include="Assets\Enemy\LittleDevil\littleDevil_animation.json" />
     <None Include="Assets\Player\player_animation.json" />
     <None Include="Assets\Player\player_stats.json" />
+    <None Include="src\Domain\Events\Events.md" />
     <None Include="src\Infrastructure\InfrastructureDoc.md" />
     <None Include="src\Presentation\Presentation.md" />
   </ItemGroup>

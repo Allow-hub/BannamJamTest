@@ -805,6 +805,7 @@
     <None Include="src\Presentation\Presentation.md" />
     <None Include="Assets\Enemy\LittleDevil\littleDevil_animation.json" />
     <None Include="Assets\Enemy\enemy_stats.json" />
+    <None Include="src\Domain\Events\Events.md" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="App\example\test.mp3">
