@@ -52,7 +52,6 @@ namespace Jam::Domain::Stage {
             return m_isLoaded; 
         }
         
-        // IStage実装 - override付きメソッド
         bool destroyObject(const String& objectId) override {
             for (auto& obj : m_objects) {
                 if (obj.visualData.metadata == objectId) {

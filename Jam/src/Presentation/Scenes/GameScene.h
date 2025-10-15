@@ -152,7 +152,8 @@ namespace Jam::Presentation::Scenes
 			}
 			
 			// === Stage 初期化 ===
-			// 物理ボディファクトリ作成
+			// 物理ボディのラムダの定義
+			// json
 			auto physicsBodyFactory = [this](const RectF& rect, Jam::Domain::Physics::PhysicsLayer layer) 
 				-> std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> {
 				auto body = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
