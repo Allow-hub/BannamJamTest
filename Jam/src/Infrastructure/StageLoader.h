@@ -22,6 +22,31 @@ namespace Jam::Infrastructure::Stage {
             return loadFromJson(stagePath, outObjects);
         }
         
+        static bool loadSeparatedStagesFromFile(
+            const String& stageFileName,
+            Array<StageObject>& outNormalObjects,
+            Array<StageObject>& outMovingObjects
+        ) {
+            Array<StageObject> allObjects;
+            if (!loadStageFromFile(stageFileName, allObjects)) {
+                return false;
+            }
+            
+            // オブジェクトを種類別に分離
+            outNormalObjects.clear();
+            outMovingObjects.clear();
+            
+            for (const auto& obj : allObjects) {
+                if (obj.type == Jam::Domain::Stage::StageType::MovingPlatform) {
+                    outMovingObjects.push_back(obj);
+                } else {
+                    outNormalObjects.push_back(obj);
+                }
+            }
+            
+            return true;
+        }
+        
         // JSON読み込み
         static bool loadFromJson(const String& jsonPath, Array<StageObject>& outObjects) {
             // ファイル存在確認

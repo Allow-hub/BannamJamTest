@@ -7,6 +7,7 @@
 #include "../../Infrastructure/Siv3DPhysicsBody.h"
 #include "../../Domain/Stage/NormalStage.h"
 #include "../../Domain/Stage/MovingPlatformStage.h"
+#include "../Stage/StageManager.h"
 #include "../../Infrastructure/StageLoader.h"
 #include "../../Infrastructure/PhysicsConverter.h"
 #include "../EnemyManager.h"
@@ -36,8 +37,7 @@ namespace Jam::Presentation::Scenes
 		std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody> m_ground;
 		
 		// Stage用
-		std::unique_ptr<Jam::Domain::Stage::NormalStage> m_normalStage;
-		std::unique_ptr<Jam::Domain::Stage::MovingPlatformStage> m_movingStage;
+		std::unique_ptr<Jam::Presentation::Stage::StageManager> m_stageManager;
 		
 		// Stage用物理ボディ管理
 		std::vector<std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody>> m_stagePhysicsBodies;
@@ -83,86 +83,8 @@ namespace Jam::Presentation::Scenes
 			);
 
 			// === Stage 初期化 ===
-			// 通常のステージ（静的な床・壁）
-			m_normalStage = std::make_unique<Jam::Domain::Stage::NormalStage>();
-			
-			// 物理ボディのラムダの定義（JSON用）
-			auto physicsBodyFactory = [this](const RectF& rect, Jam::Domain::Physics::PhysicsLayer layer) 
-				-> std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> {
-				auto body = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
-					m_world,
-					rect.center(),
-					rect.size,
-					s3d::P2BodyType::Static,
-					Jam::Domain::Physics::PhysicsMaterial{ 1.0, 0.0, 0.0 }
-				);
-				body->setLayer(layer);
-				m_physicsBodies.push_back(body);
-				return body;
-			};
-			
-			// Stage JSONファイルを読み込み
-			Array<Jam::Domain::Stage::StageObject> allObjects;
-			if (Jam::Infrastructure::Stage::StageLoader::loadStageFromFile(U"stage1.json", allObjects)) {
-				// 通常のステージオブジェクトと動くプラットフォームを分離
-				Array<Jam::Domain::Stage::StageObject> normalObjects;
-				Array<Jam::Domain::Stage::StageObject> movingObjects;
-				
-				for (const auto& obj : allObjects) {
-					if (obj.type == Jam::Domain::Stage::StageType::MovingPlatform) {
-						movingObjects.push_back(obj);
-					} else {
-						normalObjects.push_back(obj);
-					}
-				}
-				
-				// 通常のステージオブジェクトをNormalStageに設定
-				if (!normalObjects.empty()) {
-					m_normalStage->setObjects(normalObjects, physicsBodyFactory);
-				}
-				
-				// 動くプラットフォームの処理
-				if (!movingObjects.empty()) {
-					// 最初の動くプラットフォームを使用（複数対応は後で拡張可能）
-					const auto& movingObj = movingObjects[0];
-					
-					// 動くプラットフォーム用の物理ボディを作成
-					auto movingPlatformBody = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
-						m_world,
-						movingObj.rect.center(),
-						movingObj.rect.size,
-						s3d::P2BodyType::Kinematic, // 動かすため
-						Jam::Domain::Physics::PhysicsMaterial{ 1.0, 0.0, 0.0 }
-					);
-					movingPlatformBody->setLayer(Jam::Domain::Physics::PhysicsLayer::Ground);
-					m_physicsBodies.push_back(movingPlatformBody);
-
-					// MovingPlatformStageを作成
-					m_movingStage = std::make_unique<Jam::Domain::Stage::MovingPlatformStage>(movingPlatformBody);
-					
-					// JSONから読み込んだ設定を適用
-					if (movingObj.movementSpeed.length() > 0) {
-						m_movingStage->setMovementSpeed(movingObj.metadata, movingObj.movementSpeed);
-					}
-					if (!movingObj.movementPath.empty()) {
-						m_movingStage->setMovementPath(movingObj.metadata, movingObj.movementPath);
-					}
-				}
-			} else {
-				Print << U"[GameScene] ❌ Failed to load stage1.json";
-			}
-
-			// === Ground 初期化 ===
-			// Stage側で地面を管理するため、個別の地面は作成しない
-			// m_ground = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
-			//	m_world,
-			//	Vec2{ 640, 700 },
-			//	SizeF{ 1280, 40 },
-			//	s3d::P2BodyType::Static,
-			//	Jam::Domain::Physics::PhysicsMaterial{ 1.0, 0.0, 0.0 }
-			// );
-			// m_ground->setLayer(Jam::Domain::Physics::PhysicsLayer::Ground);
-			// m_physicsBodies.push_back(m_ground);
+			m_stageManager = std::make_unique<Jam::Presentation::Stage::StageManager>();
+			m_stageManager->initialize(m_world, m_physicsBodies);
 
 			// === Enemy 初期化 ===
 			m_enemyFactory = std::make_unique<Jam::UseCase::EnemyFactory>();
@@ -229,14 +151,10 @@ namespace Jam::Presentation::Scenes
 			m_playerService->update(Scene::DeltaTime());
 			m_playerManager->update();
 
-			// TODO：StageManager的なクラスを作ってそこでupdate作ること
-			if (m_normalStage)
+			// Stage更新
+			if (m_stageManager)
 			{
-				m_normalStage->update(Scene::DeltaTime());
-			}
-			if (m_movingStage)
-			{
-				m_movingStage->update(Scene::DeltaTime());
+				m_stageManager->update();
 			}
 
 			// 敵の更新
@@ -262,21 +180,10 @@ namespace Jam::Presentation::Scenes
 		{
 			Scene::SetBackground(ColorF{ 0.9, 0.9, 1.0 });
 
-			// Stageの描画
-			// 通常のステージ（静的な床・壁）
-			if (m_normalStage && m_normalStage->isLoaded())
+			// Stage描画
+			if (m_stageManager)
 			{
-				for (const auto& obj : m_normalStage->getRenderableObjects()) {
-					obj.rect.drawFrame(1, Palette::Blue);
-				}
-			}
-			
-			// 動くプラットフォーム
-			if (m_movingStage)
-			{
-				for (const auto& obj : m_movingStage->getRenderableObjects()) {
-					obj.rect.drawFrame(2, ColorF(1.0, 0.5, 0.0)); // オレンジ色の枠線（太さ2px）
-				}
+				m_stageManager->draw();
 			}
 
 			// Playerの描画
