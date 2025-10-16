@@ -11,6 +11,9 @@
 #include "../EnemyManager.h"
 #include "../../UseCase/EnemyFactory.h"
 #include "../EnemyLoader.h"
+#include "../CameraManager.h"
+#include "../../UseCase/CameraService.h"
+#include "../../UseCase/GameEventHandler.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -31,6 +34,15 @@ namespace Jam::Presentation::Scenes
 		std::unique_ptr<Jam::Presentation::EnemyManager> m_enemyManager;
 		std::unique_ptr<Jam::UseCase::EnemyFactory> m_enemyFactory;
 
+		std::shared_ptr<Jam::Presentation::CameraManager> m_cameraManager;
+		std::shared_ptr<Jam::UseCase::CameraService> m_cameraService;
+
+		std::shared_ptr<Jam::Domain::Events::GameEventQueue> m_gameEventQueue;
+		std::shared_ptr<Jam::UseCase::CameraEventQueue> m_cameraEventQueue;
+		std::shared_ptr<Jam::UseCase::GameEventHandler> m_eventHandler;
+
+
+
 		Jam::Infrastructure::Siv3DInputManager m_inputManager;
 		std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody> m_ground;
 		
@@ -50,19 +62,24 @@ namespace Jam::Presentation::Scenes
 			m_inputManager(),
 			m_stage(std::make_unique<Jam::Domain::Stage::NormalStage>())
 		{
+			// === Game内のイベント用クラスを初期化 ===
+			m_gameEventQueue = std::make_shared<Jam::Domain::Events::GameEventQueue>();
+			m_cameraEventQueue = std::make_shared<Jam::UseCase::CameraEventQueue>();
+			m_eventHandler = std::make_shared<Jam::UseCase::GameEventHandler>(
+				*m_gameEventQueue,*m_cameraEventQueue);
+
 			// === Player 初期化 ===
 			auto stats = Jam::Infrastructure::Physics::LoadFromJSON(U"../Assets/Player/player_stats.json");
 
 			auto playerBody = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
 				m_world,
-				Vec2{ 100, 300 },
-				SizeF{ 50, 80 },
+				Vec2{ 0, 0 },
+				SizeF{ 50, 100 },
 				s3d::P2BodyType::Dynamic,
 				stats.physicsMaterial
 			);
-			
-			// === Player 初期化 ===
-			m_player = std::make_shared<Jam::Domain::Player::Player>(playerBody);
+
+			m_player = std::make_shared<Domain::Player::Player>(playerBody, *m_gameEventQueue);
 			playerBody->setCollisionListener(m_player);
 
 			m_physicsBodies.push_back(
@@ -80,17 +97,15 @@ namespace Jam::Presentation::Scenes
 				*m_playerManager
 			);
 
-			// === Ground 初期化 ===
-			// Stage側で地面を管理するため、個別の地面は作成しない
-			// m_ground = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
-			//	m_world,
-			//	Vec2{ 640, 700 },
-			//	SizeF{ 1280, 40 },
-			//	s3d::P2BodyType::Static,
-			//	Jam::Domain::Physics::PhysicsMaterial{ 1.0, 0.0, 0.0 }
-			// );
-			// m_ground->setLayer(Jam::Domain::Physics::PhysicsLayer::Ground);
-			// m_physicsBodies.push_back(m_ground);
+			m_cameraManager = std::make_shared<Jam::Presentation::CameraManager>(
+				m_player->getPosition()  // 初期位置をプレイヤー位置に合わせる
+			);
+
+			m_cameraService = std::make_shared<Jam::UseCase::CameraService>(
+				*m_player,
+				*m_cameraManager,
+				*m_cameraEventQueue
+			);
 
 			// === Enemy 初期化 ===
 			m_enemyFactory = std::make_unique<Jam::UseCase::EnemyFactory>();
@@ -126,7 +141,7 @@ namespace Jam::Presentation::Scenes
 			// 敵を生成して配置
 			auto enemyBody = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
 				m_world,
-				Vec2{ 400, 300 },  // 初期位置
+				Vec2{ 200, 0 },  // 初期位置
 				status.colSize,   // サイズ
 				s3d::P2BodyType::Dynamic,
 				status.physicsMaterial
@@ -199,41 +214,42 @@ namespace Jam::Presentation::Scenes
 				m_world.update(StepTime);
 				m_accumulatedTime -= StepTime;
 			}
+			m_eventHandler->processEvents();//ゲーム内イベントを各クラスに通知
+
+			// カメラの更新
+			m_cameraService->update(Scene::DeltaTime());
 		}
 
 		void draw() const override
 		{
 			Scene::SetBackground(ColorF{ 0.9, 0.9, 1.0 });
 
-			// Stageの描画
-			if (m_stage && m_stage->isLoaded())
 			{
-				//Print << U"[GameScene] Drawing " << m_stage->getObjects().size() << U" stage objects";
-				for (const auto& obj : m_stage->getRenderableObjects()) {
-					obj.rect.drawFrame(1, Palette::Blue);
+				const auto transformer = m_cameraManager->createTransformer();
+
+				// Stageの描画
+				if (m_stage && m_stage->isLoaded())
+				{
+					//Print << U"[GameScene] Drawing " << m_stage->getObjects().size() << U" stage objects";
+					for (const auto& obj : m_stage->getRenderableObjects()) {
+						obj.rect.drawFrame(1, Palette::Blue);
+					}
+
 				}
-				
-			}
-			else
-			{
-				Print << U"[GameScene] Stage not loaded or empty";
-			}
+				else
+				{
+					Print << U"[GameScene] Stage not loaded or empty";
+				}
 
-			// Playerの描画
-			m_playerManager->draw();
+				// プレイヤーの描画
+				m_playerManager->draw();
 
-			// 敵の描画
-			if (m_enemyManager)
-			{
-				m_enemyManager->draw();
+				// 敵の描画
+				if (m_enemyManager)
+				{
+					m_enemyManager->draw();
+				}
 			}
-
-			// Stage側で地面を管理するため、個別の地面描画は不要
-			// if (m_ground)
-			// {
-			//	const auto t = m_ground->getTransform();
-			//	RectF(t.position.x - 640, t.position.y - 20, 1280, 40).draw(Palette::Gray);
-			// }
 		}
 
 	private:

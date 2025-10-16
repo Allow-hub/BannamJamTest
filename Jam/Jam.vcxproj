@@ -322,6 +322,7 @@
     <None Include="Assets\Enemy\LittleDevil\littleDevil_animation.json" />
     <None Include="Assets\Player\player_animation.json" />
     <None Include="Assets\Player\player_stats.json" />
+    <None Include="src\Domain\Events\Events.md" />
     <None Include="src\Infrastructure\InfrastructureDoc.md" />
     <None Include="src\Presentation\Presentation.md" />
   </ItemGroup>
@@ -345,12 +346,17 @@
   <ItemGroup>
     <ClInclude Include="src\Domain\Enemy\EnemyBase.h" />
     <ClInclude Include="src\Domain\Enemy\LittleDevil.h" />
+    <ClInclude Include="src\Domain\Events\GameEvents.h" />
     <ClInclude Include="src\Domain\IInputService.h" />
     <ClInclude Include="src\Domain\Physics\ICollisionListener.h" />
     <ClInclude Include="src\Domain\Physics\IPhysicsBody.h" />
     <ClInclude Include="src\Domain\Physics\PhysicsTypes.h" />
     <ClInclude Include="src\Domain\Player\Player.h" />
+<<<<<<< HEAD
     <ClInclude Include="src\Domain\Stage\IStage.h" />
+=======
+    <ClInclude Include="src\Foundation\CoreManager.h" />
+>>>>>>> feature/yahagi/playerSkill
     <ClInclude Include="src\Infrastructure\PhysicsConverter.h" />
     <ClInclude Include="src\Domain\Stage\NormalStage.h" />
     <ClInclude Include="src\Domain\Stage\StageTypes.h" />
@@ -358,13 +364,19 @@
     <ClInclude Include="src\Infrastructure\Siv3DPhysicsBody.h" />
     <ClInclude Include="src\Presentation\Animator.h" />
     <ClInclude Include="src\Presentation\AnimatorLoader.h" />
+    <ClInclude Include="src\Presentation\CameraManager.h" />
     <ClInclude Include="src\Presentation\EnemyLoader.h" />
     <ClInclude Include="src\Presentation\EnemyManager.h" />
     <ClInclude Include="src\Infrastructure\StageLoader.h" />
     <ClInclude Include="src\Presentation\PlayerManager.h" />
     <ClInclude Include="src\Presentation\Scenes\GameScene.h" />
+    <ClInclude Include="src\Presentation\Scenes\SelectScene.h" />
+    <ClInclude Include="src\Presentation\Scenes\StoryScene.h" />
     <ClInclude Include="src\Presentation\Scenes\TitleScene.h" />
+    <ClInclude Include="src\UseCase\CameraEvent.h" />
+    <ClInclude Include="src\UseCase\CameraService.h" />
     <ClInclude Include="src\UseCase\EnemyFactory.h" />
+    <ClInclude Include="src\UseCase\GameEventHandler.h" />
     <ClInclude Include="src\UseCase\PlayerService.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
