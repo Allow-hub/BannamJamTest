@@ -61,7 +61,7 @@ namespace Jam::UseCase
 		{
 			if (e.isCritical)
 			{
-				m_cameraEventQueue.push(CameraShakeEvent{ 12.0, 0.3 });
+				m_cameraEventQueue.push(CameraShakeEvent{ 12.0, 2.3 });
 			}
 			else
 			{
@@ -74,8 +74,8 @@ namespace Jam::UseCase
 			if (e.isBoss)
 			{
 				// ボス撃破時は派手な演出
-				m_cameraEventQueue.push(CameraShakeEvent{ 20.0, 1.0 });
-				m_cameraEventQueue.push(CameraFocusEvent{ e.position, 3.0, 0.9 });
+				m_cameraEventQueue.push(CameraShakeEvent{ 1.0, 1.0 });
+				//m_cameraEventQueue.push(CameraFocusEvent{ e.position, 3.0, 0.9 });
 			}
 			else
 			{

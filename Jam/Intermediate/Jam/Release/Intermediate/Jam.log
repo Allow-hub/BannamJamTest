@@ -1,19 +1,13 @@
-﻿  Player.cpp
-C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Player.cpp(17,29): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+﻿  Main.cpp
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\UseCase\GameEventHandler.h(99,70): warning C4100: 'e': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Player.cpp(79,83): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
-  
-C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Player.cpp(80,83): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
-  
-     ライブラリ C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.lib とオブジェクト C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exp を作成中
+     ライブラリ C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.lib とオブジェクト C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exp を作成中
   コード生成しています。
-  11 of 4630 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+  5 of 4768 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    6 functions had inline decision re-evaluated but remain unchanged
+    3 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
-  Jam.vcxproj -> C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exe
-  C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exe
+  Jam.vcxproj -> C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exe
+  C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exe
   1 個のファイルをコピーしました

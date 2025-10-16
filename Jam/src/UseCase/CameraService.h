@@ -11,7 +11,7 @@ namespace Jam::UseCase
 		Domain::Player::Player& m_player;
 		Jam::Presentation::CameraManager& m_cameraManager;
 		CameraEventQueue& m_cameraEventQueue;
-		Vec2 m_offset = { 0, -300 };
+		Vec2 m_offset = { 200, -300 };
 
 	public:
 		CameraService(Domain::Player::Player& player,
@@ -35,7 +35,7 @@ namespace Jam::UseCase
 				m_cameraManager.setTarget(playerPos);
 			}
 
-			// デバッグ操作
+			// デバッグ操作	
 			if (KeyQ.pressed()) m_cameraManager.setZoom(0.5,1.0);
 			if (KeyE.pressed()) m_cameraManager.setZoom(1.2,1.0);
 

@@ -8,6 +8,8 @@ namespace Jam::Presentation::Scenes
 	// シーン名の定義
 	enum class SceneName {
 		Title,
+		Select,
+		Story,
 		InGame,
 	};
 
@@ -15,6 +17,8 @@ namespace Jam::Presentation::Scenes
 	inline String ToSceneString(SceneName name) {
 		switch (name) {
 		case SceneName::Title:   return U"Title";
+		case SceneName::Select:  return U"Select";
+		case SceneName::Story:   return U"Story";
 		case SceneName::InGame:  return U"InGame";
 		default:                 return U"";
 		}
@@ -34,7 +38,7 @@ namespace Jam::Presentation::Scenes
 			if (KeySpace.down())
 			{
 				// InGame へ遷移
-				changeScene(ToSceneString(SceneName::InGame));
+				changeScene(ToSceneString(SceneName::Select));
 			}
 		}
 

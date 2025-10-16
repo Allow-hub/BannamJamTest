@@ -24,6 +24,8 @@ namespace Jam::Domain::Player
 
 		void moveLeft();
 		void moveRight();
+
+		void attack();
 		void jump();
 
 		s3d::Vec2 getPosition() const;

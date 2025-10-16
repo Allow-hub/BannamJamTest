@@ -28,16 +28,20 @@ namespace Jam::Domain::Player
 
 	void Player::jump()
 	{
-		m_eventQueue.push(Events::PlayerAttackedEvent{
-					{0,0},
-					true,
-					50.0
-				});
+		//m_eventQueue.push(Events::EnemyDefeatedEvent{
+		//			{0,0},
+		//			true,
+		//			Jam::UseCase::EnemyType::LittleDevil
+		//		});
 		if (m_isGrounded)
 		{
 			 m_body->applyImpulse({ 0, -m_stats.jumpPower });
 			m_isGrounded = false;
 		}
+	}
+
+	void Player::attack()
+	{
 	}
 
 	s3d::Vec2 Player::getPosition() const

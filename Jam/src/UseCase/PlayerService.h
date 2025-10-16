@@ -44,6 +44,10 @@ namespace Jam::UseCase
 			{
 				m_player->jump();
 			}
+			if (inputState.attack)
+			{
+				m_player->attack();
+			}
 
 			// どちらのキーも押されていないなら走行アニメをオフに
 			m_manager.SetRunning(isRunning);
