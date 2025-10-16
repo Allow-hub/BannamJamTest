@@ -351,6 +351,9 @@
     <ClInclude Include="src\Domain\Physics\ICollisionListener.h" />
     <ClInclude Include="src\Domain\Physics\IPhysicsBody.h" />
     <ClInclude Include="src\Domain\Physics\PhysicsTypes.h" />
+    <ClInclude Include="src\Domain\Player\Skill\BombSkill.h" />
+    <ClInclude Include="src\Domain\Player\Skill\ChokerSkill.h" />
+    <ClInclude Include="src\Domain\Player\Skill\IPlayerSkill.h" />
     <ClInclude Include="src\Domain\Player\Player.h" />
     <ClInclude Include="src\Domain\Stage\IStage.h" />
     <ClInclude Include="src\Foundation\CoreManager.h" />

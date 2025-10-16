@@ -8,7 +8,10 @@ namespace Jam::Domain
 		bool left = false;
 		bool right = false;
 		bool jump = false;
+		bool dash = false;
 		bool attack = false;
+		bool skill = false;//チョーカーや爆弾
+		double skillChange = false;//ホイールでスキル変更
 	};
 
 	// 入力サービスのインターフェース

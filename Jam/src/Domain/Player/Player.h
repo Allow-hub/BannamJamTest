@@ -3,6 +3,7 @@
 #include "../Physics/IPhysicsBody.h"
 #include "../Physics/ICollisionListener.h"
 #include "../Events/GameEvents.h"
+#include "Skill/IPlayerSkill.h"
 
 namespace Jam::Domain::Player
 {
@@ -24,8 +25,12 @@ namespace Jam::Domain::Player
 
 		void moveLeft();
 		void moveRight();
-
+		void startDash();
+		void endDash();
 		void attack();
+
+		void skill();
+		void changeSkill(int direction);
 		void jump();
 
 		s3d::Vec2 getPosition() const;
@@ -45,7 +50,11 @@ namespace Jam::Domain::Player
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_body;
 		bool m_isGrounded = false;
 		bool m_facingRight = true;
+		bool m_isDashing = false;
+		double dashMagnification = 2.0;
 		Jam::Domain::Events::GameEventQueue& m_eventQueue;
+		std::vector<std::shared_ptr<IPlayerSkill>> m_skills;
+		std::shared_ptr<IPlayerSkill> m_currentSkill;
 
 		void updateState();
 	};

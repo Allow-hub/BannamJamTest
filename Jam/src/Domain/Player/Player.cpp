@@ -1,5 +1,7 @@
 ﻿#include "Player.h"
 #include "../Physics/IPhysicsBody.h"
+#include "Skill/BombSkill.h"
+#include "Skill/ChokerSkill.h"
 
 namespace Jam::Domain::Player
 {
@@ -7,11 +9,20 @@ namespace Jam::Domain::Player
 		: m_body(std::move(body)), m_eventQueue(eventQueue)
 	{
 		m_body->setLayer(Jam::Domain::Physics::PhysicsLayer::Player);
+		m_body->setGravityScale(1.5);
+		m_skills.push_back(std::make_shared<BombSkill>());
+		m_skills.push_back(std::make_shared<ChokerSkill>());
+		m_currentSkill = m_skills.front();
 	}
 
 	void Player::update(double deltaTime)
 	{
 		updateState();
+		// 現在スキルが「更新が必要」ならUpdateを呼ぶ
+		if (m_currentSkill && m_currentSkill->needUpdate())
+		{
+			m_currentSkill->update(deltaTime);
+		}
 	}
 
 	void Player::moveLeft()
@@ -24,6 +35,20 @@ namespace Jam::Domain::Player
 	{
 		m_body->applyForce({ m_stats.moveSpeed, 0 });
 		m_facingRight = true;
+	}
+
+	void Player::startDash()
+	{
+		if (m_isDashing)return;
+		m_stats.moveSpeed *= dashMagnification;
+		m_isDashing = true;
+	}
+
+	void Player::endDash()
+	{
+		if (!m_isDashing)return;
+		m_stats.moveSpeed /= dashMagnification;
+		m_isDashing = false;
 	}
 
 	void Player::jump()
@@ -40,9 +65,42 @@ namespace Jam::Domain::Player
 		}
 	}
 
+
 	void Player::attack()
 	{
+
 	}
+
+	//後々スキルはコンストラクタで使える武器をステージごとに選べるように
+	void Player::skill()
+	{
+		if (m_currentSkill)
+			m_currentSkill->use(getPosition(), m_facingRight);
+	}
+
+	void Player::changeSkill(int direction)
+	{
+		if (m_skills.empty()) return;
+
+		// direction: 1 = ホイール上（次のスキル）、-1 = ホイール下（前のスキル）
+		auto it = std::find(m_skills.begin(), m_skills.end(), m_currentSkill);
+		if (it == m_skills.end())
+		{
+			m_currentSkill = m_skills.front();
+			return;
+		}
+
+		// 次のスキル or 前のスキルに移動
+		int index = static_cast<int>(std::distance(m_skills.begin(), it));
+		index += direction;
+
+		// 循環させる
+		if (index < 0) index = static_cast<int>(m_skills.size()) - 1;
+		else if (index >= static_cast<int>(m_skills.size())) index = 0;
+
+		m_currentSkill = m_skills[index];
+	}
+
 
 	s3d::Vec2 Player::getPosition() const
 	{
