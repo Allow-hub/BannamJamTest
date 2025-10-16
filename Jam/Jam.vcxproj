@@ -352,11 +352,8 @@
     <ClInclude Include="src\Domain\Physics\IPhysicsBody.h" />
     <ClInclude Include="src\Domain\Physics\PhysicsTypes.h" />
     <ClInclude Include="src\Domain\Player\Player.h" />
-<<<<<<< HEAD
     <ClInclude Include="src\Domain\Stage\IStage.h" />
-=======
     <ClInclude Include="src\Foundation\CoreManager.h" />
->>>>>>> feature/yahagi/playerSkill
     <ClInclude Include="src\Infrastructure\PhysicsConverter.h" />
     <ClInclude Include="src\Domain\Stage\NormalStage.h" />
     <ClInclude Include="src\Domain\Stage\StageTypes.h" />
