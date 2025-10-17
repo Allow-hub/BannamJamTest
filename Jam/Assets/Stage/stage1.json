@@ -3,35 +3,35 @@
   "_使い方": {
     "説明": "当たり判定オブジェクトを簡略記法で定義します。",
     "rect": "[x, y, width, height] 形式の配列で位置とサイズを指定します。",
-    "type": "当たり判定の種類を指定します。solid(壁), platform(上から乗れる床), breakable(破壊可能), hazard(ダメージ), trigger(イベント)など。",
+    "type": "当たり判定の種類を指定します。normal(壁), platform(上から乗れる床), breakable(破壊可能), hazard(ダメージ), trigger(イベント)など。",
     "metadata": "識別用の任意文字列（スクリプトやイベントで使用）。"
 
   },
   "objects": [
     {
       "rect": [0, 680, 1280, 40],
-      "type": "solid",
+      "type": "normal",
       "metadata": "Platform_1"
     },
     {
       "rect": [200, 580, 200, 20],
-      "type": "solid",
+      "type": "normal",
       "metadata": "Platform_2"
     },
     {
       "rect": [500, 500, 150, 20],
-      "type": "solid",
+      "type": "normal",
       "metadata": "Platform_3"
     },
     {
       "rect": [800, 420, 180, 25],
-      "type": "solid",
+      "type": "normal",
       "metadata": "Platform_4",
       "destructible": true
     },
     {
       "rect": [1000, 320, 50, 100],
-      "type": "solid",
+      "type": "normal",
       "metadata": "Platform_5",
       "destructible": true
     },
