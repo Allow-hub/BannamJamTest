@@ -2,6 +2,7 @@
 #include <memory>
 #include "../Physics/IPhysicsBody.h"
 #include "../Physics/ICollisionListener.h"
+#include "../Events/GameEvents.h"
 
 namespace Jam::Domain::Player
 {
@@ -17,12 +18,14 @@ namespace Jam::Domain::Player
 	class Player :public Jam::Domain::Physics::ICollisionListener
 	{
 	public:
-		explicit Player(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body);
+		explicit Player(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Events::GameEventQueue& eventQueue);
 
 		void update(double deltaTime);
 
 		void moveLeft();
 		void moveRight();
+
+		void attack();
 		void jump();
 
 		s3d::Vec2 getPosition() const;
@@ -42,6 +45,7 @@ namespace Jam::Domain::Player
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_body;
 		bool m_isGrounded = false;
 		bool m_facingRight = true;
+		Jam::Domain::Events::GameEventQueue& m_eventQueue;
 
 		void updateState();
 	};

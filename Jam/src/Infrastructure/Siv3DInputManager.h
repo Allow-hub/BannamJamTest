@@ -18,6 +18,7 @@ namespace Jam::Infrastructure
 			m_state.left = KeyA.pressed();
 			m_state.right = KeyD.pressed();
 			m_state.jump = KeySpace.down() || KeyW.down();
+			m_state.attack = MouseL.down();
 		}
 
 		Jam::Domain::InputState GetState() const override
