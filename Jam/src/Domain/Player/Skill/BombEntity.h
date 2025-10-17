@@ -13,16 +13,16 @@ namespace Jam::Domain::Player
 		double m_timer = 0.0;
 		double m_lifeTime = 3.0; // 爆発までの時間
 		bool m_exploded = false;
-		Jam::Presentation::Animator anim;
+		//Jam::Presentation::Animator anim;
 
 	public:
 		BombEntity(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body)
 			: m_body(body)
 		{
-			Jam::Presentation::AnimatorLoader::LoadAnimatorFromJSON(anim, U"../Assets/Player/Skill/Bomb/playerSkill_bomb.json");
+	/*		Jam::Presentation::AnimatorLoader::LoadAnimatorFromJSON(anim, U"../Assets/Player/Skill/Bomb/playerSkill_bomb.json");
 			anim.AddCondition({ { {U"isRunning", true} }, U"Run", 1 });
 			anim.AddCondition({ { {U"isRunning", false} }, U"Idle", 0 });
-			anim.SetBool(U"isRunning", false);
+			anim.SetBool(U"isRunning", false);*/
 		}
 		
 		bool isAlive() const { return !m_exploded; }
@@ -44,7 +44,7 @@ namespace Jam::Domain::Player
 		{
 			if (!m_exploded)
 			{
-				anim.Draw(m_body->getPosition());
+				//anim.Draw(m_body->getPosition());
 				m_body->drawFrame(3.0, Palette::Darkcyan); // 毎フレーム描画
 			}
 		}
