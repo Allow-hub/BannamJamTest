@@ -32,7 +32,7 @@ namespace Jam::UseCase {
 
     private:
         // === ビジネスルール定数 ===
-        static constexpr double SCREEN_MARGIN = 50.0;
+        static constexpr double SCREEN_BOUNDARY_MARGIN = 50.0;
 
         // === データ ===
         bool m_isLoaded = false;
@@ -68,8 +68,8 @@ namespace Jam::UseCase {
             return false;
         }
 
-        Print << U"[StageService] ✅ Loaded " << m_normalObjects.size()
-              << U" normal and " << m_movingObjects.size() << U" moving stages";
+        // Print << U"[StageService] ✅ Loaded " << m_normalObjects.size()
+        //       << U" normal and " << m_movingObjects.size() << U" moving stages";
 
         createPhysicsBodies();
         m_isLoaded = true;
@@ -89,10 +89,12 @@ namespace Jam::UseCase {
             Vec2 newPos = currentPos + m_movingVelocities[i] * deltaTime;
 
             // ビジネスルール：画面端での反転
-            if (newPos.x <= SCREEN_MARGIN || newPos.x >= Scene::Width() - SCREEN_MARGIN) {
+            if (newPos.x <= SCREEN_BOUNDARY_MARGIN || 
+                newPos.x >= Scene::Width() - SCREEN_BOUNDARY_MARGIN) {
                 m_movingVelocities[i].x *= -1;
             }
-            if (newPos.y <= SCREEN_MARGIN || newPos.y >= Scene::Height() - SCREEN_MARGIN) {
+            if (newPos.y <= SCREEN_BOUNDARY_MARGIN || 
+                newPos.y >= Scene::Height() - SCREEN_BOUNDARY_MARGIN) {
                 m_movingVelocities[i].y *= -1;
             }
 

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Siv3D.hpp>
 #include "../../Domain/Stage/StageTypes.h"
 #include "../../Infrastructure/Siv3DPhysicsBody.h"
@@ -19,23 +19,24 @@ namespace Jam::Presentation::Stage {
         
         void draw();
         
-		private:
-        // 描画定数
-        static constexpr int NORMAL_FRAME_THICKNESS = 2;
-        static constexpr int MOVING_FRAME_THICKNESS = 3;
+    private:
+        // === 描画定数 ===
+        static constexpr int NORMAL_STAGE_FRAME_THICKNESS = 2;
+        static constexpr int MOVING_STAGE_FRAME_THICKNESS = 3;
+        static constexpr double CENTER_OFFSET_FACTOR = 0.5;
         
         // StageManagerへの参照
         StageManager* m_stageManager = nullptr;
     };
 
-    // インライン実装（循環依存を避けるため最後に定義）
+    // インライン実装
     inline void StageRenderer::draw() {
         if (!m_stageManager) return;
         
         // 通常ステージの描画
         const auto& normalObjects = m_stageManager->getNormalObjects();
         for (const auto& obj : normalObjects) {
-            obj.rect.drawFrame(NORMAL_FRAME_THICKNESS, Palette::Blue);
+            obj.rect.drawFrame(NORMAL_STAGE_FRAME_THICKNESS, Palette::Blue);
         }
         
         // 動くプラットフォームの描画
@@ -45,7 +46,7 @@ namespace Jam::Presentation::Stage {
         for (size_t i = 0; i < movingBodies.size() && i < movingObjects.size(); ++i) {
             Vec2 pos = movingBodies[i]->getPosition();
             SizeF size = movingObjects[i].rect.size;
-            RectF(pos - size * 0.5, size).drawFrame(MOVING_FRAME_THICKNESS, Palette::Orange);
+            RectF(pos - size * CENTER_OFFSET_FACTOR, size).drawFrame(MOVING_STAGE_FRAME_THICKNESS, Palette::Orange);
         }
     }
 }

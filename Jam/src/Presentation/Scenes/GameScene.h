@@ -46,11 +46,11 @@ namespace Jam::Presentation::Scenes
 
 		Jam::Infrastructure::Siv3DInputManager m_inputManager;
 		std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody> m_ground;
-		
+
 		// Stage用
 		std::unique_ptr<Jam::Presentation::Stage::StageManager> m_stageManager;
 		std::unique_ptr<Jam::Presentation::Stage::StageRenderer> m_stageRenderer;
-		
+
 		// Enemy用
 		HashSet<P2ContactPair> m_previousContacts;
 
@@ -64,7 +64,7 @@ namespace Jam::Presentation::Scenes
 			m_gameEventQueue = std::make_shared<Jam::Domain::Events::GameEventQueue>();
 			m_cameraEventQueue = std::make_shared<Jam::UseCase::CameraEventQueue>();
 			m_eventHandler = std::make_shared<Jam::UseCase::GameEventHandler>(
-				*m_gameEventQueue,*m_cameraEventQueue);
+				*m_gameEventQueue, *m_cameraEventQueue);
 
 			// === Player 初期化 ===
 			auto stats = Jam::Infrastructure::Physics::LoadFromJSON(U"../Assets/Player/player_stats.json");
@@ -99,6 +99,10 @@ namespace Jam::Presentation::Scenes
 
 			// === Stage 初期化 ===
 			m_stageManager = std::make_unique<Jam::Presentation::Stage::StageManager>();
+			// TODO: ステージ選択機能の実装
+			// - ステージファイル名を動的に切り替え可能にする
+			// - StageManagerにステージ切り替えメソッドを追加
+			// - 例: m_stageManager->switchStage(selectedStageFile);
 			m_stageManager->initialize(m_world, m_physicsBodies);
 			m_stageRenderer = std::make_unique<Jam::Presentation::Stage::StageRenderer>();
 			m_stageRenderer->setStageManager(m_stageManager.get());
