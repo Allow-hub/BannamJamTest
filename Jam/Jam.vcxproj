@@ -375,6 +375,7 @@
     <ClInclude Include="src\UseCase\EnemyFactory.h" />
     <ClInclude Include="src\UseCase\GameEventHandler.h" />
     <ClInclude Include="src\UseCase\PlayerService.h" />
+    <ClInclude Include="src\UseCase\StageService.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>

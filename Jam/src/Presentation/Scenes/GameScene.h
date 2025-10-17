@@ -182,7 +182,7 @@ namespace Jam::Presentation::Scenes
 			// Stage更新
 			if (m_stageManager)
 			{
-				m_stageManager->update();
+				m_stageManager->update(Scene::DeltaTime());
 			}
 
 			// 敵の更新
