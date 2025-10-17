@@ -18,6 +18,13 @@ namespace Jam::Domain::Physics
 		double restitutionThreshold = 1.0;
 	};
 
+	enum class PhysicsShape
+	{
+		Rect,//矩形
+		Circle,
+
+	};
+
 	//物理の判定用レイヤー
 	enum class PhysicsLayer
 	{

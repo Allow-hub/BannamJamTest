@@ -59,9 +59,13 @@ namespace Jam::UseCase
 			{
 				m_player->attack();
 			}
-			if (inputState.skill) // Skill ボタンが押されていたら
+			if (inputState.skillPush) // Skill ボタンが押されていたら
 			{
-				m_player->skill();
+				m_player->skillPush();
+			}
+			if (inputState.skillReleased) // Skill ボタンが離れてたら
+			{
+				m_player->skillReleased();
 			}
 
 			// ---------------------------------
@@ -84,6 +88,11 @@ namespace Jam::UseCase
 			m_manager.SetRunning(isRunning);
 
 			m_player->update(deltaTime);
+		}
+
+		void draw() const
+		{
+			m_player->draw();
 		}
 
 		std::shared_ptr<Domain::Player::Player> getPlayer() const { return m_player; }

@@ -22,6 +22,7 @@ namespace Jam::Domain::Player
 		explicit Player(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Events::GameEventQueue& eventQueue);
 
 		void update(double deltaTime);
+		void draw()const;
 
 		void moveLeft();
 		void moveRight();
@@ -29,7 +30,8 @@ namespace Jam::Domain::Player
 		void endDash();
 		void attack();
 
-		void skill();
+		void skillPush();
+		void skillReleased();
 		void changeSkill(int direction);
 		void jump();
 

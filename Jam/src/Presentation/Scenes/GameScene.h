@@ -14,6 +14,8 @@
 #include "../CameraManager.h"
 #include "../../UseCase/CameraService.h"
 #include "../../UseCase/GameEventHandler.h"
+#include "../../Infrastructure/Siv3DPhysicsBodyFactory.h"
+#include "../../Infrastructure/FactoryServiceLocator.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -62,6 +64,12 @@ namespace Jam::Presentation::Scenes
 			m_inputManager(),
 			m_stage(std::make_unique<Jam::Domain::Stage::NormalStage>())
 		{
+			// --- FactoryServiceLocator初期化 ---
+			auto& locator = Jam::Infrastructure::Locator::FactoryServiceLocator::instance();
+			auto physicsFactory = std::make_shared<Jam::Infrastructure::Locator::Siv3DPhysicsBodyFactory>();
+			physicsFactory->initialize(m_world);
+			locator.registerPhysicsFactory(physicsFactory);
+
 			// === Game内のイベント用クラスを初期化 ===
 			m_gameEventQueue = std::make_shared<Jam::Domain::Events::GameEventQueue>();
 			m_cameraEventQueue = std::make_shared<Jam::UseCase::CameraEventQueue>();
@@ -71,8 +79,9 @@ namespace Jam::Presentation::Scenes
 			// === Player 初期化 ===
 			auto stats = Jam::Infrastructure::Physics::LoadFromJSON(U"../Assets/Player/player_stats.json");
 
-			auto playerBody = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
-				m_world,
+			auto playerBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+				.getPhysicsFactory()
+				->createBody(
 				Vec2{ 0, 0 },
 				SizeF{ 50, 100 },
 				s3d::P2BodyType::Dynamic,
@@ -243,6 +252,7 @@ namespace Jam::Presentation::Scenes
 
 				// プレイヤーの描画
 				m_playerManager->draw();
+				m_playerService->draw();//TODO:描画担当ではないので変えたい
 
 				// 敵の描画
 				if (m_enemyManager)

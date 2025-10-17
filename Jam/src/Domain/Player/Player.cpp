@@ -18,13 +18,23 @@ namespace Jam::Domain::Player
 	void Player::update(double deltaTime)
 	{
 		updateState();
-		// 現在スキルが「更新が必要」ならUpdateを呼ぶ
-		if (m_currentSkill && m_currentSkill->needUpdate())
+		// 全スキルを更新（アクティブ/非アクティブ問わず、必要なものだけ）
+		for (auto& skill : m_skills)
 		{
-			m_currentSkill->update(deltaTime);
+			if (skill->needUpdate())
+				skill->update(deltaTime);
 		}
 	}
 
+	void Player::draw() const
+	{
+		// 全スキルを描画
+		for (const auto& skill : m_skills)
+		{
+			if (skill->needUpdate())
+				skill->draw();
+		}
+	}
 	void Player::moveLeft()
 	{
 		m_body->applyForce({ -m_stats.moveSpeed, 0 });
@@ -72,12 +82,17 @@ namespace Jam::Domain::Player
 	}
 
 	//後々スキルはコンストラクタで使える武器をステージごとに選べるように
-	void Player::skill()
+	void Player::skillPush()
 	{
 		if (m_currentSkill)
 			m_currentSkill->use(getPosition(), m_facingRight);
+		Print << getPosition();
 	}
-
+	void Player::skillReleased()
+	{
+		if (m_currentSkill)
+			m_currentSkill->useReleased(getPosition(), m_facingRight);
+	}
 	void Player::changeSkill(int direction)
 	{
 		if (m_skills.empty()) return;

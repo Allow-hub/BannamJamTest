@@ -3,7 +3,7 @@
 
 namespace Jam::Domain::Physics
 {
-
+	class ICollisionListener;
 	class IPhysicsBody
 	{
 	public:
@@ -25,5 +25,6 @@ namespace Jam::Domain::Physics
 		virtual PhysicsLayer getLayer() const = 0;
 		virtual void setLayer(PhysicsLayer layer) = 0;
 		virtual void drawFrame(const double thickness = 1.0, const ColorF& color = Palette::White) = 0;
+		virtual void setCollisionListener(const std::shared_ptr<ICollisionListener>& listener) = 0;
 	};
 }
