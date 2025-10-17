@@ -931,5 +931,17 @@
     <ClInclude Include="src\Presentation\Scenes\StoryScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Domain\Stage\IStage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Domain\Stage\NormalStage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Domain\Stage\StageTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Infrastructure\StageLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
