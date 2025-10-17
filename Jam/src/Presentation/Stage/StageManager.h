@@ -20,16 +20,14 @@ namespace Jam::Presentation::Stage {
 			updateMovingPlatforms();
 		}
 
-		// TODO：このdraw関数は今後StageRendererなどのクラスに移行すること
-		void draw() {
-			drawStages();
-		}
+		// データアクセスメソッド（StageRendererで使用）
+		const Array<Jam::Domain::Stage::StageObject>& getNormalObjects() const { return m_normalObjects; }
+		const Array<Jam::Domain::Stage::StageObject>& getMovingObjects() const { return m_movingObjects; }
+		const Array<std::shared_ptr<Jam::Infrastructure::Physics::Siv3DPhysicsBody>>& getMovingBodies() const { return m_movingBodies; }
 
 	private:
 		// 定数
 		static constexpr double SCREEN_MARGIN = 50.0;
-		static constexpr int NORMAL_FRAME_THICKNESS = 2;
-		static constexpr int MOVING_FRAME_THICKNESS = 3;
 
 		// 物理世界への参照
 		P2World* m_world = nullptr;
@@ -102,24 +100,6 @@ namespace Jam::Presentation::Stage {
 
 				m_movingBodies[i]->setPos(newPos);
 			}
-		}
-
-		void drawStages() {
-			// 通常ステージの描画
-			for (size_t i = 0; i < m_normalObjects.size(); ++i) {
-				drawStageObject(m_normalObjects[i], Palette::Blue, NORMAL_FRAME_THICKNESS);
-			}
-
-			// 動くプラットフォームの描画
-			for (size_t i = 0; i < m_movingBodies.size() && i < m_movingObjects.size(); ++i) {
-				Vec2 pos = m_movingBodies[i]->getPosition();
-				SizeF size = m_movingObjects[i].rect.size;
-				RectF(pos - size * 0.5, size).drawFrame(MOVING_FRAME_THICKNESS, Palette::Orange);
-			}
-		}
-
-		void drawStageObject(const Jam::Domain::Stage::StageObject& obj, ColorF color, int thickness) {
-			obj.rect.drawFrame(thickness, color);
 		}
 	};
 }

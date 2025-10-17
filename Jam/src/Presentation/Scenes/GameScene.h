@@ -7,8 +7,9 @@
 #include "../../Infrastructure/Siv3DPhysicsBody.h"
 #include "../../Domain/Stage/NormalStage.h"
 #include "../../Domain/Stage/MovingPlatformStage.h"
-#include "../Stage/StageManager.h"
 #include "../../Infrastructure/StageLoader.h"
+#include "../Stage/StageManager.h"
+#include "../Stage/StageRenderer.h"
 #include "../../Infrastructure/PhysicsConverter.h"
 #include "../EnemyManager.h"
 #include "../../UseCase/EnemyFactory.h"
@@ -48,6 +49,7 @@ namespace Jam::Presentation::Scenes
 		
 		// Stage用
 		std::unique_ptr<Jam::Presentation::Stage::StageManager> m_stageManager;
+		std::unique_ptr<Jam::Presentation::Stage::StageRenderer> m_stageRenderer;
 		
 		// Enemy用
 		HashSet<P2ContactPair> m_previousContacts;
@@ -98,6 +100,8 @@ namespace Jam::Presentation::Scenes
 			// === Stage 初期化 ===
 			m_stageManager = std::make_unique<Jam::Presentation::Stage::StageManager>();
 			m_stageManager->initialize(m_world, m_physicsBodies);
+			m_stageRenderer = std::make_unique<Jam::Presentation::Stage::StageRenderer>();
+			m_stageRenderer->setStageManager(m_stageManager.get());
 
 			// === Camera 初期化 ===
 			m_cameraManager = std::make_shared<Jam::Presentation::CameraManager>(
@@ -212,9 +216,9 @@ namespace Jam::Presentation::Scenes
 				const auto transformer = m_cameraManager->createTransformer();
 
 				// Stage描画
-				if (m_stageManager)
+				if (m_stageRenderer)
 				{
-					m_stageManager->draw();
+					m_stageRenderer->draw();
 				}
 
 				// プレイヤーの描画
