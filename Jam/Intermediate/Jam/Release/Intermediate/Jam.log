@@ -1,43 +1,68 @@
-﻿  Player.cpp
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombEntity.h(80,76): warning C4100: 'other': 参照されないパラメーター
+﻿  Main.cpp
+  Player.cpp
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombEntity.h(82,76): warning C4100: 'other': 参照されないパラメーター
   (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombEntity.h(81,76): warning C4100: 'other': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombEntity.h(83,76): warning C4100: 'other': 参照されないパラメーター
   (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombSkill.h(55,51): warning C4100: 'facingRight': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombSkill.h(54,51): warning C4100: 'facingRight': 参照されないパラメーター
   (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombSkill.h(55,36): warning C4100: 'position': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombSkill.h(54,36): warning C4100: 'position': 参照されないパラメーター
   (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(13,43): warning C4100: 'facingRight': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(13,43): warning C4100: 'facingRight': 参照されないパラメーター
   (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(13,28): warning C4100: 'position': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(13,28): warning C4100: 'position': 参照されないパラメーター
   (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(23,51): warning C4100: 'facingRight': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(23,51): warning C4100: 'facingRight': 参照されないパラメーター
   (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(23,36): warning C4100: 'position': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(23,36): warning C4100: 'position': 参照されないパラメーター
   (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(26,22): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(26,22): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Player.cpp(151,83): warning C4100: 'other': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Player.cpp(151,83): warning C4100: 'other': 参照されないパラメーター
   (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Player.cpp(152,83): warning C4100: 'other': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Player.cpp(152,83): warning C4100: 'other': 参照されないパラメーター
   (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
-     ライブラリ C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.lib とオブジェクト C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exp を作成中
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\StageTypes.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(19,36): warning C4100: 'deltaTime': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(20,68): warning C4100: 'speed': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(20,53): warning C4100: 'objectId': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(21,74): warning C4100: 'path': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(21,52): warning C4100: 'objectId': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\NormalStage.h(22,83): warning C4100: 'physicsBodies': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\UseCase\GameEventHandler.h(99,70): warning C4100: 'e': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+     ライブラリ C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.lib とオブジェクト C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exp を作成中
   コード生成しています。
-  6 of 5508 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    17 functions had inline decision re-evaluated but remain unchanged
+  44 of 5502 functions ( 0.8%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    47 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
-  Jam.vcxproj -> C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exe
-  C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exe
+  Jam.vcxproj -> C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exe
+  C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exe
   1 個のファイルをコピーしました

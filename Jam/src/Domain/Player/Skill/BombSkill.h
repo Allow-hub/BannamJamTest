@@ -26,7 +26,7 @@ namespace Jam::Domain::Player
 			// 制限チェック
 			if (m_bombs.size() >= m_maxBombs)
 			{
-				Print << U"❌ Bomb limit reached!";
+				//Print << U"❌ Bomb limit reached!";
 				return;
 			}
 
@@ -48,7 +48,6 @@ namespace Jam::Domain::Player
 			);
 			m_bombs.push_back(bomb);
 
-			Print(U"💣 Bomb thrown from ({}, {})", position.x, position.y);
 			m_pushing = true;
 		}
 

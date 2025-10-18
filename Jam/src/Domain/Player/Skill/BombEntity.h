@@ -6,6 +6,9 @@
 
 namespace Jam::Domain::Player
 {
+	// TODO : Animatorが聞かない
+	// プレイヤーの手を離れるオブジェクトは独立したオブジェクトのファクトリーを作ってそれをListにしてupdate
+	//する形にしないとPlayerがやられたらBombも消えることになる
 	class BombEntity : public Jam::Domain::Physics::ICollisionListener
 	{
 	private:
@@ -13,16 +16,16 @@ namespace Jam::Domain::Player
 		double m_timer = 0.0;
 		double m_lifeTime = 3.0; // 爆発までの時間
 		bool m_exploded = false;
-		//Jam::Presentation::Animator anim;
+		Jam::Presentation::Animator anim;
 
 	public:
 		BombEntity(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body)
 			: m_body(body)
 		{
-	/*		Jam::Presentation::AnimatorLoader::LoadAnimatorFromJSON(anim, U"../Assets/Player/Skill/Bomb/playerSkill_bomb.json");
-			anim.AddCondition({ { {U"isRunning", true} }, U"Run", 1 });
-			anim.AddCondition({ { {U"isRunning", false} }, U"Idle", 0 });
-			anim.SetBool(U"isRunning", false);*/
+			Jam::Presentation::AnimatorLoader::LoadAnimatorFromJSON(anim, U"../Assets/Player/Skill/Bomb/playerSkill_bomb.json");
+			anim.AddCondition({ { {U"isExploding", true} }, U"ExplodeBomb", 1 });
+			anim.AddCondition({ { {U"isExploding", false} }, U"NormalBomb", 0 });
+			anim.SetBool(U"isExploding", false);
 		}
 		
 		bool isAlive() const { return !m_exploded; }
@@ -30,7 +33,8 @@ namespace Jam::Domain::Player
 		void update(double deltaTime)
 		{
 			if (m_exploded) return;
-
+			anim.Update(deltaTime);
+			//anim.debug();
 			m_timer += deltaTime;
 
 			// 時間経過で爆発
@@ -44,7 +48,7 @@ namespace Jam::Domain::Player
 		{
 			if (!m_exploded)
 			{
-				//anim.Draw(m_body->getPosition());
+				anim.Draw(m_body->getPosition());
 				m_body->drawFrame(3.0, Palette::Darkcyan); // 毎フレーム描画
 			}
 		}
@@ -53,7 +57,7 @@ namespace Jam::Domain::Player
 		{
 			if (m_exploded) return;
 			m_exploded = true;
-			Print << U"💥 Bomb exploded!";
+			//Print << U"💥 Bomb exploded!";
 
 		}
 

@@ -143,7 +143,7 @@ namespace Jam::Domain::Player
 		case Jam::Domain::Physics::PhysicsLayer::Enemy:
 			break;
 		default:
-			Print(U"Not match tag");
+			//Print(U"Not match tag");
 			break;
 		}
 	}

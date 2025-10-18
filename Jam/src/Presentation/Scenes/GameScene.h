@@ -252,7 +252,6 @@ namespace Jam::Presentation::Scenes
 
 				// プレイヤーの描画
 				m_playerManager->draw();
-				m_playerService->draw();//TODO:描画担当ではないので変えたい
 
 				// 敵の描画
 				if (m_enemyManager)

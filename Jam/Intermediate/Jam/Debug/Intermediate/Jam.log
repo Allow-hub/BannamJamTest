@@ -1,23 +1,37 @@
-﻿  Main.cpp
-  EnemyBase.cpp
-  LittleDevil.cpp
-  Player.cpp
-  EnemyFactory.cpp
-C:\Users\PC_User\Documents\BannamJamTest\Jam\Main.cpp(1,1): error C2859: C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Intermediate\vc143.idb は、このプリコンパイル済みヘッダーが作成されたときに使用されたファイル idb ではありません。プリコンパイル済みヘッダーを再作成してください。
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\UseCase\EnemyFactory.cpp(1,1): error C2859: C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Intermediate\vc143.idb は、このプリコンパイル済みヘッダーが作成されたときに使用されたファイル idb ではありません。プリコンパイル済みヘッダーを再作成してください。
-  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.cpp(1,1): error C2859: C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Intermediate\vc143.idb は、このプリコンパイル済みヘッダーが作成されたときに使用されたファイル idb ではありません。プリコンパイル済みヘッダーを再作成してください。
-  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Player.cpp(1,1): error C2859: C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Intermediate\vc143.idb は、このプリコンパイル済みヘッダーが作成されたときに使用されたファイル idb ではありません。プリコンパイル済みヘッダーを再作成してください。
+﻿  Player.cpp
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombEntity.h(81,76): warning C4100: 'other': 参照されないパラメーター
   (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\LittleDevil.cpp(1,1): error C2859: C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Intermediate\vc143.idb は、このプリコンパイル済みヘッダーが作成されたときに使用されたファイル idb ではありません。プリコンパイル済みヘッダーを再作成してください。
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombEntity.h(82,76): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\StageTypes.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombSkill.h(54,51): warning C4100: 'facingRight': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombSkill.h(54,36): warning C4100: 'position': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(13,43): warning C4100: 'facingRight': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(13,28): warning C4100: 'position': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(23,51): warning C4100: 'facingRight': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(23,36): warning C4100: 'position': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(26,22): warning C4100: 'deltaTime': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Player.cpp(151,83): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Player.cpp(152,83): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+  Jam.vcxproj -> C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Jam(debug).exe
+  C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Jam(debug).exe
+  1 個のファイルをコピーしました

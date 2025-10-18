@@ -45,6 +45,7 @@ namespace Jam::Presentation
         {
             Vec2 pos = m_player->getPosition();
 			anim.Draw(pos);
+			m_player->draw();
         }
     };
 }
