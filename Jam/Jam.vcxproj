@@ -150,6 +150,7 @@
     <Image Include="App\example\texture\wood.jpg" />
     <Image Include="App\example\windmill.png" />
     <Image Include="App\icon.ico" />
+    <Image Include="Assets\Cursor\GameCursor.png" />
     <Image Include="Assets\Enemy\LittleDevil\idle_0.png" />
     <Image Include="Assets\Enemy\LittleDevil\idle_1.png" />
     <Image Include="Assets\Player\idle_0.png" />
@@ -366,6 +367,7 @@
     <ClInclude Include="src\Infrastructure\PhysicsConverter.h" />
     <ClInclude Include="src\Domain\Stage\NormalStage.h" />
     <ClInclude Include="src\Domain\Stage\StageTypes.h" />
+    <ClInclude Include="src\Infrastructure\Siv3DCursorUtil.h" />
     <ClInclude Include="src\Infrastructure\Siv3DInputManager.h" />
     <ClInclude Include="src\Infrastructure\Siv3DPhysicsBody.h" />
     <ClInclude Include="src\Infrastructure\Siv3DPhysicsBodyFactory.h" />

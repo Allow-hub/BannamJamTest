@@ -251,6 +251,12 @@
     <Image Include="Assets\Enemy\LittleDevil\idle_1.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Assets\Player\Skill\Bomb\Bomb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Cursor\GameCursor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc">
@@ -307,6 +313,7 @@
       <Filter>Resource Files\example</Filter>
     </Text>
     <Text Include="src\Domain\Physics\Domain_PhysicsDoc.md" />
+    <Text Include="Assets\Player\Skill\Bomb\playerSkill_bomb.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App\dll\soundtouch\SoundTouch_x64.dll">
@@ -806,6 +813,7 @@
     <None Include="Assets\Enemy\LittleDevil\littleDevil_animation.json" />
     <None Include="Assets\Enemy\enemy_stats.json" />
     <None Include="src\Domain\Events\Events.md" />
+    <None Include="Assets\Player\skillData.json" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="App\example\test.mp3">
@@ -929,6 +937,42 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Presentation\Scenes\StoryScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Domain\Player\Skill\BombEntity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Domain\Player\Skill\BombSkill.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Domain\Player\Skill\ChokerSkill.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Domain\Player\Skill\IPlayerSkill.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Domain\Stage\IStage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Infrastructure\FactoryServiceLocator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Infrastructure\IPhysicsBodyFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Domain\Stage\NormalStage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Domain\Stage\StageTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Infrastructure\Siv3DPhysicsBodyFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Infrastructure\StageLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Infrastructure\Siv3DCursorUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

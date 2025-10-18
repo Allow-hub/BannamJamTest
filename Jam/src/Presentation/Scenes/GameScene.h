@@ -16,6 +16,7 @@
 #include "../../UseCase/GameEventHandler.h"
 #include "../../Infrastructure/Siv3DPhysicsBodyFactory.h"
 #include "../../Infrastructure/FactoryServiceLocator.h"
+#include "../../Infrastructure/Siv3DCursorUtil.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -203,6 +204,10 @@ namespace Jam::Presentation::Scenes
 
 		void update() override
 		{
+			auto& cursorUtil = Jam::Infrastructure::CursorUtil::instance();
+			//cursorUtil.registerCursorFromImage(U"../Assets/Cursor/GameCursor.png", Jam::Infrastructure::CursorStyle::Game);
+			cursorUtil.setCursor(CursorStyle::Cross);
+			cursorUtil.setClipWindowCuror(true);
 			m_playerService->update(Scene::DeltaTime());
 			m_playerManager->update();
 

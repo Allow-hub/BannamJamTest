@@ -1,5 +1,7 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
+#include "../Events/GameEvents.h"
+
 
 namespace Jam::Domain::Player
 {
@@ -14,10 +16,11 @@ namespace Jam::Domain::Player
 	{
 	protected:
 		PlayerSkillType m_type;
+		Jam::Domain::Events::GameEventQueue&  m_eventQueue;
 
 	public:
-		explicit IPlayerSkill(PlayerSkillType type)
-			: m_type(type) {
+		explicit IPlayerSkill(PlayerSkillType type,Jam::Domain::Events::GameEventQueue& eventQueue)
+			: m_type(type), m_eventQueue(eventQueue) {
 		}
 
 		virtual ~IPlayerSkill() = default;

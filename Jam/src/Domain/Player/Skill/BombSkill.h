@@ -17,8 +17,8 @@ namespace Jam::Domain::Player
 		const Vec2 createOffset = Vec2{ 50,-30 };
 
 	public:
-		BombSkill()
-			: IPlayerSkill(PlayerSkillType::Bomb) {}
+		BombSkill(Jam::Domain::Events::GameEventQueue& eventQueue)
+			: IPlayerSkill(PlayerSkillType::Bomb,eventQueue) {}
 
 		void use(const s3d::Vec2 position, bool facingRight) override
 		{
