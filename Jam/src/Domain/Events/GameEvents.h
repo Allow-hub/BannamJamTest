@@ -34,6 +34,12 @@ namespace Jam::Domain::Events
 		double damage;
 	};
 
+	struct PlayerChokerSkillEvent
+	{
+		double zoom;
+		double duration;
+	};
+
 	struct BossAppearedEvent
 	{
 		Vec2 position;
@@ -51,6 +57,7 @@ namespace Jam::Domain::Events
 		EnemyDamagedEvent,
 		EnemyDefeatedEvent,
 		PlayerAttackedEvent,
+		PlayerChokerSkillEvent,
 		PlayerDamagedEvent,
 		BossAppearedEvent,
 		ItemCollectedEvent

@@ -103,7 +103,11 @@ namespace Jam::Domain::Player
 			m_body->setPos(hookStartPos);
 
 			// 方向を計算して発射
-			Vec2 dir = (target - hookStartPos).normalized();
+			Vec2 diff = target - hookStartPos;
+			if (diff.isZero()) {
+				diff = Vec2{ 1, 0 }; // デフォルト方向（右向き）
+			}
+			Vec2 dir = diff.normalized();
 			const double speed = 5000.0;
 			m_body->setVelocity(dir * speed);
 
@@ -154,7 +158,12 @@ namespace Jam::Domain::Player
 				.getPhysicsFactory()
 				->getBody(m_ownerId);
 
-			playerBody->applyImpulse(m_lastDir * m_releaseImpulse);
+			Vec2 impulseDir = m_lastDir;
+			if (!impulseDir.hasNaN() || impulseDir.isZero()) {
+				// 空中で何もヒットしていない場合は、プレイヤーの向きに応じて上方向か前方向に補正
+				impulseDir = facingRight ? Vec2{ 1, -0.5 }.normalized() : Vec2{ -1, -0.5 }.normalized();
+			}
+			playerBody->applyImpulse(impulseDir * m_releaseImpulse);
 		}
 
 		void update(double deltaTime) override
@@ -198,11 +207,10 @@ namespace Jam::Domain::Player
 			using namespace Jam::Domain::Physics;
 			if (other->getLayer() == PhysicsLayer::Ground && m_isFlying && !m_isJointCreated)
 			{
-				/*m_eventQueue.push(Events::EnemyDefeatedEvent{
-					{0,0},
-					true,
-					Jam::UseCase::EnemyType::LittleDevil
-				});*/
+				m_eventQueue.push(Events::PlayerChokerSkillEvent{
+					0.8,
+					0.7
+				});
 				m_body->setVelocity({ 0, 0 });
 				m_body->setBodyType(Jam::Domain::Physics::PhysicsType::Static);
 				m_isFlying = false;
@@ -222,6 +230,9 @@ namespace Jam::Domain::Player
 
 				Vec2 playerPos = playerBody->getPosition();
 				double dist = (hookPos - playerPos).length();
+				if (!std::isfinite(dist) || dist < 1.0) {
+					dist = 1.0; // 最小距離を確保
+				}
 				// 既存のジョイントを解放（念のため）
 				releaseJoint();
 
@@ -239,8 +250,12 @@ namespace Jam::Domain::Player
 					m_joint->setLinearStiffness(10.0, 1.0);
 					m_joint->setMinLength(0.0);
 					m_joint->setMaxLength(dist);
-					m_lastDir = (hookPos - playerPos).normalized();
-					const double angleOffset = -8_deg; //  上方向に8度
+					Vec2 diff = hookPos - playerPos;
+					if (diff.isZero()) {
+						diff = Vec2{ 0, -1 }; // デフォルトで上方向に引く
+					}
+					m_lastDir = diff.normalized();
+					const double angleOffset = -8_deg;
 					m_lastDir = m_lastDir.rotated(angleOffset);
 
 					m_isJointCreated = true;  // フラグを立てる

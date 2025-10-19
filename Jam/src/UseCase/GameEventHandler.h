@@ -40,6 +40,10 @@ namespace Jam::UseCase
 					{
 						handlePlayerAttacked(e);
 					}
+					else if constexpr (std::is_same_v<T, Domain::Events::PlayerChokerSkillEvent>)
+					{
+						handlePlayerChokerSkilled(e);
+					}
 					else if constexpr (std::is_same_v<T, Domain::Events::PlayerDamagedEvent>)
 					{
 						handlePlayerDamaged(e);
@@ -96,6 +100,10 @@ namespace Jam::UseCase
 			}
 		}
 
+		void handlePlayerChokerSkilled(const Domain::Events::PlayerChokerSkillEvent& e)
+		{
+			m_cameraEventQueue.push(CameraZoomEvent{ e.zoom,e.duration });
+		}
 		void handlePlayerDamaged(const Domain::Events::PlayerDamagedEvent& e)
 		{
 			// プレイヤーがダメージを受けた時の演出

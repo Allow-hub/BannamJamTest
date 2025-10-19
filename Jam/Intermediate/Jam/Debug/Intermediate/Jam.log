@@ -1,24 +1,56 @@
-﻿  Player.cpp
-C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombEntity.h(84,76): warning C4100: 'other': 参照されないパラメーター
+﻿  Main.cpp
+  Player.cpp
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombEntity.h(84,76): warning C4100: 'other': 参照されないパラメーター
   (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
-C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombEntity.h(85,76): warning C4100: 'other': 参照されないパラメーター
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombEntity.h(85,76): warning C4100: 'other': 参照されないパラメーター
   (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
-C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombSkill.h(54,51): warning C4100: 'facingRight': 参照されないパラメーター
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombSkill.h(54,51): warning C4100: 'facingRight': 参照されないパラメーター
   (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
-C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombSkill.h(54,36): warning C4100: 'position': 参照されないパラメーター
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombSkill.h(54,36): warning C4100: 'position': 参照されないパラメーター
   (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
-C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(26,12): error C2664: 'void Jam::Domain::Physics::IPhysicsBody::setCollisionListener(const std::shared_ptr<Jam::Domain::Physics::ICollisionListener> &)': 引数 1 を 'Jam::Domain::Player::ChokerSkill *' から 'const std::shared_ptr<Jam::Domain::Physics::ICollisionListener> &' へ変換できません。
-  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
-      C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(26,33):
-      理由: 'Jam::Domain::Player::ChokerSkill *' から 'const std::shared_ptr<Jam::Domain::Physics::ICollisionListener>' へは変換できません。
-      C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(26,33):
-      class 'std::shared_ptr<Jam::Domain::Physics::ICollisionListener>' のコンストラクターが 'explicit' と宣言されています。
-      C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Physics\IPhysicsBody.h(28,16):
-      'Jam::Domain::Physics::IPhysicsBody::setCollisionListener' の宣言を確認してください
-      C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(26,12):
-      引数リスト '(Jam::Domain::Player::ChokerSkill *)' を一致させようとしているとき
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(19,36): warning C4100: 'deltaTime': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
   
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(20,68): warning C4100: 'speed': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(20,53): warning C4100: 'objectId': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(21,74): warning C4100: 'path': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(21,52): warning C4100: 'objectId': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(75,43): warning C4100: 'facingRight': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(135,36): warning C4100: 'position': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(271,76): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(272,76): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Player.cpp(174,83): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Player.cpp(175,83): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\NormalStage.h(22,83): warning C4100: 'physicsBodies': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\UseCase\GameEventHandler.h(107,70): warning C4100: 'e': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+  Jam.vcxproj -> C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Jam(debug).exe
+  C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Jam(debug).exe
+  1 個のファイルをコピーしました
