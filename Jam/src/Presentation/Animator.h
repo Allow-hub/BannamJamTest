@@ -143,5 +143,13 @@ namespace Jam::Presentation
 			else
 				frame.texture.resized(frame.size).drawAt(pos);
 		}
+
+		void debug() {
+			Print << U"Draw呼ばれた currentClip=" << currentClip
+				<< U" frameIndex=" << currentFrame
+				<< U" clip存在=" << (clips.contains(currentClip) ? U"Yes" : U"No")
+				<< U" textureロード=" << (clips.contains(currentClip) ? (bool)clips.at(currentClip).frames[currentFrame].texture : false);
+
+		}
 	};
 }

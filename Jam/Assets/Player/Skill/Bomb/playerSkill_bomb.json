@@ -1,0 +1,28 @@
+{
+  "clips": [
+    {
+      "name": "NormalBomb",
+      "loop": true,
+      "frames": [
+        {
+          "path": "../Assets/Player/Skill/Bomb/Bomb.png",
+          "duration": 1.5,
+          "width": 500,
+          "height": 500
+        }
+      ]
+    },
+    {
+      "name": "ExplodeBomb",
+      "loop": true,
+      "frames": [
+        {
+          "path": "../Assets/Player/Skill/Bomb/Bomb.png",
+          "duration": 1,
+          "width": 500,
+          "height": 500
+        }
+      ]
+    }
+  ]
+}

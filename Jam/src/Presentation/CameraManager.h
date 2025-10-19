@@ -116,6 +116,27 @@ namespace Jam::Presentation
 			m_camera.update();
 		}
 
+		// スクリーン座標をワールド座標に変換
+		[[nodiscard]] Vec2 screenToWorld(const Vec2& screenPos) const
+		{
+			// カメラの中心位置とスケールを取得
+			const Vec2 center = m_camera.getCenter();
+			const double scale = m_camera.getScale();
+
+			// スクリーン中心からの相対座標を計算
+			const Vec2 screenCenter = Scene::Center();
+			const Vec2 offset = (screenPos - screenCenter) / scale;
+
+			// ワールド座標を計算
+			return center + offset;
+		}
+
+		// カーソルのワールド座標を取得
+		[[nodiscard]] Vec2 getCursorWorldPos() const
+		{
+			return screenToWorld(Cursor::PosF());
+		}
+
 		[[nodiscard]] auto createTransformer() const
 		{
 			return m_camera.createTransformer();

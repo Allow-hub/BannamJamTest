@@ -29,4 +29,20 @@ namespace Jam::Infrastructure::Physics
 
 		return stats;
 	}
+
+	inline s3d::P2BodyType ToSiv3DBodyType(Jam::Domain::Physics::PhysicsType type)
+	{
+		using namespace Jam::Domain::Physics;
+		switch (type)
+		{
+		case PhysicsType::Static:
+			return s3d::P2BodyType::Static;
+		case PhysicsType::Kinematic:
+			return s3d::P2BodyType::Kinematic;
+		case PhysicsType::Dynamic:
+		default:
+			return s3d::P2BodyType::Dynamic;
+		}
+	}
+
 }

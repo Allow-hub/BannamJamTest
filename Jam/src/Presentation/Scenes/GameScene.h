@@ -14,6 +14,9 @@
 #include "../CameraManager.h"
 #include "../../UseCase/CameraService.h"
 #include "../../UseCase/GameEventHandler.h"
+#include "../../Infrastructure/Siv3DPhysicsBodyFactory.h"
+#include "../../Infrastructure/FactoryServiceLocator.h"
+#include "../../Infrastructure/Siv3DCursorUtil.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -62,6 +65,16 @@ namespace Jam::Presentation::Scenes
 			m_inputManager(),
 			m_stage(std::make_unique<Jam::Domain::Stage::NormalStage>())
 		{
+			// --- FactoryServiceLocator初期化 ---
+			auto& locator = Jam::Infrastructure::Locator::FactoryServiceLocator::instance();
+			auto physicsFactory = std::make_shared<Jam::Infrastructure::Locator::Siv3DPhysicsBodyFactory>();
+			physicsFactory->initialize(m_world);
+			// ボディ作成時に自動的にm_physicsBodiesに追加するコールバックを設定
+			physicsFactory->setBodyCreatedCallback([this](auto body) {
+				m_physicsBodies.push_back(body);
+			});
+			locator.registerPhysicsFactory(physicsFactory);
+
 			// === Game内のイベント用クラスを初期化 ===
 			m_gameEventQueue = std::make_shared<Jam::Domain::Events::GameEventQueue>();
 			m_cameraEventQueue = std::make_shared<Jam::UseCase::CameraEventQueue>();
@@ -71,8 +84,9 @@ namespace Jam::Presentation::Scenes
 			// === Player 初期化 ===
 			auto stats = Jam::Infrastructure::Physics::LoadFromJSON(U"../Assets/Player/player_stats.json");
 
-			auto playerBody = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
-				m_world,
+			auto playerBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+				.getPhysicsFactory()
+				->createBody(
 				Vec2{ 0, 0 },
 				SizeF{ 50, 100 },
 				s3d::P2BodyType::Dynamic,
@@ -82,11 +96,11 @@ namespace Jam::Presentation::Scenes
 			m_player = std::make_shared<Domain::Player::Player>(playerBody, *m_gameEventQueue);
 			playerBody->setCollisionListener(m_player);
 
-			m_physicsBodies.push_back(
-				std::dynamic_pointer_cast<Infrastructure::Physics::Siv3DPhysicsBody>(
-					m_player->getPhysicsBody()
-				)
-			);
+			//m_physicsBodies.push_back(
+			//	std::dynamic_pointer_cast<Infrastructure::Physics::Siv3DPhysicsBody>(
+			//		m_player->getPhysicsBody()
+			//	)
+			//);
 			m_player->setSpeed(stats.moveSpeed);
 			m_player->setJumpPower(stats.jumpPower);
 
@@ -106,7 +120,7 @@ namespace Jam::Presentation::Scenes
 				*m_cameraManager,
 				*m_cameraEventQueue
 			);
-
+			Jam::Infrastructure::CursorUtil::instance().setCameraManager(m_cameraManager);
 			// === Enemy 初期化 ===
 			m_enemyFactory = std::make_unique<Jam::UseCase::EnemyFactory>();
 			m_enemyManager = std::make_unique<Jam::Presentation::EnemyManager>();
@@ -139,8 +153,9 @@ namespace Jam::Presentation::Scenes
 			const auto& status = it->second;
 
 			// 敵を生成して配置
-			auto enemyBody = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
-				m_world,
+			auto enemyBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+				.getPhysicsFactory()
+				->createBody(
 				Vec2{ 200, 0 },  // 初期位置
 				status.colSize,   // サイズ
 				s3d::P2BodyType::Dynamic,
@@ -155,7 +170,6 @@ namespace Jam::Presentation::Scenes
 			if (enemy)
 			{
 				enemyBody->setCollisionListener(enemy);
-				m_physicsBodies.push_back(enemyBody);
 				// EnemyManagerに登録
 				int enemyId = m_enemyManager->AddEnemy(enemy, U"../Assets/Enemy/LittleDevil/littleDevil_animation.json");
 				m_enemyManager->getAnimator(enemyId).AddCondition({ { {U"isRunning", false} }, U"Idle", 0 });
@@ -171,15 +185,15 @@ namespace Jam::Presentation::Scenes
 			// json
 			auto physicsBodyFactory = [this](const RectF& rect, Jam::Domain::Physics::PhysicsLayer layer) 
 				-> std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> {
-				auto body = std::make_shared<Infrastructure::Physics::Siv3DPhysicsBody>(
-					m_world,
+				auto body = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+					.getPhysicsFactory()
+					->createBody(
 					rect.center(),
 					rect.size,
 					s3d::P2BodyType::Static,
 					Jam::Domain::Physics::PhysicsMaterial{ 1.0, 0.0, 0.0 }
 				);
 				body->setLayer(layer);
-				m_physicsBodies.push_back(body);
 				return body;
 			};
 			
@@ -194,6 +208,10 @@ namespace Jam::Presentation::Scenes
 
 		void update() override
 		{
+			auto& cursorUtil = Jam::Infrastructure::CursorUtil::instance();
+			//cursorUtil.registerCursorFromImage(U"../Assets/Cursor/GameCursor.png", Jam::Infrastructure::CursorStyle::Game);
+			cursorUtil.setCursor(CursorStyle::Cross);
+			cursorUtil.setClipWindowCuror(true);
 			m_playerService->update(Scene::DeltaTime());
 			m_playerManager->update();
 

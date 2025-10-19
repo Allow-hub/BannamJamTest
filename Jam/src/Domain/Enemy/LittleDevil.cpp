@@ -47,7 +47,7 @@ namespace Jam::Domain::Enemy
 	void LittleDevil::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{
 		// TODO: 当たり判定で攻撃処理などを実装
-		Print(U"HIT");
+		//Print(U"HIT");
 	}
 
 	void LittleDevil::onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
