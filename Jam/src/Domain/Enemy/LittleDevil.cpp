@@ -12,12 +12,13 @@ namespace Jam::Domain::Enemy
 		aiList.emplace_back(AIType::Chase, std::make_unique<ChaseAI>());
 
 		setAIList(std::move(aiList));//setしたときにそのAIのEnterも入ります
+
+		Print << U"Current AI: " + AITypeToString(getAIType());
 	}
 
 	void LittleDevil::update(double deltaTime)
 	{
 		if (!isAlive()) return;
-		Print << U"Current AI: " + AITypeToString(getAIType());
 		m_currentAI->update(*this, deltaTime);
 		//moveRight();
 	}

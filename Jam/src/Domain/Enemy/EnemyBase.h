@@ -5,6 +5,9 @@
 #include <functional>
 #include "EnemyAI/IEnemyAI.h"
 
+namespace Jam::Infrastructure {
+	class FactoryServiceLocator;
+}
 namespace Jam::Domain::Enemy
 {
 	// エネミーのステータス情報
@@ -48,7 +51,7 @@ namespace Jam::Domain::Enemy
 		Vec2 getPosition() const;
 		void setPos(Vec2 p);
 		void setGravityScale(double s);
-
+		Vec2 getPlayerPos();
 		// =========================
 		// ステータス
 		// =========================

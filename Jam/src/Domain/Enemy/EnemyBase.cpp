@@ -2,12 +2,14 @@
 #include "../Physics/IPhysicsBody.h"
 #include "../Physics/PhysicsBodyID.h"
 #include "EnemyAI/IEnemyAI.h"
+#include "../../Infrastructure/FactoryServiceLocator.h"
+#include "../../Infrastructure/IPhysicsBodyFactory.h"
 
 namespace Jam::Domain::Enemy
 {
 	EnemyBase::EnemyBase(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Physics::PhysicsBodyID playerId)
 		: m_body(body)
-		, m_playerId(playerId)
+		, m_playerId(playerId)	
 		, m_isAlive(true)
 	{
 	}
@@ -49,6 +51,16 @@ namespace Jam::Domain::Enemy
 		m_body->setPos(p);
 	}
 
+	s3d::Vec2 EnemyBase::getPlayerPos()
+	{
+		auto physicsFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getPhysicsFactory();
+		if (!physicsFactory) return s3d::Vec2{ 0,0 };
+
+		auto playerBody = physicsFactory->getBody(m_playerId);
+		if (!playerBody) return s3d::Vec2{ 0,0 };
+
+		return playerBody->getPosition();
+	}
 	void EnemyBase::setGravityScale(double s)
 	{
 		m_body->setGravityScale(s);
@@ -59,7 +71,7 @@ namespace Jam::Domain::Enemy
 		// 共通破壊処理（派生クラスでエフェクトやスコア加算などを上書き可能）
 	}
 
-
+	//AIのリストを設定
 	void EnemyBase::setAIList(std::vector<std::pair<AIType, std::unique_ptr<IEnemyAI>>> aiList)
 	{
 		m_aiList = std::move(aiList);
@@ -70,6 +82,7 @@ namespace Jam::Domain::Enemy
 		}
 	}
 
+	//AIを切り替え
 	void EnemyBase::changeAI(AIType type)
 	{
 		for (auto& [aiType, ai] : m_aiList)
