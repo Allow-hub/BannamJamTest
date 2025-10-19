@@ -39,5 +39,7 @@ namespace Jam::Domain::Player
 		PlayerSkillType getType() const noexcept { return m_type; }
 
 		virtual void draw() const = 0;
+
+		virtual void onDeactivate() {}
 	};
 }

@@ -26,7 +26,7 @@ namespace Jam::Domain::Player
 		// フック時のパラメータ
 		const double m_pullImpulse = 300.0;  // 引き寄せの強さ
 		const double m_releaseImpulse = 300.0;  // 引き寄せの強さ
-		const double m_hookedMoveSpeed = 100000;  // フック中の移動速度倍率
+		const double m_hookedMoveSpeed = 3;  // フック中の移動速度倍率
 		Vec2 m_lastDir;
 
 		// ジョイントを完全に解放するヘルパー関数
@@ -126,7 +126,6 @@ namespace Jam::Domain::Player
 			if (m_joint.has_value())
 				m_joint->draw(Palette::Violet);
 			m_body->drawFrame(3.0, Palette::Violet);
-
 		}
 
 		void useReleased(const s3d::Vec2 position, bool facingRight) override
@@ -136,7 +135,6 @@ namespace Jam::Domain::Player
 			{
 				return;
 			}
-
 			// ジョイントを完全に解放
 			releaseJoint();
 
@@ -155,6 +153,7 @@ namespace Jam::Domain::Player
 			auto playerBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
 				.getPhysicsFactory()
 				->getBody(m_ownerId);
+
 			playerBody->applyImpulse(m_lastDir * m_releaseImpulse);
 		}
 
@@ -174,7 +173,7 @@ namespace Jam::Domain::Player
 			{
 				double currentMax = m_joint->getMaxLength();
 				double newMax = currentMax * 0.992; // 約0.8%短縮
-				double minLimit = 20.0; // 最短距離（めり込み防止）
+				double minLimit = 50.0; // 最短距離（めり込み防止）
 
 				if (newMax > minLimit)
 				{
@@ -199,6 +198,11 @@ namespace Jam::Domain::Player
 			using namespace Jam::Domain::Physics;
 			if (other->getLayer() == PhysicsLayer::Ground && m_isFlying && !m_isJointCreated)
 			{
+				/*m_eventQueue.push(Events::EnemyDefeatedEvent{
+					{0,0},
+					true,
+					Jam::UseCase::EnemyType::LittleDevil
+				});*/
 				m_body->setVelocity({ 0, 0 });
 				m_body->setBodyType(Jam::Domain::Physics::PhysicsType::Static);
 				m_isFlying = false;
@@ -236,6 +240,9 @@ namespace Jam::Domain::Player
 					m_joint->setMinLength(0.0);
 					m_joint->setMaxLength(dist);
 					m_lastDir = (hookPos - playerPos).normalized();
+					const double angleOffset = -8_deg; //  上方向に8度
+					m_lastDir = m_lastDir.rotated(angleOffset);
+
 					m_isJointCreated = true;  // フラグを立てる
 				}
 				else
@@ -273,7 +280,16 @@ namespace Jam::Domain::Player
 			return m_cooldownTimer;
 		}
 
-		bool isHooked()const { return m_isHooked; }
+		bool isFlying()const { return m_isActive; }
 		double getHookedMoveSpeedMultiplier()const { return m_hookedMoveSpeed; }
+
+		void onDeactivate()
+		{
+			if (m_joint.has_value())
+			{
+				resetHook();
+				releaseJoint();
+			}
+		}
 	};
 }

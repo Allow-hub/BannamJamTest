@@ -76,7 +76,7 @@ namespace Jam::Domain::Player
 		//		});
 		if (m_isGrounded)
 		{
-			 m_body->applyImpulse({ 0, -m_stats.jumpPower });
+			m_body->applyImpulse({ 0, -m_stats.jumpPower });
 			m_isGrounded = false;
 		}
 	}
@@ -102,7 +102,8 @@ namespace Jam::Domain::Player
 	void Player::changeSkill(int direction)
 	{
 		if (m_skills.empty()) return;
-
+		if (m_currentSkill)
+			m_currentSkill->onDeactivate();
 		// direction: 1 = ホイール上（次のスキル）、-1 = ホイール下（前のスキル）
 		auto it = std::find(m_skills.begin(), m_skills.end(), m_currentSkill);
 		if (it == m_skills.end())
@@ -145,7 +146,7 @@ namespace Jam::Domain::Player
 			if (skill->getType() == PlayerSkillType::Choker)
 			{
 				auto chokerSkill = std::dynamic_pointer_cast<ChokerSkill>(skill);
-				if (chokerSkill && chokerSkill->isHooked())
+				if (chokerSkill && chokerSkill->isFlying())
 				{
 					return chokerSkill->getHookedMoveSpeedMultiplier();
 				}
