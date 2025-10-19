@@ -1,2 +1,25 @@
-﻿  Jam.vcxproj -> C:\Users\usaha\Documents\GameJAM2025\Jam\Intermediate\Jam\Debug\Jam(debug).exe
-  0 個のファイルをコピーしました
+﻿  Main.cpp
+C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Stage\IStage.h(19,36): warning C4100: 'deltaTime': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Stage\IStage.h(20,68): warning C4100: 'speed': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Stage\IStage.h(20,53): warning C4100: 'objectId': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Stage\IStage.h(21,74): warning C4100: 'path': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Stage\IStage.h(21,52): warning C4100: 'objectId': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Stage\NormalStage.h(22,83): warning C4100: 'physicsBodies': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\usaha\Documents\GameJAM2025\Jam\src\UseCase\GameEventHandler.h(99,70): warning C4100: 'e': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+  Jam.vcxproj -> C:\Users\usaha\Documents\GameJAM2025\Jam\Intermediate\Jam\Debug\Jam(debug).exe
+  C:\Users\usaha\Documents\GameJAM2025\Jam\Intermediate\Jam\Debug\Jam(debug).exe
+  1 個のファイルをコピーしました
