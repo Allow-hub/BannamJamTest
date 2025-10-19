@@ -41,12 +41,42 @@ namespace Jam::Infrastructure::Physics
 		void applyForce(const Vec2& force) override { m_body.applyForce(force); }
 		void applyImpulse(const Vec2& impulse) { m_body.applyLinearImpulse(impulse); }
 		void setVelocity(const Vec2& v) override { m_body.setVelocity(v); }
+		void setAngularVelocity(const double& vel) override { m_body.setAngularVelocity(vel); }
 		Vec2 getVelocity() const override { return m_body.getVelocity(); }
-		void setPos(const Vec2& p) { m_body.setPos(p); }
+		void setPos(const Vec2& p)override { m_body.setPos(p); }
+		void setBullet(const bool b) override { m_body.setBullet(b); }
 		void setLayer(Jam::Domain::Physics::PhysicsLayer layer) override { m_layer = layer; }
 		void drawFrame(const double thickness = 1.0, const ColorF& color = Palette::White) { m_body.drawFrame(thickness, color); }
 		Jam::Domain::Physics::PhysicsLayer getLayer() const override { return m_layer; }
+		void* getNativeBody() override { return &m_body; }
+		void setBodyType(Jam::Domain::Physics::PhysicsType type) override { m_body.setBodyType(ToSiv3DBodyType(type)); }
 
+		std::optional<P2DistanceJoint> createDistanceJoint(
+			P2World& world,
+			const std::shared_ptr<IPhysicsBody>& other,
+			const Vec2& anchorThis,
+			const Vec2& anchorOther,
+			double length
+		) override
+		{
+			auto otherSiv = std::dynamic_pointer_cast<Siv3DPhysicsBody>(other);
+			if (!otherSiv) return std::nullopt;
+
+			auto joint = world.createDistanceJoint(
+				m_body,
+				anchorThis,
+				otherSiv->m_body,
+				anchorOther,
+				length,
+				EnableCollision::No
+			);
+
+			return joint;
+		}
+		Jam::Domain::Physics::PhysicsBodyID getID() const override
+		{
+			return static_cast<Jam::Domain::Physics::PhysicsBodyID>(m_body.id());
+		}
 
 		Jam::Domain::Physics::PhysicsTransform getTransform() const override
 		{
@@ -64,6 +94,7 @@ namespace Jam::Infrastructure::Physics
 		[[nodiscard]]
 		P2BodyID getBodyID() const noexcept { return m_body.id(); }
 		const P2Body& getBody() const { return m_body; }
+		P2Body& getBody()  { return m_body; }
 
 		void setCollisionListener(const std::shared_ptr<Jam::Domain::Physics::ICollisionListener>& listener)
 		{

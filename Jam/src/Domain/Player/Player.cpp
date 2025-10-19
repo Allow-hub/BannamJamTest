@@ -11,7 +11,9 @@ namespace Jam::Domain::Player
 		m_body->setLayer(Jam::Domain::Physics::PhysicsLayer::Player);
 		m_body->setGravityScale(1.5);
 		m_skills.push_back(std::make_shared<BombSkill>(eventQueue));
-		m_skills.push_back(std::make_shared<ChokerSkill>(eventQueue));
+		auto chokerSkill = std::make_shared<ChokerSkill>(eventQueue, m_body->getID());
+		chokerSkill->init(); // shared_from_this()を使用する初期化
+		m_skills.push_back(chokerSkill);
 		m_currentSkill = m_skills.front();
 	}
 
@@ -37,13 +39,17 @@ namespace Jam::Domain::Player
 	}
 	void Player::moveLeft()
 	{
-		m_body->applyForce({ -m_stats.moveSpeed, 0 });
+		double speedMultiplier = getHookedSpeedMultiplier();
+
+		m_body->applyForce({ -m_stats.moveSpeed * speedMultiplier, 0 });
 		m_facingRight = false;
 	}
 
 	void Player::moveRight()
 	{
-		m_body->applyForce({ m_stats.moveSpeed, 0 });
+		double speedMultiplier = getHookedSpeedMultiplier();
+
+		m_body->applyForce({ m_stats.moveSpeed * speedMultiplier, 0 });
 		m_facingRight = true;
 	}
 
@@ -131,6 +137,22 @@ namespace Jam::Domain::Player
 	{
 	}
 
+	double Player::getHookedSpeedMultiplier() const
+	{
+		// ChokerSkillを探す
+		for (const auto& skill : m_skills)
+		{
+			if (skill->getType() == PlayerSkillType::Choker)
+			{
+				auto chokerSkill = std::dynamic_pointer_cast<ChokerSkill>(skill);
+				if (chokerSkill && chokerSkill->isHooked())
+				{
+					return chokerSkill->getHookedMoveSpeedMultiplier();
+				}
+			}
+		}
+		return 1.0;  // フック中でなければ通常速度
+	}
 	void Player::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{
 		switch (other->getLayer())

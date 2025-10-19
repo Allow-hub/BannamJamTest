@@ -1,2 +1,43 @@
-﻿  Jam.vcxproj -> C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exe
-  0 個のファイルをコピーしました
+﻿  Player.cpp
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombEntity.h(84,76): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombEntity.h(85,76): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombSkill.h(54,51): warning C4100: 'facingRight': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombSkill.h(54,36): warning C4100: 'position': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(75,43): warning C4100: 'facingRight': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(132,51): warning C4100: 'facingRight': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(132,36): warning C4100: 'position': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(249,76): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.h(250,76): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Player.cpp(173,83): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Player.cpp(174,83): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+     ライブラリ C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.lib とオブジェクト C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exp を作成中
+  コード生成しています。
+  2 of 5821 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    6 functions had inline decision re-evaluated but remain unchanged
+  コード生成が終了しました。
+  Jam.vcxproj -> C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exe
+  C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exe
+  1 個のファイルをコピーしました

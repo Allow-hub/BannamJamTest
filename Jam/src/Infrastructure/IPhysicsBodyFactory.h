@@ -2,6 +2,7 @@
 #include <memory>
 #include "../Domain/Physics/IPhysicsBody.h"
 #include <Siv3D.hpp>
+#include "../Domain/Physics/PhysicsBodyID.h"
 
 namespace Jam::Infrastructure::Locator
 {
@@ -16,5 +17,11 @@ namespace Jam::Infrastructure::Locator
 			s3d::P2BodyType bodyType = s3d::P2BodyType::Dynamic,
 			const Jam::Domain::Physics::PhysicsMaterial& material = { 0.2, 0.0, 1.0 },
 			const Jam::Domain::Physics::PhysicsShape shape = Jam::Domain::Physics::PhysicsShape::Rect) = 0;
+
+
+		virtual std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> getBody(Jam::Domain::Physics::PhysicsBodyID id) const = 0;
+
+
+		virtual P2World& getWorld() const = 0;//Siv3Dへの依存は後で解消
 	};
 }

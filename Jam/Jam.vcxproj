@@ -354,6 +354,7 @@
     <ClInclude Include="src\Domain\IInputService.h" />
     <ClInclude Include="src\Domain\Physics\ICollisionListener.h" />
     <ClInclude Include="src\Domain\Physics\IPhysicsBody.h" />
+    <ClInclude Include="src\Domain\Physics\PhysicsBodyID.h" />
     <ClInclude Include="src\Domain\Physics\PhysicsTypes.h" />
     <ClInclude Include="src\Domain\Player\Skill\BombEntity.h" />
     <ClInclude Include="src\Domain\Player\Skill\BombSkill.h" />

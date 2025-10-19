@@ -25,6 +25,13 @@ namespace Jam::Domain::Physics
 
 	};
 
+	enum class PhysicsType
+	{
+		Static,
+		Kinematic,
+		Dynamic
+	};
+
 	//物理の判定用レイヤー
 	enum class PhysicsLayer
 	{
