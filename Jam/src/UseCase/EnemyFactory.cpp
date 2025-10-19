@@ -7,14 +7,15 @@ namespace Jam::UseCase
 
 	std::shared_ptr<EnemyBase> EnemyFactory::createEnemy(
 		EnemyType type,
-		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body) const
+		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body,
+		Jam::Domain::Physics::PhysicsBodyID playerId) const
 	{
 		std::shared_ptr<EnemyBase> enemy = nullptr;
 
 		switch (type)
 		{
 		case EnemyType::LittleDevil:
-			enemy = std::make_shared<LittleDevil>(body);
+			enemy = std::make_shared<LittleDevil>(body, playerId);
 			break;
 
 		case EnemyType::Ribbon:

@@ -1,10 +1,13 @@
 ﻿#pragma once
 #include "../Physics/ICollisionListener.h"
 #include "../Physics/PhysicsTypes.h"
+#include "../Physics/PhysicsBodyID.h"
 #include <functional>
+#include "EnemyAI/IEnemyAI.h"
 
 namespace Jam::Domain::Enemy
 {
+	// エネミーのステータス情報
 	struct EnemyStatus
 	{
 		int hp;
@@ -20,9 +23,16 @@ namespace Jam::Domain::Enemy
 	public:
 		using AnimationEvent = std::function<void(const s3d::String&)>;
 
-		explicit EnemyBase(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body);
+		// =========================
+		// コンストラクタ / デストラクタ
+		// =========================
+		explicit EnemyBase(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body,
+						   Jam::Domain::Physics::PhysicsBodyID playerId);
 		virtual ~EnemyBase() = default;
 
+		// =========================
+		// 基本操作
+		// =========================
 		virtual void update(double deltaTime) = 0;
 		virtual void moveLeft();
 		virtual void moveRight();
@@ -32,33 +42,71 @@ namespace Jam::Domain::Enemy
 		bool isAlive() const { return m_isAlive; }
 		void takeDamage(int damage);
 
-		s3d::Vec2 getPosition() const;
-		void setPos(s3d::Vec2 p);
+		// =========================
+		// 位置・物理操作
+		// =========================
+		Vec2 getPosition() const;
+		void setPos(Vec2 p);
 		void setGravityScale(double s);
 
+		// =========================
+		// ステータス
+		// =========================
 		void setStatus(const EnemyStatus& status) { m_status = status; }
 		const EnemyStatus& getStatus() const { return m_status; }
 
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> getPhysicsBody() { return m_body; }
 
+		// =========================
 		// 衝突イベント
+		// =========================
 		void onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 		void onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 		void onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 
-		// アニメーション通知登録
+		// =========================
+		// アニメーション
+		// =========================
 		void setOnAnimationChange(AnimationEvent callback) { m_onAnimChange = std::move(callback); }
 
+		// =========================
+		// AI 関連
+		// =========================
+		virtual void onAIEvent(EnemyAIEvent e) {}; // AIからの通知を受け取るフック
+		void setAIList(std::vector<std::pair<AIType, std::unique_ptr<IEnemyAI>>> aiList);
+		void changeAI(AIType type);
+		AIType getAIType() const;
+
+		// AI 用フック (各 AI が切り替わったときに派生クラスで処理可能)
+		virtual void onPatrolEnter() {}
+		virtual void onPatrolUpdate(double deltaTime) {}
+		virtual void onPatrolExit() {}
+
+		virtual void onChaseEnter() {}
+		virtual void onChaseUpdate(double deltaTime) {}
+		virtual void onChaseExit() {}
+
+		virtual void onAttackEnter() {}
+		virtual void onAttackUpdate(double deltaTime) {}
+		virtual void onAttackExit() {}
+
 	protected:
+		// アニメーション変更通知
 		void changeAnimation(const s3d::String& animName)
 		{
 			if (m_onAnimChange)
 				m_onAnimChange(animName);
 		}
 
-		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_body;
-		EnemyStatus m_status;
-		bool m_isAlive = true;
-		AnimationEvent m_onAnimChange;
+		// =========================
+		// メンバ変数
+		// =========================
+		std::vector<std::pair<AIType, std::unique_ptr<IEnemyAI>>> m_aiList; // AIリスト
+		IEnemyAI* m_currentAI = nullptr;                                     // 現在の AI
+		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_body;          // 物理ボディ
+		EnemyStatus m_status;                                                // ステータス
+		bool m_isAlive = true;                                               // 生存フラグ
+		Jam::Domain::Physics::PhysicsBodyID m_playerId;                      // 追跡対象プレイヤーのID
+		AnimationEvent m_onAnimChange;                                       // アニメーション変更通知
 	};
 }
