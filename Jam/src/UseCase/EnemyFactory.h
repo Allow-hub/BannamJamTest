@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include "../Domain/Enemy/EnemyBase.h"
 #include "../Domain/Physics/IPhysicsBody.h"
+#include "../Domain/Physics/PhysicsBodyID.h"
 
 namespace Jam::UseCase
 {
@@ -31,7 +32,8 @@ namespace Jam::UseCase
 
 		std::shared_ptr<Jam::Domain::Enemy::EnemyBase> createEnemy(
 			EnemyType type,
-			std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body) const;
+			std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body,
+			Jam::Domain::Physics::PhysicsBodyID playerId) const;
 
 	private:
 		std::unordered_map<EnemyType, Jam::Domain::Enemy::EnemyStatus> m_statusTable;

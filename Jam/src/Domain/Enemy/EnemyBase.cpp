@@ -1,10 +1,15 @@
 ﻿#include "EnemyBase.h"
 #include "../Physics/IPhysicsBody.h"
+#include "../Physics/PhysicsBodyID.h"
+#include "EnemyAI/IEnemyAI.h"
+#include "../../Infrastructure/FactoryServiceLocator.h"
+#include "../../Infrastructure/IPhysicsBodyFactory.h"
 
 namespace Jam::Domain::Enemy
 {
-	EnemyBase::EnemyBase(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body)
+	EnemyBase::EnemyBase(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Physics::PhysicsBodyID playerId)
 		: m_body(body)
+		, m_playerId(playerId)	
 		, m_isAlive(true)
 	{
 	}
@@ -46,6 +51,16 @@ namespace Jam::Domain::Enemy
 		m_body->setPos(p);
 	}
 
+	s3d::Vec2 EnemyBase::getPlayerPos()
+	{
+		auto physicsFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getPhysicsFactory();
+		if (!physicsFactory) return s3d::Vec2{ 0,0 };
+
+		auto playerBody = physicsFactory->getBody(m_playerId);
+		if (!playerBody) return s3d::Vec2{ 0,0 };
+
+		return playerBody->getPosition();
+	}
 	void EnemyBase::setGravityScale(double s)
 	{
 		m_body->setGravityScale(s);
@@ -54,6 +69,44 @@ namespace Jam::Domain::Enemy
 	void EnemyBase::onDestroy()
 	{
 		// 共通破壊処理（派生クラスでエフェクトやスコア加算などを上書き可能）
+	}
+
+	//AIのリストを設定
+	void EnemyBase::setAIList(std::vector<std::pair<AIType, std::unique_ptr<IEnemyAI>>> aiList)
+	{
+		m_aiList = std::move(aiList);
+		if (!m_aiList.empty())
+		{
+			m_currentAI = m_aiList.front().second.get();
+			m_currentAI->enter(*this);
+		}
+	}
+
+	//AIを切り替え
+	void EnemyBase::changeAI(AIType type)
+	{
+		for (auto& [aiType, ai] : m_aiList)
+		{
+			if (aiType == type)
+			{
+				if (m_currentAI == ai.get()) return;
+
+				if (m_currentAI) m_currentAI->exit(*this);
+				m_currentAI = ai.get();
+				m_currentAI->enter(*this);
+				return;
+			}
+		}
+	}
+
+	AIType EnemyBase::getAIType() const
+	{
+		for (const auto& [type, ai] : m_aiList)
+		{
+			if (ai.get() == m_currentAI)
+				return type;
+		}
+		return AIType::None;
 	}
 
 	void EnemyBase::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)

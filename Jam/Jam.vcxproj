@@ -326,6 +326,7 @@
     <None Include="Assets\Player\player_animation.json" />
     <None Include="Assets\Player\player_stats.json" />
     <None Include="Assets\Player\skillData.json" />
+    <None Include="src\Domain\Enemy\EnemyDoc.md" />
     <None Include="src\Domain\Events\Events.md" />
     <None Include="src\Infrastructure\InfrastructureDoc.md" />
     <None Include="src\Presentation\Presentation.md" />
@@ -348,6 +349,9 @@
     <Xml Include="App\example\xml\test.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
+    <ClInclude Include="src\Domain\Enemy\EnemyAI\IEnemyAI.h" />
+    <ClInclude Include="src\Domain\Enemy\EnemyAI\PatrolAI.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyBase.h" />
     <ClInclude Include="src\Domain\Enemy\LittleDevil.h" />
     <ClInclude Include="src\Domain\Events\GameEvents.h" />

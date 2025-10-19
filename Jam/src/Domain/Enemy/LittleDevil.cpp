@@ -1,53 +1,58 @@
 ﻿#include "LittleDevil.h"
+#include "EnemyAI/PatrolAI.h"
+#include "EnemyAI/ChaseAI.h"
 
 namespace Jam::Domain::Enemy
 {
-	LittleDevil::LittleDevil(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body)
-		: EnemyBase(body)
+	LittleDevil::LittleDevil(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Physics::PhysicsBodyID playerId)
+		: EnemyBase(body,playerId)
 	{
+		std::vector<std::pair<AIType, std::unique_ptr<IEnemyAI>>> aiList;
+		aiList.emplace_back(AIType::Patrol, std::make_unique<PatrolAI>());
+		aiList.emplace_back(AIType::Chase, std::make_unique<ChaseAI>());
+
+		setAIList(std::move(aiList));//setしたときにそのAIのEnterも入ります
+
+		Print << U"Current AI: " + AITypeToString(getAIType());
 	}
 
 	void LittleDevil::update(double deltaTime)
 	{
 		if (!isAlive()) return;
-		moveRight();
-		//m_patrolTimer += deltaTime;
-
-		//switch (m_state)
-		//{
-		//case State::Idle:
-		//	// 簡単なパトロール移動（今後AI強化予定）
-		//	if (m_patrolTimer > 1.0)
-		//	{
-		//		moveLeft();
-		//		m_state = State::Patrol;
-		//		m_patrolTimer = 0.0;
-		//	}
-		//	break;
-
-		//case State::Patrol:
-		//	if (m_patrolTimer > 1.0)
-		//	{
-		//		moveRight();
-		//		m_state = State::Idle;
-		//		m_patrolTimer = 0.0;
-		//	}
-		//	break;
-
-		//case State::Attack:
-		//	// TODO: 攻撃パターン実装予定
-		//	break;
-
-		//case State::Dead:
-		//	// TODO: 死亡アニメーション・エフェクト処理
-		//	break;
-	//}
+		m_currentAI->update(*this, deltaTime);
+		//moveRight();
 	}
+
+	void LittleDevil::onAIEvent(EnemyAIEvent e)
+	{
+		switch (e)
+		{
+		case EnemyAIEvent::PlayerFound:
+			//changeAI(AIType::Chase);
+			break;
+
+		case EnemyAIEvent::PlayerLost:
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	void LittleDevil::onPatrolEnter()
+	{
+		Print << U"Enter";
+	}
+
+	void LittleDevil::onChaseEnter()
+	{
+		Print << U"Chase";
+	}
+
 
 	void LittleDevil::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{
 		// TODO: 当たり判定で攻撃処理などを実装
-		//Print(U"HIT");
 	}
 
 	void LittleDevil::onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)

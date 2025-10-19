@@ -1,9 +1,8 @@
 ﻿#pragma once
 #include "IPlayerSkill.h"
 #include "BombEntity.h"
-#include "../../../Infrastructure/Siv3DPhysicsBodyFactory.h"
 #include "../../../Infrastructure/FactoryServiceLocator.h"
-
+#include "../../Infrastructure/IPhysicsBodyFactory.h"
 
 namespace Jam::Domain::Player
 {

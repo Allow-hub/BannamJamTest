@@ -159,7 +159,8 @@ namespace Jam::Presentation::Scenes
 
 			auto enemy = m_enemyFactory->createEnemy(
 				Jam::UseCase::EnemyType::LittleDevil,
-				enemyBody
+				enemyBody,
+				playerBody->getID()
 			);
 
 			if (enemy)
