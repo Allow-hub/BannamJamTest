@@ -4,6 +4,8 @@
 #include "src/Presentation/Scenes/SelectScene.h"
 #include "src/Presentation/Scenes/StoryScene.h"
 #include "src/Foundation/CoreManager.h"
+#include "src/Presentation/AudioService.h"
+
 using App = SceneManager<String>;
 
 void Main()
@@ -23,6 +25,10 @@ void Main()
 	core.audioSetting.masterVolume = 1.0;
 	core.audioSetting.bgmVolume = 0.7;
 	core.audioSetting.seVolume = 1.0;
+
+	// --- 音声ロード ---
+	auto& audioService = Jam::Presentation::AudioService::get();
+	audioService.init();
 
 	App manager;
 
