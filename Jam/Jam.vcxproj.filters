@@ -314,6 +314,7 @@
     </Text>
     <Text Include="src\Domain\Physics\Domain_PhysicsDoc.md" />
     <Text Include="Assets\Player\Skill\Bomb\playerSkill_bomb.json" />
+    <Text Include="Assets\Enemy\enemy_stage1_1.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App\dll\soundtouch\SoundTouch_x64.dll">
@@ -810,10 +811,11 @@
     <None Include="Assets\Player\player_stats.json" />
     <None Include="src\Infrastructure\InfrastructureDoc.md" />
     <None Include="src\Presentation\Presentation.md" />
-    <None Include="Assets\Enemy\LittleDevil\littleDevil_animation.json" />
+    <None Include="Assets\Enemy\LittleDevil\LittleDevil_animation.json" />
     <None Include="Assets\Enemy\enemy_stats.json" />
     <None Include="src\Domain\Events\Events.md" />
     <None Include="Assets\Player\skillData.json" />
+    <None Include="src\Domain\Enemy\EnemyDoc.md" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="App\example\test.mp3">
@@ -909,7 +911,7 @@
     <ClInclude Include="src\UseCase\EnemyFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Presentation\EnemyLoader.h">
+    <ClInclude Include="src\Infrastructure\EnemyLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Presentation\EnemyManager.h">
@@ -976,6 +978,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Domain\Physics\PhysicsBodyID.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Domain\Enemy\EnemyAI\IEnemyAI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Domain\Enemy\EnemyAI\PatrolAI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

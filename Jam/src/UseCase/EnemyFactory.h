@@ -35,6 +35,10 @@ namespace Jam::UseCase
 			std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body,
 			Jam::Domain::Physics::PhysicsBodyID playerId) const;
 
+		const std::unordered_map<EnemyType, Jam::Domain::Enemy::EnemyStatus>& getStatusTable() const
+		{
+			return m_statusTable;
+		}
 	private:
 		std::unordered_map<EnemyType, Jam::Domain::Enemy::EnemyStatus> m_statusTable;
 	};

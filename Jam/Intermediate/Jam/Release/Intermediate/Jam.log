@@ -1,36 +1,48 @@
-﻿  LittleDevil.cpp
+﻿  Main.cpp
 C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
   
 C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
   
 C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(78,39): warning C4100: 'e': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
   
 C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(85,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
   
 C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(89,37): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
   
 C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(93,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\LittleDevil.cpp(55,89): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(19,36): warning C4100: 'deltaTime': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\LittleDevil.cpp(60,88): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(20,68): warning C4100: 'speed': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\LittleDevil.cpp(65,88): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(20,53): warning C4100: 'objectId': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(21,74): warning C4100: 'path': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(21,52): warning C4100: 'objectId': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\NormalStage.h(22,83): warning C4100: 'physicsBodies': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\UseCase\GameEventHandler.h(107,70): warning C4100: 'e': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
   
      ライブラリ C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.lib とオブジェクト C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exp を作成中
   コード生成しています。
-  7 of 6067 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    3 functions had inline decision re-evaluated but remain unchanged
+  10 of 6060 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    67 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   Jam.vcxproj -> C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exe
   C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exe

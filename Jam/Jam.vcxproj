@@ -181,6 +181,7 @@
     <Text Include="App\example\txt\sc.txt" />
     <Text Include="App\example\video\river.txt" />
     <Text Include="Assets\Player\Skill\Bomb\playerSkill_bomb.json" />
+    <Text Include="Assets\Enemy\enemy_stage1_1.json" />
     <Text Include="src\Domain\Physics\Domain_PhysicsDoc.md" />
   </ItemGroup>
   <ItemGroup>
@@ -322,7 +323,7 @@
     <None Include="App\example\toml\test.toml" />
     <None Include="App\example\zip\zip_test.zip" />
     <None Include="Assets\Enemy\enemy_stats.json" />
-    <None Include="Assets\Enemy\LittleDevil\littleDevil_animation.json" />
+    <None Include="Assets\Enemy\LittleDevil\LittleDevil_animation.json" />
     <None Include="Assets\Player\player_animation.json" />
     <None Include="Assets\Player\player_stats.json" />
     <None Include="Assets\Player\skillData.json" />
@@ -379,7 +380,7 @@
     <ClInclude Include="src\Presentation\Animator.h" />
     <ClInclude Include="src\Presentation\AnimatorLoader.h" />
     <ClInclude Include="src\Presentation\CameraManager.h" />
-    <ClInclude Include="src\Presentation\EnemyLoader.h" />
+    <ClInclude Include="src\Infrastructure\EnemyLoader.h" />
     <ClInclude Include="src\Presentation\EnemyManager.h" />
     <ClInclude Include="src\Infrastructure\StageLoader.h" />
     <ClInclude Include="src\Presentation\PlayerManager.h" />

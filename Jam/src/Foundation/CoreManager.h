@@ -22,6 +22,17 @@ namespace Jam::Foundation
 			return instance;
 		}
 
+		static s3d::String stageNameToString(StageName stage)
+		{
+			switch (stage)
+			{
+			case StageName::Stage1_1: return U"stage1_1";
+			case StageName::Stage1_2: return U"stage1_2";
+			case StageName::Stage1_3: return U"stage1_3";
+			default: return U"UnknownStage";
+			}
+		}
+
 		// シーン間共通情報（純粋データのみ）
 		struct StageInfo {
 			StageName stageName = StageName::Stage1_1;

@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
 #include <HamFramework.hpp>
+#include "../../Foundation/CoreManager.h"
 #include "../PlayerManager.h"
 #include "../../UseCase/PlayerService.h"
 #include "../../Infrastructure/Siv3DInputManager.h"
@@ -10,7 +11,7 @@
 #include "../../Infrastructure/PhysicsConverter.h"
 #include "../EnemyManager.h"
 #include "../../UseCase/EnemyFactory.h"
-#include "../EnemyLoader.h"
+#include "../../Infrastructure/EnemyLoader.h"
 #include "../CameraManager.h"
 #include "../../UseCase/CameraService.h"
 #include "../../UseCase/GameEventHandler.h"
@@ -65,6 +66,9 @@ namespace Jam::Presentation::Scenes
 			m_inputManager(),
 			m_stage(std::make_unique<Jam::Domain::Stage::NormalStage>())
 		{
+			auto& core = Jam::Foundation::CoreManager::Instance();
+			String stageName = Jam::Foundation::CoreManager::stageNameToString(core.stageInfo.stageName);//ステージ名
+
 			// --- FactoryServiceLocator初期化 ---
 			auto& locator = Jam::Infrastructure::Locator::FactoryServiceLocator::instance();
 			auto physicsFactory = std::make_shared<Jam::Infrastructure::Locator::Siv3DPhysicsBodyFactory>();
@@ -120,9 +124,10 @@ namespace Jam::Presentation::Scenes
 			m_enemyFactory = std::make_unique<Jam::UseCase::EnemyFactory>();
 			m_enemyManager = std::make_unique<Jam::Presentation::EnemyManager>();
 
+
 			// 敵ステータスをJSONからロード
 			std::unordered_map<Jam::UseCase::EnemyType, Jam::Domain::Enemy::EnemyStatus> enemyStatusTable;
-			if (Jam::Presentation::EnemyLoader::LoadEnemyStatusFromJSON(
+			if (Jam::Infrastructure::EnemyLoader::LoadEnemyStatusFromJSON(
 				U"../Assets/Enemy/enemy_stats.json",
 				enemyStatusTable))
 			{
@@ -133,47 +138,17 @@ namespace Jam::Presentation::Scenes
 				Console << U"[GameScene] ⚠ Failed to load enemy status";
 			}
 
-			// EnemyType を指定
-			const auto enemyType = Jam::UseCase::EnemyType::LittleDevil;
+			// プレイヤーの Body ID を取得
+			auto playerBodyId = playerBody->getID();
 
-			// ステータステーブルから該当データを探す
-			auto it = enemyStatusTable.find(enemyType);
-			if (it == enemyStatusTable.end())
+			// ステージ用敵配置 JSON をロードして敵を生成
+			if (!Jam::Infrastructure::EnemyLoader::loadEnemyForStageFromJSON(
+				U"../Assets/Enemy/enemy_" + stageName + U".json",
+				m_enemyFactory,
+				m_enemyManager,
+				playerBodyId))
 			{
-				Print << U"[GameScene] ⚠ Enemy status not found for type LittleDevil";
-				return;
-			}
-
-			// ステータス取得
-			const auto& status = it->second;
-
-			// 敵を生成して配置
-			auto enemyBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
-				.getPhysicsFactory()
-				->createBody(
-				Vec2{ 200, 0 },  // 初期位置
-				status.colSize,   // サイズ
-				s3d::P2BodyType::Dynamic,
-				status.physicsMaterial
-			);
-
-			auto enemy = m_enemyFactory->createEnemy(
-				Jam::UseCase::EnemyType::LittleDevil,
-				enemyBody,
-				playerBody->getID()
-			);
-
-			if (enemy)
-			{
-				enemyBody->setCollisionListener(enemy);
-				// EnemyManagerに登録
-				int enemyId = m_enemyManager->AddEnemy(enemy, U"../Assets/Enemy/LittleDevil/littleDevil_animation.json");
-				m_enemyManager->getAnimator(enemyId).AddCondition({ { {U"isRunning", false} }, U"Idle", 0 });
-				m_enemyManager->getAnimator(enemyId).SetBool(U"isRunning", false);
-			}
-			else
-			{
-				Console << U"[GameScene] ❌ Failed to create enemy";
+				Console << U"[GameScene] ⚠ Failed to load stage enemies";
 			}
 			
 			// === Stage 初期化 ===
