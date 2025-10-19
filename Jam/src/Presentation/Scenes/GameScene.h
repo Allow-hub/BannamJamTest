@@ -96,11 +96,6 @@ namespace Jam::Presentation::Scenes
 			m_player = std::make_shared<Domain::Player::Player>(playerBody, *m_gameEventQueue);
 			playerBody->setCollisionListener(m_player);
 
-			//m_physicsBodies.push_back(
-			//	std::dynamic_pointer_cast<Infrastructure::Physics::Siv3DPhysicsBody>(
-			//		m_player->getPhysicsBody()
-			//	)
-			//);
 			m_player->setSpeed(stats.moveSpeed);
 			m_player->setJumpPower(stats.jumpPower);
 

@@ -69,14 +69,19 @@ namespace Jam::Domain::Player
 
 	void Player::jump()
 	{
-		//m_eventQueue.push(Events::EnemyDefeatedEvent{
-		//			{0,0},
-		//			true,
-		//			Jam::UseCase::EnemyType::LittleDevil
-		//		});
-		if (m_isGrounded)
+		if (m_isGrounded || m_jumpCount < maxJumpCount)
 		{
+			double jumpPower = m_stats.jumpPower;
+
+			// 2回目のジャンプならジャンプ力を強化
+			if (m_jumpCount == 1)
+			{
+				jumpPower *= 1.5;
+			}
+
+			m_body->setVelocity({ m_body->getVelocity().x, 0.0 });
 			m_body->applyImpulse({ 0, -m_stats.jumpPower });
+			m_jumpCount++;
 			m_isGrounded = false;
 		}
 	}
@@ -92,7 +97,6 @@ namespace Jam::Domain::Player
 	{
 		if (m_currentSkill)
 			m_currentSkill->use(getPosition(), m_facingRight);
-		Print << getPosition();
 	}
 	void Player::skillReleased()
 	{
@@ -162,6 +166,7 @@ namespace Jam::Domain::Player
 			auto v = m_body->getVelocity();
 			m_body->setVelocity({ v.x, 0.0 });
 			m_isGrounded = true;
+			m_jumpCount = 0;
 			break;
 		case Jam::Domain::Physics::PhysicsLayer::Enemy:
 			break;

@@ -48,6 +48,8 @@ namespace Jam::Domain::Player
 		void onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 
 	private:
+		int m_jumpCount = 0;
+		const int maxJumpCount = 2;
 		PlayerStats m_stats;
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_body;
 		bool m_isGrounded = false;

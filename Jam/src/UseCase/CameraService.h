@@ -11,7 +11,7 @@ namespace Jam::UseCase
 		Domain::Player::Player& m_player;
 		Jam::Presentation::CameraManager& m_cameraManager;
 		CameraEventQueue& m_cameraEventQueue;
-		Vec2 m_offset = { 200, -300 };
+		Vec2 m_offset = { 200, -200 };
 
 	public:
 		CameraService(Domain::Player::Player& player,
