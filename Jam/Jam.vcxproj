@@ -338,6 +338,7 @@
     <Media Include="App\example\shot.mp3" />
     <Media Include="App\example\test.mp3" />
     <Media Include="App\example\video\river.mp4" />
+    <Media Include="Assets\Sounds\bgm_title.mp3" />
     <Media Include="Assets\Sounds\se_jump.mp3" />
   </ItemGroup>
   <ItemGroup>

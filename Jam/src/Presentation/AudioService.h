@@ -26,7 +26,7 @@ namespace Jam::Presentation
 		{
 			String samePath = U"../Assets/Sounds/";
 			Jam::Presentation::AudioService::get().load(Jam::Presentation::AudioService::Sound::SE_Jump, samePath + U"se_jump.mp3");
-			//Jam::Presentation::AudioService::get().load(Jam::Presentation::AudioService::Sound::SE_Jump, samePath + U"bgm_title.mp3");
+			Jam::Presentation::AudioService::get().load(Jam::Presentation::AudioService::Sound::BGM_Title, samePath + U"bgm_title.mp3");
 		}
 
 		void load(Sound sound, const s3d::FilePathView& path, bool streaming = false)
