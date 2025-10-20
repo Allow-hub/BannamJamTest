@@ -160,6 +160,11 @@
     <Image Include="Assets\Player\run_0.png" />
     <Image Include="Assets\Player\run_1.png" />
     <Image Include="Assets\Player\Skill\Bomb\Bomb.png" />
+    <Image Include="Assets\Story\background_stage1_1.png" />
+    <Image Include="Assets\Story\Portrait\Player\player_normal.png" />
+    <Image Include="Assets\Story\Portrait\Player\player_smiling.png" />
+    <Image Include="Assets\Story\Portrait\Player\player_surprised.png" />
+    <Image Include="Assets\Story\Portrait\Player\player_suspicious.png" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />
@@ -330,6 +335,7 @@
     <None Include="Assets\Player\player_animation.json" />
     <None Include="Assets\Player\player_stats.json" />
     <None Include="Assets\Player\skillData.json" />
+    <None Include="Assets\Story\stage1_1.csv" />
     <None Include="src\Domain\Enemy\EnemyDoc.md" />
     <None Include="src\Domain\Events\Events.md" />
     <None Include="src\Infrastructure\InfrastructureDoc.md" />
@@ -346,6 +352,7 @@
   <ItemGroup>
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />
     <Font Include="App\example\font\RocknRoll\RocknRollOne-Regular.ttf" />
+    <Font Include="Assets\Font\PixelMplus12-Bold.ttf" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="App\example\objdetect\haarcascade\eye.xml" />
@@ -373,6 +380,7 @@
     <ClInclude Include="src\Domain\Player\Skill\IPlayerSkill.h" />
     <ClInclude Include="src\Domain\Player\Player.h" />
     <ClInclude Include="src\Domain\Stage\IStage.h" />
+    <ClInclude Include="src\Domain\StoryData.h" />
     <ClInclude Include="src\Foundation\CoreManager.h" />
     <ClInclude Include="src\Infrastructure\AudioLoader.h" />
     <ClInclude Include="src\Infrastructure\FactoryServiceLocator.h" />
@@ -398,6 +406,7 @@
     <ClInclude Include="src\Presentation\Scenes\SelectScene.h" />
     <ClInclude Include="src\Presentation\Scenes\StoryScene.h" />
     <ClInclude Include="src\Presentation\Scenes\TitleScene.h" />
+    <ClInclude Include="src\Presentation\StoryManager.h" />
     <ClInclude Include="src\UseCase\CameraEvent.h" />
     <ClInclude Include="src\UseCase\CameraService.h" />
     <ClInclude Include="src\UseCase\EnemyFactory.h" />
