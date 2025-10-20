@@ -11,6 +11,7 @@ namespace Jam::Presentation
 		{
 			SE_Jump,
 			SE_Attack,
+			SE_Choker,
 			BGM_Title,
 			BGM_Game,
 		};
@@ -26,7 +27,9 @@ namespace Jam::Presentation
 		{
 			String samePath = U"../Assets/Sounds/";
 			Jam::Presentation::AudioService::get().load(Jam::Presentation::AudioService::Sound::SE_Jump, samePath + U"se_jump.mp3");
+			Jam::Presentation::AudioService::get().load(Jam::Presentation::AudioService::Sound::SE_Choker, samePath + U"se_choker.mp3");
 			Jam::Presentation::AudioService::get().load(Jam::Presentation::AudioService::Sound::BGM_Title, samePath + U"bgm_title.mp3");
+
 		}
 
 		void load(Sound sound, const s3d::FilePathView& path, bool streaming = false)
@@ -37,7 +40,7 @@ namespace Jam::Presentation
 			m_audios[sound] = audio;
 		}
 
-		void play(Sound sound, bool loop = true)
+		void play(Sound sound, bool loop = true, double volume = 0.05)
 		{
 			auto it = m_audios.find(sound);
 			if (it == m_audios.end()) return;
@@ -46,8 +49,10 @@ namespace Jam::Presentation
 				m_currentBGM->stop();
 
 			if (isBGM(sound))
+			{
 				m_currentBGM = it->second;
-
+				m_currentBGM->setVolume(volume);
+			}
 			if (loop) it->second->setLoop(true);
 			it->second->play();
 		}
@@ -57,6 +62,12 @@ namespace Jam::Presentation
 			auto it = m_audios.find(sound);
 			if (it != m_audios.end())
 				it->second->playOneShot(volume, pan, speed);
+		}
+
+		void setVolume(double volume)
+		{
+			if (!m_currentBGM)return;
+			m_currentBGM->setVolume(volume);
 		}
 
 	private:

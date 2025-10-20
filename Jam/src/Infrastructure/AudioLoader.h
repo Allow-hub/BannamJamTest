@@ -22,6 +22,7 @@ namespace Jam::Infrastructure
 				return it->second;
 
 			auto audio = std::make_shared<s3d::Audio>(path, streaming);
+			audio->setLoop(false);
 			m_cache[key] = audio;
 			return audio;
 		}

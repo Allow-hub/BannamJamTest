@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "PhysicsTypes.h"
 #include "PhysicsBodyID.h"
+#include "../../Infrastructure/PhysicsFilterManager.h"
 
 namespace Jam::Domain::Physics
 {
@@ -31,6 +32,8 @@ namespace Jam::Domain::Physics
 		virtual void setCollisionListener(const std::shared_ptr<ICollisionListener>& listener) = 0;
 		virtual void setBodyType(Jam::Domain::Physics::PhysicsType type) = 0;
 		virtual void* getNativeBody() { return nullptr; }//継承先のボディを返す
+		virtual void setFilter(Jam::Infrastructure::PhysicsFilter filter) = 0;
+		virtual void addCircleSensor(const s3d::Circle& localPos, const Jam::Infrastructure::PhysicsFilter& filter = {}) = 0;
 		virtual Jam::Domain::Physics::PhysicsBodyID getID() const = 0;
 		virtual std::optional<P2DistanceJoint> createDistanceJoint(
 			P2World& world,

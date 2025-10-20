@@ -19,6 +19,7 @@
 #include "../../Infrastructure/FactoryServiceLocator.h"
 #include "../../Infrastructure/Siv3DCursorUtil.h"
 #include "../../Presentation/AudioService.h"
+#include "../../Infrastructure/PhysicsFilterManager.h"
 
 
 namespace Jam::Presentation::Scenes
@@ -168,6 +169,7 @@ namespace Jam::Presentation::Scenes
 					s3d::P2BodyType::Static,
 					Jam::Domain::Physics::PhysicsMaterial{ 1.0, 0.0, 0.0 }
 				);
+				body->setFilter(Jam::Infrastructure::PhysicsFilter::Wall);
 				body->setLayer(layer);
 				return body;
 			};

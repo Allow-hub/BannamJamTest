@@ -15,6 +15,8 @@ namespace Jam::Foundation
 	//ステージをまたいで情報をやり取りする
 	class CoreManager
 	{
+	private:
+		static	bool m_clear;
 	public:
 		static CoreManager& Instance()
 		{
@@ -31,6 +33,16 @@ namespace Jam::Foundation
 			case StageName::Stage1_3: return U"stage1_3";
 			default: return U"UnknownStage";
 			}
+		}
+
+		static bool getClear()
+		{
+			return m_clear;
+		}
+
+		static void setClear(bool b)
+		{
+			m_clear = b;
 		}
 
 		// シーン間共通情報（純粋データのみ）

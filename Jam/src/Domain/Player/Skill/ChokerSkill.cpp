@@ -2,6 +2,8 @@
 #include "../../../Infrastructure/Siv3DCursorUtil.h"
 #include "../../../Infrastructure/FactoryServiceLocator.h"
 #include "../../../Infrastructure/IPhysicsBodyFactory.h"
+#include "../../../Presentation/AudioService.h"
+
 #include <Siv3D.hpp>
 
 using namespace Jam::Domain::Player;
@@ -56,7 +58,7 @@ namespace Jam::Domain::Player
 	{
 		if (m_cooldownTimer > 0.0 || m_isActive || m_joint.has_value())
 			return;
-
+		Jam::Presentation::AudioService::get().playOneShot(Jam::Presentation::AudioService::Sound::SE_Choker, 0.3);
 		m_flyTimer = 0.0;
 		m_isInEnemyHitFreeze = false;
 		m_enemyHitFreezeTimer = 0.0;
@@ -195,8 +197,36 @@ namespace Jam::Domain::Player
 
 					// Joint長が最小値に達したら終了
 					if (newMax <= minLength + 1.0)
-					{;
-						m_isHooked = true;
+					{
+						auto playerBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+							.getPhysicsFactory()->getBody(m_ownerId);
+
+						if (!playerBody)
+						{
+							finishEnemySequence();
+							return;
+						}
+
+						Vec2 playerPos = playerBody->getPosition();
+						Vec2 enemyPos = m_targetEnemy->getPosition();
+
+						// プレイヤーと敵の距離を測る
+						double distance = (enemyPos - playerPos).length();
+
+						// 壁などでプレイヤーが近づけなかった場合（距離が一定以上残っている）
+						const double reachThreshold = 110; // 判定閾値
+						if (distance > reachThreshold)
+						{
+							Print << distance ;
+							finishEnemySequence(); // 何も起こさず終了
+							return;
+						}
+
+						// 到達できた場合のみ、攻撃処理を実行
+						const double launchPower = 2000.0;
+						m_eventQueue.push(Events::PlayerAttackedEvent{ 1.2, 0.2, 25.2 });
+						playerBody->applyImpulse(m_lastDir * launchPower);
+
 						finishEnemySequence();
 					}
 				}
@@ -301,8 +331,6 @@ namespace Jam::Domain::Player
 	{
 		if (!enemy || !m_isFlying || m_isJointCreated) return;
 
-		Print << U"💥 敵に接触！";
-
 		m_hookState = HookState::HookedEnemy;
 		m_targetEnemy = enemy;
 
@@ -318,6 +346,8 @@ namespace Jam::Domain::Player
 		m_body->setVelocity({ 0, 0 });
 		m_body->setAngularVelocity(0);
 
+		auto playerBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+			.getPhysicsFactory()->getBody(m_ownerId);
 		// イベント送信（振動など）
 		m_eventQueue.push(Events::PlayerChokerSkillEvent{ 0.9, 0.5 });
 	}
@@ -343,7 +373,6 @@ namespace Jam::Domain::Player
 
 		if (!playerBody)
 		{
-			Print << U"⚠️ プレイヤーボディが存在しない";
 			finishEnemySequence();
 			return;
 		}
@@ -351,8 +380,6 @@ namespace Jam::Domain::Player
 		Vec2 playerPos = playerBody->getPosition();
 		double dist = (hookPos - playerPos).length();
 		dist = std::clamp(dist, 1.0, 9999.0);
-
-		Print << U"📏 初期Joint長: " << dist;
 
 		releaseJoint();
 
@@ -374,7 +401,6 @@ namespace Jam::Domain::Player
 			m_lastDir = diff.normalized();
 
 			m_isJointCreated = true;
-			Print << U"✅ 敵用Joint作成成功";
 		}
 		else
 		{

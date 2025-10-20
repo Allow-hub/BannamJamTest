@@ -2,6 +2,8 @@
 #include "../Physics/IPhysicsBody.h"
 #include "Skill/BombSkill.h"
 #include "Skill/ChokerSkill.h"
+#include "../../Presentation/AudioService.h"
+#include "../../Infrastructure/PhysicsFilterManager.h"
 
 namespace Jam::Domain::Player
 {
@@ -10,6 +12,8 @@ namespace Jam::Domain::Player
 	{
 		m_body->setLayer(Jam::Domain::Physics::PhysicsLayer::Player);
 		m_body->setGravityScale(1.5);
+		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::Team1);
+
 		auto chokerSkill = std::make_shared<ChokerSkill>(eventQueue, m_body->getID());
 		chokerSkill->init(); // shared_from_this()を使用する初期化
 		m_skills.push_back(chokerSkill);
@@ -71,6 +75,7 @@ namespace Jam::Domain::Player
 	{
 		if (m_isGrounded || m_jumpCount < maxJumpCount)
 		{
+			Jam::Presentation::AudioService::get().playOneShot(Jam::Presentation::AudioService::Sound::SE_Jump, 0.5);
 			double jumpPower = m_stats.jumpPower;
 
 			// 2回目のジャンプならジャンプ力を強化

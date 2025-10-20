@@ -4,6 +4,7 @@
 #include "EnemyAI/IEnemyAI.h"
 #include "../../Infrastructure/FactoryServiceLocator.h"
 #include "../../Infrastructure/IPhysicsBodyFactory.h"
+#include "../../Infrastructure/PhysicsFilterManager.h"
 
 namespace Jam::Domain::Enemy
 {
@@ -12,6 +13,7 @@ namespace Jam::Domain::Enemy
 		, m_playerId(playerId)	
 		, m_isAlive(true)
 	{
+		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::Team2);
 	}
 
 	void EnemyBase::moveLeft()

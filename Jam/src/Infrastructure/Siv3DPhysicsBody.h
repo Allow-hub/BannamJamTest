@@ -2,6 +2,7 @@
 #include <Siv3D.hpp>
 #include "../Domain/Physics/IPhysicsBody.h"
 #include "PhysicsConverter.h"
+#include "../Infrastructure/PhysicsFilterManager.h"
 
 namespace Jam::Infrastructure::Physics
 {
@@ -50,6 +51,12 @@ namespace Jam::Infrastructure::Physics
 		Jam::Domain::Physics::PhysicsLayer getLayer() const override { return m_layer; }
 		void* getNativeBody() override { return &m_body; }
 		void setBodyType(Jam::Domain::Physics::PhysicsType type) override { m_body.setBodyType(ToSiv3DBodyType(type)); }
+		void setFilter(Jam::Infrastructure::PhysicsFilter filter) override { m_body.shape(0).setFilter(GetFilter(filter)); }
+
+		void addCircleSensor(const s3d::Circle& localPos, const Jam::Infrastructure::PhysicsFilter& filter) override
+		{
+			m_body.addCircleSensor(localPos,Jam::Infrastructure::GetFilter(filter));
+		}
 
 		std::optional<P2DistanceJoint> createDistanceJoint(
 			P2World& world,

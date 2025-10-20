@@ -23,9 +23,9 @@ namespace Jam::Domain::Events
 
 	struct PlayerAttackedEvent
 	{
-		Vec2 position;
-		bool isHeavyAttack;
-		double damage;
+		double zoom;
+		double duration;
+		double intensity;
 	};
 
 	struct PlayerDamagedEvent

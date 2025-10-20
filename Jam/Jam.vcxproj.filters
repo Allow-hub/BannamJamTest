@@ -156,6 +156,9 @@
     <ClCompile Include="src\UseCase\EnemyFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Domain\Player\Skill\ChokerSkill.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -830,6 +833,8 @@
       <Filter>Resource Files\example</Filter>
     </Media>
     <Media Include="Assets\Sounds\se_jump.mp3" />
+    <Media Include="Assets\Sounds\bgm_title.mp3" />
+    <Media Include="Assets\Sounds\se_choker.mp3" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf">
@@ -995,10 +1000,13 @@
     <ClInclude Include="src\Presentation\AudioService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Infrastructure\Siv3DAudio.h">
+    <ClInclude Include="src\Infrastructure\AudioLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Infrastructure\AudioLoader.h">
+    <ClInclude Include="src\Presentation\Scenes\ResultScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Infrastructure\PhysicsFilterManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
