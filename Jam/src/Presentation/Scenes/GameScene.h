@@ -18,6 +18,8 @@
 #include "../../Infrastructure/Siv3DPhysicsBodyFactory.h"
 #include "../../Infrastructure/FactoryServiceLocator.h"
 #include "../../Infrastructure/Siv3DCursorUtil.h"
+#include "../../Presentation/AudioService.h"
+
 
 namespace Jam::Presentation::Scenes
 {
@@ -66,6 +68,8 @@ namespace Jam::Presentation::Scenes
 			m_inputManager(),
 			m_stage(std::make_unique<Jam::Domain::Stage::NormalStage>())
 		{
+			Jam::Presentation::AudioService::get().play(Jam::Presentation::AudioService::Sound::BGM_Title, true);
+
 			auto& core = Jam::Foundation::CoreManager::Instance();
 			String stageName = Jam::Foundation::CoreManager::stageNameToString(core.stageInfo.stageName);//ステージ名
 

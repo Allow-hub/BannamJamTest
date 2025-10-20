@@ -322,6 +322,8 @@
     <None Include="App\example\toml\config.toml" />
     <None Include="App\example\toml\test.toml" />
     <None Include="App\example\zip\zip_test.zip" />
+    <None Include="Assets\Enemy\enemy_stage1_2.json" />
+    <None Include="Assets\Enemy\enemy_stage1_3.json" />
     <None Include="Assets\Enemy\enemy_stats.json" />
     <None Include="Assets\Enemy\LittleDevil\LittleDevil_animation.json" />
     <None Include="Assets\Player\player_animation.json" />
@@ -336,6 +338,8 @@
     <Media Include="App\example\shot.mp3" />
     <Media Include="App\example\test.mp3" />
     <Media Include="App\example\video\river.mp4" />
+    <Media Include="Assets\Sounds\bgm_title.mp3" />
+    <Media Include="Assets\Sounds\se_jump.mp3" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />
@@ -368,17 +372,20 @@
     <ClInclude Include="src\Domain\Player\Player.h" />
     <ClInclude Include="src\Domain\Stage\IStage.h" />
     <ClInclude Include="src\Foundation\CoreManager.h" />
+    <ClInclude Include="src\Infrastructure\AudioLoader.h" />
     <ClInclude Include="src\Infrastructure\FactoryServiceLocator.h" />
     <ClInclude Include="src\Infrastructure\IPhysicsBodyFactory.h" />
     <ClInclude Include="src\Infrastructure\PhysicsConverter.h" />
     <ClInclude Include="src\Domain\Stage\NormalStage.h" />
     <ClInclude Include="src\Domain\Stage\StageTypes.h" />
+    <ClInclude Include="src\Infrastructure\Siv3DAudio.h" />
     <ClInclude Include="src\Infrastructure\Siv3DCursorUtil.h" />
     <ClInclude Include="src\Infrastructure\Siv3DInputManager.h" />
     <ClInclude Include="src\Infrastructure\Siv3DPhysicsBody.h" />
     <ClInclude Include="src\Infrastructure\Siv3DPhysicsBodyFactory.h" />
     <ClInclude Include="src\Presentation\Animator.h" />
     <ClInclude Include="src\Presentation\AnimatorLoader.h" />
+    <ClInclude Include="src\Presentation\AudioService.h" />
     <ClInclude Include="src\Presentation\CameraManager.h" />
     <ClInclude Include="src\Infrastructure\EnemyLoader.h" />
     <ClInclude Include="src\Presentation\EnemyManager.h" />

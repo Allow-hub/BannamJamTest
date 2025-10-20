@@ -40,9 +40,9 @@ C:\Users\PC_User\Documents\BannamJamTest\Jam\src\UseCase\GameEventHandler.h(107,
   
      ライブラリ C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.lib とオブジェクト C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exp を作成中
   コード生成しています。
-  10 of 6060 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
-    1 functions were new in current compilation
-    67 functions had inline decision re-evaluated but remain unchanged
+  435 of 6422 functions ( 6.8%) were compiled, the rest were copied from previous compilation.
+    362 functions were new in current compilation
+    623 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   Jam.vcxproj -> C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exe
   C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exe

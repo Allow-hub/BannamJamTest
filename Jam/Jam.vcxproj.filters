@@ -816,6 +816,8 @@
     <None Include="src\Domain\Events\Events.md" />
     <None Include="Assets\Player\skillData.json" />
     <None Include="src\Domain\Enemy\EnemyDoc.md" />
+    <None Include="Assets\Enemy\enemy_stage1_2.json" />
+    <None Include="Assets\Enemy\enemy_stage1_3.json" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="App\example\test.mp3">
@@ -827,6 +829,7 @@
     <Media Include="App\example\shot.mp3">
       <Filter>Resource Files\example</Filter>
     </Media>
+    <Media Include="Assets\Sounds\se_jump.mp3" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf">
@@ -987,6 +990,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Domain\Enemy\EnemyAI\PatrolAI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Presentation\AudioService.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Infrastructure\Siv3DAudio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Infrastructure\AudioLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -13,7 +13,7 @@ namespace Jam::Domain::Player
 		std::optional<s3d::P2DistanceJoint> m_joint;
 		bool m_isActive = false;
 		bool m_isFlying = false;
-		bool m_isJointCreated = false;  // 追加: ジョイント作成フラグ
+		bool m_isJointCreated = false;
 		bool m_isHooked = false;  // フックが刺さっているか
 		Vec2 m_velocity = Vec2::Zero();
 		const Vec2 createOffset = Vec2{ 50,-30 };
