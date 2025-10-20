@@ -76,6 +76,7 @@ namespace Jam::Infrastructure
 						s3d::P2BodyType::Dynamic,
 						status.physicsMaterial
 					);
+				enemyBody->setLayer(Jam::Domain::Physics::PhysicsLayer::Enemy);
 
 				auto enemy = enemyFactory->createEnemy(type, enemyBody, playerId);
 				if (enemy)

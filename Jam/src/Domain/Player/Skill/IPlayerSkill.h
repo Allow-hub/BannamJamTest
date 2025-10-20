@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
-#include "../Events/GameEvents.h"
+#include "../../Events/GameEvents.h"
 
 
 namespace Jam::Domain::Player

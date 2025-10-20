@@ -10,10 +10,10 @@ namespace Jam::Domain::Player
 	{
 		m_body->setLayer(Jam::Domain::Physics::PhysicsLayer::Player);
 		m_body->setGravityScale(1.5);
-		m_skills.push_back(std::make_shared<BombSkill>(eventQueue));
 		auto chokerSkill = std::make_shared<ChokerSkill>(eventQueue, m_body->getID());
 		chokerSkill->init(); // shared_from_this()を使用する初期化
 		m_skills.push_back(chokerSkill);
+		m_skills.push_back(std::make_shared<BombSkill>(eventQueue));
 		m_currentSkill = m_skills.front();
 	}
 

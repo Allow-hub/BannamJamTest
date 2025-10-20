@@ -1,44 +1,71 @@
-﻿  Main.cpp
+﻿  Player.cpp
+  ChokerSkill.cpp
 C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
   
 C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
 C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(78,39): warning C4100: 'e': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(78,39): warning C4100: 'e': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
 C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(85,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(85,38): warning C4100: 'deltaTime': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
   
 C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(89,37): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(89,37): warning C4100: 'deltaTime': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
 C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(93,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
-C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(19,36): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(93,38): warning C4100: 'deltaTime': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
   
-C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(20,68): warning C4100: 'speed': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.cpp(55,50): warning C4100: 'facingRight': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
   
-C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(20,53): warning C4100: 'objectId': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.cpp(83,43): warning C4100: 'position': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
   
-C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(21,74): warning C4100: 'path': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.cpp(211,66): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
   
-C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(21,52): warning C4100: 'objectId': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.cpp(212,66): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
   
-C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\NormalStage.h(22,83): warning C4100: 'physicsBodies': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombEntity.h(84,76): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
-C:\Users\student\Documents\BannamJamTest\Jam\src\UseCase\GameEventHandler.h(107,70): warning C4100: 'e': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombEntity.h(85,76): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
   
-     ライブラリ C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Jam(debug).lib とオブジェクト C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Jam(debug).exp を作成中
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombSkill.h(53,51): warning C4100: 'facingRight': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\BombSkill.h(53,36): warning C4100: 'position': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Player.cpp(179,83): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Player\Player.cpp(180,83): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
+  
   Jam.vcxproj -> C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Jam(debug).exe
   C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Debug\Jam(debug).exe
   1 個のファイルをコピーしました
