@@ -24,6 +24,7 @@
 #include "../../Presentation/AudioService.h"
 #include "../../Infrastructure/PhysicsFilterManager.h"
 #include "../../Infrastructure/TextureLoader.h"
+#include "../Stage/BackgroundRenderer.h"
 
 
 namespace Jam::Presentation::Scenes
@@ -62,6 +63,9 @@ namespace Jam::Presentation::Scenes
 		
 		// Stage用物理ボディ管理
 		std::vector<std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody>> m_stagePhysicsBodies;
+
+		// Background用
+		std::unique_ptr<Jam::Presentation::Background::BackgroundRenderer> m_backgroundRenderer;
 
 		// Enemy用
 		HashSet<P2ContactPair> m_previousContacts;
@@ -201,6 +205,10 @@ namespace Jam::Presentation::Scenes
 			} else {
 				Print << U"[GameScene] ❌ Failed to load stage1.json";
 			}
+
+			// === Background 初期化 ===
+			m_backgroundRenderer = std::make_unique<Jam::Presentation::Background::BackgroundRenderer>();
+			Print << U"[GameScene] ✅ Background system initialized";
 		}
 
 		void update() override
@@ -253,6 +261,15 @@ namespace Jam::Presentation::Scenes
 
 			{
 				const auto transformer = m_cameraManager->createTransformer();
+				const Vec2 cameraOffset = m_cameraManager->getCameraOffset();
+
+				// === 背景描画 (Back Layer) ===
+				if (m_backgroundRenderer) {
+					// テスト用の背景を描画
+					const Vec2 parallaxOffset = cameraOffset * 0.3; // Back layer multiplier
+					RectF testBG(-500 - parallaxOffset.x, -800 - parallaxOffset.y, 4000, 2000);
+					testBG.draw(ColorF(0.3, 0.5, 0.8, 0.5)); // 薄い青色
+				}
 
 				// Stage描画
 				if (m_stageRenderer)
