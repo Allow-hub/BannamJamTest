@@ -402,6 +402,7 @@
     <ClInclude Include="src\Presentation\AudioService.h" />
     <ClInclude Include="src\Presentation\CameraManager.h" />
     <ClInclude Include="src\Infrastructure\EnemyLoader.h" />
+    <ClInclude Include="src\Presentation\EffectManager.h" />
     <ClInclude Include="src\Presentation\EnemyManager.h" />
     <ClInclude Include="src\Infrastructure\StageLoader.h" />
     <ClInclude Include="src\Presentation\PlayerManager.h" />
@@ -414,6 +415,8 @@
     <ClInclude Include="src\UseCase\AttackProcessor.h" />
     <ClInclude Include="src\UseCase\CameraEvent.h" />
     <ClInclude Include="src\UseCase\CameraService.h" />
+    <ClInclude Include="src\UseCase\EffectEvents.h" />
+    <ClInclude Include="src\UseCase\EffectImplementations.h" />
     <ClInclude Include="src\UseCase\EnemyFactory.h" />
     <ClInclude Include="src\UseCase\GameEventHandler.h" />
     <ClInclude Include="src\UseCase\PlayerService.h" />

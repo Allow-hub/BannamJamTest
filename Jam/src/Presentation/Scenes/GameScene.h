@@ -22,6 +22,8 @@
 #include "../../Infrastructure/PhysicsFilterManager.h"
 #include "../../UseCase/AttackProcessor.h"
 #include "../../Infrastructure/GridRenderer.h"
+#include "../../UseCase/EffectEvents.h"
+#include "../../Presentation/EffectManager.h"
 
 
 namespace Jam::Presentation::Scenes
@@ -45,11 +47,13 @@ namespace Jam::Presentation::Scenes
 
 		std::shared_ptr<Jam::Presentation::CameraManager> m_cameraManager;
 		std::shared_ptr<Jam::UseCase::CameraService> m_cameraService;
+		std::unique_ptr<Jam::Presentation::EffectManager> m_effectManager;
+
 
 		std::shared_ptr<Jam::Domain::Events::GameEventQueue> m_gameEventQueue;
 		std::shared_ptr<Jam::UseCase::CameraEventQueue> m_cameraEventQueue;
+		std::shared_ptr<Jam::UseCase::EffectEventQueue> m_effectEventQueue;
 		std::shared_ptr<Jam::UseCase::GameEventHandler> m_eventHandler;
-
 
 
 		Jam::Infrastructure::Siv3DInputManager m_inputManager;
@@ -86,11 +90,16 @@ namespace Jam::Presentation::Scenes
 			});
 			locator.registerPhysicsFactory(physicsFactory);
 
+
 			// === Game内のイベント用クラスを初期化 ===
 			m_gameEventQueue = std::make_shared<Jam::Domain::Events::GameEventQueue>();
 			m_cameraEventQueue = std::make_shared<Jam::UseCase::CameraEventQueue>();
+			m_effectEventQueue = std::make_shared<Jam::UseCase::EffectEventQueue>();
+
 			m_eventHandler = std::make_shared<Jam::UseCase::GameEventHandler>(
-				*m_gameEventQueue,*m_cameraEventQueue);
+				*m_gameEventQueue, *m_cameraEventQueue, *m_effectEventQueue);
+
+			m_effectManager = std::make_unique<Jam::Presentation::EffectManager>(*m_effectEventQueue);
 
 			// === Player 初期化 ===
 			auto stats = Jam::Infrastructure::Physics::LoadFromJSON(U"../Assets/Player/player_stats.json");
@@ -222,7 +231,9 @@ namespace Jam::Presentation::Scenes
 
 			// カメラの更新
 			m_cameraService->update(Scene::DeltaTime());
+			m_effectManager->update();
 
+			//デバッグ用
 			if (KeyR.down())
 			{
 				resetScene();
@@ -259,7 +270,7 @@ namespace Jam::Presentation::Scenes
 				{
 					m_enemyManager->draw();
 				}
-				Jam::Util::GridRenderer::instance().draw();
+				//Jam::Util::GridRenderer::instance().draw();
 			}
 		}
 

@@ -2,6 +2,7 @@
 #include "../Domain/Events/GameEvents.h"
 #include "CameraEvent.h"
 #include "AttackProcessor.h"
+#include "EffectEvents.h"
 
 namespace Jam::UseCase
 {
@@ -11,12 +12,14 @@ namespace Jam::UseCase
 	private:
 		Domain::Events::GameEventQueue& m_gameEventQueue;
 		CameraEventQueue& m_cameraEventQueue;
+		EffectEventQueue& m_effectEventQueue;
 
 	public:
 		GameEventHandler(Domain::Events::GameEventQueue& gameEventQueue,
-						 CameraEventQueue& cameraEventQueue)
+						 CameraEventQueue& cameraEventQueue, EffectEventQueue& effectEventQueue)
 			: m_gameEventQueue(gameEventQueue)
 			, m_cameraEventQueue(cameraEventQueue)
+			, m_effectEventQueue(effectEventQueue)
 		{
 		}
 
@@ -68,6 +71,11 @@ namespace Jam::UseCase
 			//if (e.damageInfo.isCritical)
 			//{
 			Jam::UseCase::AttackProcessor::getInstance().executeAttack(e.attacker, e.target, e.damageInfo);
+
+			m_effectEventQueue.push(StarEffectEvent{
+				.position = e.damageInfo.position,
+				.hue = 1.0
+			});
 			//m_cameraEventQueue.push(CameraShakeEvent{ e.intensity, e.duration });
 			//}
 			//else
