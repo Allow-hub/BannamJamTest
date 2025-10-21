@@ -342,22 +342,42 @@ namespace Jam::Domain::Player
 		m_enemyHitFreezeTimer = m_enemyHitFreezeDuration;
 		m_isFlying = false;
 
+		// ===== m_lastDirを保存 =====
+		auto playerBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+			.getPhysicsFactory()->getBody(m_ownerId);
+
+		if (playerBody)
+		{
+			Vec2 hookPos = m_body->getPosition();
+			Vec2 playerPos = playerBody->getPosition();
+			Vec2 diff = hookPos - playerPos;
+
+			if (diff.isZero())
+				diff = Vec2{ 0, -1 };
+
+			// プレイヤーから敵への方向を保存
+			m_lastDir = diff.normalized();
+		}
+
 		// フックの動きを停止
 		m_body->setVelocity({ 0, 0 });
 		m_body->setAngularVelocity(0);
 
-		auto playerBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
-			.getPhysicsFactory()->getBody(m_ownerId);
 		// イベント送信（振動など）
 		m_eventQueue.push(Events::PlayerChokerSkillEvent{ 0.9, 0.5 });
 
-		m_eventQueue.push(Events::EnemyDamagedEvent{ playerBody->getID(),m_targetEnemy->getID() ,
+		Print << U"保存された方向: " << m_lastDir;
+
+		m_eventQueue.push(Events::EnemyDamagedEvent{
+			playerBody->getID(),
+			m_targetEnemy->getID(),
 			DamageInfo {
 				m_playerStats.power,
 				m_body->getPosition(),
 				m_lastDir,
 				true
-			} });
+			}
+		});
 	}
 
 	// Joint作成処理を分離

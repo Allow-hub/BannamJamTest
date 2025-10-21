@@ -103,7 +103,7 @@ namespace Jam::Domain::Enemy
 		}
 
 		virtual void onDamaged(const DamageInfo& info) {}
-		virtual Jam::Util::Task onDeath();
+		virtual Jam::Util::Task onDeath(const DamageInfo& info);
 		// =========================
 		// メンバ変数
 		// =========================

@@ -43,7 +43,7 @@ namespace Jam::Domain::Enemy
 		if (m_status.hp <= 0)
 		{
 			m_status.hp = 0;
-			onDeath(); // 死んだとき
+			onDeath(info); // 死んだとき
 		}
 		else
 		{
@@ -51,11 +51,12 @@ namespace Jam::Domain::Enemy
 		}
 	}
 
-	Jam::Util::Task EnemyBase::onDeath()
+	Jam::Util::Task EnemyBase::onDeath(const DamageInfo& info)
 	{
+		m_body->applyImpulse(info.direction*100);
 		co_await Jam::Util::WaitSeconds(1.0);
 		Print << U"Hello!OneSeconds";
-		co_await Jam::Util::WaitSeconds(1.0);
+		co_await Jam::Util::WaitSeconds(5.0);
 		Print << U"Hello!TwoSeconds";
 		m_isAlive = false;
 	}
