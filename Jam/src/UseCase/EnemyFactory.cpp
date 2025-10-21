@@ -1,5 +1,6 @@
 ﻿#include "EnemyFactory.h"
 #include "../Domain/Enemy/LittleDevil.h"
+#include "AttackProcessor.h"
 
 namespace Jam::UseCase
 {
@@ -34,7 +35,6 @@ namespace Jam::UseCase
 		}
 
 		auto enemyBody = enemy->getPhysicsBody();
-		//Print << U"[EnemyFactory] Enemy Body ptr == body ptr ? " << (enemyBody.get() == body.get());
 
 		// ステータステーブルに登録があれば適用
 		auto it = m_statusTable.find(type);
@@ -44,6 +44,9 @@ namespace Jam::UseCase
 			//Print << U"[EnemyFactory] ✅ Applied status: HP=" << it->second.hp
 				//<< U", Speed=" << it->second.moveSpeed;
 		}
+
+		//攻撃対象に追加
+		Jam::UseCase::AttackProcessor::getInstance().registerDamageable(enemyBody->getID(), enemy);
 		return enemy;
 	}
 }

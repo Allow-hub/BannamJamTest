@@ -12,8 +12,8 @@ using namespace Jam::Domain::Physics;
 namespace Jam::Domain::Player
 {
 	ChokerSkill::ChokerSkill(Jam::Domain::Events::GameEventQueue& eventQueue,
-							 PhysicsBodyID ownerId)
-		: IPlayerSkill(PlayerSkillType::Choker, eventQueue)
+							 PhysicsBodyID ownerId, Jam::Domain::Player::PlayerStats& stats)
+		: IPlayerSkill(PlayerSkillType::Choker, eventQueue, stats)
 		, m_ownerId(ownerId)
 	{
 		m_body = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
@@ -350,6 +350,14 @@ namespace Jam::Domain::Player
 			.getPhysicsFactory()->getBody(m_ownerId);
 		// イベント送信（振動など）
 		m_eventQueue.push(Events::PlayerChokerSkillEvent{ 0.9, 0.5 });
+
+		m_eventQueue.push(Events::EnemyDamagedEvent{ m_body->getID() ,playerBody->getID(),
+			DamageInfo {
+				m_playerStats.hp,
+				m_body->getPosition(),
+				m_lastDir,
+				true
+			} });
 	}
 
 	// Joint作成処理を分離

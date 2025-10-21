@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../Domain/Events/GameEvents.h"
 #include "CameraEvent.h"
+#include "AttackProcessor.h"
 
 namespace Jam::UseCase
 {
@@ -63,14 +64,16 @@ namespace Jam::UseCase
 	private:
 		void handleEnemyDamaged(const Domain::Events::EnemyDamagedEvent& e)
 		{
-			if (e.isCritical)
-			{
-				m_cameraEventQueue.push(CameraShakeEvent{ 12.0, 2.3 });
-			}
-			else
-			{
-				m_cameraEventQueue.push(CameraShakeEvent{ 5.0, 0.15 });
-			}
+			//if (e.damageInfo.isCritical)
+			//{
+			Jam::UseCase::AttackProcessor::getInstance().executeAttack(e.attacker, e.target, e.damageInfo);
+			//m_cameraEventQueue.push(CameraShakeEvent{ e.intensity, e.duration });
+			//}
+			//else
+			//{
+			//	Jam::UseCase::AttackProcessor::getInstance().executeAttack(e.attacker, e.target, e.damageInfo);
+			//	m_cameraEventQueue.push(CameraShakeEvent{ e.intensity, e.duration });
+			//}
 		}
 
 		void handleEnemyDefeated(const Domain::Events::EnemyDefeatedEvent& e)

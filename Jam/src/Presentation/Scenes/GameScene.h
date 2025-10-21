@@ -20,6 +20,7 @@
 #include "../../Infrastructure/Siv3DCursorUtil.h"
 #include "../../Presentation/AudioService.h"
 #include "../../Infrastructure/PhysicsFilterManager.h"
+#include "../../UseCase/AttackProcessor.h"
 
 
 namespace Jam::Presentation::Scenes
@@ -105,6 +106,7 @@ namespace Jam::Presentation::Scenes
 			m_player = std::make_shared<Domain::Player::Player>(playerBody, *m_gameEventQueue);
 			playerBody->setCollisionListener(m_player);
 
+			m_player->setHp(stats.hp);
 			m_player->setSpeed(stats.moveSpeed);
 			m_player->setJumpPower(stats.jumpPower);
 
@@ -248,6 +250,11 @@ namespace Jam::Presentation::Scenes
 		}
 
 	private:
+
+		void resetScene()
+		{
+			Jam::UseCase::AttackProcessor::getInstance().reset();
+		}
 
 		void notifyCollisionEvents(const HashTable<P2ContactPair, P2Collision>& collisions)
 		{

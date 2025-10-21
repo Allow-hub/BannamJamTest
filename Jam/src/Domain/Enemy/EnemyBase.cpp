@@ -34,13 +34,21 @@ namespace Jam::Domain::Enemy
 		m_body->applyForce({ 0, -m_status.jumpPower });
 	}
 
-	void EnemyBase::takeDamage(int damage)
+	void EnemyBase::takeDamage(const DamageInfo& info)
 	{
-		m_status.hp -= damage;
+		if (!m_isAlive) return;
+
+		m_status.hp -= info.amount;
+		Print << m_status.hp;
 		if (m_status.hp <= 0)
 		{
+			m_status.hp = 0;
 			m_isAlive = false;
-			onDestroy();
+			//onDeath(); // 死んだとき
+		}
+		else
+		{
+			//onDamaged(info);//ダメージを受けた時の吹き飛ばし等
 		}
 	}
 

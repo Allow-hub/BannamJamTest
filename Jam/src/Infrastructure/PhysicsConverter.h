@@ -16,6 +16,7 @@ namespace Jam::Infrastructure::Physics
 		if (!json) throw Error(U"Failed to load Player JSON: {}"_fmt(path));
 
 		Jam::Domain::Player::PlayerStats stats;
+		stats.hp = json[U"stats"][U"hp"].get<double>();
 		stats.moveSpeed = json[U"stats"][U"moveSpeed"].get<double>();
 		stats.jumpPower = json[U"stats"][U"jumpPower"].get<double>();
 

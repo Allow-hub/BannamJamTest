@@ -3,15 +3,16 @@
 #include <variant>
 #include <queue>
 #include "../../UseCase/EnemyFactory.h"
+#include "../Physics/PhysicsBodyID.h"
 
 namespace Jam::Domain::Events
 {
 	// Domain層のイベント定義
 	struct EnemyDamagedEvent
 	{
-		Vec2 position;
-		double damage;
-		bool isCritical;
+		Jam::Domain::Physics::PhysicsBodyID attacker;
+		Jam::Domain::Physics::PhysicsBodyID target;
+		DamageInfo damageInfo;
 	};
 
 	struct EnemyDefeatedEvent
@@ -30,8 +31,12 @@ namespace Jam::Domain::Events
 
 	struct PlayerDamagedEvent
 	{
-		Vec2 position;
-		double damage;
+		Jam::Domain::Physics::PhysicsBodyID attacker;
+		Jam::Domain::Physics::PhysicsBodyID target;
+		DamageInfo damageInfo;
+		double zoom;
+		double duration;
+		double intensity;
 	};
 
 	struct PlayerChokerSkillEvent

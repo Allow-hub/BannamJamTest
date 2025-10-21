@@ -4,6 +4,7 @@
 #include "../Physics/PhysicsBodyID.h"
 #include <functional>
 #include "EnemyAI/IEnemyAI.h"
+#include "../ITakeDamageable.h"
 
 namespace Jam::Infrastructure {
 	class FactoryServiceLocator;
@@ -21,7 +22,7 @@ namespace Jam::Domain::Enemy
 		Jam::Domain::Physics::PhysicsMaterial physicsMaterial;
 	};
 
-	class EnemyBase : public Jam::Domain::Physics::ICollisionListener
+	class EnemyBase : public Jam::Domain::Physics::ICollisionListener ,public Jam::Domain::ITakeDamageable
 	{
 	public:
 		using AnimationEvent = std::function<void(const s3d::String&)>;
@@ -42,9 +43,9 @@ namespace Jam::Domain::Enemy
 		virtual void jump();
 		virtual void onDestroy();
 
-		bool isAlive() const { return m_isAlive; }
-		void takeDamage(int damage);
-
+		bool isAlive() const override { return m_isAlive; }
+		void takeDamage(const DamageInfo& info)override;
+		double getCurrentHp() const override { return m_status.hp; }
 		// =========================
 		// 位置・物理操作
 		// =========================
@@ -101,6 +102,8 @@ namespace Jam::Domain::Enemy
 				m_onAnimChange(animName);
 		}
 
+		virtual void onDamaged(const DamageInfo& info) {}
+		virtual void onDeath() {}
 		// =========================
 		// メンバ変数
 		// =========================

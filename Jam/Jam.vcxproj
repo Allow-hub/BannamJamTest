@@ -370,6 +370,7 @@
     <ClInclude Include="src\Domain\Enemy\LittleDevil.h" />
     <ClInclude Include="src\Domain\Events\GameEvents.h" />
     <ClInclude Include="src\Domain\IInputService.h" />
+    <ClInclude Include="src\Domain\ITakeDamageable.h" />
     <ClInclude Include="src\Domain\Physics\ICollisionListener.h" />
     <ClInclude Include="src\Domain\Physics\IPhysicsBody.h" />
     <ClInclude Include="src\Domain\Physics\PhysicsBodyID.h" />
@@ -407,6 +408,7 @@
     <ClInclude Include="src\Presentation\Scenes\StoryScene.h" />
     <ClInclude Include="src\Presentation\Scenes\TitleScene.h" />
     <ClInclude Include="src\Presentation\StoryManager.h" />
+    <ClInclude Include="src\UseCase\AttackProcessor.h" />
     <ClInclude Include="src\UseCase\CameraEvent.h" />
     <ClInclude Include="src\UseCase\CameraService.h" />
     <ClInclude Include="src\UseCase\EnemyFactory.h" />

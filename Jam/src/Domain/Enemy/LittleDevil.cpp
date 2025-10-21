@@ -12,8 +12,6 @@ namespace Jam::Domain::Enemy
 		aiList.emplace_back(AIType::Chase, std::make_unique<ChaseAI>());
 
 		setAIList(std::move(aiList));//setしたときにそのAIのEnterも入ります
-
-		Print << U"Current AI: " + AITypeToString(getAIType());
 	}
 
 	void LittleDevil::update(double deltaTime)
@@ -41,12 +39,10 @@ namespace Jam::Domain::Enemy
 
 	void LittleDevil::onPatrolEnter()
 	{
-		Print << U"Enter";
 	}
 
 	void LittleDevil::onChaseEnter()
 	{
-		Print << U"Chase";
 	}
 
 
