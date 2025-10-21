@@ -15,11 +15,18 @@ namespace Jam::Infrastructure {
         static void clearTextureCache();
         static bool loadCustomTexture(Jam::Domain::Stage::StageType type, const FilePath& filePath);
         
+        // 背景テクスチャ関連（名前ベース）
+        static Optional<Texture> getTexture(const String& textureName);
+        static void preloadBackgroundTextures();
+        static bool loadBackgroundTexture(const String& name, const FilePath& filePath);
+        
     private:
         static HashTable<Jam::Domain::Stage::StageType, Texture> s_stageTextures;
+        static HashTable<String, Texture> s_backgroundTextures;
         static bool s_initialized;
         
         static FilePath getDefaultTexturePath(Jam::Domain::Stage::StageType type);
+        static FilePath getDefaultBackgroundTexturePath(const String& textureName);
         static void initialize();
     };
 
@@ -27,6 +34,7 @@ namespace Jam::Infrastructure {
 
     // 静的メンバの定義
     HashTable<Jam::Domain::Stage::StageType, Texture> TextureLoader::s_stageTextures;
+    HashTable<String, Texture> TextureLoader::s_backgroundTextures;
     bool TextureLoader::s_initialized = false;
 
     Texture TextureLoader::getStageTexture(Jam::Domain::Stage::StageType type) {
@@ -109,6 +117,68 @@ namespace Jam::Infrastructure {
         default:
             return basePath + U"default.png";
         }
+    }
+
+    // 背景テクスチャの取得（名前ベース）
+    Optional<Texture> TextureLoader::getTexture(const String& textureName) {
+        if (!s_initialized) {
+            initialize();
+        }
+        
+        // キャッシュから検索
+        if (s_backgroundTextures.contains(textureName)) {
+            return s_backgroundTextures[textureName];
+        }
+        
+        // 見つからない場合は動的に読み込み
+        FilePath texturePath = getDefaultBackgroundTexturePath(textureName);
+        
+        if (FileSystem::Exists(texturePath)) {
+            Texture texture(texturePath);
+            s_backgroundTextures[textureName] = texture;
+            Console << U"[TextureLoader] Loaded background texture: " << texturePath;
+            return texture;
+        } else {
+            Console << U"[TextureLoader] ❌ Background texture not found: " << texturePath;
+            return none; // Optional<Texture>のnone
+        }
+    }
+
+    void TextureLoader::preloadBackgroundTextures() {
+        Console << U"[TextureLoader] Preloading background textures...";
+        
+        Array<String> backgroundNames = {
+            U"BG"
+        };
+        
+        for (const auto& name : backgroundNames) {
+            getTexture(name);
+        }
+        
+        Console << U"[TextureLoader] ✅ Background preloading completed (" << s_backgroundTextures.size() << U" textures)";
+    }
+
+    bool TextureLoader::loadBackgroundTexture(const String& name, const FilePath& filePath) {
+        if (!FileSystem::Exists(filePath)) {
+            Console << U"[TextureLoader] ❌ Custom background texture not found: " << filePath;
+            return false;
+        }
+        
+        Texture texture(filePath);
+        s_backgroundTextures[name] = texture;
+        Console << U"[TextureLoader] ✅ Custom background texture loaded: " << filePath;
+        return true;
+    }
+
+    FilePath TextureLoader::getDefaultBackgroundTexturePath(const String& textureName) {
+        const FilePath basePath = U"../Assets/Stage/";
+        
+        if (textureName == U"BG") {
+            return basePath + U"BG.png";
+        }
+        
+        // デフォルト
+        return basePath + textureName + U".png";
     }
 
     void TextureLoader::initialize() {

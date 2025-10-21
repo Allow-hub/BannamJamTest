@@ -142,5 +142,11 @@ namespace Jam::Presentation
 			return m_camera.createTransformer();
 		}
 		[[nodiscard]] CameraMode getMode() const { return m_mode; }
+		
+		// カメラオフセットを取得（パララックス計算用）
+		[[nodiscard]] Vec2 getCameraOffset() const
+		{
+			return m_camera.getCenter();
+		}
 	};
 }

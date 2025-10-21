@@ -159,6 +159,7 @@
     <ClCompile Include="src\Domain\Player\Skill\ChokerSkill.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Stage\background.json" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -318,6 +319,17 @@
     <Text Include="src\Domain\Physics\Domain_PhysicsDoc.md" />
     <Text Include="Assets\Player\Skill\Bomb\playerSkill_bomb.json" />
     <Text Include="Assets\Enemy\enemy_stage1_1.json" />
+    <Text Include="Assets\Enemy\enemy_stage1_2.json" />
+    <Text Include="Assets\Enemy\enemy_stage1_3.json" />
+    <Text Include="Assets\Enemy\enemy_stats.json" />
+    <Text Include="Assets\Enemy\LittleDevil\LittleDevil_animation.json" />
+    <Text Include="Assets\Player\player_animation.json" />
+    <Text Include="Assets\Player\player_stats.json" />
+    <Text Include="Assets\Player\skillData.json" />
+    <Text Include="src\Domain\Events\Events.md" />
+    <Text Include="src\Infrastructure\InfrastructureDoc.md" />
+    <Text Include="src\Presentation\Presentation.md" />
+    <Text Include="src\Domain\Enemy\EnemyDoc.md" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App\dll\soundtouch\SoundTouch_x64.dll">
@@ -810,17 +822,6 @@
     <None Include="App\engine\shader\glsl\quad_warp.frag">
       <Filter>Resource Files\engine\shader\glsl</Filter>
     </None>
-    <None Include="Assets\Player\player_animation.json" />
-    <None Include="Assets\Player\player_stats.json" />
-    <None Include="src\Infrastructure\InfrastructureDoc.md" />
-    <None Include="src\Presentation\Presentation.md" />
-    <None Include="Assets\Enemy\LittleDevil\LittleDevil_animation.json" />
-    <None Include="Assets\Enemy\enemy_stats.json" />
-    <None Include="src\Domain\Events\Events.md" />
-    <None Include="Assets\Player\skillData.json" />
-    <None Include="src\Domain\Enemy\EnemyDoc.md" />
-    <None Include="Assets\Enemy\enemy_stage1_2.json" />
-    <None Include="Assets\Enemy\enemy_stage1_3.json" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="App\example\test.mp3">
@@ -1007,6 +1008,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Infrastructure\PhysicsFilterManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Domain\Stage\BackgroundTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Infrastructure\BackgroundLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Infrastructure\TextureLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Presentation\Stage\BackgroundRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UseCase\StageService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
