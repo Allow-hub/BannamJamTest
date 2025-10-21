@@ -11,7 +11,7 @@
     {
       "rect": [ 0, 50, 200, 1500 ],
       "type": "solid",
-      "metadata": "Platform_2"
+      "metadata": "初期地点"
     },
     {
       "rect": [ 1250, 150, 200, 1500 ],
@@ -19,100 +19,166 @@
       "metadata": "Platform_2"
     },
     {
-      "rect": [ 550, -350, 50, 50 ],
+      "rect": [ 550, -650, 50, 50 ],
+      "type": "solid",
+      "metadata": "ジョイント01"
+    },
+    {
+      "rect": [ 1250, -650, 50, 50 ],
+      "type": "solid",
+      "metadata": "ジョイント02"
+    },
+    {
+      "rect": [ 0, -700, 1900, 50 ],
+      "type": "solid",
+      "metadata": "天井01"
+    },
+    {
+      "rect": [ 200, 75, 200, 1500 ],
+      "type": "solid",
+      "metadata": "初期地点付近足場"
+    },
+    {
+      "rect": [ 1650, -150, 300, 100 ],
+      "type": "solid",
+      "metadata": "対岸01"
+    },
+    {
+      "rect": [ 1950, -300, 300, 1500 ],
+      "type": "solid",
+      "metadata": "対岸02"
+    },
+    {
+      "rect": [ 2500, -400, 200, 800 ],
       "type": "solid",
       "metadata": "Platform_2"
     },
     {
-      "rect": [ 950, -350, 50, 50 ],
+      "rect": [ 2800, 900, 250, 50 ],
+      "type": "solid",
+      "metadata": "ダメージ床の対岸"
+    },
+    {
+      "rect": [ 2250, 900, 250, 50 ],
+      "type": "solid",
+      "metadata": "ダメージ床"
+    },
+    {
+      "rect": [ 3150, 750, 100, 100 ],
+      "type": "solid",
+      "metadata": "ミニ床01"
+    },
+    {
+      "rect": [ 3550, 750, 100, 100 ],
+      "type": "solid",
+      "metadata": "ミニ床02"
+    },
+    {
+      "rect": [ 3300, 400, 100, 65 ],
+      "type": "solid",
+      "metadata": "ミニ床03"
+    },
+    {
+      "rect": [ 3850, 600, 100, 100 ],
+      "type": "solid",
+      "metadata": "ミニ床04"
+    },
+    {
+      "rect": [ 3600, 200, 100, 65 ],
+      "type": "solid",
+      "metadata": "ミニ床05"
+    },
+    {
+      "rect": [ 3350, 50, 100, 65 ],
+      "type": "solid",
+      "metadata": "ミニ床06"
+    },
+    {
+      "rect": [ 2700, 5, 250, 50 ],
+      "type": "solid",
+      "metadata": "ミニ床07"
+    },
+    {
+      "rect": [ 2500, -400, 2500, 50 ],
+      "type": "solid",
+      "metadata": "天井"
+    },
+    {
+      "rect": [ 4150, 200, 100, 800 ],
+      "type": "solid",
+      "metadata": "ミニ床地帯終わりの壁"
+    },
+    {
+      "rect": [ 4600, -350, 100, 250 ],
+      "type": "solid",
+      "metadata": "細道の壁01"
+    },
+    {
+      "rect": [ 4150, 100, 700, 100 ],
+      "type": "solid",
+      "metadata": "ミニ床地帯終わりの床"
+    },
+    {
+      "rect": [ 4350, -150, 100, 250 ],
+      "type": "solid",
+      "metadata": "細道の壁02"
+    },
+    {
+      "rect": [ 4850, 150, 450, 50 ],
+      "type": "solid",
+      "metadata": "ダメージ床02"
+    },
+    {
+      "rect": [ 5600, 0, 450, 850 ],
+      "type": "solid",
+      "metadata": "ダメージ床地帯右の壁"
+    },
+    {
+      "rect": [ 4850, 500, 750, 50 ],
+      "type": "solid",
+      "metadata": "ダメージ床03"
+    },
+    {
+      "rect": [ 4150, 950, 1050, 50 ],
+      "type": "solid",
+      "metadata": "ダメージ床04"
+    },
+    {
+      "rect": [ 4800, 150, 50, 10 ],
       "type": "solid",
       "metadata": "Platform_2"
     },
     {
-      "rect": [ 0, -400, 1900, 50 ],
+      "rect": [ 6050, 650, 300, 200 ],
       "type": "solid",
-      "metadata": "Platform_2"
+      "metadata": "記憶の欠片の床"
     },
     {
-      "rect": [ 200, 150, 200, 1500 ],
+      "rect": [ 5600, 1000, 800, 150 ],
       "type": "solid",
-      "metadata": "Platform_2"
+      "metadata": "ダメージ床終わりの床"
     },
     {
-      "rect": [ 1250, -350, 400, 100 ],
+      "rect": [ 6250, 50, 100, 900 ],
       "type": "solid",
-      "metadata": "Platform_2"
+      "metadata": "記憶の欠片の壁"
     },
     {
-      "rect": [ 1450, -50, 200, 1500 ],
+      "rect": [ 7000, 900, 300, 65 ],
       "type": "solid",
-      "metadata": "Platform_2"
+      "metadata": "テクニック床01"
     },
     {
-      "rect": [ 1900, -400, 200, 800 ],
+      "rect": [ 7000, 0, 300, 65 ],
       "type": "solid",
-      "metadata": "Platform_2"
+      "metadata": "テクニック床02"
     },
     {
-      "rect": [ 1650, 900, 250, 50 ],
+      "rect": [ 7800, -200, 100, 1300 ],
       "type": "solid",
-      "metadata": "Platform_2"
-    },
-    {
-      "rect": [ 2100, 900, 250, 50 ],
-      "type": "solid",
-      "metadata": "Platform_2"
-    },
-    {
-      "rect": [ 2550, 750, 100, 100 ],
-      "type": "solid",
-      "metadata": "Platform_2"
-    },
-    {
-      "rect": [ 2950, 750, 100, 100 ],
-      "type": "solid",
-      "metadata": "Platform_2"
-    },
-    {
-      "rect": [ 2700, 400, 100, 65 ],
-      "type": "solid",
-      "metadata": "Platform_2"
-    },
-    {
-      "rect": [ 3250, 600, 100, 100 ],
-      "type": "solid",
-      "metadata": "Platform_2"
-    },
-    {
-      "rect": [ 3000, 200, 100, 65 ],
-      "type": "solid",
-      "metadata": "Platform_2"
-    },
-    {
-      "rect": [ 2750, 50, 100, 65 ],
-      "type": "solid",
-      "metadata": "Platform_2"
-    },
-    {
-      "rect": [ 2100, 5, 250, 50 ],
-      "type": "solid",
-      "metadata": "Platform_2"
-    },
-    {
-      "rect": [ 1900, -400, 1900, 50 ],
-      "type": "solid",
-      "metadata": "Platform_2"
-    },
-    {
-      "rect": [ 3750, 200, 100, 700 ],
-      "type": "solid",
-      "metadata": "Platform_2"
-    },
-    {
-      "rect": [ 3550, 50, 100, 700 ],
-      "type": "solid",
-      "metadata": "Platform_2"
+      "metadata": "テクニック終わりの床"
     }
+
 
 
   ]
