@@ -20,6 +20,8 @@
 #include "../../Infrastructure/Siv3DCursorUtil.h"
 #include "../../Presentation/AudioService.h"
 #include "../../Infrastructure/PhysicsFilterManager.h"
+#include "../../UseCase/AttackProcessor.h"
+#include "../../Infrastructure/GridRenderer.h"
 
 
 namespace Jam::Presentation::Scenes
@@ -96,7 +98,7 @@ namespace Jam::Presentation::Scenes
 			auto playerBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
 				.getPhysicsFactory()
 				->createBody(
-				Vec2{ 0, 0 },
+				Vec2{ 0, -5 },//地面に埋まらないように
 				SizeF{ 50, 100 },
 				s3d::P2BodyType::Dynamic,
 				stats.physicsMaterial
@@ -105,6 +107,8 @@ namespace Jam::Presentation::Scenes
 			m_player = std::make_shared<Domain::Player::Player>(playerBody, *m_gameEventQueue);
 			playerBody->setCollisionListener(m_player);
 
+			m_player->setPower(stats.power);
+			m_player->setHp(stats.hp);
 			m_player->setSpeed(stats.moveSpeed);
 			m_player->setJumpPower(stats.jumpPower);
 
@@ -131,7 +135,7 @@ namespace Jam::Presentation::Scenes
 
 
 			// 敵ステータスをJSONからロード
-			std::unordered_map<Jam::UseCase::EnemyType, Jam::Domain::Enemy::EnemyStatus> enemyStatusTable;
+			std::unordered_map<Jam::Domain::EnemyType, Jam::Domain::Enemy::EnemyStatus> enemyStatusTable;
 			if (Jam::Infrastructure::EnemyLoader::LoadEnemyStatusFromJSON(
 				U"../Assets/Enemy/enemy_stats.json",
 				enemyStatusTable))
@@ -151,7 +155,7 @@ namespace Jam::Presentation::Scenes
 				U"../Assets/Enemy/enemy_" + stageName + U".json",
 				m_enemyFactory,
 				m_enemyManager,
-				playerBodyId))
+				playerBodyId, *m_gameEventQueue))
 			{
 				Console << U"[GameScene] ⚠ Failed to load stage enemies";
 			}
@@ -181,6 +185,11 @@ namespace Jam::Presentation::Scenes
 			} else {
 				Print << U"[GameScene] ❌ Failed to load stage1.json";
 			}
+
+			Jam::Util::GridRenderer::GridConfig config;
+			config.gridSize = 100.0;
+			config.fontSize = 16;
+			Jam::Util::GridRenderer::instance().setConfig(config);
 		}
 
 		void update() override
@@ -213,6 +222,12 @@ namespace Jam::Presentation::Scenes
 
 			// カメラの更新
 			m_cameraService->update(Scene::DeltaTime());
+
+			if (KeyR.down())
+			{
+				resetScene();
+				changeScene(ToSceneString(SceneName::InGame));
+			}
 		}
 
 		void draw() const override
@@ -244,10 +259,16 @@ namespace Jam::Presentation::Scenes
 				{
 					m_enemyManager->draw();
 				}
+				Jam::Util::GridRenderer::instance().draw();
 			}
 		}
 
 	private:
+
+		void resetScene()
+		{
+			Jam::UseCase::AttackProcessor::getInstance().reset();
+		}
 
 		void notifyCollisionEvents(const HashTable<P2ContactPair, P2Collision>& collisions)
 		{

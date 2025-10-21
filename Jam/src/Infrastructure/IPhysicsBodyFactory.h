@@ -18,7 +18,7 @@ namespace Jam::Infrastructure::Locator
 			const Jam::Domain::Physics::PhysicsMaterial& material = { 0.2, 0.0, 1.0 },
 			const Jam::Domain::Physics::PhysicsShape shape = Jam::Domain::Physics::PhysicsShape::Rect) = 0;
 
-
+		virtual	void removeBody(Jam::Domain::Physics::PhysicsBodyID id) = 0;
 		virtual std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> getBody(Jam::Domain::Physics::PhysicsBodyID id) const = 0;
 
 

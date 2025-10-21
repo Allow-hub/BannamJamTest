@@ -2,23 +2,28 @@
 #include <HamFramework.hpp>
 #include <variant>
 #include <queue>
-#include "../../UseCase/EnemyFactory.h"
+#include "../Physics/PhysicsBodyID.h"
+#include "../ITakeDamageable.h"
+#include "../Enemy/EnemyType.h"
 
 namespace Jam::Domain::Events
 {
 	// Domain層のイベント定義
 	struct EnemyDamagedEvent
 	{
-		Vec2 position;
-		double damage;
-		bool isCritical;
+		Jam::Domain::Physics::PhysicsBodyID attacker;
+		Jam::Domain::Physics::PhysicsBodyID target;
+		Jam::Domain::DamageInfo damageInfo;
 	};
 
 	struct EnemyDefeatedEvent
 	{
 		Vec2 position;
 		bool isBoss;
-		Jam::UseCase::EnemyType enemyType;
+		Jam::Domain::EnemyType enemyType;
+		double zoom;
+		double duration;
+		double intensity;
 	};
 
 	struct PlayerAttackedEvent
@@ -30,8 +35,12 @@ namespace Jam::Domain::Events
 
 	struct PlayerDamagedEvent
 	{
-		Vec2 position;
-		double damage;
+		Jam::Domain::Physics::PhysicsBodyID attacker;
+		Jam::Domain::Physics::PhysicsBodyID target;
+		Jam::Domain::DamageInfo damageInfo;
+		double zoom;
+		double duration;
+		double intensity;
 	};
 
 	struct PlayerChokerSkillEvent
@@ -43,7 +52,7 @@ namespace Jam::Domain::Events
 	struct BossAppearedEvent
 	{
 		Vec2 position;
-		Jam::UseCase::EnemyType bossName;
+		Jam::Domain::EnemyType bossName;
 	};
 
 	struct ItemCollectedEvent

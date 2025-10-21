@@ -3,6 +3,8 @@
 #include "BombEntity.h"
 #include "../../../Infrastructure/FactoryServiceLocator.h"
 #include "../../Infrastructure/IPhysicsBodyFactory.h"
+#include "../Player.h"
+
 
 namespace Jam::Domain::Player
 {
@@ -16,8 +18,9 @@ namespace Jam::Domain::Player
 		const Vec2 createOffset = Vec2{ 50,-30 };
 
 	public:
-		BombSkill(Jam::Domain::Events::GameEventQueue& eventQueue)
-			: IPlayerSkill(PlayerSkillType::Bomb,eventQueue) {}
+		BombSkill(Jam::Domain::Events::GameEventQueue& eventQueue, Jam::Domain::Player::PlayerStats& stats)
+			: IPlayerSkill(PlayerSkillType::Bomb, eventQueue, stats) {
+		}
 
 		void use(const s3d::Vec2 position, bool facingRight) override
 		{
