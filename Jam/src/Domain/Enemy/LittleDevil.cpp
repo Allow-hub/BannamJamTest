@@ -4,14 +4,16 @@
 
 namespace Jam::Domain::Enemy
 {
-	LittleDevil::LittleDevil(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Physics::PhysicsBodyID playerId)
-		: EnemyBase(body,playerId)
+	LittleDevil::LittleDevil(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Physics::PhysicsBodyID playerId
+	, Jam::Domain::Events::GameEventQueue& eventQueue)
+		: EnemyBase(body, playerId, eventQueue)
 	{
 		std::vector<std::pair<AIType, std::unique_ptr<IEnemyAI>>> aiList;
 		aiList.emplace_back(AIType::Patrol, std::make_unique<PatrolAI>());
 		aiList.emplace_back(AIType::Chase, std::make_unique<ChaseAI>());
 
 		setAIList(std::move(aiList));//setしたときにそのAIのEnterも入ります
+		m_enemyType = EnemyType::LittleDevil;
 	}
 
 	void LittleDevil::update(double deltaTime)
@@ -48,16 +50,12 @@ namespace Jam::Domain::Enemy
 
 	void LittleDevil::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{
-		// TODO: 当たり判定で攻撃処理などを実装
+		EnemyBase::onCollisionEnter(other);
 	}
 
-	void LittleDevil::onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
-	{
-		// 現状は何もしない
-	}
-
+	void LittleDevil::onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) {}
 	void LittleDevil::onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{
-		// 現状は何もしない
+		EnemyBase::onCollisionEnter(other);
 	}
 }

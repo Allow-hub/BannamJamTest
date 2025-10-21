@@ -3,6 +3,7 @@
 #include "../../../Infrastructure/FactoryServiceLocator.h"
 #include "../../../Infrastructure/IPhysicsBodyFactory.h"
 #include "../../../Presentation/AudioService.h"
+#include "../../../Infrastructure/PhysicsFilterManager.h"
 
 #include <Siv3D.hpp>
 
@@ -26,6 +27,7 @@ namespace Jam::Domain::Player
 				Jam::Domain::Physics::PhysicsShape::Circle
 			);
 
+		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::Team1);
 		m_body->setGravityScale(0);
 		m_body->setBullet(true);
 	}
@@ -217,7 +219,6 @@ namespace Jam::Domain::Player
 						const double reachThreshold = 110; // 判定閾値
 						if (distance > reachThreshold)
 						{
-							Print << distance ;
 							finishEnemySequence(); // 何も起こさず終了
 							return;
 						}
@@ -227,6 +228,17 @@ namespace Jam::Domain::Player
 						m_eventQueue.push(Events::PlayerAttackedEvent{ 1.2, 0.2, 25.2 });
 						playerBody->applyImpulse(m_lastDir * launchPower);
 
+						m_eventQueue.push(Events::EnemyDamagedEvent{
+							playerBody->getID(),
+							m_targetEnemy->getID(),
+							DamageInfo {
+								m_playerStats.power,
+								m_body->getPosition(),
+								m_enemyImpluseDir,
+								true,
+								false
+							}
+						});
 						finishEnemySequence();
 					}
 				}
@@ -356,7 +368,8 @@ namespace Jam::Domain::Player
 				diff = Vec2{ 0, -1 };
 
 			// プレイヤーから敵への方向を保存
-			m_lastDir = diff.normalized();
+			//m_lastDir = diff.normalized();
+			m_enemyImpluseDir = diff.normalized().rotated(-2_deg);
 		}
 
 		// フックの動きを停止
@@ -366,18 +379,6 @@ namespace Jam::Domain::Player
 		// イベント送信（振動など）
 		m_eventQueue.push(Events::PlayerChokerSkillEvent{ 0.9, 0.5 });
 
-		Print << U"保存された方向: " << m_lastDir;
-
-		m_eventQueue.push(Events::EnemyDamagedEvent{
-			playerBody->getID(),
-			m_targetEnemy->getID(),
-			DamageInfo {
-				m_playerStats.power,
-				m_body->getPosition(),
-				m_lastDir,
-				true
-			}
-		});
 	}
 
 	// Joint作成処理を分離
@@ -389,8 +390,6 @@ namespace Jam::Domain::Player
 			finishEnemySequence();
 			return;
 		}
-
-		Print << U"🔗 敵用Joint作成開始";
 
 		auto& world = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
 			.getPhysicsFactory()->getWorld();

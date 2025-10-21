@@ -5,15 +5,21 @@
 #include "../../Infrastructure/FactoryServiceLocator.h"
 #include "../../Infrastructure/IPhysicsBodyFactory.h"
 #include "../../Infrastructure/PhysicsFilterManager.h"
+#include "../Events/GameEvents.h"
+
 
 namespace Jam::Domain::Enemy
 {
-	EnemyBase::EnemyBase(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Physics::PhysicsBodyID playerId)
+	EnemyBase::EnemyBase(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Physics::PhysicsBodyID playerId, Jam::Domain::Events::GameEventQueue& eventQueue)
 		: m_body(body)
-		, m_playerId(playerId)	
+		, m_playerId(playerId)
+		, m_eventQueue(eventQueue)
 		, m_isAlive(true)
 	{
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::Team2);
+		m_body->setGravityScale(1);
+		m_body->setDamping(2);
+		m_body->setBullet(true);
 	}
 
 	void EnemyBase::moveLeft()
@@ -39,7 +45,6 @@ namespace Jam::Domain::Enemy
 		if (!m_isAlive) return;
 
 		m_status.hp -= info.amount;
-		Print << m_status.hp;
 		if (m_status.hp <= 0)
 		{
 			m_status.hp = 0;
@@ -51,13 +56,42 @@ namespace Jam::Domain::Enemy
 		}
 	}
 
+	Vec2 reflect(const s3d::Vec2& dir, const s3d::Vec2& normal)
+	{
+		return dir - 2 * dir.dot(normal) * normal;
+	}
+
 	Jam::Util::Task EnemyBase::onDeath(const DamageInfo& info)
 	{
-		m_body->applyImpulse(info.direction*100);
+		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::Team2Death);
+		m_body->setGravityScale(0);
+		Vec2 impulseDir = info.direction;
+		m_isDeadAttack = true;
+		if (m_isGrounded && info.direction.y > 0) // 下向き
+		{
+			Vec2 floorNormal{ 0, -1 };
+			impulseDir = reflect(info.direction, floorNormal);
+		}
+		m_enemyImpluseDir = impulseDir;
+		m_body->setDamping(0);
+		m_body->applyImpulse(impulseDir * 8000);
 		co_await Jam::Util::WaitSeconds(1.0);
-		Print << U"Hello!OneSeconds";
-		co_await Jam::Util::WaitSeconds(5.0);
-		Print << U"Hello!TwoSeconds";
+		onDestroy(info);
+	}
+
+	void EnemyBase::onDestroy(const DamageInfo& info)
+	{
+		if (!info.isEnemyCombo)
+			m_eventQueue.push(Events::EnemyDefeatedEvent{
+				m_body->getPosition(),
+				false,
+				m_enemyType,
+				0.88,
+				0.5,
+				10
+			});
+		Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+			.getPhysicsFactory()->removeBody(m_body->getID());
 		m_isAlive = false;
 	}
 
@@ -123,11 +157,47 @@ namespace Jam::Domain::Enemy
 		return AIType::None;
 	}
 
+	//敵の攻撃イベントの送信は具象クラス側に任せます
 	void EnemyBase::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{
-		// プレイヤーや弾丸との接触など（必要に応じて派生クラスで上書き）
+		switch (other->getLayer())
+		{
+		case Physics::PhysicsLayer::Ground:
+			m_isGrounded = true;
+			break;
+		case Physics::PhysicsLayer::Enemy:
+			if (m_isDeadAttack)
+			{
+				m_eventQueue.push(Events::EnemyDamagedEvent{
+					m_body->getID(),
+					other->getID(),
+					DamageInfo {
+						100,//power
+						m_body->getPosition(),
+						{0,0},
+						true,
+						true
+					}
+				});
+				m_body->setVelocity({ 0,0 });
+				onDestroy({ 0.0,{ 0,0 },{ 0,0 },false,false });
+			}
+			break;
+		default:
+			break;
+		}
 	}
 
 	void EnemyBase::onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) {}
-	void EnemyBase::onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) {}
+	void EnemyBase::onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
+	{
+		switch (other->getLayer())
+		{
+		case Physics::PhysicsLayer::Ground:
+			m_isGrounded = false;
+			break;
+		default:
+			break;
+		}
+	}
 }

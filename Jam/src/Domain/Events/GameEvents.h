@@ -2,8 +2,9 @@
 #include <HamFramework.hpp>
 #include <variant>
 #include <queue>
-#include "../../UseCase/EnemyFactory.h"
 #include "../Physics/PhysicsBodyID.h"
+#include "../ITakeDamageable.h"
+#include "../Enemy/EnemyType.h"
 
 namespace Jam::Domain::Events
 {
@@ -12,14 +13,17 @@ namespace Jam::Domain::Events
 	{
 		Jam::Domain::Physics::PhysicsBodyID attacker;
 		Jam::Domain::Physics::PhysicsBodyID target;
-		DamageInfo damageInfo;
+		Jam::Domain::DamageInfo damageInfo;
 	};
 
 	struct EnemyDefeatedEvent
 	{
 		Vec2 position;
 		bool isBoss;
-		Jam::UseCase::EnemyType enemyType;
+		Jam::Domain::EnemyType enemyType;
+		double zoom;
+		double duration;
+		double intensity;
 	};
 
 	struct PlayerAttackedEvent
@@ -33,7 +37,7 @@ namespace Jam::Domain::Events
 	{
 		Jam::Domain::Physics::PhysicsBodyID attacker;
 		Jam::Domain::Physics::PhysicsBodyID target;
-		DamageInfo damageInfo;
+		Jam::Domain::DamageInfo damageInfo;
 		double zoom;
 		double duration;
 		double intensity;
@@ -48,7 +52,7 @@ namespace Jam::Domain::Events
 	struct BossAppearedEvent
 	{
 		Vec2 position;
-		Jam::UseCase::EnemyType bossName;
+		Jam::Domain::EnemyType bossName;
 	};
 
 	struct ItemCollectedEvent

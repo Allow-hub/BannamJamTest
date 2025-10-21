@@ -6,6 +6,7 @@
 #include "../UseCase/EnemyFactory.h"
 #include "../Infrastructure/FactoryServiceLocator.h"
 #include "../Infrastructure/IPhysicsBodyFactory.h"
+#include "../Domain/Events/GameEvents.h"
 
 
 namespace Jam::Infrastructure
@@ -17,7 +18,8 @@ namespace Jam::Infrastructure
 			const FilePath& jsonPath,
 			const std::unique_ptr<Jam::UseCase::EnemyFactory>& enemyFactory,
 			const std::unique_ptr<Jam::Presentation::EnemyManager>& enemyManager,
-			Jam::Domain::Physics::PhysicsBodyID playerId)
+			Jam::Domain::Physics::PhysicsBodyID playerId,
+			Jam::Domain::Events::GameEventQueue& eventQueue)
 		{
 			JSON json = JSON::Load(jsonPath);
 
@@ -48,9 +50,9 @@ namespace Jam::Infrastructure
 				const double posX = posJson[U"x"].get<double>();
 				const double posY = posJson[U"y"].get<double>();
 
-				Jam::UseCase::EnemyType type;
-				if (typeStr == U"LittleDevil") type = Jam::UseCase::EnemyType::LittleDevil;
-				else if (typeStr == U"Ribbon") type = Jam::UseCase::EnemyType::Ribbon;
+				Jam::Domain::EnemyType type;
+				if (typeStr == U"LittleDevil") type = Jam::Domain::EnemyType::LittleDevil;
+				else if (typeStr == U"Ribbon") type = Jam::Domain::EnemyType::Ribbon;
 				else
 				{
 					Console << U"[EnemyLoader] ⚠ Unknown enemy type: " << typeStr;
@@ -78,7 +80,7 @@ namespace Jam::Infrastructure
 					);
 				enemyBody->setLayer(Jam::Domain::Physics::PhysicsLayer::Enemy);
 
-				auto enemy = enemyFactory->createEnemy(type, enemyBody, playerId);
+				auto enemy = enemyFactory->createEnemy(type, enemyBody, playerId,eventQueue);
 				if (enemy)
 				{
 					enemyBody->setCollisionListener(enemy);
@@ -103,7 +105,7 @@ namespace Jam::Infrastructure
 		/// @return 成功したら true
 		static bool LoadEnemyStatusFromJSON(
 			const FilePath& jsonPath,
-			std::unordered_map<Jam::UseCase::EnemyType, Jam::Domain::Enemy::EnemyStatus>& outTable)
+			std::unordered_map<Jam::Domain::EnemyType, Jam::Domain::Enemy::EnemyStatus>& outTable)
 		{
 			JSON json = JSON::Load(jsonPath);
 
@@ -145,7 +147,7 @@ namespace Jam::Infrastructure
 					};
 				}
 
-				using Jam::UseCase::EnemyType;
+				using Jam::Domain::EnemyType;
 
 				if (key == U"LittleDevil")
 				{

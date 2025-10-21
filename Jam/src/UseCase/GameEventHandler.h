@@ -82,12 +82,12 @@ namespace Jam::UseCase
 			if (e.isBoss)
 			{
 				// ボス撃破時は派手な演出
-				m_cameraEventQueue.push(CameraShakeEvent{ 1.0, 1.0 });
+				m_cameraEventQueue.push(CameraShakeEvent{ e.intensity, e.duration });
 				//m_cameraEventQueue.push(CameraFocusEvent{ e.position, 3.0, 0.9 });
 			}
 			else
 			{
-				m_cameraEventQueue.push(CameraShakeEvent{ 8.0, 0.2 });
+				m_cameraEventQueue.push(CameraShakeEvent{ e.intensity, e.duration });
 			}
 		}
 

@@ -25,6 +25,7 @@ namespace Jam::Domain::Player
 
 		Vec2 m_velocity = Vec2::Zero();
 		Vec2 m_lastDir;
+		Vec2 m_enemyImpluseDir = Vec2::Zero();
 		const Vec2 createOffset = Vec2{ 50, -30 };
 		Jam::Domain::Physics::PhysicsBodyID m_ownerId;
 

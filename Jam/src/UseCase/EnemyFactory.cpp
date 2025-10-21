@@ -1,25 +1,27 @@
 ﻿#include "EnemyFactory.h"
 #include "../Domain/Enemy/LittleDevil.h"
 #include "AttackProcessor.h"
+#include "../Domain/Events/GameEvents.h"
 
 namespace Jam::UseCase
 {
 	using namespace Jam::Domain::Enemy;
 
 	std::shared_ptr<EnemyBase> EnemyFactory::createEnemy(
-		EnemyType type,
+		Jam::Domain::EnemyType type,
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body,
-		Jam::Domain::Physics::PhysicsBodyID playerId) const
+		Jam::Domain::Physics::PhysicsBodyID playerId,
+		Jam::Domain::Events::GameEventQueue& eventQueue) const
 	{
 		std::shared_ptr<EnemyBase> enemy = nullptr;
 
 		switch (type)
 		{
-		case EnemyType::LittleDevil:
-			enemy = std::make_shared<LittleDevil>(body, playerId);
+		case Jam::Domain::EnemyType::LittleDevil:
+			enemy = std::make_shared<LittleDevil>(body, playerId, eventQueue);
 			break;
 
-		case EnemyType::Ribbon:
+		case Jam::Domain::EnemyType::Ribbon:
 			// TODO: Ribbonの実装
 			return nullptr;
 

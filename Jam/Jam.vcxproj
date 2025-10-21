@@ -367,6 +367,7 @@
     <ClInclude Include="src\Domain\Enemy\EnemyAI\IEnemyAI.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyAI\PatrolAI.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyBase.h" />
+    <ClInclude Include="src\Domain\Enemy\EnemyType.h" />
     <ClInclude Include="src\Domain\Enemy\LittleDevil.h" />
     <ClInclude Include="src\Domain\Events\GameEvents.h" />
     <ClInclude Include="src\Domain\IInputService.h" />
@@ -386,6 +387,7 @@
     <ClInclude Include="src\Foundation\CoroutineUtil.h" />
     <ClInclude Include="src\Infrastructure\AudioLoader.h" />
     <ClInclude Include="src\Infrastructure\FactoryServiceLocator.h" />
+    <ClInclude Include="src\Infrastructure\GridRenderer.h" />
     <ClInclude Include="src\Infrastructure\IPhysicsBodyFactory.h" />
     <ClInclude Include="src\Infrastructure\PhysicsConverter.h" />
     <ClInclude Include="src\Domain\Stage\NormalStage.h" />

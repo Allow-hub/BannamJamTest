@@ -8,6 +8,7 @@ namespace Jam::Domain
 		Vec2 position =  {0,0};
 		Vec2 direction = {0,0};
 		bool isCritical = false;
+		bool isEnemyCombo = false;
 	};
 
 	//ダメージを受けることが可能なオブジェクトにつける

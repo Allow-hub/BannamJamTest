@@ -6,6 +6,7 @@
 #include "EnemyAI/IEnemyAI.h"
 #include "../ITakeDamageable.h"
 #include "../../Foundation/CoroutineUtil.h"
+#include "../Events/GameEvents.h"
 
 namespace Jam::Infrastructure {
 	class FactoryServiceLocator;
@@ -32,7 +33,7 @@ namespace Jam::Domain::Enemy
 		// コンストラクタ / デストラクタ
 		// =========================
 		explicit EnemyBase(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body,
-						   Jam::Domain::Physics::PhysicsBodyID playerId);
+						   Jam::Domain::Physics::PhysicsBodyID playerId, Jam::Domain::Events::GameEventQueue& eventQueue);
 		virtual ~EnemyBase() = default;
 
 		// =========================
@@ -104,6 +105,8 @@ namespace Jam::Domain::Enemy
 
 		virtual void onDamaged(const DamageInfo& info) {}
 		virtual Jam::Util::Task onDeath(const DamageInfo& info);
+		virtual void onDestroy(const DamageInfo& info);
+		bool m_isGrounded;
 		// =========================
 		// メンバ変数
 		// =========================
@@ -112,7 +115,11 @@ namespace Jam::Domain::Enemy
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_body;          // 物理ボディ
 		EnemyStatus m_status;                                                // ステータス
 		bool m_isAlive = true;                                               // 生存フラグ
+		bool m_isDeadAttack = false;
 		Jam::Domain::Physics::PhysicsBodyID m_playerId;                      // 追跡対象プレイヤーのID
 		AnimationEvent m_onAnimChange;                                       // アニメーション変更通知
+		Jam::Domain::Events::GameEventQueue& m_eventQueue;
+		Vec2 m_enemyImpluseDir = {0,0};
+		EnemyType m_enemyType = EnemyType::LittleDevil;
 	};
 }
