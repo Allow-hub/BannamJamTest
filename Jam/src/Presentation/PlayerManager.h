@@ -44,8 +44,8 @@ namespace Jam::Presentation
         void draw() const
         {
             Vec2 pos = m_player->getPosition();
-			m_player->getPhysicsBody()->drawFrame(2.0, Palette::Aqua);
 			anim.Draw(pos);
+			m_player->draw();
         }
     };
 }

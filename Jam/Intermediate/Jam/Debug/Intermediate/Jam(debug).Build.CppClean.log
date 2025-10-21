@@ -2,45 +2,17 @@ c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\intermediate
 c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\intermediate\vc143.pdb
 c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\intermediate\vc143.idb
 c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\intermediate\stdafx.obj
-<<<<<<< HEAD
-c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\intermediate\main.obj
-c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\intermediate\player.obj
-=======
-c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\intermediate\enemybase.obj
-c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\intermediate\main.obj
-c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\intermediate\player.obj
 c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\intermediate\enemyfactory.obj
+c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\intermediate\main.obj
+c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\intermediate\enemybase.obj
+c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\intermediate\player.obj
 c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\intermediate\littledevil.obj
->>>>>>> feature/yahagi/playerSkill
 c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\jam(debug).exe
 c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\jam(debug).pdb
 c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\intermediate\resource.res
 c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\jam(debug).lib
 c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\jam(debug).exp
 c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\intermediate\jam(debug).ilk
-<<<<<<< HEAD
-c:\siv3d\bananajam\jam\intermediate\jam\debug\intermediate\main.obj
-c:\siv3d\bananajam\jam\intermediate\jam\debug\intermediate\stdafx.obj
-c:\siv3d\bananajam\jam\intermediate\jam\debug\intermediate\jam(debug).ilk
-c:\siv3d\bananajam\jam\intermediate\jam\debug\intermediate\resource.res
-c:\siv3d\bananajam\jam\intermediate\jam\debug\intermediate\jam(debug).pch
-c:\siv3d\bananajam\jam\intermediate\jam\debug\intermediate\vc143.idb
-c:\siv3d\bananajam\jam\intermediate\jam\debug\intermediate\vc143.pdb
-c:\siv3d\bananajam\jam\intermediate\jam\debug\jam(debug).pdb
-c:\siv3d\bananajam\jam\intermediate\jam\debug\jam(debug).exe
-c:\siv3d\bananajam\jam\intermediate\jam\debug\intermediate\jam.vcxproj.filelistabsolute.txt
-c:\siv3d\bananajam\jam\intermediate\jam\debug\intermediate\jam.tlog\cl.command.1.tlog
-c:\siv3d\bananajam\jam\intermediate\jam\debug\intermediate\jam.tlog\cl.items.tlog
-c:\siv3d\bananajam\jam\intermediate\jam\debug\intermediate\jam.tlog\cl.read.1.tlog
-c:\siv3d\bananajam\jam\intermediate\jam\debug\intermediate\jam.tlog\cl.write.1.tlog
-c:\siv3d\bananajam\jam\intermediate\jam\debug\intermediate\jam.tlog\link.command.1.tlog
-c:\siv3d\bananajam\jam\intermediate\jam\debug\intermediate\jam.tlog\link.read.1.tlog
-c:\siv3d\bananajam\jam\intermediate\jam\debug\intermediate\jam.tlog\link.secondary.1.tlog
-c:\siv3d\bananajam\jam\intermediate\jam\debug\intermediate\jam.tlog\link.write.1.tlog
-c:\siv3d\bananajam\jam\intermediate\jam\debug\intermediate\jam.tlog\rc.command.1.tlog
-c:\siv3d\bananajam\jam\intermediate\jam\debug\intermediate\jam.tlog\rc.read.1.tlog
-c:\siv3d\bananajam\jam\intermediate\jam\debug\intermediate\jam.tlog\rc.write.1.tlog
-=======
 c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\intermediate\jam.vcxproj.filelistabsolute.txt
 c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\intermediate\jam.tlog\cl.command.1.tlog
 c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\intermediate\jam.tlog\cl.items.tlog
@@ -53,4 +25,3 @@ c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\intermediate
 c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\intermediate\jam.tlog\rc.command.1.tlog
 c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\intermediate\jam.tlog\rc.read.1.tlog
 c:\users\student\documents\bannamjamtest\jam\intermediate\jam\debug\intermediate\jam.tlog\rc.write.1.tlog
->>>>>>> feature/yahagi/playerSkill

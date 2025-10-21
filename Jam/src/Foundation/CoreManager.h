@@ -15,11 +15,34 @@ namespace Jam::Foundation
 	//ステージをまたいで情報をやり取りする
 	class CoreManager
 	{
+	private:
+		static	bool m_clear;
 	public:
 		static CoreManager& Instance()
 		{
 			static CoreManager instance;
 			return instance;
+		}
+
+		static s3d::String stageNameToString(StageName stage)
+		{
+			switch (stage)
+			{
+			case StageName::Stage1_1: return U"stage1_1";
+			case StageName::Stage1_2: return U"stage1_2";
+			case StageName::Stage1_3: return U"stage1_3";
+			default: return U"UnknownStage";
+			}
+		}
+
+		static bool getClear()
+		{
+			return m_clear;
+		}
+
+		static void setClear(bool b)
+		{
+			m_clear = b;
 		}
 
 		// シーン間共通情報（純粋データのみ）

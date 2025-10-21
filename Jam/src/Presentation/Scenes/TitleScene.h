@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <Siv3D.hpp> // Siv3D v0.6.14
+#include "../../Presentation/AudioService.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -28,9 +29,10 @@ namespace Jam::Presentation::Scenes
 	public:
 		// コンストラクタ
 		TitleScene(const InitData& init)
-			: IScene{ init } {
+			: IScene{ init }
+		{
+			Jam::Presentation::AudioService::get().play(Jam::Presentation::AudioService::Sound::BGM_Title, true);
 		}
-
 		// 更新処理
 		void update() override
 		{

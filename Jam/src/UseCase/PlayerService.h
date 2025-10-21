@@ -2,16 +2,19 @@
 #include "../Domain/Player/Player.h"
 #include "../Domain/IInputService.h"
 #include "../Presentation/PlayerManager.h"
+#include <Siv3D.hpp>
 
 namespace Jam::UseCase
 {
-	// PlayerとInputServiceを結びつける、入力の反映
 	class PlayerService
 	{
 	private:
 		std::shared_ptr<Domain::Player::Player> m_player;
 		Domain::IInputService& m_input;
 		Jam::Presentation::PlayerManager& m_manager;
+
+		double m_wheelAccumulator = 0.0; // 累積ホイール量
+		const double wheelThreshold = 1.0; // 1回転で切り替え
 
 	public:
 		PlayerService(const std::shared_ptr<Domain::Player::Player>& player,
@@ -31,7 +34,7 @@ namespace Jam::UseCase
 			if (inputState.left)
 			{
 				m_player->moveLeft();
-				m_manager.setFacingLeft(true);//左向きにテクスチャを反転
+				m_manager.setFacingLeft(true);
 				isRunning = true;
 			}
 			if (inputState.right)
@@ -39,6 +42,14 @@ namespace Jam::UseCase
 				m_player->moveRight();
 				m_manager.setFacingLeft(false);
 				isRunning = true;
+			}
+			if (inputState.dash)
+			{
+				m_player->startDash();
+			}
+			else
+			{
+				m_player->endDash();
 			}
 			if (inputState.jump)
 			{
@@ -48,14 +59,37 @@ namespace Jam::UseCase
 			{
 				m_player->attack();
 			}
+			if (inputState.skillPush) // Skill ボタンが押されていたら
+			{
+				m_player->skillPush();
+			}
+			if (inputState.skillReleased) // Skill ボタンが離れてたら
+			{
+				m_player->skillReleased();
+			}
 
-			// どちらのキーも押されていないなら走行アニメをオフに
+			// ---------------------------------
+			// マウスホイールでスキル切り替え
+			double wheelDelta = inputState.skillChange; // 1フレームのホイール差分
+			m_wheelAccumulator += wheelDelta;
+
+			while (m_wheelAccumulator >= wheelThreshold)
+			{
+				m_player->changeSkill(1);
+				m_wheelAccumulator -= wheelThreshold;
+			}
+			while (m_wheelAccumulator <= -wheelThreshold)
+			{
+				m_player->changeSkill(-1);
+				m_wheelAccumulator += wheelThreshold;
+			}
+			// ---------------------------------
+
 			m_manager.SetRunning(isRunning);
 
 			m_player->update(deltaTime);
 		}
 
 		std::shared_ptr<Domain::Player::Player> getPlayer() const { return m_player; }
-
 	};
 }

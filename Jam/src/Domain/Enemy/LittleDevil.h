@@ -8,7 +8,7 @@ namespace Jam::Domain::Enemy
 	class LittleDevil : public EnemyBase
 	{
 	public:
-		explicit LittleDevil(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body);
+		explicit LittleDevil(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Physics::PhysicsBodyID playerId);
 		virtual ~LittleDevil() = default;
 
 		// 毎フレームの更新（AI挙動など）
@@ -19,17 +19,12 @@ namespace Jam::Domain::Enemy
 		void onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 		void onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 
-	private:
-		// 将来的にAI状態管理を追加予定
-		enum class State
-		{
-			Idle,
-			Patrol,
-			Attack,
-			Dead
-		};
+		void onAIEvent(EnemyAIEvent e) override;
 
-		State m_state = State::Idle;
+	private:
 		double m_patrolTimer = 0.0;
+	protected:
+		void onPatrolEnter() override;
+		void onChaseEnter() override;
 	};
 }
