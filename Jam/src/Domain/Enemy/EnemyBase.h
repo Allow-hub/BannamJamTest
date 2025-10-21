@@ -5,6 +5,7 @@
 #include <functional>
 #include "EnemyAI/IEnemyAI.h"
 #include "../ITakeDamageable.h"
+#include "../../Foundation/CoroutineUtil.h"
 
 namespace Jam::Infrastructure {
 	class FactoryServiceLocator;
@@ -41,7 +42,6 @@ namespace Jam::Domain::Enemy
 		virtual void moveLeft();
 		virtual void moveRight();
 		virtual void jump();
-		virtual void onDestroy();
 
 		bool isAlive() const override { return m_isAlive; }
 		void takeDamage(const DamageInfo& info)override;
@@ -103,7 +103,7 @@ namespace Jam::Domain::Enemy
 		}
 
 		virtual void onDamaged(const DamageInfo& info) {}
-		virtual void onDeath() {}
+		virtual Jam::Util::Task onDeath();
 		// =========================
 		// メンバ変数
 		// =========================

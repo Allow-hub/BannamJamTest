@@ -383,6 +383,7 @@
     <ClInclude Include="src\Domain\Stage\IStage.h" />
     <ClInclude Include="src\Domain\StoryData.h" />
     <ClInclude Include="src\Foundation\CoreManager.h" />
+    <ClInclude Include="src\Foundation\CoroutineUtil.h" />
     <ClInclude Include="src\Infrastructure\AudioLoader.h" />
     <ClInclude Include="src\Infrastructure\FactoryServiceLocator.h" />
     <ClInclude Include="src\Infrastructure\IPhysicsBodyFactory.h" />

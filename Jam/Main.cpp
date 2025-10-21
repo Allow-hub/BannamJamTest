@@ -4,6 +4,7 @@
 #include "src/Presentation/Scenes/SelectScene.h"
 #include "src/Presentation/Scenes/StoryScene.h"
 #include "src/Foundation/CoreManager.h"
+#include "src/Foundation/CoroutineUtil.h"
 #include "src/Presentation/AudioService.h"
 
 using App = SceneManager<String>;
@@ -42,10 +43,11 @@ void Main()
 	Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::Story));
 
 	// GameSceneから開始するように明示的に指定
-	manager.init(Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::InGame));
+	manager.init(Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::Story));
 
 	while (System::Update())
 	{
+		Jam::Util::CoroutineUtil::Update(Scene::DeltaTime());
 		// シーン更新（falseなら終了）
 		if (!manager.update())
 			break;

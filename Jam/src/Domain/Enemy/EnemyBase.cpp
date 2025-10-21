@@ -43,13 +43,21 @@ namespace Jam::Domain::Enemy
 		if (m_status.hp <= 0)
 		{
 			m_status.hp = 0;
-			m_isAlive = false;
-			//onDeath(); // 死んだとき
+			onDeath(); // 死んだとき
 		}
 		else
 		{
 			//onDamaged(info);//ダメージを受けた時の吹き飛ばし等
 		}
+	}
+
+	Jam::Util::Task EnemyBase::onDeath()
+	{
+		co_await Jam::Util::WaitSeconds(1.0);
+		Print << U"Hello!OneSeconds";
+		co_await Jam::Util::WaitSeconds(1.0);
+		Print << U"Hello!TwoSeconds";
+		m_isAlive = false;
 	}
 
 	s3d::Vec2 EnemyBase::getPosition() const
@@ -74,11 +82,6 @@ namespace Jam::Domain::Enemy
 	void EnemyBase::setGravityScale(double s)
 	{
 		m_body->setGravityScale(s);
-	}
-
-	void EnemyBase::onDestroy()
-	{
-		// 共通破壊処理（派生クラスでエフェクトやスコア加算などを上書き可能）
 	}
 
 	//AIのリストを設定
