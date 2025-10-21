@@ -265,10 +265,8 @@ namespace Jam::Presentation::Scenes
 
 				// === 背景描画 (Back Layer) ===
 				if (m_backgroundRenderer) {
-					// テスト用の背景を描画
-					const Vec2 parallaxOffset = cameraOffset * 0.3; // Back layer multiplier
-					RectF testBG(-500 - parallaxOffset.x, -800 - parallaxOffset.y, 4000, 2000);
-					testBG.draw(ColorF(0.3, 0.5, 0.8, 0.5)); // 薄い青色
+					// BackgroundRendererを使用してBG.pngを描画
+					m_backgroundRenderer->drawBackgroundTexture(U"BG", cameraOffset);
 				}
 
 				// Stage描画
