@@ -81,7 +81,7 @@ namespace Jam::Domain::Stage {
                 
                 // 物理ボディを作成
                 if (physicsBodyFactory) {
-                    physicsObj.physicsBody = physicsBodyFactory(obj.rect, Physics::PhysicsLayer::Stage);
+                    physicsObj.physicsBody = physicsBodyFactory(obj.rect, Physics::PhysicsLayer::Ground);
                 }
                 
                 m_objects.push_back(physicsObj);

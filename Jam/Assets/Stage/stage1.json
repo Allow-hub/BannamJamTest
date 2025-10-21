@@ -10,107 +10,107 @@
   "objects": [
     {
       "rect": [ 0, 50, 200, 1500 ],
-      "type": "solid",
+      "type": "normal",
       "metadata": "Platform_2"
     },
     {
       "rect": [ 1250, 150, 200, 1500 ],
-      "type": "solid",
+      "type": "normal",
       "metadata": "Platform_2"
     },
     {
       "rect": [ 550, -350, 50, 50 ],
-      "type": "solid",
+      "type": "normal",
       "metadata": "Platform_2"
     },
     {
       "rect": [ 950, -350, 50, 50 ],
-      "type": "solid",
+      "type": "normal",
       "metadata": "Platform_2"
     },
     {
       "rect": [ 0, -400, 1900, 50 ],
-      "type": "solid",
+      "type": "normal",
       "metadata": "Platform_2"
     },
     {
       "rect": [ 200, 150, 200, 1500 ],
-      "type": "solid",
+      "type": "normal",
       "metadata": "Platform_2"
     },
     {
       "rect": [ 1250, -350, 400, 100 ],
-      "type": "solid",
+      "type": "normal",
       "metadata": "Platform_2"
     },
     {
       "rect": [ 1450, -50, 200, 1500 ],
-      "type": "solid",
+      "type": "normal",
       "metadata": "Platform_2"
     },
     {
       "rect": [ 1900, -400, 200, 800 ],
-      "type": "solid",
+      "type": "normal",
       "metadata": "Platform_2"
     },
     {
       "rect": [ 1650, 900, 250, 50 ],
-      "type": "solid",
-      "metadata": "Platform_2"
+      "type": "platform",
+      "metadata": "Platform_Test_1"
     },
     {
       "rect": [ 2100, 900, 250, 50 ],
-      "type": "solid",
-      "metadata": "Platform_2"
+      "type": "platform",
+      "metadata": "Platform_Test_2"
     },
     {
       "rect": [ 2550, 750, 100, 100 ],
-      "type": "solid",
+      "type": "normal",
       "metadata": "Platform_2"
     },
     {
       "rect": [ 2950, 750, 100, 100 ],
-      "type": "solid",
+      "type": "normal",
       "metadata": "Platform_2"
     },
     {
       "rect": [ 2700, 400, 100, 65 ],
-      "type": "solid",
+      "type": "normal",
       "metadata": "Platform_2"
     },
     {
       "rect": [ 3250, 600, 100, 100 ],
-      "type": "solid",
+      "type": "normal",
       "metadata": "Platform_2"
     },
     {
       "rect": [ 3000, 200, 100, 65 ],
-      "type": "solid",
+      "type": "normal",
       "metadata": "Platform_2"
     },
     {
       "rect": [ 2750, 50, 100, 65 ],
-      "type": "solid",
+      "type": "normal",
       "metadata": "Platform_2"
     },
     {
       "rect": [ 2100, 5, 250, 50 ],
-      "type": "solid",
+      "type": "normal",
       "metadata": "Platform_2"
     },
     {
       "rect": [ 1900, -400, 1900, 50 ],
-      "type": "solid",
+      "type": "normal",
       "metadata": "Platform_2"
     },
     {
       "rect": [ 3750, 200, 100, 700 ],
-      "type": "solid",
+      "type": "normal",
       "metadata": "Platform_2"
     },
     {
       "rect": [ 3550, 50, 100, 700 ],
-      "type": "solid",
+      "type": "normal",
       "metadata": "Platform_2"
     }
 

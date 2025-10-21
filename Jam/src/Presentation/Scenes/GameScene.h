@@ -23,6 +23,7 @@
 #include "../../Infrastructure/Siv3DCursorUtil.h"
 #include "../../Presentation/AudioService.h"
 #include "../../Infrastructure/PhysicsFilterManager.h"
+#include "../../Infrastructure/TextureLoader.h"
 
 
 namespace Jam::Presentation::Scenes
@@ -121,6 +122,9 @@ namespace Jam::Presentation::Scenes
 			);
 
 			// === Stage 初期化 ===
+			// ステージテクスチャの事前読み込み
+			Jam::Infrastructure::TextureLoader::preloadStageTextures();
+			
 			m_stageManager = std::make_unique<Jam::Presentation::Stage::StageManager>();
 			// TODO: ステージ選択機能の実装
 			// - ステージファイル名を動的に切り替え可能にする
