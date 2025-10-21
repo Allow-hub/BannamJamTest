@@ -383,6 +383,7 @@
     <ClInclude Include="src\Infrastructure\Siv3DInputManager.h" />
     <ClInclude Include="src\Infrastructure\Siv3DPhysicsBody.h" />
     <ClInclude Include="src\Infrastructure\Siv3DPhysicsBodyFactory.h" />
+    <ClInclude Include="src\Infrastructure\TextureLoader.h" />
     <ClInclude Include="src\Presentation\Animator.h" />
     <ClInclude Include="src\Presentation\AnimatorLoader.h" />
     <ClInclude Include="src\Presentation\AudioService.h" />
