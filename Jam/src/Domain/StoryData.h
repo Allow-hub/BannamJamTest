@@ -3,41 +3,45 @@
 
 namespace Jam::Domain
 {
-	// 立ち絵の種類
-	enum class Portrait {
-		Normal,
-		Surprised,  //驚き
-		Suspicious, //怪しむ
-		Smiling,	//笑顔
-		Conversation//会話
+	enum class Speaker
+	{
+		Player,   // 地雷ちゃん
+		Owner,    // マインドダイブされる側
+		Riska     // リスカちゃん
 	};
 
-	// 立つ場所の種類
+	enum class Portrait {
+		Normal,
+		Surprised,
+		Suspicious,
+		Smiling,
+		Conversation
+	};
+
 	enum class Location {
 		Left,
 		Center,
 		Right
 	};
 
-	// ストーリーデータの構造体
 	struct StoryLine {
-		int32 lineNumber;      // 流す行番号
-		String speaker;        // 発話者
-		Portrait portrait;     // 立ち絵のEnum
-		String text;           // テキスト
-		Location location;     // 場所のEnum
+		int32 lineNumber;
+		String speaker;
+		Portrait portrait;
+		String text;
+		Location location;
 	};
 
-	// シーン情報（同じ行番号のデータをまとめる）
 	struct StoryScene {
 		int32 lineNumber;
 		Location location;
-		Array<StoryLine> lines;  // 同じ行番号の複数のキャラクター
-		String displayText;      // 表示するテキスト（最後の行を優先）
+		Array<StoryLine> lines;
+		String displayText;
 	};
 
-	// Enumと文字列の変換テーブル
-	namespace EnumConverter {
+	namespace EnumConverter
+	{
+		// --- Portrait ---
 		const HashTable<String, Portrait> portraitTable = {
 			{U"normal", Portrait::Normal},
 			{U"surprised", Portrait::Surprised},
@@ -46,20 +50,62 @@ namespace Jam::Domain
 			{U"conversation", Portrait::Conversation}
 		};
 
+		// --- Location ---
 		const HashTable<String, Location> locationTable = {
 			{U"left", Location::Left},
-			{U"normal", Location::Center},
+			{U"center", Location::Center},
 			{U"right", Location::Right}
 		};
 
-		Portrait toPortrait(const String& str) {
+		// --- Speaker ---
+		const HashTable<String, Speaker> speakerTable = {
+			{U"player", Speaker::Player},
+			{U"owner", Speaker::Owner},
+			{U"riska", Speaker::Riska}
+		};
+
+		// --- String → Enum ---
+		inline Portrait toPortrait(const String& str)
+		{
 			String lower = str.lowercased();
 			return portraitTable.contains(lower) ? portraitTable.at(lower) : Portrait::Normal;
 		}
 
-		Location toLocation(const String& str) {
+		inline Location toLocation(const String& str)
+		{
 			String lower = str.lowercased();
 			return locationTable.contains(lower) ? locationTable.at(lower) : Location::Center;
+		}
+
+		inline Speaker toSpeaker(const String& str)
+		{
+			String lower = str.lowercased();
+			return speakerTable.contains(lower) ? speakerTable.at(lower) : Speaker::Owner;
+		}
+
+		inline String toString(Speaker speaker)
+		{
+			switch (speaker)
+			{
+			case Speaker::Player: return U"地雷ちゃん";
+			case Speaker::Owner:  return U"小島 シンイチ";
+			case Speaker::Riska:  return U"リスカちゃん";
+			default:              return U"？？？";
+			}
+		}
+
+		inline String toString(Portrait portrait)
+		{
+			for (const auto& [key, val] : portraitTable)
+				if (val == portrait) return key;
+			return U"normal";
+		}
+
+		inline String toString(Location location)
+		{
+			for (const auto& [key, val] : locationTable)
+				if (val == location) return key;
+			return U"center";
 		}
 	}
 }

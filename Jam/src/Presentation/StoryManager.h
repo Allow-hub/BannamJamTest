@@ -12,112 +12,99 @@ namespace Jam::Presentation
 		Array<StoryScene> scenes;
 		size_t currentSceneIndex = 0;
 		Font font;
-		// 立ち絵のテクスチャマップ（キャラクター名 -> 表情 -> テクスチャ）
-		HashTable<String, HashTable<Portrait, Texture>> portraitTextures;
 
-		// 背景テクスチャ
+		HashTable<Speaker, HashTable<Portrait, Texture>> portraitTextures;
 		Texture backgroundTexture;
 
-		// Locationに応じた立ち絵の座標を取得
-		Vec2 getPositionForLocation(Location location, const Size& portraitSize) const {
+		// === 新規追加 ===
+		String currentVisibleText;   // 現在表示中の文字
+		double textTimer = 0.0;      // 経過時間
+		double textSpeed = 0.03;     // 1文字あたりの間隔（秒）
+		bool isFullyVisible = false; // 現在のセリフが全文表示済みか
+		bool isSkipping = false;     // スキップ中か
+
+		// === 位置・サイズ関連 ===
+		Vec2 getPositionForLocation(Location location, const Size& portraitSize) const
+		{
 			const double w = Scene::Width();
 			const double h = Scene::Height();
+			const double y = h * 0.57;
 
-			const double y = h * 0.57; // 画面中央付近に表示
-			switch (location) {
-			case Location::Left:
-				return Vec2(w * 0.25, y);
-			case Location::Center:
-				return Vec2(w * 0.5, y);
-			case Location::Right:
-				return Vec2(w * 0.75, y);
-			default:
-				return Vec2(w * 0.5, y);
+			switch (location)
+			{
+			case Location::Left:   return Vec2(w * 0.25, y);
+			case Location::Center: return Vec2(w * 0.5, y);
+			case Location::Right:  return Vec2(w * 0.75, y);
+			default:               return Vec2(w * 0.5, y);
 			}
 		}
 
-		// 立ち絵のサイズを取得
-		Size getPortraitSize() const {
+		Size getPortraitSize() const
+		{
 			const double w = Scene::Width();
 			const double h = Scene::Height();
-
-			// 画面幅の1/3、画面高さくらい
-			return Size(static_cast<int32>(w / 2.3), static_cast<int32>(h / 1.0));
+			return Size(static_cast<int32>(w / 2.2), static_cast<int32>(h / 1.0));
 		}
 
-		// テキストボックスの矩形（画面下に横幅より少し小さいサイズで）
-		RectF getTextBox() const {
+		RectF getTextBox() const
+		{
 			const double w = Scene::Width();
 			const double h = Scene::Height();
-
-			const double boxWidth = w * 0.95;   // 横幅は画面の95%
-			const double boxHeight = h * 0.4;  // 高さは画面の40%
+			const double boxWidth = w * 0.95;
+			const double boxHeight = h * 0.4;
 			const double x = (w - boxWidth) / 2.0;
-			const double y = h - boxHeight - 25.0; // 下から少し余白
-
+			const double y = h - boxHeight - 25.0;
 			return RectF(x, y, boxWidth, boxHeight);
 		}
+
 	public:
 		StoryManager()
 		{
-			// 画面幅に応じてフォントサイズを決定
-			const int32 mainFontSize = static_cast<int32>(Scene::Height() * 0.05); // 高さの4%くらい
-			const int32 nameFontSize = static_cast<int32>(Scene::Height() * 0.03);
-
-			// TTFをロード
+			const int32 mainFontSize = static_cast<int32>(Scene::Height() * 0.05);
 			font = Font(mainFontSize, U"../Assets/Font/PixelMplus12-Bold.ttf", FontStyle::Italic);
 		}
 
-		// 初期化（テクスチャの読み込みとCSVの読み込み）
 		bool init(const FilePath& csvPath,
-				  const HashTable<String, HashTable<Portrait, FilePath>>& characterPortraits,
-				  const FilePath& backgroundPath = U"") {
-
-			// 立ち絵テクスチャを読み込む
-			for (const auto& [characterName, portraits] : characterPortraits) {
-				for (const auto& [portrait, path] : portraits) {
-					portraitTextures[characterName][portrait] = Texture(path);
-					Console << U"Loaded portrait texture [" << characterName << U"][" << static_cast<int>(portrait) << U"]: " << path;
+				  const HashTable<Speaker, HashTable<Portrait, FilePath>>& characterPortraits,
+				  const FilePath& backgroundPath = U"")
+		{
+			// === 立ち絵テクスチャ ===
+			for (const auto& [speaker, portraits] : characterPortraits)
+			{
+				for (const auto& [portrait, path] : portraits)
+				{
+					portraitTextures[speaker][portrait] = Texture(path);
 				}
 			}
 
-			// 背景テクスチャを読み込む
-			if (!backgroundPath.isEmpty()) {
+			// === 背景 ===
+			if (!backgroundPath.isEmpty())
+			{
 				backgroundTexture = Texture(backgroundPath);
-				Console << U"Loaded background texture: " << backgroundPath;
 			}
 
-			// CSVからストーリーデータを読み込む
-			return loadFromCSV(csvPath);
+			// === ストーリー読み込み ===
+			const bool ok = loadFromCSV(csvPath);
+			if (ok) resetTextState();
+			return ok;
 		}
 
-		// CSVファイルからストーリーデータを読み込む（内部用）
 	private:
-		bool loadFromCSV(const FilePath& path) {
+		bool loadFromCSV(const FilePath& path)
+		{
 			TextReader reader(path);
+			if (!reader) return false;
 
-			if (!reader) {
-				Console << U"Failed to open CSV file: " << path;
-				return false;
-			}
-
-			// 1行目（ヘッダー）をスキップ
 			String header;
-			if (!reader.readLine(header)) {
-				Console << U"CSV file is empty";
-				return false;
-			}
+			reader.readLine(header);
 
 			Array<StoryLine> rawLines;
 			String line;
 
-			// 各行を読み込む
-			while (reader.readLine(line)) {
+			while (reader.readLine(line))
+			{
 				if (line.isEmpty()) continue;
-
-				// カンマで分割
 				Array<String> columns = line.split(U',');
-
 				if (columns.size() < 5) continue;
 
 				StoryLine storyLine;
@@ -130,21 +117,17 @@ namespace Jam::Presentation
 				rawLines << storyLine;
 			}
 
-			// 同じ行番号のデータをまとめてシーンを作成
-			if (rawLines.isEmpty()) {
-				Console << U"No valid story data found";
-				return false;
-			}
+			if (rawLines.isEmpty()) return false;
 
 			int32 currentLineNumber = -1;
 			StoryScene currentScene;
 
-			for (const auto& storyLine : rawLines) {
-				if (storyLine.lineNumber != currentLineNumber) {
-					// 新しいシーンの開始
-					if (currentLineNumber != -1) {
+			for (const auto& storyLine : rawLines)
+			{
+				if (storyLine.lineNumber != currentLineNumber)
+				{
+					if (currentLineNumber != -1)
 						scenes << currentScene;
-					}
 
 					currentScene = StoryScene{};
 					currentScene.lineNumber = storyLine.lineNumber;
@@ -153,53 +136,76 @@ namespace Jam::Presentation
 					currentLineNumber = storyLine.lineNumber;
 				}
 
-				// 同じ行番号のラインを追加
 				currentScene.lines << storyLine;
-				// テキストは最後の行を優先
 				currentScene.displayText = storyLine.text;
 			}
+			if (!currentScene.lines.isEmpty()) scenes << currentScene;
 
-			// 最後のシーンを追加
-			if (!currentScene.lines.isEmpty()) {
-				scenes << currentScene;
-			}
-
-			Console << U"Loaded " << scenes.size() << U" scenes";
 			return true;
 		}
 
-	public:
-		// 立ち絵テクスチャを個別に読み込む
-		void loadPortrait(const String& characterName, Portrait portrait, const FilePath& path) {
-			if (!portraitTextures.contains(characterName)) {
-				portraitTextures[characterName] = {}; // キャラ名キーがなければ初期化
-			}
-			portraitTextures[characterName][portrait] = Texture(path);
-			Print << U"Loaded portrait texture [" << characterName << U"][" << static_cast<int>(portrait) << U"]: " << path;
+		// === テキスト状態をリセット ===
+		void resetTextState()
+		{
+			textTimer = 0.0;
+			currentVisibleText.clear();
+			isFullyVisible = false;
+			isSkipping = false;
 		}
 
-		// 背景テクスチャを設定
-		void draw() const {
+	public:
+		// === 毎フレーム更新 ===
+		void update(double deltaTime)
+		{
 			if (scenes.isEmpty() || currentSceneIndex >= scenes.size()) return;
+			const auto& scene = scenes[currentSceneIndex];
 
+			if (isSkipping)
+			{
+				currentVisibleText = scene.displayText;
+				isFullyVisible = true;
+				return;
+			}
+
+			if (isFullyVisible) return;
+
+			textTimer += deltaTime;
+
+			const size_t visibleCount = static_cast<size_t>(textTimer / textSpeed);
+			if (visibleCount >= scene.displayText.size())
+			{
+				currentVisibleText = scene.displayText;
+				isFullyVisible = true;
+			}
+			else
+			{
+				currentVisibleText = scene.displayText.substr(0, visibleCount);
+			}
+		}
+
+		// === 描画 ===
+		void draw() const
+		{
+			if (scenes.isEmpty() || currentSceneIndex >= scenes.size()) return;
 			const auto& scene = scenes[currentSceneIndex];
 
 			// 背景
-			if (backgroundTexture) {
-				backgroundTexture.resized(Scene::Size()).draw();
-			}
-			else {
-				Scene::Rect().draw(ColorF(0.8, 0.9, 1.0));
-			}
+			if (backgroundTexture) backgroundTexture.resized(Scene::Size()).draw();
+			else Scene::Rect().draw(ColorF(0.8, 0.9, 1.0));
+
+			const Size portraitSize = getPortraitSize();
 
 			// 立ち絵
-			const Size portraitSize = getPortraitSize();
-			for (const auto& line : scene.lines) {
-				if (portraitTextures.contains(line.speaker)) {
-					const auto& portraits = portraitTextures.at(line.speaker);
-					if (portraits.contains(line.portrait)) {
-						const Texture& texture = portraits.at(line.portrait);
-						texture.resized(portraitSize)
+			for (const auto& line : scene.lines)
+			{
+				Speaker sp = EnumConverter::toSpeaker(line.speaker);
+				if (portraitTextures.contains(sp))
+				{
+					const auto& portraits = portraitTextures.at(sp);
+					if (portraits.contains(line.portrait))
+					{
+						portraits.at(line.portrait)
+							.resized(portraitSize)
 							.drawAt(getPositionForLocation(line.location, portraitSize));
 					}
 				}
@@ -208,59 +214,65 @@ namespace Jam::Presentation
 			// テキストボックス
 			const RectF box = getTextBox();
 			box.draw(ColorF(0.0, 0.0, 0.0, 0.8));
-			box.drawFrame(2, ColorF(1.0, 1.0, 1.0));
+			box.drawFrame(2, ColorF(1.0));
 
 			// 発話者名
-			if (!scene.lines.isEmpty()) {
-				const String& speaker = scene.lines.back().speaker;
-				font(speaker).draw(box.x + 20, box.y + 20, ColorF(1.0, 0.8, 0.2));
+			if (!scene.lines.isEmpty())
+			{
+				Speaker sp = EnumConverter::toSpeaker(scene.lines.back().speaker);
+				String name = EnumConverter::toString(sp);
+				font(name).draw(box.x + 20, box.y + 20, ColorF(1.0, 0.8, 0.2));
 			}
 
-			// テキスト
-			font(scene.displayText).draw(box.x + 20, box.y + 90, ColorF(1.0));
+			// 1文字ずつ送りテキスト
+			font(currentVisibleText).draw(box.x + 20, box.y + 90, ColorF(1.0));
 
-			// 進行状況（右下に表示）
-			font(U"Scene: {}/{}"_fmt(currentSceneIndex + 1, scenes.size()))
+			// 進行表示
+			font(U"Progress: {}/{}"_fmt(currentSceneIndex + 1, scenes.size()))
 				.draw(Arg::bottomRight = Vec2(Scene::Width() - 20, Scene::Height() - 20), ColorF(1.0));
 		}
 
+		// === スキップ制御 ===
+		void skip(bool enable)
+		{
+			isSkipping = enable;
+		}
 
-		// 次のシーンへ
-		bool next() {
-			if (currentSceneIndex < scenes.size() - 1) {
-				currentSceneIndex++;
+		// === 次のシーンへ ===
+		bool next()
+		{
+			if (scenes.isEmpty()) return false;
+
+			if (!isFullyVisible)
+			{
+				// 全文未表示 → 即全文表示
+				isSkipping = true;
+				return true;
+			}
+
+			if (currentSceneIndex < scenes.size() - 1)
+			{
+				++currentSceneIndex;
+				resetTextState();
 				return true;
 			}
 			return false;
 		}
 
-		// 前のシーンへ
-		bool previous() {
-			if (currentSceneIndex > 0) {
-				currentSceneIndex--;
+		bool previous()
+		{
+			if (currentSceneIndex > 0)
+			{
+				--currentSceneIndex;
+				resetTextState();
 				return true;
 			}
 			return false;
 		}
 
-		// ストーリーが終了したか
-		bool isEnd() const {
-			return currentSceneIndex >= scenes.size() - 1;
-		}
-
-		// リセット
-		void reset() {
-			currentSceneIndex = 0;
-		}
-
-		// シーンの総数を取得
-		size_t getSceneCount() const {
-			return scenes.size();
-		}
-
-		// 現在のシーン番号を取得
-		size_t getCurrentSceneIndex() const {
-			return currentSceneIndex;
-		}
+		bool isEnd() const { return currentSceneIndex >= scenes.size() - 1; }
+		void reset() { currentSceneIndex = 0; resetTextState(); }
+		size_t getSceneCount() const { return scenes.size(); }
+		size_t getCurrentSceneIndex() const { return currentSceneIndex; }
 	};
 }
