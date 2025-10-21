@@ -68,5 +68,26 @@ namespace Jam::Domain::Stage {
             }
             return renderable;
         }
+        
+        // オブジェクトを設定するメソッド
+        void setObjects(const Array<StageObject>& objects, 
+                       std::function<std::shared_ptr<Physics::IPhysicsBody>(const RectF&, Physics::PhysicsLayer)> physicsBodyFactory) {
+            m_objects.clear();
+            m_destroyedObjects.clear();
+            
+            for (const auto& obj : objects) {
+                StagePhysicsObject physicsObj;
+                physicsObj.visualData = obj;
+                
+                // 物理ボディを作成
+                if (physicsBodyFactory) {
+                    physicsObj.physicsBody = physicsBodyFactory(obj.rect, Physics::PhysicsLayer::Stage);
+                }
+                
+                m_objects.push_back(physicsObj);
+            }
+            
+            m_isLoaded = true;
+        }
     };
 }

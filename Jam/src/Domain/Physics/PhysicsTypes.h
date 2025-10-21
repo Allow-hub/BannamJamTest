@@ -39,6 +39,7 @@ namespace Jam::Domain::Physics
 		Player,
 		Enemy,
 		Ground,
+		Stage,
 		Weapon,
 	};
 }
