@@ -351,9 +351,9 @@ namespace Jam::Domain::Player
 		// イベント送信（振動など）
 		m_eventQueue.push(Events::PlayerChokerSkillEvent{ 0.9, 0.5 });
 
-		m_eventQueue.push(Events::EnemyDamagedEvent{ m_body->getID() ,playerBody->getID(),
+		m_eventQueue.push(Events::EnemyDamagedEvent{ playerBody->getID(),m_targetEnemy->getID() ,
 			DamageInfo {
-				m_playerStats.hp,
+				m_playerStats.power,
 				m_body->getPosition(),
 				m_lastDir,
 				true

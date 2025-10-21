@@ -49,6 +49,7 @@ namespace Jam::UseCase
 			PhysicsBodyID targetBodyId,
 			const Jam::Domain::DamageInfo& damageInfo)
 		{
+
 			// ターゲットがダメージ可能か確認
 			auto it = m_damageableMap.find(targetBodyId);
 			if (it == m_damageableMap.end())
@@ -67,7 +68,6 @@ namespace Jam::UseCase
 
 			// ダメージを適用
 			damageable->takeDamage(damageInfo);
-
 			return true;
 		}
 

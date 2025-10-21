@@ -64,6 +64,7 @@ namespace Jam::UseCase
 	private:
 		void handleEnemyDamaged(const Domain::Events::EnemyDamagedEvent& e)
 		{
+
 			//if (e.damageInfo.isCritical)
 			//{
 			Jam::UseCase::AttackProcessor::getInstance().executeAttack(e.attacker, e.target, e.damageInfo);

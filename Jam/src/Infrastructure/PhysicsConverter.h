@@ -17,6 +17,7 @@ namespace Jam::Infrastructure::Physics
 
 		Jam::Domain::Player::PlayerStats stats;
 		stats.hp = json[U"stats"][U"hp"].get<double>();
+		stats.power = json[U"stats"][U"power"].get<double>();
 		stats.moveSpeed = json[U"stats"][U"moveSpeed"].get<double>();
 		stats.jumpPower = json[U"stats"][U"jumpPower"].get<double>();
 

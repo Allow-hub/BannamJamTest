@@ -106,6 +106,7 @@ namespace Jam::Presentation::Scenes
 			m_player = std::make_shared<Domain::Player::Player>(playerBody, *m_gameEventQueue);
 			playerBody->setCollisionListener(m_player);
 
+			m_player->setPower(stats.power);
 			m_player->setHp(stats.hp);
 			m_player->setSpeed(stats.moveSpeed);
 			m_player->setJumpPower(stats.jumpPower);

@@ -15,6 +15,7 @@ namespace Jam::Domain::Player
 	struct PlayerStats
 	{
 		double hp;
+		double power;
 		double moveSpeed;
 		double jumpPower;
 		Jam::Domain::Physics::PhysicsMaterial physicsMaterial;
@@ -45,6 +46,7 @@ namespace Jam::Domain::Player
 		bool isFacingRight() const;
 
 		void setHp(double h) { m_stats.hp = h; }
+		void setPower(double p) { m_stats.power = p; }
 		void setSpeed(double s) { m_stats.moveSpeed = s; }
 		void setJumpPower(double j) { m_stats.jumpPower = j; }
 		std::shared_ptr<Domain::Physics::IPhysicsBody> getPhysicsBody() { return m_body; }
