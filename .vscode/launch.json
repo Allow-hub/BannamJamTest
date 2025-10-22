@@ -8,7 +8,7 @@
       "program": "${workspaceFolder}/Jam/Intermediate/Jam/Debug/Jam(debug).exe",
       "args": [],
       "stopAtEntry": false,
-      "cwd": "${workspaceFolder}/Jam",
+      "cwd": "${workspaceFolder}/Jam/Intermediate/Jam",
       "environment": [],
       "console": "integratedTerminal"
     },
@@ -19,7 +19,7 @@
       "program": "${workspaceFolder}/Jam/Intermediate/Jam/Release/Jam.exe",
       "args": [],
       "stopAtEntry": false,
-      "cwd": "${workspaceFolder}/Jam",
+      "cwd": "${workspaceFolder}/Jam/Intermediate/Jam",
       "environment": [],
       "console": "integratedTerminal"
     }

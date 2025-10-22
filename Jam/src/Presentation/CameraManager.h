@@ -34,7 +34,7 @@ namespace Jam::Presentation
 		}
 		void setZoom(double zoom, double zoomDuration)
 		{
-			m_targetZoom = Clamp(zoom, 0.5, 2.0);
+			m_targetZoom = Clamp(zoom, 0.01, 2.0);
 			m_zoomDuration = zoomDuration;
 			m_totalZoomDuration = zoomDuration;
 		}
@@ -142,5 +142,11 @@ namespace Jam::Presentation
 			return m_camera.createTransformer();
 		}
 		[[nodiscard]] CameraMode getMode() const { return m_mode; }
+		
+		// カメラオフセットを取得（パララックス計算用）
+		[[nodiscard]] Vec2 getCameraOffset() const
+		{
+			return m_camera.getCenter();
+		}
 	};
 }

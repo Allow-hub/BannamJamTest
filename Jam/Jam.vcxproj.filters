@@ -333,6 +333,17 @@
     <Text Include="src\Domain\Physics\Domain_PhysicsDoc.md" />
     <Text Include="Assets\Player\Skill\Bomb\playerSkill_bomb.json" />
     <Text Include="Assets\Enemy\enemy_stage1_1.json" />
+    <Text Include="Assets\Enemy\enemy_stage1_2.json" />
+    <Text Include="Assets\Enemy\enemy_stage1_3.json" />
+    <Text Include="Assets\Enemy\enemy_stats.json" />
+    <Text Include="Assets\Enemy\LittleDevil\LittleDevil_animation.json" />
+    <Text Include="Assets\Player\player_animation.json" />
+    <Text Include="Assets\Player\player_stats.json" />
+    <Text Include="Assets\Player\skillData.json" />
+    <Text Include="src\Domain\Events\Events.md" />
+    <Text Include="src\Infrastructure\InfrastructureDoc.md" />
+    <Text Include="src\Presentation\Presentation.md" />
+    <Text Include="src\Domain\Enemy\EnemyDoc.md" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App\dll\soundtouch\SoundTouch_x64.dll">
@@ -825,6 +836,7 @@
     <None Include="App\engine\shader\glsl\quad_warp.frag">
       <Filter>Resource Files\engine\shader\glsl</Filter>
     </None>
+    <None Include="Assets\Stage\background.json" />
     <None Include="Assets\Player\player_animation.json" />
     <None Include="Assets\Player\player_stats.json" />
     <None Include="src\Infrastructure\InfrastructureDoc.md" />
@@ -1026,6 +1038,19 @@
     <ClInclude Include="src\Infrastructure\PhysicsFilterManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Domain\Stage\BackgroundTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Infrastructure\BackgroundLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Infrastructure\TextureLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Presentation\Stage\BackgroundRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UseCase\StageService.h">
     <ClInclude Include="src\Domain\StoryData.h">
       <Filter>Header Files</Filter>
     </ClInclude>

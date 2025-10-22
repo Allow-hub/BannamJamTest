@@ -17,36 +17,13 @@ namespace Jam::Domain::Stage {
         bool m_isLoaded = false;
 
     public:
-        // IPhysicsBodyの配列を注入
         NormalStage() = default;
-        explicit NormalStage(const Array<std::shared_ptr<Physics::IPhysicsBody>>& physicsBodies) {
-            // 現在は空実装
-            m_isLoaded = true;
-        }
-        
-        // GameScene.hで使用されているメソッド
-        using PhysicsBodyFactory = std::function<std::shared_ptr<Physics::IPhysicsBody>(const RectF&, Physics::PhysicsLayer)>;
-        
-        void setObjects(const Array<StageObject>& objects, PhysicsBodyFactory bodyFactory) {
-            m_objects.clear();
-            m_destroyedObjects.clear();
-            
-            for (const auto& obj : objects) {
-                // 当たり判定が必要なタイプのみ物理ボディを作成
-                if (obj.type == StageType::Solid || 
-                    obj.type == StageType::Platform ||
-                    obj.type == StageType::Breakable) {
-                    
-                    auto physicsBody = bodyFactory(obj.rect, Physics::PhysicsLayer::Ground);
-                    m_objects.push_back({obj, physicsBody});
-                } else {
-                    // 物理ボディが不要なオブジェクト（装飾等）
-                    m_objects.push_back({obj, nullptr});
-                }
-            }
-            
-            m_isLoaded = true;
-        }
+		explicit NormalStage(std::shared_ptr<Physics::IPhysicsBody> physicsBody)
+			: m_isLoaded(true)
+		{
+			m_body = physicsBody;
+			// m_bodyを使用する処理を実装予定
+		}
         
         bool isLoaded() const { 
             return m_isLoaded; 
@@ -92,5 +69,25 @@ namespace Jam::Domain::Stage {
             return renderable;
         }
         
+        // オブジェクトを設定するメソッド
+        void setObjects(const Array<StageObject>& objects, 
+                       std::function<std::shared_ptr<Physics::IPhysicsBody>(const RectF&, Physics::PhysicsLayer)> physicsBodyFactory) {
+            m_objects.clear();
+            m_destroyedObjects.clear();
+            
+            for (const auto& obj : objects) {
+                StagePhysicsObject physicsObj;
+                physicsObj.visualData = obj;
+                
+                // 物理ボディを作成
+                if (physicsBodyFactory) {
+                    physicsObj.physicsBody = physicsBodyFactory(obj.rect, Physics::PhysicsLayer::Ground);
+                }
+                
+                m_objects.push_back(physicsObj);
+            }
+            
+            m_isLoaded = true;
+        }
     };
 }
