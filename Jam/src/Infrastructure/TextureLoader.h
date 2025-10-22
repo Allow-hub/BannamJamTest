@@ -52,13 +52,13 @@ namespace Jam::Infrastructure {
         
         if (FileSystem::Exists(texturePath)) {
             Texture texture(texturePath);
-            assert(texture && "Failed to load texture");
-            s_stageTextures[type] = texture;
-            return texture;
-        } else {
-            assert(false && "Texture file not found");
-            return Texture{}; // 空のテクスチャを返す
+            if (texture) {
+                s_stageTextures[type] = texture;
+                return texture;
+            }
         }
+        
+        return Texture{};
     }
 
     void TextureLoader::preloadStageTextures() {

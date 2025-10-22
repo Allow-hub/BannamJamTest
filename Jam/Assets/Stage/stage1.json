@@ -177,6 +177,27 @@
       "rect": [ 7800, -200, 100, 1300 ],
       "type": "solid",
       "metadata": "テクニック終わりの床"
+    },
+    {
+      "rect": [ 600, 600, 150, 30 ],
+      "type": "moving_platform",
+      "metadata": "moving_test_01",
+      "movementSpeed": [ 100, 0 ],
+      "loopMovement": true
+    },
+    {
+      "rect": [ 1000, 400, 150, 30 ],
+      "type": "moving_platform",
+      "metadata": "moving_test_02",
+      "movementSpeed": [ 0, 50 ],
+      "loopMovement": true
+    },
+    {
+      "rect": [ 1500, 200, 150, 30 ],
+      "type": "moving_platform",
+      "metadata": "moving_test_03",
+      "movementSpeed": [ -80, 30 ],
+      "loopMovement": true
     }
 
 
