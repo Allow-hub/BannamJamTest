@@ -91,22 +91,28 @@ namespace Jam::Infrastructure
 				{
 					const JSON& extra = item[U"extra"];
 
+					// --- PatrolRoute にまとめる ---
+					Jam::Domain::Enemy::PatrolRoute route;
+
+					// パトロールポイントをロード
 					if (extra.hasElement(U"patrolPoints"))
 					{
 						const JSON& points = extra[U"patrolPoints"];
-						Array<Vec2> patrolPoints;
-
 						for (size_t j = 0; j < points.size(); ++j)
 						{
 							const auto& p = points[j];
-							patrolPoints << Vec2{ p[U"x"].get<double>(), p[U"y"].get<double>() };
+							route.points << Vec2{ p[U"x"].get<double>(), p[U"y"].get<double>() };
 						}
+					}
 
-						bool loop = extra[U"loop"].getOr<bool>(false);
-						double waitTime = extra[U"waitTime"].getOr<double>(0.0);
+					// ループ・ウェイト
+					route.loop = extra[U"loop"].getOr<bool>(false);
+					route.waitTime = extra[U"waitTime"].getOr<double>(0.0);
 
-						// Enemy にルートを渡す
-						enemy->setPatrolRoute(patrolPoints, loop, waitTime);
+					// Enemy にルートを渡す
+					if (route.isValid())
+					{
+						enemy->setPatrolRoute(route);
 					}
 				}
 
@@ -181,7 +187,6 @@ namespace Jam::Infrastructure
 					Console << U"[EnemyLoader] ⚠ Unknown enemy type: " << key;
 				}
 			}
-
 			return true;
 		}
 	};

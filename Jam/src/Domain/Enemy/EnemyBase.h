@@ -7,6 +7,7 @@
 #include "../ITakeDamageable.h"
 #include "../../Foundation/CoroutineUtil.h"
 #include "../Events/GameEvents.h"
+#include "EnemyAI/PatrolAISettings.h"
 
 namespace Jam::Infrastructure {
 	class FactoryServiceLocator;
