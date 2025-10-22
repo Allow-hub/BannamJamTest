@@ -157,7 +157,7 @@ namespace Jam::Presentation::Scenes
 				{
 					Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_1;
 					Print << U"Stage 1-1 Selected. CoreManager set.";
-					changeScene(ToSceneString(SceneName::InGame));
+					changeScene(ToSceneString(SceneName::Story));
 				}
 
 				const RectF stage1_2_Button{ startX, startY + (buttonHeight + buttonSpacing) * 1, buttonWidth, buttonHeight };
@@ -165,7 +165,7 @@ namespace Jam::Presentation::Scenes
 				{
 					Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_2;
 					Print << U"Stage 1-2 Selected. CoreManager set.";
-					changeScene(ToSceneString(SceneName::InGame));
+					changeScene(ToSceneString(SceneName::Story));
 				}
 
 				const RectF stage1_3_Button{ startX, startY + (buttonHeight + buttonSpacing) * 2, buttonWidth, buttonHeight };
