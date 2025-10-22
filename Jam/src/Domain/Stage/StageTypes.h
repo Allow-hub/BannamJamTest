@@ -16,6 +16,13 @@ namespace Jam::Domain::Stage {
 		Breakable = 5,  // 破壊可能な壁
 	};
 
+	// 動く床の移動タイプ
+	enum class MovementType {
+		Horizontal,  // 横移動
+		Vertical,    // 縦移動
+		Circular     // 円運動
+	};
+
 	// ステージオブジェクト（床・壁・足場など）
 	struct StageObject {
 		RectF rect;                     // 位置・サイズ
@@ -23,8 +30,9 @@ namespace Jam::Domain::Stage {
 		String metadata;                // 識別用ID（破壊時などで使用）
 
 		// 動くプラットフォーム用の追加データ
-		Vec2 movementSpeed = { 0, 0 };    // 移動速度
-		Array<Vec2> movementPath;       // 移動パス
+		MovementType movementType = MovementType::Horizontal; // 移動タイプ
+		double movementSpeed = 100.0;   // 移動速度（ピクセル/秒）
+		double movementDistance = 200.0; // 移動距離（横・縦）または半径（円）
 		bool loopMovement = true;       // パスをループするか
 
 		// デフォルトコンストラクタ（JSONパース時の安全な初期化用）
@@ -43,6 +51,14 @@ namespace Jam::Domain::Stage {
 		if (typeStr == U"trigger") return StageType::Trigger;
 		if (typeStr == U"breakable") return StageType::Breakable;
 		return StageType::None;
+	}
+
+	// 文字列からMovementTypeへの変換
+	inline MovementType stringToMovementType(const String& typeStr) {
+		if (typeStr == U"horizontal") return MovementType::Horizontal;
+		if (typeStr == U"vertical") return MovementType::Vertical;
+		if (typeStr == U"circular") return MovementType::Circular;
+		return MovementType::Horizontal;
 	}
 
 	// CollisionTypeから文字列への変換（デバッグ用）

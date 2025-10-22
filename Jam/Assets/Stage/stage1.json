@@ -3,8 +3,14 @@
   "_使い方": {
     "説明": "当たり判定オブジェクトを簡略記法で定義します。",
     "rect": "[x, y, width, height] 形式の配列で位置とサイズを指定します。",
-    "type": "当たり判定の種類を指定します。solid(壁), platform(上から乗れる床), breakable(破壊可能), hazard(ダメージ), trigger(イベント)など。",
-    "metadata": "識別用の任意文字列（スクリプトやイベントで使用）。"
+    "type": "当たり判定の種類を指定します。solid(壁), moving_platform(動く床), breakable(破壊可能), hazard(ダメージ), trigger(イベント)など。",
+    "metadata": "識別用の任意文字列（好きに名前つけちゃって大丈夫です）。",
+    "動く床の設定": {
+      "movementType": "移動タイプ: horizontal(横移動), vertical(縦移動), circular(円運動)",
+      "movementSpeed": "移動速度（ピクセル/秒）。数値が大きいほど速く動きます。",
+      "movementDistance": "移動距離（横・縦移動の場合）または半径（円運動の場合）をピクセル単位で指定。",
+      "loopMovement": "true=ループする, false=一度だけ動く"
+    }
 
   },
   "objects": [
@@ -181,26 +187,29 @@
     {
       "rect": [ 600, 600, 150, 30 ],
       "type": "moving_platform",
-      "metadata": "moving_test_01",
-      "movementSpeed": [ 100, 0 ],
+      "metadata": "moving_test_horizontal",
+      "movementType": "horizontal",
+      "movementSpeed": 100,
+      "movementDistance": 300,
       "loopMovement": true
     },
     {
       "rect": [ 1000, 400, 150, 30 ],
       "type": "moving_platform",
-      "metadata": "moving_test_02",
-      "movementSpeed": [ 0, 50 ],
+      "metadata": "moving_test_vertical",
+      "movementType": "vertical",
+      "movementSpeed": 80,
+      "movementDistance": 250,
       "loopMovement": true
     },
     {
       "rect": [ 1500, 200, 150, 30 ],
       "type": "moving_platform",
-      "metadata": "moving_test_03",
-      "movementSpeed": [ -80, 30 ],
+      "metadata": "moving_test_circular",
+      "movementType": "circular",
+      "movementSpeed": 60,
+      "movementDistance": 150,
       "loopMovement": true
     }
-
-
-
   ]
 }
