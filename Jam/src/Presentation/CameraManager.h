@@ -22,13 +22,11 @@ namespace Jam::Presentation
 		double m_shakeDuration = 0.0;
 		double m_zoomDuration = 0.0;
 		double m_totalZoomDuration = 0.0;
-		Vec2 m_previousCameraCenter = Vec2::Zero(); // 前フレームのカメラ中心位置
 	public:
 		CameraManager(const Vec2& initPos = { 0, 0 })
 		{
 			m_camera = Camera2D(initPos, 1.0, CameraControl::None_);
 			m_target = initPos;
-			m_previousCameraCenter = initPos; // 初期位置を設定
 		}
 		void setTarget(const Vec2& target)
 		{
@@ -116,17 +114,6 @@ namespace Jam::Presentation
 			// === シェイクを適用した位置に移動 ===
 			m_camera.jumpTo(actualTarget + shakeOffset, m_camera.getScale());
 			m_camera.update();
-			
-			// デバッグ出力（1秒間隔で制限）
-			Vec2 currentCenter = m_camera.getCenter();
-			static double lastCameraDebugTime = 0.0;
-			if (Scene::Time() - lastCameraDebugTime > 1.0) {
-				Console << U"[CameraManager] Current position: (" << currentCenter.x << U", " << currentCenter.y << U")";
-				lastCameraDebugTime = Scene::Time();
-			}
-			
-			// 前フレームの位置を更新
-			m_previousCameraCenter = currentCenter;
 		}
 
 		// スクリーン座標をワールド座標に変換
@@ -160,12 +147,6 @@ namespace Jam::Presentation
 		[[nodiscard]] Vec2 getCameraOffset() const
 		{
 			return m_camera.getCenter();
-		}
-		
-		// カメラの移動量を取得（パララックス背景用）
-		[[nodiscard]] Vec2 getCameraMovement() const
-		{
-			return m_camera.getCenter() - m_previousCameraCenter;
 		}
 	};
 }
