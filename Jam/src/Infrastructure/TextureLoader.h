@@ -52,18 +52,16 @@ namespace Jam::Infrastructure {
         
         if (FileSystem::Exists(texturePath)) {
             Texture texture(texturePath);
+            assert(texture && "Failed to load texture");
             s_stageTextures[type] = texture;
-            Console << U"[TextureLoader] Loaded texture: " << texturePath;
             return texture;
         } else {
-            Console << U"[TextureLoader] ❌ Texture not found: " << texturePath;
+            assert(false && "Texture file not found");
             return Texture{}; // 空のテクスチャを返す
         }
     }
 
     void TextureLoader::preloadStageTextures() {
-        Console << U"[TextureLoader] Preloading stage textures...";
-        
         Array<Jam::Domain::Stage::StageType> stageTypes = {
             Jam::Domain::Stage::StageType::Normal,
             Jam::Domain::Stage::StageType::Platform,
@@ -76,25 +74,20 @@ namespace Jam::Infrastructure {
         for (auto type : stageTypes) {
             getStageTexture(type);
         }
-        
-        Console << U"[TextureLoader] ✅ Preloading completed (" << s_stageTextures.size() << U" textures)";
     }
 
     void TextureLoader::clearTextureCache() {
         s_stageTextures.clear();
         s_initialized = false;
-        Console << U"[TextureLoader] Texture cache cleared";
     }
 
     bool TextureLoader::loadCustomTexture(Jam::Domain::Stage::StageType type, const FilePath& filePath) {
         if (!FileSystem::Exists(filePath)) {
-            Console << U"[TextureLoader] ❌ Custom texture not found: " << filePath;
             return false;
         }
         
         Texture texture(filePath);
         s_stageTextures[type] = texture;
-        Console << U"[TextureLoader] ✅ Custom texture loaded: " << filePath;
         return true;
     }
 
@@ -103,19 +96,19 @@ namespace Jam::Infrastructure {
         
         switch (type) {
         case Jam::Domain::Stage::StageType::Normal:
-            return basePath + U"Normal_Test.png";
+            return basePath + U"White_Test.png";
         case Jam::Domain::Stage::StageType::Platform:
             return basePath + U"Platform_Test.png";
         case Jam::Domain::Stage::StageType::Hazard:
-            return basePath + U"hazard.png";
+            return basePath + U"White_Test.png";
         case Jam::Domain::Stage::StageType::Trigger:
-            return basePath + U"trigger.png";
+            return basePath + U"White_Test.png";
         case Jam::Domain::Stage::StageType::Breakable:
-            return basePath + U"breakable.png";
+            return basePath + U"White_Test.png";
         case Jam::Domain::Stage::StageType::MovingPlatform:
-            return basePath + U"moving_platform.png";
+            return basePath + U"White_Test.png";
         default:
-            return basePath + U"default.png";
+            return basePath + U"White_Test.png";
         }
     }
 
@@ -135,18 +128,18 @@ namespace Jam::Infrastructure {
         
         if (FileSystem::Exists(texturePath)) {
             Texture texture(texturePath);
-            s_backgroundTextures[textureName] = texture;
-            Console << U"[TextureLoader] Loaded background texture: " << texturePath;
-            return texture;
+            if (texture) {
+                s_backgroundTextures[textureName] = texture;
+                return texture;
+            } else {
+                return none;
+            }
         } else {
-            Console << U"[TextureLoader] ❌ Background texture not found: " << texturePath;
             return none; // Optional<Texture>のnone
         }
     }
 
     void TextureLoader::preloadBackgroundTextures() {
-        Console << U"[TextureLoader] Preloading background textures...";
-        
         Array<String> backgroundNames = {
             U"BG"
         };
@@ -154,19 +147,15 @@ namespace Jam::Infrastructure {
         for (const auto& name : backgroundNames) {
             getTexture(name);
         }
-        
-        Console << U"[TextureLoader] ✅ Background preloading completed (" << s_backgroundTextures.size() << U" textures)";
     }
 
     bool TextureLoader::loadBackgroundTexture(const String& name, const FilePath& filePath) {
         if (!FileSystem::Exists(filePath)) {
-            Console << U"[TextureLoader] ❌ Custom background texture not found: " << filePath;
             return false;
         }
         
         Texture texture(filePath);
         s_backgroundTextures[name] = texture;
-        Console << U"[TextureLoader] ✅ Custom background texture loaded: " << filePath;
         return true;
     }
 
@@ -184,6 +173,5 @@ namespace Jam::Infrastructure {
     void TextureLoader::initialize() {
         if (s_initialized) return;
         s_initialized = true;
-        Console << U"[TextureLoader] Initialized";
     }
 }
