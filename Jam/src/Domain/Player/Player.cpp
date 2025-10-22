@@ -1,9 +1,10 @@
 ﻿#include "Player.h"
 #include "../Physics/IPhysicsBody.h"
-#include "Skill/BombSkill.h"
+//#include "Skill/BombSkill.h"
 #include "Skill/ChokerSkill.h"
 #include "../../Presentation/AudioService.h"
 #include "../../Infrastructure/PhysicsFilterManager.h"
+#include "../../Foundation/CoreManager.h"
 
 namespace Jam::Domain::Player
 {
@@ -14,11 +15,13 @@ namespace Jam::Domain::Player
 		m_body->setGravityScale(1.5);
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::Team1);
 
-		auto chokerSkill = std::make_shared<ChokerSkill>(eventQueue, m_body->getID());
+		auto chokerSkill = std::make_shared<ChokerSkill>(eventQueue, m_body->getID(),m_stats);
 		chokerSkill->init(); // shared_from_this()を使用する初期化
 		m_skills.push_back(chokerSkill);
-		m_skills.push_back(std::make_shared<BombSkill>(eventQueue));
+		//m_skills.push_back(std::make_shared<BombSkill>(eventQueue, m_stats));
 		m_currentSkill = m_skills.front();
+		auto& core = Jam::Foundation::CoreManager::Instance();
+		m_fallLimitY = core.getStageData(core.stageInfo.stageName).fallLimitY;
 	}
 
 	void Player::update(double deltaTime)
@@ -29,6 +32,12 @@ namespace Jam::Domain::Player
 		{
 			if (skill->needUpdate())
 				skill->update(deltaTime);
+		}
+
+
+		if (getPosition().y >= m_fallLimitY)
+		{
+			respawn();
 		}
 	}
 
@@ -97,6 +106,21 @@ namespace Jam::Domain::Player
 
 	}
 
+	Jam::Util::Task Player::respawn()
+	{
+		// CoreManager参照
+		auto& core = Jam::Foundation::CoreManager::Instance();
+		const Vec2 respawnPos = core.getStageData(core.stageInfo.stageName).respawnPosition;
+		Jam::Presentation::FadeManager::instance().fadeOutAndIn();
+		co_await Jam::Util::WaitSeconds(1.0);
+
+		m_stats.hp -= 10;//リスポーン時のダメージ
+		// --- リスポーン処理 ---
+		m_body->setPos(respawnPos);
+		m_body->setVelocity({ 0, 0 });
+	}
+
+
 	//後々スキルはコンストラクタで使える武器をステージごとに選べるように
 	void Player::skillPush()
 	{
@@ -132,6 +156,23 @@ namespace Jam::Domain::Player
 		m_currentSkill = m_skills[index];
 	}
 
+	void Player::takeDamage(const DamageInfo& info)
+	{
+		if (!m_isAlive) return;
+
+		m_stats.hp -= info.amount;
+
+		if (m_stats.hp <= 0)
+		{
+			m_stats.hp = 0;
+			m_isAlive = false;
+			//onDeath(); // 死んだとき
+		}
+		else
+		{
+			//onDamaged(info);//ダメージを受けた時の吹き飛ばし等
+		}
+	}
 
 	s3d::Vec2 Player::getPosition() const
 	{

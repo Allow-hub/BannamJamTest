@@ -76,7 +76,7 @@ namespace Jam::Infrastructure::Locator
 		}
 
 		// ボディを削除（物理空間からも消す場合）
-		void removeBody(Jam::Domain::Physics::PhysicsBodyID id)
+		void removeBody(Jam::Domain::Physics::PhysicsBodyID id) override
 		{
 			if (auto it = m_bodies.find(id); it != m_bodies.end())
 			{

@@ -2,6 +2,7 @@
 #include "../Domain/Player/Player.h"
 #include "../Domain/IInputService.h"
 #include "../Presentation/PlayerManager.h"
+#include "AttackProcessor.h"
 #include <Siv3D.hpp>
 
 namespace Jam::UseCase
@@ -22,6 +23,7 @@ namespace Jam::UseCase
 					  Jam::Presentation::PlayerManager& manager)
 			: m_player(player), m_input(input), m_manager(manager)
 		{
+			Jam::UseCase::AttackProcessor::getInstance().registerDamageable(m_player->getPhysicsBody()->getID(), m_player);
 		}
 
 		void update(double deltaTime)

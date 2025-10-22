@@ -3,6 +3,7 @@
 #include "../../../Infrastructure/FactoryServiceLocator.h"
 #include "../../../Infrastructure/IPhysicsBodyFactory.h"
 #include "../../../Presentation/AudioService.h"
+#include "../../../Infrastructure/PhysicsFilterManager.h"
 
 #include <Siv3D.hpp>
 
@@ -12,8 +13,8 @@ using namespace Jam::Domain::Physics;
 namespace Jam::Domain::Player
 {
 	ChokerSkill::ChokerSkill(Jam::Domain::Events::GameEventQueue& eventQueue,
-							 PhysicsBodyID ownerId)
-		: IPlayerSkill(PlayerSkillType::Choker, eventQueue)
+							 PhysicsBodyID ownerId, Jam::Domain::Player::PlayerStats& stats)
+		: IPlayerSkill(PlayerSkillType::Choker, eventQueue, stats)
 		, m_ownerId(ownerId)
 	{
 		m_body = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
@@ -26,6 +27,7 @@ namespace Jam::Domain::Player
 				Jam::Domain::Physics::PhysicsShape::Circle
 			);
 
+		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::Team1);
 		m_body->setGravityScale(0);
 		m_body->setBullet(true);
 	}
@@ -217,7 +219,6 @@ namespace Jam::Domain::Player
 						const double reachThreshold = 110; // 判定閾値
 						if (distance > reachThreshold)
 						{
-							Print << distance ;
 							finishEnemySequence(); // 何も起こさず終了
 							return;
 						}
@@ -227,6 +228,17 @@ namespace Jam::Domain::Player
 						m_eventQueue.push(Events::PlayerAttackedEvent{ 1.2, 0.2, 25.2 });
 						playerBody->applyImpulse(m_lastDir * launchPower);
 
+						m_eventQueue.push(Events::EnemyDamagedEvent{
+							playerBody->getID(),
+							m_targetEnemy->getID(),
+							DamageInfo {
+								m_playerStats.power,
+								m_body->getPosition(),
+								m_enemyImpluseDir,
+								true,
+								false
+							}
+						});
 						finishEnemySequence();
 					}
 				}
@@ -342,14 +354,31 @@ namespace Jam::Domain::Player
 		m_enemyHitFreezeTimer = m_enemyHitFreezeDuration;
 		m_isFlying = false;
 
+		// ===== m_lastDirを保存 =====
+		auto playerBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+			.getPhysicsFactory()->getBody(m_ownerId);
+
+		if (playerBody)
+		{
+			Vec2 hookPos = m_body->getPosition();
+			Vec2 playerPos = playerBody->getPosition();
+			Vec2 diff = hookPos - playerPos;
+
+			if (diff.isZero())
+				diff = Vec2{ 0, -1 };
+
+			// プレイヤーから敵への方向を保存
+			//m_lastDir = diff.normalized();
+			m_enemyImpluseDir = diff.normalized().rotated(-2_deg);
+		}
+
 		// フックの動きを停止
 		m_body->setVelocity({ 0, 0 });
 		m_body->setAngularVelocity(0);
 
-		auto playerBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
-			.getPhysicsFactory()->getBody(m_ownerId);
 		// イベント送信（振動など）
 		m_eventQueue.push(Events::PlayerChokerSkillEvent{ 0.9, 0.5 });
+
 	}
 
 	// Joint作成処理を分離
@@ -361,8 +390,6 @@ namespace Jam::Domain::Player
 			finishEnemySequence();
 			return;
 		}
-
-		Print << U"🔗 敵用Joint作成開始";
 
 		auto& world = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
 			.getPhysicsFactory()->getWorld();

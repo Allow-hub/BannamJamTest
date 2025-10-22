@@ -19,5 +19,8 @@ namespace Jam::Domain::Stage {
         virtual void update(double deltaTime) {}
         virtual void setMovementSpeed(const String& objectId, Vec2 speed) {}
         virtual void setMovementPath(const String& objectId, Array<Vec2> path) {}
+        
+    protected:
+        std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_body;
     };
 }

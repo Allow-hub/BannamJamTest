@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "EnemyBase.h"
+#include "../Events/GameEvents.h"
 
 namespace Jam::Domain::Enemy
 {
@@ -8,7 +9,8 @@ namespace Jam::Domain::Enemy
 	class LittleDevil : public EnemyBase
 	{
 	public:
-		explicit LittleDevil(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Physics::PhysicsBodyID playerId);
+		explicit LittleDevil(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Physics::PhysicsBodyID playerId
+		, Jam::Domain::Events::GameEventQueue& eventQueue);
 		virtual ~LittleDevil() = default;
 
 		// 毎フレームの更新（AI挙動など）

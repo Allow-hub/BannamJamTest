@@ -4,11 +4,20 @@
 #include "../Physics/ICollisionListener.h"
 #include "../Events/GameEvents.h"
 #include "Skill/IPlayerSkill.h"
+#include "../ITakeDamageable.h"
+#include "../../Foundation/CoroutineUtil.h"
+#include "../../Presentation/FadeManager.h"
 
 namespace Jam::Domain::Player
 {
+	class IPlayerSkill;
+	enum class PlayerSkillType;
+
+
 	struct PlayerStats
 	{
+		double hp;
+		double power;
 		double moveSpeed;
 		double jumpPower;
 		Jam::Domain::Physics::PhysicsMaterial physicsMaterial;
@@ -16,7 +25,7 @@ namespace Jam::Domain::Player
 
 	// プレイヤーキャラクターを表すクラス
 	// 他クラスに依存しない
-	class Player :public Jam::Domain::Physics::ICollisionListener
+	class Player :public Jam::Domain::Physics::ICollisionListener, public Jam::Domain::ITakeDamageable
 	{
 	public:
 		explicit Player(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Events::GameEventQueue& eventQueue);
@@ -38,16 +47,24 @@ namespace Jam::Domain::Player
 		s3d::Vec2 getPosition() const;
 		bool isFacingRight() const;
 
+		void setHp(double h) { m_stats.hp = h; }
+		void setPower(double p) { m_stats.power = p; }
 		void setSpeed(double s) { m_stats.moveSpeed = s; }
 		void setJumpPower(double j) { m_stats.jumpPower = j; }
 		std::shared_ptr<Domain::Physics::IPhysicsBody> getPhysicsBody() { return m_body; }
 		double getHookedSpeedMultiplier() const;
+
+		bool isAlive() const override { return m_isAlive; }
+		void takeDamage(const DamageInfo& info)override;
+		double getCurrentHp() const override { return m_stats.hp; }
+
 		// ICollisionListener
 		void onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 		void onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 		void onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 
 	private:
+		double m_fallLimitY = 0;
 		int m_jumpCount = 0;
 		const int maxJumpCount = 2;
 		PlayerStats m_stats;
@@ -59,6 +76,10 @@ namespace Jam::Domain::Player
 		Jam::Domain::Events::GameEventQueue& m_eventQueue;
 		std::vector<std::shared_ptr<IPlayerSkill>> m_skills;
 		std::shared_ptr<IPlayerSkill> m_currentSkill;
+		bool m_isAlive = true;// 生存フラグ
+		virtual void onDamaged(const DamageInfo& info) {}
+		virtual void onDeath() {}
+		Jam::Util::Task respawn();
 
 		void updateState();
 	};

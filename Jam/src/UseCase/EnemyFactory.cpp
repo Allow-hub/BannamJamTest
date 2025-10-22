@@ -1,28 +1,29 @@
 ﻿#include "EnemyFactory.h"
 #include "../Domain/Enemy/LittleDevil.h"
-#include "../Domain/Enemy/Ribbon.h"
+#include "AttackProcessor.h"
+#include "../Domain/Events/GameEvents.h"
 
 namespace Jam::UseCase
 {
 	using namespace Jam::Domain::Enemy;
 
 	std::shared_ptr<EnemyBase> EnemyFactory::createEnemy(
-		EnemyType type,
+		Jam::Domain::EnemyType type,
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body,
-		Jam::Domain::Physics::PhysicsBodyID playerId) const
+		Jam::Domain::Physics::PhysicsBodyID playerId,
+		Jam::Domain::Events::GameEventQueue& eventQueue) const
 	{
 		std::shared_ptr<EnemyBase> enemy = nullptr;
 
 		switch (type)
 		{
-		case EnemyType::LittleDevil:
-			enemy = std::make_shared<LittleDevil>(body, playerId);
+		case Jam::Domain::EnemyType::LittleDevil:
+			enemy = std::make_shared<LittleDevil>(body, playerId, eventQueue);
 			break;
 
-		case EnemyType::Ribbon:
+		case Jam::Domain::EnemyType::Ribbon:
 			// TODO: Ribbonの実装
-			enemy = std::make_shared<Ribbon>(body, playerId);
-			break;
+			return nullptr;
 
 		default:
 			Print << U"[EnemyFactory] ⚠ Unknown enemy type!";
@@ -36,7 +37,6 @@ namespace Jam::UseCase
 		}
 
 		auto enemyBody = enemy->getPhysicsBody();
-		//Print << U"[EnemyFactory] Enemy Body ptr == body ptr ? " << (enemyBody.get() == body.get());
 
 		// ステータステーブルに登録があれば適用
 		auto it = m_statusTable.find(type);
@@ -46,6 +46,9 @@ namespace Jam::UseCase
 			//Print << U"[EnemyFactory] ✅ Applied status: HP=" << it->second.hp
 				//<< U", Speed=" << it->second.moveSpeed;
 		}
+
+		//攻撃対象に追加
+		Jam::UseCase::AttackProcessor::getInstance().registerDamageable(enemyBody->getID(), enemy);
 		return enemy;
 	}
 }

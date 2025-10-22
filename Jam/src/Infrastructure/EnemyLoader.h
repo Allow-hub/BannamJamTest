@@ -6,6 +6,7 @@
 #include "../UseCase/EnemyFactory.h"
 #include "../Infrastructure/FactoryServiceLocator.h"
 #include "../Infrastructure/IPhysicsBodyFactory.h"
+#include "../Domain/Events/GameEvents.h"
 
 
 namespace Jam::Infrastructure
@@ -17,7 +18,8 @@ namespace Jam::Infrastructure
 			const FilePath& jsonPath,
 			const std::unique_ptr<Jam::UseCase::EnemyFactory>& enemyFactory,
 			const std::unique_ptr<Jam::Presentation::EnemyManager>& enemyManager,
-			Jam::Domain::Physics::PhysicsBodyID playerId)
+			Jam::Domain::Physics::PhysicsBodyID playerId,
+			Jam::Domain::Events::GameEventQueue& eventQueue)
 		{
 			JSON json = JSON::Load(jsonPath);
 
@@ -36,7 +38,6 @@ namespace Jam::Infrastructure
 			for (size_t i = 0; i < json.size(); ++i)
 			{
 				const JSON& item = json[i];
-
 				if (item.getType() != JSONValueType::Object)
 				{
 					Console << U"[EnemyLoader] ⚠ Invalid object at index: " << i;
@@ -48,9 +49,9 @@ namespace Jam::Infrastructure
 				const double posX = posJson[U"x"].get<double>();
 				const double posY = posJson[U"y"].get<double>();
 
-				Jam::UseCase::EnemyType type;
-				if (typeStr == U"LittleDevil") type = Jam::UseCase::EnemyType::LittleDevil;
-				else if (typeStr == U"Ribbon") type = Jam::UseCase::EnemyType::Ribbon;
+				Jam::Domain::EnemyType type;
+				if (typeStr == U"LittleDevil") type = Jam::Domain::EnemyType::LittleDevil;
+				else if (typeStr == U"Ribbon") type = Jam::Domain::EnemyType::Ribbon;
 				else
 				{
 					Console << U"[EnemyLoader] ⚠ Unknown enemy type: " << typeStr;
@@ -78,23 +79,49 @@ namespace Jam::Infrastructure
 					);
 				enemyBody->setLayer(Jam::Domain::Physics::PhysicsLayer::Enemy);
 
-				auto enemy = enemyFactory->createEnemy(type, enemyBody, playerId);
-				if (enemy)
-				{
-					enemyBody->setCollisionListener(enemy);
-					int enemyId = enemyManager->AddEnemy(enemy, U"../Assets/Enemy/" + typeStr + U"/" + typeStr + U"_animation.json");
-					enemyManager->getAnimator(enemyId).AddCondition({ { {U"isRunning", false} }, U"Idle", 0 });
-					enemyManager->getAnimator(enemyId).SetBool(U"isRunning", false);
-				}
-				else
+				auto enemy = enemyFactory->createEnemy(type, enemyBody, playerId, eventQueue);
+				if (!enemy)
 				{
 					Console << U"[EnemyLoader] ❌ Failed to create enemy of type: " << typeStr;
+					continue;
 				}
+
+				//　extra情報を処理
+				if (item.hasElement(U"extra"))
+				{
+					const JSON& extra = item[U"extra"];
+
+					// --- PatrolRoute にまとめる ---
+					Jam::Domain::Enemy::PatrolRoute route;
+
+					// パトロールポイントをロード
+					if (extra.hasElement(U"patrolPoints"))
+					{
+						const JSON& points = extra[U"patrolPoints"];
+						for (size_t j = 0; j < points.size(); ++j)
+						{
+							const auto& p = points[j];
+							route.points << Vec2{ p[U"x"].get<double>(), p[U"y"].get<double>() };
+						}
+					}
+
+					// ループ・ウェイト
+					route.loop = extra[U"loop"].getOr<bool>(false);
+					route.waitTime = extra[U"waitTime"].getOr<double>(0.0);
+
+					// Enemy にルートを渡す
+					if (route.isValid())
+					{
+						enemy->setPatrolRoute(route);
+					}
+				}
+
+				enemyBody->setCollisionListener(enemy);
+				int enemyId = enemyManager->AddEnemy(enemy, U"../Assets/Enemy/" + typeStr + U"/" + typeStr + U"_animation.json");
+				enemyManager->getAnimator(enemyId).AddCondition({ { {U"isRunning", false} }, U"Idle", 0 });
+				enemyManager->getAnimator(enemyId).SetBool(U"isRunning", false);
 			}
-
-			return true;
 		}
-
 
 
 		/// @brief JSON ファイルから敵ステータスを読み込む
@@ -103,7 +130,7 @@ namespace Jam::Infrastructure
 		/// @return 成功したら true
 		static bool LoadEnemyStatusFromJSON(
 			const FilePath& jsonPath,
-			std::unordered_map<Jam::UseCase::EnemyType, Jam::Domain::Enemy::EnemyStatus>& outTable)
+			std::unordered_map<Jam::Domain::EnemyType, Jam::Domain::Enemy::EnemyStatus>& outTable)
 		{
 			JSON json = JSON::Load(jsonPath);
 
@@ -145,7 +172,7 @@ namespace Jam::Infrastructure
 					};
 				}
 
-				using Jam::UseCase::EnemyType;
+				using Jam::Domain::EnemyType;
 
 				if (key == U"LittleDevil")
 				{
@@ -160,7 +187,6 @@ namespace Jam::Infrastructure
 					Console << U"[EnemyLoader] ⚠ Unknown enemy type: " << key;
 				}
 			}
-
 			return true;
 		}
 	};

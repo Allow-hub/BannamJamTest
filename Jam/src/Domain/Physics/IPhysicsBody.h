@@ -26,6 +26,7 @@ namespace Jam::Domain::Physics
 		virtual void setPos(const Vec2& p) = 0;
 		virtual void setBullet(const bool b) = 0;
 		virtual void setGravityScale(const double& s) = 0;
+		virtual void setDamping(const bool b) = 0;
 		virtual PhysicsLayer getLayer() const = 0;
 		virtual void setLayer(PhysicsLayer layer) = 0;
 		virtual void drawFrame(const double thickness = 1.0, const ColorF& color = Palette::White) = 0;

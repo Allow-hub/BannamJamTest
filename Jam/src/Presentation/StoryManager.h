@@ -16,12 +16,15 @@ namespace Jam::Presentation
 		HashTable<Speaker, HashTable<Portrait, Texture>> portraitTextures;
 		Texture backgroundTexture;
 
-		// === 新規追加 ===
 		String currentVisibleText;   // 現在表示中の文字
 		double textTimer = 0.0;      // 経過時間
 		double textSpeed = 0.03;     // 1文字あたりの間隔（秒）
 		bool isFullyVisible = false; // 現在のセリフが全文表示済みか
 		bool isSkipping = false;     // スキップ中か
+
+		// === 暗転設定 ===
+		ColorF activeSpeakerColor = ColorF(1.0);    // しゃべっている人の色
+		ColorF inactiveSpeakerColor = ColorF(0.5);  // しゃべっていない人の色
 
 		// === 位置・サイズ関連 ===
 		Vec2 getPositionForLocation(Location location, const Size& portraitSize) const
@@ -57,6 +60,19 @@ namespace Jam::Presentation
 			return RectF(x, y, boxWidth, boxHeight);
 		}
 
+		// === 現在の話者を取得 ===
+		Speaker getCurrentSpeaker() const
+		{
+			if (scenes.isEmpty() || currentSceneIndex >= scenes.size())
+				return Speaker::Player;
+
+			const auto& scene = scenes[currentSceneIndex];
+			if (scene.lines.isEmpty())
+				return Speaker::Player;
+
+			return EnumConverter::toSpeaker(scene.lines.back().speaker);
+		}
+
 	public:
 		StoryManager()
 		{
@@ -87,6 +103,13 @@ namespace Jam::Presentation
 			const bool ok = loadFromCSV(csvPath);
 			if (ok) resetTextState();
 			return ok;
+		}
+
+		// === 暗転色の設定 ===
+		void setDimmingColors(const ColorF& activeColor, const ColorF& inactiveColor)
+		{
+			activeSpeakerColor = activeColor;
+			inactiveSpeakerColor = inactiveColor;
 		}
 
 	private:
@@ -194,6 +217,7 @@ namespace Jam::Presentation
 			else Scene::Rect().draw(ColorF(0.8, 0.9, 1.0));
 
 			const Size portraitSize = getPortraitSize();
+			const Speaker currentSpeaker = getCurrentSpeaker();
 
 			// 立ち絵
 			for (const auto& line : scene.lines)
@@ -204,9 +228,14 @@ namespace Jam::Presentation
 					const auto& portraits = portraitTextures.at(sp);
 					if (portraits.contains(line.portrait))
 					{
+						// しゃべっている人かどうかで色を変える
+						const ColorF color = (sp == currentSpeaker)
+							? activeSpeakerColor
+							: inactiveSpeakerColor;
+
 						portraits.at(line.portrait)
 							.resized(portraitSize)
-							.drawAt(getPositionForLocation(line.location, portraitSize));
+							.drawAt(getPositionForLocation(line.location, portraitSize), color);
 					}
 				}
 			}

@@ -1,6 +1,9 @@
 ﻿#pragma once
+#include <Siv3D.hpp>
 #include "../Domain/Events/GameEvents.h"
 #include "CameraEvent.h"
+#include "AttackProcessor.h"
+#include "EffectEvents.h"
 
 namespace Jam::UseCase
 {
@@ -10,12 +13,14 @@ namespace Jam::UseCase
 	private:
 		Domain::Events::GameEventQueue& m_gameEventQueue;
 		CameraEventQueue& m_cameraEventQueue;
+		EffectEventQueue& m_effectEventQueue;
 
 	public:
 		GameEventHandler(Domain::Events::GameEventQueue& gameEventQueue,
-						 CameraEventQueue& cameraEventQueue)
+						 CameraEventQueue& cameraEventQueue, EffectEventQueue& effectEventQueue)
 			: m_gameEventQueue(gameEventQueue)
 			, m_cameraEventQueue(cameraEventQueue)
+			, m_effectEventQueue(effectEventQueue)
 		{
 		}
 
@@ -63,14 +68,28 @@ namespace Jam::UseCase
 	private:
 		void handleEnemyDamaged(const Domain::Events::EnemyDamagedEvent& e)
 		{
-			if (e.isCritical)
-			{
-				m_cameraEventQueue.push(CameraShakeEvent{ 12.0, 2.3 });
-			}
-			else
-			{
-				m_cameraEventQueue.push(CameraShakeEvent{ 5.0, 0.15 });
-			}
+			Jam::UseCase::AttackProcessor::getInstance().executeAttack(e.attacker, e.target, e.damageInfo);
+
+			constexpr double offsetRange = 2.0;
+
+			// -offsetRange ～ +offsetRange のランダム値をXとYに加える
+			Vec2 randomOffset{
+				Random(-offsetRange, offsetRange),
+				Random(-offsetRange, offsetRange)
+			};
+			String text = Format(e.damageInfo.amount);
+			m_effectEventQueue.push(TextEffectEvent{
+				e.damageInfo.position + randomOffset,
+				text,
+				Palette::Green
+			});
+			m_effectEventQueue.push(ParticleEffectEvent{
+				e.damageInfo.position,
+				e.damageInfo.direction,
+				Palette::Hotpink,
+				100,
+				500
+			});
 		}
 
 		void handleEnemyDefeated(const Domain::Events::EnemyDefeatedEvent& e)
@@ -78,12 +97,12 @@ namespace Jam::UseCase
 			if (e.isBoss)
 			{
 				// ボス撃破時は派手な演出
-				m_cameraEventQueue.push(CameraShakeEvent{ 1.0, 1.0 });
+				m_cameraEventQueue.push(CameraShakeEvent{ e.intensity, e.duration });
 				//m_cameraEventQueue.push(CameraFocusEvent{ e.position, 3.0, 0.9 });
 			}
 			else
 			{
-				m_cameraEventQueue.push(CameraShakeEvent{ 8.0, 0.2 });
+				m_cameraEventQueue.push(CameraShakeEvent{ e.intensity, e.duration });
 			}
 		}
 

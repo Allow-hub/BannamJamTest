@@ -1,10 +1,27 @@
 [
-  {
-    "type": "Ribbon",
-    "position": { "x": 200, "y": 0 }
-  },
-  {
-    "type": "LittleDevil",
-    "position": { "x": 500, "y": 100 }
-  }
+    {
+        "type": "LittleDevil",
+        "position": {
+            "x": 200,
+            "y": 0
+        },
+        "extra": {
+            "patrolPoints": [
+                {
+                    "x": 0,
+                    "y": 0
+                },
+                {
+                    "x": 200,
+                    "y": -100
+                },
+                {
+                    "x": 50,
+                    "y": -150
+                }
+            ],
+            "loop": true,
+            "waitTime": 1.5
+        }
+    }
 ]
