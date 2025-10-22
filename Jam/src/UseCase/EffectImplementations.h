@@ -92,30 +92,65 @@ namespace Jam::UseCase
 	};
 
 	// パーティクルエフェクト
+	// パーティクルエフェクト
 	struct ParticleEffect : IEffect
 	{
 		struct Particle
 		{
 			Vec2 start;
 			Vec2 velocity;
+			ColorF color;
 		};
 
 		Array<Particle> m_particles;
-		ColorF m_color;
 		double m_duration;
 
 		ParticleEffect(const ParticleEffectEvent& event)
-			: m_color(event.color)
-			, m_duration(event.duration)
+			: m_duration(event.duration)
 		{
+			// --- ランダム候補色 ---
+			const Array<ColorF> colors = {
+				Palette::Red,
+				Palette::Orange,
+				Palette::Yellow,
+				Palette::Lime,
+				Palette::Cyan,
+				Palette::Skyblue,
+				Palette::Pink,
+				Palette::White
+			};
+
+			// --- パーティクル生成 ---
 			for (int32 i = 0; i < event.particleCount; ++i)
 			{
 				const double angle = Random(0.0, Math::TwoPi);
 				const Vec2 dir = event.direction.normalized();
 				const Vec2 spread = Vec2{ Math::Cos(angle), Math::Sin(angle) } *Random(0.5, 1.0);
+
+				ColorF particleColor;
+
+				// --- カラー設定ロジック ---
+				if (event.isSimple)
+				{
+					// 単色指定 → event.color をそのまま使用
+					particleColor = event.color;
+				}
+				else if (event.isRandomColor)
+				{
+					// 各パーティクルごとにランダム
+					particleColor = colors.choice();
+				}
+				else
+				{
+					// 全体で同じランダム色（1つ目で決める）
+					static ColorF sharedColor = colors.choice();
+					particleColor = sharedColor;
+				}
+
 				m_particles << Particle{
 					.start = event.position,
-					.velocity = (dir + spread * 0.3) * event.speed
+					.velocity = (dir + spread * 0.3) * event.speed,
+					.color = particleColor
 				};
 			}
 		}
@@ -123,15 +158,21 @@ namespace Jam::UseCase
 		bool update(double t) override
 		{
 			t /= m_duration;
+
 			for (const auto& particle : m_particles)
 			{
 				const Vec2 pos = particle.start + particle.velocity * t;
 				const double alpha = (1.0 - t);
-				Circle{ pos, 3.0 }.draw(ColorF{ m_color, alpha });
+				const double size = Random(4.0, 8.0);
+
+				Circle{ pos, size }.draw(ColorF{ particle.color, alpha });
 			}
+
 			return (t < 1.0);
 		}
 	};
+
+
 
 	// ヒットエフェクト
 	struct HitEffect : IEffect

@@ -270,6 +270,7 @@ namespace Jam::Presentation::Scenes
 				{
 					m_enemyManager->draw();
 				}
+				m_effectManager->draw();
 				//Jam::Util::GridRenderer::instance().draw();
 			}
 		}

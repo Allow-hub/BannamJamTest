@@ -37,6 +37,8 @@ namespace Jam::UseCase
 		int32 particleCount = 10;
 		double speed = 100.0;
 		double duration = 0.5;
+		bool isSimple = false;//単色かどうか
+		bool isRandomColor = true;
 	};
 
 	// ヒットエフェクトイベント
@@ -53,17 +55,17 @@ namespace Jam::UseCase
 	{
 		Vec2 position;
 		String text;
-		ColorF color = Palette::White;
-		int32 fontSize = 24;
+		ColorF color = Palette::Black;
+		int32 fontSize = 32;
 		double duration = 1.0;
-		Vec2 velocity{ 0, -50 };
+		Vec2 velocity{ 0, -100 };
 	};
 
 	// リングエフェクトイベント（衝撃波など）
 	struct RingEffectEvent
 	{
 		Vec2 position;
-		ColorF color = Palette::White;
+		ColorF color = Palette::Hotpink;
 		double maxRadius = 150.0;
 		double duration = 0.5;
 		double thickness = 3.0;

@@ -60,6 +60,10 @@ namespace Jam::Presentation
 		void update()
 		{
 			processEvents();
+		}
+
+		void draw()
+		{
 			m_effect.update();
 		}
 
