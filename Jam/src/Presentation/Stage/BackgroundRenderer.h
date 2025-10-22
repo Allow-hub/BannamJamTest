@@ -38,24 +38,7 @@ namespace Jam::Presentation::Background {
 			}
 		}
 
-		// すべての背景を描画順序通りに描画（Player描画位置を考慮）
-		void drawAll(const Vec2& cameraOffset, std::function<void()> playerDrawCallback = nullptr) const {
-			if (!m_isLoaded) return;
 
-			// Back レイヤー描画
-			drawLayer(Jam::Domain::Background::ParallaxLayer::Back, cameraOffset);
-
-			// Middle レイヤー描画
-			drawLayer(Jam::Domain::Background::ParallaxLayer::Middle, cameraOffset);
-
-			// Player描画（コールバック）
-			if (playerDrawCallback) {
-				playerDrawCallback();
-			}
-
-			// Front レイヤー描画
-			drawLayer(Jam::Domain::Background::ParallaxLayer::Front, cameraOffset);
-		}
 
 		// 特定のテクスチャを使用してBackレイヤーとして描画（既存のJSONなしの場合用）
 		void drawBackgroundTexture(const String& textureName, const Vec2& cameraOffset,
@@ -64,8 +47,8 @@ namespace Jam::Presentation::Background {
 			// BG.pngテクスチャを取得
 			const auto bgTexture = Jam::Infrastructure::TextureLoader::getTexture(textureName);
 			if (bgTexture) {
-				// パララックス効果付きで背景を描画
-				const Vec2 parallaxOffset = cameraOffset * 0.3; // Back layer multiplier
+				// パララックス効果付きで背景を描画（より遠くに見えるように調整）
+				const Vec2 parallaxOffset = cameraOffset * 0.1; // Back layer multiplier (0.3 → 0.1でよりゆっくり)
 				const Vec2 drawPos(position.x - parallaxOffset.x, position.y - parallaxOffset.y);
 
 				// テクスチャを指定サイズにリサイズして描画
@@ -114,9 +97,59 @@ namespace Jam::Presentation::Background {
 				texture->resized(drawRect.size).drawAt(drawRect.center());
 			}
 
-			// リピート描画の場合の処理（将来的な拡張用）
+			// リピート描画の場合の処理
 			if (bgObj.isRepeating) {
-				// TODO: タイル状の繰り返し描画を実装
+				drawRepeatingTexture(*texture, bgObj, offset);
+			}
+		}
+
+		// ループテクスチャ描画
+		void drawRepeatingTexture(const Texture& texture, const Jam::Domain::Background::BackgroundObject& bgObj, const Vec2& offset) const {
+			const RectF originalRect = bgObj.rect.movedBy(-offset);
+			const Size textureSize = texture.size();
+			
+			// 画面外のマージンを追加（スクロール時に空白が見えないようにする）
+			const double margin = 200.0;
+			const RectF viewArea(
+				originalRect.x - margin, originalRect.y - margin,
+				originalRect.w + margin * 2, originalRect.h + margin * 2
+			);
+			
+			// 水平方向の繰り返し
+			if (bgObj.repeatMode == U"horizontal" || bgObj.repeatMode == U"both") {
+				const double tileWidth = textureSize.x;
+				const int startTileX = static_cast<int>(Math::Floor(viewArea.x / tileWidth));
+				const int endTileX = static_cast<int>(Math::Ceil((viewArea.x + viewArea.w) / tileWidth));
+				
+				for (int x = startTileX; x <= endTileX; ++x) {
+					const double drawX = x * tileWidth;
+					const RectF tileRect(drawX, originalRect.y, tileWidth, originalRect.h);
+					
+					// 透明度を適用して描画
+					if (bgObj.opacity < 1.0) {
+						texture.resized(tileRect.size).draw(tileRect.pos, ColorF(1.0, bgObj.opacity));
+					} else {
+						texture.resized(tileRect.size).draw(tileRect.pos);
+					}
+				}
+			}
+			// 垂直方向の繰り返し（必要に応じて実装）
+			else if (bgObj.repeatMode == U"vertical") {
+				const double tileHeight = textureSize.y;
+				const int startTileY = static_cast<int>(Math::Floor(viewArea.y / tileHeight));
+				const int endTileY = static_cast<int>(Math::Ceil((viewArea.y + viewArea.h) / tileHeight));
+				
+				for (int y = startTileY; y <= endTileY; ++y) {
+					const double drawY = y * tileHeight;
+					const RectF tileRect(originalRect.x, drawY, originalRect.w, tileHeight);
+					
+					// 透明度を適用して描画  
+					if (bgObj.opacity < 1.0) {
+						texture.resized(tileRect.size).draw(tileRect.pos, ColorF(1.0, bgObj.opacity));
+					} else {
+						texture.resized(tileRect.size).draw(tileRect.pos);
+					}
+				}
 			}
 		}
 	};

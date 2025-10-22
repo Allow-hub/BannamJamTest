@@ -24,6 +24,7 @@ namespace Jam::Domain::Background {
         // パララックス用の追加データ
         Vec2 scrollSpeed = {1.0, 0.0};  // スクロール速度（X,Y）
         bool isRepeating = false;       // テクスチャをリピートするか
+        String repeatMode = U"horizontal"; // リピートモード（"horizontal", "vertical", "both"）
         double opacity = 1.0;           // 透明度
         
         // デフォルトコンストラクタ

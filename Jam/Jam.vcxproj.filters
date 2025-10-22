@@ -159,7 +159,6 @@
     <ClCompile Include="src\Domain\Player\Skill\ChokerSkill.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Stage\background.json" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -822,6 +821,7 @@
     <None Include="App\engine\shader\glsl\quad_warp.frag">
       <Filter>Resource Files\engine\shader\glsl</Filter>
     </None>
+    <None Include="Assets\Stage\background.json" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="App\example\test.mp3">

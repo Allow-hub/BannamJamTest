@@ -87,8 +87,8 @@ namespace Jam::Infrastructure::Background {
                 Print << U"[BackgroundLoader] ❌ Missing 'rect' field";
                 return false;
             }
-            if (!json.hasElement(U"texture")) {
-                Print << U"[BackgroundLoader] ❌ Missing 'texture' field";
+            if (!json.hasElement(U"textureName")) {
+                Print << U"[BackgroundLoader] ❌ Missing 'textureName' field";
                 return false;
             }
             
@@ -122,7 +122,7 @@ namespace Jam::Infrastructure::Background {
             }
             
             // テクスチャ名
-            outObj.textureName = json[U"texture"].getString();
+            outObj.textureName = json[U"textureName"].getString();
             
             // レイヤー（オプション、デフォルトはBack）
             if (json.hasElement(U"layer")) {
@@ -146,6 +146,11 @@ namespace Jam::Infrastructure::Background {
             // リピート設定（オプション）
             if (json.hasElement(U"isRepeating")) {
                 outObj.isRepeating = json[U"isRepeating"].get<bool>();
+            }
+            
+            // リピートモード（オプション）
+            if (json.hasElement(U"repeatMode")) {
+                outObj.repeatMode = json[U"repeatMode"].getString();
             }
             
             // 透明度（オプション）

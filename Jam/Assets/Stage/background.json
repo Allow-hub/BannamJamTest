@@ -1,0 +1,22 @@
+﻿{
+  "_comment": "パララックス背景定義",
+  "_使い方": {
+    "説明": "パララックス効果付きの背景オブジェクトを定義します。",
+    "textureName": "テクスチャ名（TextureLoaderで読み込み済みのもの）",
+    "layer": "パララックスレイヤー。Back(遠景), Middle(中景), Front(近景)のいずれか",
+    "rect": "[x, y, width, height] 形式の配列で位置とサイズを指定",
+    "opacity": "透明度（0.0～1.0）",
+    "isRepeating": "テクスチャをループ描画するかどうか（true/false）",
+    "repeatMode": "ループモード。horizontal(水平), vertical(垂直), both(両方向)"
+  },
+  "backgrounds": [
+    {
+      "textureName": "BG",
+      "layer": "Back",
+      "rect": [-200, -400, 400, 600],
+      "opacity": 1.0,
+      "isRepeating": true,
+      "repeatMode": "horizontal"
+    }
+  ]
+}
