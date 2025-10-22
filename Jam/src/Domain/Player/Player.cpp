@@ -1,6 +1,6 @@
 ﻿#include "Player.h"
 #include "../Physics/IPhysicsBody.h"
-#include "Skill/BombSkill.h"
+//#include "Skill/BombSkill.h"
 #include "Skill/ChokerSkill.h"
 #include "../../Presentation/AudioService.h"
 #include "../../Infrastructure/PhysicsFilterManager.h"
@@ -17,7 +17,7 @@ namespace Jam::Domain::Player
 		auto chokerSkill = std::make_shared<ChokerSkill>(eventQueue, m_body->getID(),m_stats);
 		chokerSkill->init(); // shared_from_this()を使用する初期化
 		m_skills.push_back(chokerSkill);
-		m_skills.push_back(std::make_shared<BombSkill>(eventQueue, m_stats));
+		//m_skills.push_back(std::make_shared<BombSkill>(eventQueue, m_stats));
 		m_currentSkill = m_skills.front();
 	}
 
