@@ -4,6 +4,7 @@
 #include "Skill/ChokerSkill.h"
 #include "../../Presentation/AudioService.h"
 #include "../../Infrastructure/PhysicsFilterManager.h"
+#include "../../Foundation/CoreManager.h"
 
 namespace Jam::Domain::Player
 {
@@ -19,6 +20,8 @@ namespace Jam::Domain::Player
 		m_skills.push_back(chokerSkill);
 		//m_skills.push_back(std::make_shared<BombSkill>(eventQueue, m_stats));
 		m_currentSkill = m_skills.front();
+		auto& core = Jam::Foundation::CoreManager::Instance();
+		m_fallLimitY = core.getStageData(core.stageInfo.stageName).fallLimitY;
 	}
 
 	void Player::update(double deltaTime)
@@ -29,6 +32,12 @@ namespace Jam::Domain::Player
 		{
 			if (skill->needUpdate())
 				skill->update(deltaTime);
+		}
+
+
+		if (getPosition().y >= m_fallLimitY)
+		{
+			respawn();
 		}
 	}
 
@@ -96,6 +105,21 @@ namespace Jam::Domain::Player
 	{
 
 	}
+
+	Jam::Util::Task Player::respawn()
+	{
+		// CoreManager参照
+		auto& core = Jam::Foundation::CoreManager::Instance();
+		const Vec2 respawnPos = core.getStageData(core.stageInfo.stageName).respawnPosition;
+		Jam::Presentation::FadeManager::instance().fadeOutAndIn();
+		co_await Jam::Util::WaitSeconds(1.0);
+
+		m_stats.hp -= 10;//リスポーン時のダメージ
+		// --- リスポーン処理 ---
+		m_body->setPos(respawnPos);
+		m_body->setVelocity({ 0, 0 });
+	}
+
 
 	//後々スキルはコンストラクタで使える武器をステージごとに選べるように
 	void Player::skillPush()

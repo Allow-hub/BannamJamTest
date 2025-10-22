@@ -5,6 +5,8 @@
 #include "../Events/GameEvents.h"
 #include "Skill/IPlayerSkill.h"
 #include "../ITakeDamageable.h"
+#include "../../Foundation/CoroutineUtil.h"
+#include "../../Presentation/FadeManager.h"
 
 namespace Jam::Domain::Player
 {
@@ -62,6 +64,7 @@ namespace Jam::Domain::Player
 		void onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 
 	private:
+		double m_fallLimitY = 0;
 		int m_jumpCount = 0;
 		const int maxJumpCount = 2;
 		PlayerStats m_stats;
@@ -76,6 +79,7 @@ namespace Jam::Domain::Player
 		bool m_isAlive = true;// 生存フラグ
 		virtual void onDamaged(const DamageInfo& info) {}
 		virtual void onDeath() {}
+		Jam::Util::Task respawn();
 
 		void updateState();
 	};
