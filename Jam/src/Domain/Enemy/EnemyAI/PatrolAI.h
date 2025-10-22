@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "IEnemyAI.h"
+#include "../../Physics/IPhysicsBody.h"
 
 namespace Jam::Domain::Enemy
 {
@@ -8,20 +9,36 @@ namespace Jam::Domain::Enemy
 	{
 		void enter(EnemyBase& enemy) override
 		{
-			enemy.onAIEvent(EnemyAIEvent::PlayerFound);
 			// フック
 			enemy.onPatrolEnter();
 		}
 
 		void update(EnemyBase& enemy, double deltaTime) override
 		{
-			// フック
-			enemy.onPatrolUpdate(deltaTime);
+			auto& route = enemy.getPatrolRoute();
+			if (!route.isValid()) return;
+
+			auto currentTarget = route.points[route.currentIndex];
+			Vec2 pos = enemy.getPosition();
+			Vec2 dir = (currentTarget - pos).normalized();
+
+			enemy.getPhysicsBody()->applyForce(dir * enemy.getStatus().moveSpeed);
+
+			if (pos.distanceFrom(currentTarget) < 5.0) // 到達判定
+			{
+				route.updateTimer(deltaTime);
+				if (route.isWaitOver()) {
+					route.advance();
+					route.resetTimer();
+				}
+			}
+
+			enemy.onPatrolUpdate(deltaTime); // フック呼び出し
 		}
+
 
 		void exit(EnemyBase& enemy) override
 		{
-			Print << U"EXIT";
 			// フック
 			enemy.onPatrolExit();
 		}

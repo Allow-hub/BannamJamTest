@@ -38,7 +38,6 @@ namespace Jam::Infrastructure
 			for (size_t i = 0; i < json.size(); ++i)
 			{
 				const JSON& item = json[i];
-
 				if (item.getType() != JSONValueType::Object)
 				{
 					Console << U"[EnemyLoader] ⚠ Invalid object at index: " << i;
@@ -80,23 +79,49 @@ namespace Jam::Infrastructure
 					);
 				enemyBody->setLayer(Jam::Domain::Physics::PhysicsLayer::Enemy);
 
-				auto enemy = enemyFactory->createEnemy(type, enemyBody, playerId,eventQueue);
-				if (enemy)
-				{
-					enemyBody->setCollisionListener(enemy);
-					int enemyId = enemyManager->AddEnemy(enemy, U"../Assets/Enemy/" + typeStr + U"/" + typeStr + U"_animation.json");
-					enemyManager->getAnimator(enemyId).AddCondition({ { {U"isRunning", false} }, U"Idle", 0 });
-					enemyManager->getAnimator(enemyId).SetBool(U"isRunning", false);
-				}
-				else
+				auto enemy = enemyFactory->createEnemy(type, enemyBody, playerId, eventQueue);
+				if (!enemy)
 				{
 					Console << U"[EnemyLoader] ❌ Failed to create enemy of type: " << typeStr;
+					continue;
 				}
+
+				//　extra情報を処理
+				if (item.hasElement(U"extra"))
+				{
+					const JSON& extra = item[U"extra"];
+
+					// --- PatrolRoute にまとめる ---
+					Jam::Domain::Enemy::PatrolRoute route;
+
+					// パトロールポイントをロード
+					if (extra.hasElement(U"patrolPoints"))
+					{
+						const JSON& points = extra[U"patrolPoints"];
+						for (size_t j = 0; j < points.size(); ++j)
+						{
+							const auto& p = points[j];
+							route.points << Vec2{ p[U"x"].get<double>(), p[U"y"].get<double>() };
+						}
+					}
+
+					// ループ・ウェイト
+					route.loop = extra[U"loop"].getOr<bool>(false);
+					route.waitTime = extra[U"waitTime"].getOr<double>(0.0);
+
+					// Enemy にルートを渡す
+					if (route.isValid())
+					{
+						enemy->setPatrolRoute(route);
+					}
+				}
+
+				enemyBody->setCollisionListener(enemy);
+				int enemyId = enemyManager->AddEnemy(enemy, U"../Assets/Enemy/" + typeStr + U"/" + typeStr + U"_animation.json");
+				enemyManager->getAnimator(enemyId).AddCondition({ { {U"isRunning", false} }, U"Idle", 0 });
+				enemyManager->getAnimator(enemyId).SetBool(U"isRunning", false);
 			}
-
-			return true;
 		}
-
 
 
 		/// @brief JSON ファイルから敵ステータスを読み込む
@@ -162,7 +187,6 @@ namespace Jam::Infrastructure
 					Console << U"[EnemyLoader] ⚠ Unknown enemy type: " << key;
 				}
 			}
-
 			return true;
 		}
 	};

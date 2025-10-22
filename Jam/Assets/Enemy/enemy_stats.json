@@ -2,7 +2,7 @@
     "LittleDevil": {
         "hp": 100,
         "attackPower": 10.5,
-        "moveSpeed": 1000.0,
+        "moveSpeed": 2000.0,
         "jumpPower": 5.0,
         "colX": 60.0,
         "colY": 100.0,
