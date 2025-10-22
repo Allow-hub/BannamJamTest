@@ -1,6 +1,3 @@
-#ビルドによって生成されるフォルダ
-Jam/Intermediate/
-
 # Prerequisites
 *.d
 
