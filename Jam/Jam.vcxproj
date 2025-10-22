@@ -159,6 +159,11 @@
     <Image Include="Assets\Player\run_0.png" />
     <Image Include="Assets\Player\run_1.png" />
     <Image Include="Assets\Player\Skill\Bomb\Bomb.png" />
+    <Image Include="Assets\Stage\BG\BG.png" />
+    <Image Include="Assets\Stage\BG\BG_Back1.png" />
+    <Image Include="Assets\Stage\BG\BG_Back2.png" />
+    <Image Include="Assets\Stage\Normal_Test.png" />
+    <Image Include="Assets\Stage\Platform_Test.png" />
     <Image Include="Assets\Stage\White_Test.png" />
     <Image Include="Assets\Story\background_stage1_1.png" />
     <Image Include="Assets\Story\Portrait\Player\player_normal.png" />
@@ -340,6 +345,7 @@
     <None Include="App\example\toml\test.toml" />
     <None Include="App\example\zip\zip_test.zip" />
     <None Include="Assets\Stage\background.json" />
+    <None Include="Assets\Stage\stage1.json" />
     <None Include="Assets\Story\stage1_1.csv" />
   </ItemGroup>
   <ItemGroup>

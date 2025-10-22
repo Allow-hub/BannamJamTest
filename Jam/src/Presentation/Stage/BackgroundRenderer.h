@@ -55,10 +55,13 @@ namespace Jam::Presentation::Background {
 						const double targetWidth = targetHeight * aspectRatio;
 						const Size scaledSize(static_cast<int32>(targetWidth), static_cast<int32>(targetHeight));
 						
+						// 位置を整数ピクセルに丸めて境界線の問題を軽減
+						const Vec2 roundedPosition = parallaxPosition.asPoint();
+						
 						if (instance.opacity < 1.0) {
-							texture->resized(scaledSize).draw(parallaxPosition, ColorF(1.0, instance.opacity));
+							texture->resized(scaledSize).draw(roundedPosition, ColorF(1.0, instance.opacity));
 						} else {
-							texture->resized(scaledSize).draw(parallaxPosition);
+							texture->resized(scaledSize).draw(roundedPosition);
 						}
 					}
 				}

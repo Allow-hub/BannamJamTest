@@ -141,7 +141,9 @@ namespace Jam::Infrastructure {
 
     void TextureLoader::preloadBackgroundTextures() {
         Array<String> backgroundNames = {
-            U"BG"
+            U"BG",
+            U"BG1",
+            U"BG2"
         };
         
         for (const auto& name : backgroundNames) {
@@ -160,13 +162,18 @@ namespace Jam::Infrastructure {
     }
 
     FilePath TextureLoader::getDefaultBackgroundTexturePath(const String& textureName) {
-        const FilePath basePath = U"../Assets/Stage/";
+        const FilePath basePath = U"../Assets/Stage/BG/";
         
         if (textureName == U"BG") {
             return basePath + U"BG.png";
         }
+        if (textureName == U"BG1") {
+            return basePath + U"BG_Back1.png";
+        }
+        if (textureName == U"BG2") {
+            return basePath + U"BG_Back2.png";
+        }
         
-        // デフォルト
         return basePath + textureName + U".png";
     }
 
