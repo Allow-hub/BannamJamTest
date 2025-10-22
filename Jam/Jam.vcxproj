@@ -113,9 +113,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="Assets\Stage\background.json">
-      <FileType>Document</FileType>
-    </None>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="src\Domain\Enemy\EnemyBase.cpp" />
     <ClCompile Include="src\Domain\Enemy\LittleDevil.cpp" />
@@ -161,6 +158,11 @@
     <Image Include="Assets\Player\run_0.png" />
     <Image Include="Assets\Player\run_1.png" />
     <Image Include="Assets\Player\Skill\Bomb\Bomb.png" />
+    <Image Include="Assets\Story\background_stage1_1.png" />
+    <Image Include="Assets\Story\Portrait\Player\player_normal.png" />
+    <Image Include="Assets\Story\Portrait\Player\player_smiling.png" />
+    <Image Include="Assets\Story\Portrait\Player\player_surprised.png" />
+    <Image Include="Assets\Story\Portrait\Player\player_suspicious.png" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />
@@ -335,6 +337,8 @@
     <None Include="App\example\toml\config.toml" />
     <None Include="App\example\toml\test.toml" />
     <None Include="App\example\zip\zip_test.zip" />
+    <None Include="Assets\Stage\background.json" />
+    <None Include="Assets\Story\stage1_1.csv" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="App\example\shot.mp3" />
@@ -347,6 +351,7 @@
   <ItemGroup>
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />
     <Font Include="App\example\font\RocknRoll\RocknRollOne-Regular.ttf" />
+    <Font Include="Assets\Font\PixelMplus12-Bold.ttf" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="App\example\objdetect\haarcascade\eye.xml" />
@@ -361,9 +366,11 @@
     <ClInclude Include="src\Domain\Enemy\EnemyAI\IEnemyAI.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyAI\PatrolAI.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyBase.h" />
+    <ClInclude Include="src\Domain\Enemy\EnemyType.h" />
     <ClInclude Include="src\Domain\Enemy\LittleDevil.h" />
     <ClInclude Include="src\Domain\Events\GameEvents.h" />
     <ClInclude Include="src\Domain\IInputService.h" />
+    <ClInclude Include="src\Domain\ITakeDamageable.h" />
     <ClInclude Include="src\Domain\Physics\ICollisionListener.h" />
     <ClInclude Include="src\Domain\Physics\IPhysicsBody.h" />
     <ClInclude Include="src\Domain\Physics\PhysicsTypes.h" />
@@ -375,27 +382,31 @@
     <ClInclude Include="src\Domain\Player\Player.h" />
     <ClInclude Include="src\Domain\Stage\BackgroundTypes.h" />
     <ClInclude Include="src\Domain\Stage\IStage.h" />
-    <ClInclude Include="src\Foundation\CoreManager.h" />
-    <ClInclude Include="src\Infrastructure\AudioLoader.h" />
-    <ClInclude Include="src\Infrastructure\BackgroundLoader.h" />
-    <ClInclude Include="src\Infrastructure\FactoryServiceLocator.h" />
-    <ClInclude Include="src\Infrastructure\IPhysicsBodyFactory.h" />
-    <ClInclude Include="src\Infrastructure\PhysicsConverter.h" />
     <ClInclude Include="src\Domain\Stage\NormalStage.h" />
     <ClInclude Include="src\Domain\Stage\StageTypes.h" />
+    <ClInclude Include="src\Domain\StoryData.h" />
+    <ClInclude Include="src\Foundation\CoreManager.h" />
+    <ClInclude Include="src\Foundation\CoroutineUtil.h" />
+    <ClInclude Include="src\Infrastructure\AudioLoader.h" />
+    <ClInclude Include="src\Infrastructure\BackgroundLoader.h" />
+    <ClInclude Include="src\Infrastructure\EnemyLoader.h" />
+    <ClInclude Include="src\Infrastructure\FactoryServiceLocator.h" />
+    <ClInclude Include="src\Infrastructure\GridRenderer.h" />
+    <ClInclude Include="src\Infrastructure\IPhysicsBodyFactory.h" />
+    <ClInclude Include="src\Infrastructure\PhysicsConverter.h" />
     <ClInclude Include="src\Infrastructure\PhysicsFilterManager.h" />
     <ClInclude Include="src\Infrastructure\Siv3DCursorUtil.h" />
     <ClInclude Include="src\Infrastructure\Siv3DInputManager.h" />
     <ClInclude Include="src\Infrastructure\Siv3DPhysicsBody.h" />
     <ClInclude Include="src\Infrastructure\Siv3DPhysicsBodyFactory.h" />
+    <ClInclude Include="src\Infrastructure\StageLoader.h" />
     <ClInclude Include="src\Infrastructure\TextureLoader.h" />
     <ClInclude Include="src\Presentation\Animator.h" />
     <ClInclude Include="src\Presentation\AnimatorLoader.h" />
     <ClInclude Include="src\Presentation\AudioService.h" />
     <ClInclude Include="src\Presentation\CameraManager.h" />
-    <ClInclude Include="src\Infrastructure\EnemyLoader.h" />
+    <ClInclude Include="src\Presentation\EffectManager.h" />
     <ClInclude Include="src\Presentation\EnemyManager.h" />
-    <ClInclude Include="src\Infrastructure\StageLoader.h" />
     <ClInclude Include="src\Presentation\PlayerManager.h" />
     <ClInclude Include="src\Presentation\Scenes\GameScene.h" />
     <ClInclude Include="src\Presentation\Scenes\ResultScene.h" />
@@ -403,8 +414,12 @@
     <ClInclude Include="src\Presentation\Scenes\StoryScene.h" />
     <ClInclude Include="src\Presentation\Scenes\TitleScene.h" />
     <ClInclude Include="src\Presentation\Stage\BackgroundRenderer.h" />
+    <ClInclude Include="src\Presentation\StoryManager.h" />
+    <ClInclude Include="src\UseCase\AttackProcessor.h" />
     <ClInclude Include="src\UseCase\CameraEvent.h" />
     <ClInclude Include="src\UseCase\CameraService.h" />
+    <ClInclude Include="src\UseCase\EffectEvents.h" />
+    <ClInclude Include="src\UseCase\EffectImplementations.h" />
     <ClInclude Include="src\UseCase\EnemyFactory.h" />
     <ClInclude Include="src\UseCase\GameEventHandler.h" />
     <ClInclude Include="src\UseCase\PlayerService.h" />
@@ -497,5 +512,6 @@
     </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
 </Project>

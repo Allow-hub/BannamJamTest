@@ -2,6 +2,8 @@
 #include "IPlayerSkill.h"
 #include "../../Physics/ICollisionListener.h"
 #include "../../Events/GameEvents.h"
+#include "../Player.h"
+
 
 namespace Jam::Domain::Player
 {
@@ -23,6 +25,7 @@ namespace Jam::Domain::Player
 
 		Vec2 m_velocity = Vec2::Zero();
 		Vec2 m_lastDir;
+		Vec2 m_enemyImpluseDir = Vec2::Zero();
 		const Vec2 createOffset = Vec2{ 50, -30 };
 		Jam::Domain::Physics::PhysicsBodyID m_ownerId;
 
@@ -50,7 +53,8 @@ namespace Jam::Domain::Player
 
 	public:
 		ChokerSkill(Jam::Domain::Events::GameEventQueue& eventQueue,
-					Jam::Domain::Physics::PhysicsBodyID ownerId);
+					Jam::Domain::Physics::PhysicsBodyID ownerId,
+					Jam::Domain::Player::PlayerStats& stats);
 
 		void init();
 		void use(const s3d::Vec2 position, bool facingRight) override;

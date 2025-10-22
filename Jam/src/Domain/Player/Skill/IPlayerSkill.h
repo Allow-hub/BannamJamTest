@@ -1,7 +1,12 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
 #include "../../Events/GameEvents.h"
+#include "../Player.h"
 
+namespace Jam::Domain::Player
+{
+	struct PlayerStats; // 前方宣言を追加
+}
 
 namespace Jam::Domain::Player
 {
@@ -16,11 +21,12 @@ namespace Jam::Domain::Player
 	{
 	protected:
 		PlayerSkillType m_type;
+		Jam::Domain::Player::PlayerStats& m_playerStats;
 		Jam::Domain::Events::GameEventQueue&  m_eventQueue;
 
 	public:
-		explicit IPlayerSkill(PlayerSkillType type,Jam::Domain::Events::GameEventQueue& eventQueue)
-			: m_type(type), m_eventQueue(eventQueue) {
+		explicit IPlayerSkill(PlayerSkillType type, Jam::Domain::Events::GameEventQueue& eventQueue, Jam::Domain::Player::PlayerStats& stats)
+			: m_type(type), m_eventQueue(eventQueue), m_playerStats(stats){
 		}
 
 		virtual ~IPlayerSkill() = default;

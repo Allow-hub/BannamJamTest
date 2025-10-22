@@ -260,6 +260,21 @@
     <Image Include="Assets\Cursor\GameCursor.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Assets\Story\background_stage1_1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Story\Portrait\Player\player_normal.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Story\Portrait\Player\player_surprised.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Story\Portrait\Player\player_suspicious.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Story\Portrait\Player\player_smiling.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc">
@@ -822,6 +837,18 @@
       <Filter>Resource Files\engine\shader\glsl</Filter>
     </None>
     <None Include="Assets\Stage\background.json" />
+    <None Include="Assets\Player\player_animation.json" />
+    <None Include="Assets\Player\player_stats.json" />
+    <None Include="src\Infrastructure\InfrastructureDoc.md" />
+    <None Include="src\Presentation\Presentation.md" />
+    <None Include="Assets\Enemy\LittleDevil\LittleDevil_animation.json" />
+    <None Include="Assets\Enemy\enemy_stats.json" />
+    <None Include="src\Domain\Events\Events.md" />
+    <None Include="Assets\Player\skillData.json" />
+    <None Include="src\Domain\Enemy\EnemyDoc.md" />
+    <None Include="Assets\Enemy\enemy_stage1_2.json" />
+    <None Include="Assets\Enemy\enemy_stage1_3.json" />
+    <None Include="Assets\Story\stage1_1.csv" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="App\example\test.mp3">
@@ -844,6 +871,7 @@
     <Font Include="App\example\font\RocknRoll\RocknRollOne-Regular.ttf">
       <Filter>Resource Files\example\font\RocknRoll</Filter>
     </Font>
+    <Font Include="Assets\Font\PixelMplus12-Bold.ttf" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="App\example\objdetect\haarcascade\face_anime.xml">
@@ -1023,6 +1051,25 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\UseCase\StageService.h">
+    <ClInclude Include="src\Domain\StoryData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Presentation\StoryManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Domain\ITakeDamageable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Foundation\CoroutineUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UseCase\AttackProcessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Domain\Enemy\EnemyType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Infrastructure\GridRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

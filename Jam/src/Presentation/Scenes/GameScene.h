@@ -26,6 +26,10 @@
 #include "../../Infrastructure/TextureLoader.h"
 #include "../Stage/BackgroundRenderer.h"
 #include "../../Infrastructure/Background/BackgroundLoader.h"
+#include "../../UseCase/AttackProcessor.h"
+#include "../../Infrastructure/GridRenderer.h"
+#include "../../UseCase/EffectEvents.h"
+#include "../../Presentation/EffectManager.h"
 
 
 namespace Jam::Presentation::Scenes
@@ -49,9 +53,12 @@ namespace Jam::Presentation::Scenes
 
 		std::shared_ptr<Jam::Presentation::CameraManager> m_cameraManager;
 		std::shared_ptr<Jam::UseCase::CameraService> m_cameraService;
+		std::unique_ptr<Jam::Presentation::EffectManager> m_effectManager;
+
 
 		std::shared_ptr<Jam::Domain::Events::GameEventQueue> m_gameEventQueue;
 		std::shared_ptr<Jam::UseCase::CameraEventQueue> m_cameraEventQueue;
+		std::shared_ptr<Jam::UseCase::EffectEventQueue> m_effectEventQueue;
 		std::shared_ptr<Jam::UseCase::GameEventHandler> m_eventHandler;
 
 		Jam::Infrastructure::Siv3DInputManager m_inputManager;
@@ -81,6 +88,7 @@ namespace Jam::Presentation::Scenes
 			Jam::Presentation::AudioService::get().play(Jam::Presentation::AudioService::Sound::BGM_Title, true);
 
 			auto& core = Jam::Foundation::CoreManager::Instance();
+			core.reset();
 			String stageName = Jam::Foundation::CoreManager::stageNameToString(core.stageInfo.stageName);//ステージ名
 
 			// --- FactoryServiceLocator初期化 ---
@@ -93,11 +101,16 @@ namespace Jam::Presentation::Scenes
 			});
 			locator.registerPhysicsFactory(physicsFactory);
 
+
 			// === Game内のイベント用クラスを初期化 ===
 			m_gameEventQueue = std::make_shared<Jam::Domain::Events::GameEventQueue>();
 			m_cameraEventQueue = std::make_shared<Jam::UseCase::CameraEventQueue>();
+			m_effectEventQueue = std::make_shared<Jam::UseCase::EffectEventQueue>();
+
 			m_eventHandler = std::make_shared<Jam::UseCase::GameEventHandler>(
-				*m_gameEventQueue, *m_cameraEventQueue);
+				*m_gameEventQueue, *m_cameraEventQueue, *m_effectEventQueue);
+
+			m_effectManager = std::make_unique<Jam::Presentation::EffectManager>(*m_effectEventQueue);
 
 			// === Player 初期化 ===
 			auto stats = Jam::Infrastructure::Physics::LoadFromJSON(U"../Assets/Player/player_stats.json");
@@ -105,7 +118,7 @@ namespace Jam::Presentation::Scenes
 			auto playerBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
 				.getPhysicsFactory()
 				->createBody(
-				Vec2{ 0, 0 },
+				Vec2{ 0, -5 },//地面に埋まらないように
 				SizeF{ 50, 100 },
 				s3d::P2BodyType::Dynamic,
 				stats.physicsMaterial
@@ -116,6 +129,8 @@ namespace Jam::Presentation::Scenes
 			playerBody->setLayer(Jam::Domain::Physics::PhysicsLayer::Player);
 			playerBody->setCollisionListener(m_player);
 
+			m_player->setPower(stats.power);
+			m_player->setHp(stats.hp);
 			m_player->setSpeed(stats.moveSpeed);
 			m_player->setJumpPower(stats.jumpPower);
 
@@ -156,7 +171,7 @@ namespace Jam::Presentation::Scenes
 
 
 			// 敵ステータスをJSONからロード
-			std::unordered_map<Jam::UseCase::EnemyType, Jam::Domain::Enemy::EnemyStatus> enemyStatusTable;
+			std::unordered_map<Jam::Domain::EnemyType, Jam::Domain::Enemy::EnemyStatus> enemyStatusTable;
 			if (Jam::Infrastructure::EnemyLoader::LoadEnemyStatusFromJSON(
 				U"../Assets/Enemy/enemy_stats.json",
 				enemyStatusTable))
@@ -176,7 +191,7 @@ namespace Jam::Presentation::Scenes
 				U"../Assets/Enemy/enemy_" + stageName + U".json",
 				m_enemyFactory,
 				m_enemyManager,
-				playerBodyId))
+				playerBodyId, *m_gameEventQueue))
 			{
 				Console << U"[GameScene] ⚠ Failed to load stage enemies";
 			}
@@ -222,10 +237,15 @@ namespace Jam::Presentation::Scenes
 			else {
 				Print << U"[GameScene] ⚠️ Failed to load background JSON, using fallback";
 			}
+			Jam::Util::GridRenderer::GridConfig config;
+			config.gridSize = 100.0;
+			config.fontSize = 16;
+			Jam::Util::GridRenderer::instance().setConfig(config);
 		}
 
 		void update() override
 		{
+			Jam::Foundation::CoreManager::Instance().addTimer(Scene::DeltaTime());
 			auto& cursorUtil = Jam::Infrastructure::CursorUtil::instance();
 			//cursorUtil.registerCursorFromImage(U"../Assets/Cursor/GameCursor.png", Jam::Infrastructure::CursorStyle::Game);
 			cursorUtil.setCursor(CursorStyle::Cross);
@@ -266,6 +286,14 @@ namespace Jam::Presentation::Scenes
 
 			// カメラの更新
 			m_cameraService->update(Scene::DeltaTime());
+			m_effectManager->update();
+
+			//デバッグ用
+			if (KeyR.down())
+			{
+				resetScene();
+				changeScene(ToSceneString(SceneName::InGame));
+			}
 		}
 
 		void draw() const override
@@ -320,10 +348,17 @@ namespace Jam::Presentation::Scenes
 				{
 					m_enemyManager->draw();
 				}
+				m_effectManager->draw();
+				//Jam::Util::GridRenderer::instance().draw();
 			}
 		}
 
 	private:
+
+		void resetScene()
+		{
+			Jam::UseCase::AttackProcessor::getInstance().reset();
+		}
 
 		void notifyCollisionEvents(const HashTable<P2ContactPair, P2Collision>& collisions)
 		{

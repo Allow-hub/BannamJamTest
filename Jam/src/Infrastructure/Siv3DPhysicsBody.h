@@ -46,6 +46,7 @@ namespace Jam::Infrastructure::Physics
 		Vec2 getVelocity() const override { return m_body.getVelocity(); }
 		void setPos(const Vec2& p)override { m_body.setPos(p); }
 		void setBullet(const bool b) override { m_body.setBullet(b); }
+		void setDamping(const bool b) override { m_body.setDamping(b); }
 		void setLayer(Jam::Domain::Physics::PhysicsLayer layer) override { m_layer = layer; }
 		void drawFrame(const double thickness = 1.0, const ColorF& color = Palette::White) { m_body.drawFrame(thickness, color); }
 		Jam::Domain::Physics::PhysicsLayer getLayer() const override { return m_layer; }
