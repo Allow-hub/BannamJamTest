@@ -8,7 +8,7 @@ namespace Jam::Domain::Enemy
 		: EnemyBase(body,playerId)
 	{
 		std::vector<std::pair<AIType, std::unique_ptr<IEnemyAI>>> aiList;
-		aiList.emplace_back(AIType::Patrol, std::make_unique<PatrolAI>());
+		aiList.emplace_back(AIType::Patrol, std::make_unique<PatrolAI>(getPosition(),50));
 		aiList.emplace_back(AIType::Chase, std::make_unique<ChaseAI>());
 
 		setAIList(std::move(aiList));//setしたときにそのAIのEnterも入ります
