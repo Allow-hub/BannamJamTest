@@ -1,9 +1,5 @@
 #ビルドによって生成されるフォルダ
-Jam/Intermediate/Jam/[Dd]ebug/
-Jam/Intermediate/Jam/[Rr]elease/
-x64/
-[Bb]in/
-[Oo]bj/
+Jam/Intermediate/
 
 # Prerequisites
 *.d
