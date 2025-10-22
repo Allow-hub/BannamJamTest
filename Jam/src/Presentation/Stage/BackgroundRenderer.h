@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Siv3D.hpp>
 #include "../../Domain/Stage/BackgroundTypes.h"
 #include "../../Infrastructure/TextureLoader.h"
@@ -9,9 +9,20 @@
  */
 namespace Jam::Presentation::Background {
 
+	// 背景インスタンス（個別の背景画像の情報）
+	struct BackgroundInstance {
+		Vec2 position;          // 現在の位置
+		Vec2 basePosition;      // 基準位置
+		RectF rect;             // 描画領域
+		String textureName;     // テクスチャ名
+		double opacity;         // 透明度
+		Jam::Domain::Background::ParallaxLayer layer; // レイヤー
+	};
+
 	class BackgroundRenderer {
 	private:
 		Array<Jam::Domain::Background::BackgroundObject> m_backgroundObjects;
+		Array<BackgroundInstance> m_backgroundInstances; // 生成された背景インスタンス群
 		bool m_isLoaded = false;
 
 	public:
@@ -20,20 +31,50 @@ namespace Jam::Presentation::Background {
 		// 背景オブジェクトを設定
 		void setBackgroundObjects(const Array<Jam::Domain::Background::BackgroundObject>& objects) {
 			m_backgroundObjects = objects;
+			
+			// 背景インスタンスを生成
+			generateBackgroundInstances();
+			
 			m_isLoaded = true;
-			Print << U"[BackgroundRenderer] ✅ Set " << objects.size() << U" background objects";
+			Console << U"[BackgroundRenderer] ✅ Set " << objects.size() << U" background objects, generated " << m_backgroundInstances.size() << U" instances";
 		}
 
-		// 指定されたレイヤーの背景を描画
+		// 指定されたレイヤーの背景を描画（新方式：インスタンスベース）
 		void drawLayer(Jam::Domain::Background::ParallaxLayer layer, const Vec2& cameraOffset) const {
 			if (!m_isLoaded) return;
 
 			const double parallaxMultiplier = Jam::Domain::Background::getParallaxMultiplier(layer);
-			const Vec2 parallaxOffset = calculateParallaxOffset(cameraOffset, parallaxMultiplier);
-
-			for (const auto& bgObj : m_backgroundObjects) {
-				if (bgObj.layer == layer) {
-					drawBackgroundObject(bgObj, parallaxOffset);
+			
+			// デバッグ出力（1秒間隔で制限）
+			static double lastDebugTime = 0.0;
+			if (Scene::Time() - lastDebugTime > 1.0) {
+				Console << U"[BackgroundRenderer] Camera: (" << cameraOffset.x << U", " << cameraOffset.y << U"), Parallax: " << parallaxMultiplier;
+				lastDebugTime = Scene::Time();
+			}
+			
+			for (const auto& instance : m_backgroundInstances) {
+				if (instance.layer == layer) {
+					// パララックス効果を適用した位置を計算（逆方向移動）
+					Vec2 parallaxPosition = instance.basePosition - (cameraOffset * parallaxMultiplier);
+					
+					// テクスチャを取得して描画
+					const auto texture = Jam::Infrastructure::TextureLoader::getTexture(instance.textureName);
+					if (texture) {
+						// テクスチャの元のアスペクト比を保持
+						const Size originalSize = texture->size();
+						const double originalAspectRatio = static_cast<double>(originalSize.x) / originalSize.y;
+						
+						// 指定された高さに合わせて幅を調整（アスペクト比保持）
+						const double targetHeight = instance.rect.h;
+						const double targetWidth = targetHeight * originalAspectRatio;
+						const Size scaledSize(static_cast<int32>(targetWidth), static_cast<int32>(targetHeight));
+						
+						if (instance.opacity < 1.0) {
+							texture->resized(scaledSize).draw(parallaxPosition, ColorF(1.0, instance.opacity));
+						} else {
+							texture->resized(scaledSize).draw(parallaxPosition);
+						}
+					}
 				}
 			}
 		}
@@ -56,7 +97,7 @@ namespace Jam::Presentation::Background {
 			}
 			else
 			{
-				Print << U"[BackgroundRenderer] ❌ " << textureName << U" texture not found, using fallback";
+				//Print << U"[BackgroundRenderer] ❌ " << textureName << U" texture not found, using fallback";
 			}
 		}
 
@@ -67,6 +108,43 @@ namespace Jam::Presentation::Background {
 		size_t getObjectCount() const { return m_backgroundObjects.size(); }
 
 	private:
+		// 背景インスタンスを生成（初期化時に複数の背景を横に配置）
+		void generateBackgroundInstances() {
+			m_backgroundInstances.clear();
+			
+			for (const auto& bgObj : m_backgroundObjects) {
+				// テクスチャを取得してアスペクト比を計算
+				const auto texture = Jam::Infrastructure::TextureLoader::getTexture(bgObj.textureName);
+				if (!texture) continue;
+				
+				const Size originalSize = texture->size();
+				const double originalAspectRatio = static_cast<double>(originalSize.x) / originalSize.y;
+				
+				// 高さに基づいてアスペクト比を保持した幅を計算
+				const double bgHeight = bgObj.rect.h;
+				const double bgWidth = bgHeight * originalAspectRatio;
+				
+				// 画面幅を考慮して必要な背景数を計算
+				const double screenWidth = Scene::Width();
+				const int instanceCount = static_cast<int>(Math::Ceil((screenWidth * 3) / bgWidth)) + 2; // 余裕を持たせる
+				
+				Console << U"[BackgroundRenderer] Generating " << instanceCount << U" instances for " << bgObj.textureName << U" (aspect ratio preserved width: " << bgWidth << U")";
+				
+				// 背景インスタンスを横に並べて生成
+				for (int i = 0; i < instanceCount; ++i) {
+					BackgroundInstance instance;
+					instance.basePosition = Vec2(bgObj.rect.x + (i * bgWidth), bgObj.rect.y);
+					instance.position = instance.basePosition;
+					instance.rect = RectF(instance.basePosition, Size(static_cast<int32>(bgWidth), static_cast<int32>(bgHeight)));
+					instance.textureName = bgObj.textureName;
+					instance.opacity = bgObj.opacity;
+					instance.layer = bgObj.layer;
+					
+					m_backgroundInstances.push_back(instance);
+				}
+			}
+		}
+
 		// パララックスオフセットの計算
 		Vec2 calculateParallaxOffset(const Vec2& cameraOffset, double multiplier) const {
 			return Vec2(
@@ -86,62 +164,82 @@ namespace Jam::Presentation::Background {
 				return;
 			}
 
-			// 描画位置の計算
-			const RectF drawRect = bgObj.rect.movedBy(-offset);
-
-			// 透明度を適用して描画
-			if (bgObj.opacity < 1.0) {
-				texture->resized(drawRect.size).drawAt(drawRect.center(), ColorF(1.0, bgObj.opacity));
-			}
-			else {
-				texture->resized(drawRect.size).drawAt(drawRect.center());
-			}
-
 			// リピート描画の場合の処理
 			if (bgObj.isRepeating) {
+				Console << U"[BackgroundRenderer] Drawing repeating texture for: " << bgObj.textureName << U", repeatMode: " << bgObj.repeatMode;
 				drawRepeatingTexture(*texture, bgObj, offset);
+			}
+			else {
+				// 通常の単体描画
+				const RectF drawRect = bgObj.rect.movedBy(-offset);
+
+				// 透明度を適用して描画
+				if (bgObj.opacity < 1.0) {
+					texture->resized(drawRect.size).drawAt(drawRect.center(), ColorF(1.0, bgObj.opacity));
+				}
+				else {
+					texture->resized(drawRect.size).drawAt(drawRect.center());
+				}
 			}
 		}
 
 		// ループテクスチャ描画
 		void drawRepeatingTexture(const Texture& texture, const Jam::Domain::Background::BackgroundObject& bgObj, const Vec2& offset) const {
 			const RectF originalRect = bgObj.rect.movedBy(-offset);
-			const Size textureSize = texture.size();
 			
-			// 画面外のマージンを追加（スクロール時に空白が見えないようにする）
-			const double margin = 200.0;
-			const RectF viewArea(
-				originalRect.x - margin, originalRect.y - margin,
-				originalRect.w + margin * 2, originalRect.h + margin * 2
-			);
+			Console << U"[BackgroundRenderer] Repeating texture - originalRect: " << originalRect << U", offset: " << offset;
+			
+			// 画面の可視範囲を大きめに設定（スクロール時に空白が見えないように）
+			const double margin = 1000.0; // マージンを大きくして確実にカバー
+			const RectF screenArea = Scene::Rect().stretched(margin);
+			
+			Console << U"[BackgroundRenderer] Screen area with margin: " << screenArea;
 			
 			// 水平方向の繰り返し
 			if (bgObj.repeatMode == U"horizontal" || bgObj.repeatMode == U"both") {
-				const double tileWidth = textureSize.x;
-				const int startTileX = static_cast<int>(Math::Floor(viewArea.x / tileWidth));
-				const int endTileX = static_cast<int>(Math::Ceil((viewArea.x + viewArea.w) / tileWidth));
+				// テクスチャの元のアスペクト比を保持してタイル幅を計算
+				const Size originalTextureSize = texture.size();
+				const double originalAspectRatio = static_cast<double>(originalTextureSize.x) / originalTextureSize.y;
+				const double tileHeight = originalRect.h;
+				const double tileWidth = tileHeight * originalAspectRatio; // アスペクト比保持
+				
+				// 画面領域をカバーするのに必要なタイル数を計算
+				const int startTileX = static_cast<int>(Math::Floor((screenArea.x - originalRect.x) / tileWidth));
+				const int endTileX = static_cast<int>(Math::Ceil((screenArea.x + screenArea.w - originalRect.x) / tileWidth));
+				
+				Console << U"[BackgroundRenderer] Horizontal repeat - tileWidth: " << tileWidth 
+					  << U", startTileX: " << startTileX << U", endTileX: " << endTileX;
 				
 				for (int x = startTileX; x <= endTileX; ++x) {
-					const double drawX = x * tileWidth;
-					const RectF tileRect(drawX, originalRect.y, tileWidth, originalRect.h);
+					const double drawX = originalRect.x + (x * tileWidth);
+					const Size scaledSize(static_cast<int32>(tileWidth), static_cast<int32>(tileHeight));
 					
-					// 透明度を適用して描画
+					Console << U"[BackgroundRenderer] Drawing tile " << x << U" at: (" << drawX << U", " << originalRect.y << U")";
+					
+					// 透明度を適用して描画（アスペクト比保持）
 					if (bgObj.opacity < 1.0) {
-						texture.resized(tileRect.size).draw(tileRect.pos, ColorF(1.0, bgObj.opacity));
+						texture.resized(scaledSize).draw(Vec2(drawX, originalRect.y), ColorF(1.0, bgObj.opacity));
 					} else {
-						texture.resized(tileRect.size).draw(tileRect.pos);
+						texture.resized(scaledSize).draw(Vec2(drawX, originalRect.y));
 					}
 				}
 			}
 			// 垂直方向の繰り返し（必要に応じて実装）
 			else if (bgObj.repeatMode == U"vertical") {
-				const double tileHeight = textureSize.y;
-				const int startTileY = static_cast<int>(Math::Floor(viewArea.y / tileHeight));
-				const int endTileY = static_cast<int>(Math::Ceil((viewArea.y + viewArea.h) / tileHeight));
+				const double tileHeight = bgObj.rect.h; // 元のJSONサイズを使用
+				
+				// 画面領域をカバーするのに必要なタイル数を計算
+				const int startTileY = static_cast<int>(Math::Floor((screenArea.y - originalRect.y) / tileHeight));
+				const int endTileY = static_cast<int>(Math::Ceil((screenArea.y + screenArea.h - originalRect.y) / tileHeight));
+				
+				Console << U"[BackgroundRenderer] Vertical repeat - tileHeight: " << tileHeight 
+					  << U", startTileY: " << startTileY << U", endTileY: " << endTileY;
 				
 				for (int y = startTileY; y <= endTileY; ++y) {
-					const double drawY = y * tileHeight;
+					const double drawY = originalRect.y + (y * tileHeight);
 					const RectF tileRect(originalRect.x, drawY, originalRect.w, tileHeight);
+					
+					Console << U"[BackgroundRenderer] Drawing tile " << y << U" at: " << tileRect;
 					
 					// 透明度を適用して描画  
 					if (bgObj.opacity < 1.0) {

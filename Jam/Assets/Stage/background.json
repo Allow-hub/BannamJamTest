@@ -13,7 +13,7 @@
     {
       "textureName": "BG",
       "layer": "Back",
-      "rect": [-200, -400, 400, 600],
+      "rect": [-1000, -1000, 0, 3250],
       "opacity": 1.0,
       "isRepeating": true,
       "repeatMode": "horizontal"

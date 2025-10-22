@@ -146,11 +146,13 @@ namespace Jam::Infrastructure::Background {
             // リピート設定（オプション）
             if (json.hasElement(U"isRepeating")) {
                 outObj.isRepeating = json[U"isRepeating"].get<bool>();
+                Console << U"[BackgroundLoader] ✅ isRepeating: " << outObj.isRepeating;
             }
             
             // リピートモード（オプション）
             if (json.hasElement(U"repeatMode")) {
                 outObj.repeatMode = json[U"repeatMode"].getString();
+                Console << U"[BackgroundLoader] ✅ repeatMode: " << outObj.repeatMode;
             }
             
             // 透明度（オプション）
