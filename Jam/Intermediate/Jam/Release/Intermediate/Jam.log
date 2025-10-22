@@ -1,52 +1,369 @@
 ﻿  Main.cpp
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
+  EnemyBase.cpp
+  LittleDevil.cpp
+  EnemyFactory.cpp
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
+  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
+  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,49): error C2039: 'PatrolRoute': 'Jam::Domain::Enemy' のメンバーではありません
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(14,11):
+      'Jam::Domain::Enemy' の宣言を確認してください
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,23): error C4430: 型指定子がありません - int と仮定しました。メモ: C++ は int を既定値としてサポートしていません
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,60): error C2143: 構文エラー: ',' が '&' の前にありません。
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(83,23): error C2039: 'PatrolRoute': 'Jam::Domain::Enemy' のメンバーではありません
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(14,11):
+      'Jam::Domain::Enemy' の宣言を確認してください
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(83,34): error C2143: 構文エラー: ';' が '&' の前にありません。
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(83,23): error C4430: 型指定子がありません - int と仮定しました。メモ: C++ は int を既定値としてサポートしていません
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(83,53): error C2334: '{' の前に予期しないトークンがありました。関数の本体は無視されます
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(84,29): error C2039: 'PatrolRoute': 'Jam::Domain::Enemy' のメンバーではありません
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(14,11):
+      'Jam::Domain::Enemy' の宣言を確認してください
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(84,3): error C4430: 型指定子がありません - int と仮定しました。メモ: C++ は int を既定値としてサポートしていません
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(84,40): error C2143: 構文エラー: ';' が '&' の前にありません。
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(84,65): error C2334: '{' の前に予期しないトークンがありました。関数の本体は無視されます
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(130,23): error C2039: 'PatrolRoute': 'Jam::Domain::Enemy' のメンバーではありません
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(14,11):
+      'Jam::Domain::Enemy' の宣言を確認してください
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(130,35): error C3646: 'm_patrolRoute': 不明なオーバーライド指定子です
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(130,23): error C4430: 型指定子がありません - int と仮定しました。メモ: C++ は int を既定値としてサポートしていません
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,49): warning C4458: 'PatrolRoute' を宣言すると、クラス メンバーが隠蔽されます
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(84,29):
+      'Jam::Domain::Enemy::EnemyBase::PatrolRoute' の宣言を確認してください
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,71): error C2065: 'm_patrolRoute': 定義されていない識別子です。
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,87): error C2065: 'route': 定義されていない識別子です。
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,49): error C2039: 'PatrolRoute': 'Jam::Domain::Enemy' のメンバーではありません
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(14,11):
+      'Jam::Domain::Enemy' の宣言を確認してください
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,23): error C4430: 型指定子がありません - int と仮定しました。メモ: C++ は int を既定値としてサポートしていません
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,60): error C2143: 構文エラー: ',' が '&' の前にありません。
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(83,23): error C2039: 'PatrolRoute': 'Jam::Domain::Enemy' のメンバーではありません
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(14,11):
+      'Jam::Domain::Enemy' の宣言を確認してください
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(83,34): error C2143: 構文エラー: ';' が '&' の前にありません。
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(83,23): error C4430: 型指定子がありません - int と仮定しました。メモ: C++ は int を既定値としてサポートしていません
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(83,53): error C2334: '{' の前に予期しないトークンがありました。関数の本体は無視されます
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,49): error C2039: 'PatrolRoute': 'Jam::Domain::Enemy' のメンバーではありません
+  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(14,11):
+      'Jam::Domain::Enemy' の宣言を確認してください
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(84,29): error C2039: 'PatrolRoute': 'Jam::Domain::Enemy' のメンバーではありません
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(14,11):
+      'Jam::Domain::Enemy' の宣言を確認してください
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,23): error C4430: 型指定子がありません - int と仮定しました。メモ: C++ は int を既定値としてサポートしていません
+  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(84,3): error C4430: 型指定子がありません - int と仮定しました。メモ: C++ は int を既定値としてサポートしていません
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(84,40): error C2143: 構文エラー: ';' が '&' の前にありません。
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,60): error C2143: 構文エラー: ',' が '&' の前にありません。
+  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(84,65): error C2334: '{' の前に予期しないトークンがありました。関数の本体は無視されます
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(83,23): error C2039: 'PatrolRoute': 'Jam::Domain::Enemy' のメンバーではありません
+  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(14,11):
+      'Jam::Domain::Enemy' の宣言を確認してください
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(83,34): error C2143: 構文エラー: ';' が '&' の前にありません。
+  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(83,23): error C4430: 型指定子がありません - int と仮定しました。メモ: C++ は int を既定値としてサポートしていません
+  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(83,53): error C2334: '{' の前に予期しないトークンがありました。関数の本体は無視されます
+  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(84,29): error C2039: 'PatrolRoute': 'Jam::Domain::Enemy' のメンバーではありません
+  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(14,11):
+      'Jam::Domain::Enemy' の宣言を確認してください
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(84,3): error C4430: 型指定子がありません - int と仮定しました。メモ: C++ は int を既定値としてサポートしていません
+  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(84,40): error C2143: 構文エラー: ';' が '&' の前にありません。
+  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(84,65): error C2334: '{' の前に予期しないトークンがありました。関数の本体は無視されます
+  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(130,23): error C2039: 'PatrolRoute': 'Jam::Domain::Enemy' のメンバーではありません
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(14,11):
+      'Jam::Domain::Enemy' の宣言を確認してください
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(130,35): error C3646: 'm_patrolRoute': 不明なオーバーライド指定子です
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(130,23): error C4430: 型指定子がありません - int と仮定しました。メモ: C++ は int を既定値としてサポートしていません
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(130,23): error C2039: 'PatrolRoute': 'Jam::Domain::Enemy' のメンバーではありません
+  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(14,11):
+      'Jam::Domain::Enemy' の宣言を確認してください
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(130,35): error C3646: 'm_patrolRoute': 不明なオーバーライド指定子です
+  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(130,23): error C4430: 型指定子がありません - int と仮定しました。メモ: C++ は int を既定値としてサポートしていません
+  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,49): warning C4458: 'PatrolRoute' を宣言すると、クラス メンバーが隠蔽されます
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(84,29):
+      'Jam::Domain::Enemy::EnemyBase::PatrolRoute' の宣言を確認してください
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,71): error C2065: 'm_patrolRoute': 定義されていない識別子です。
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,87): error C2065: 'route': 定義されていない識別子です。
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\PatrolAI.h(50,24): error C2039: 'getPatrolRoute': 'Jam::Domain::Enemy::EnemyBase' のメンバーではありません
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(27,8):
+      'Jam::Domain::Enemy::EnemyBase' の宣言を確認してください
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\PatrolAI.h(50,16): error C2530: 'route': 参照が初期化されずに宣言されています。
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,49): warning C4458: 'PatrolRoute' を宣言すると、クラス メンバーが隠蔽されます
+  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(84,29):
+      'Jam::Domain::Enemy::EnemyBase::PatrolRoute' の宣言を確認してください
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\PatrolAI.h(51,9): error C3536: 'route': 初期化前に使用することはできません
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,71): error C2065: 'm_patrolRoute': 定義されていない識別子です。
+  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\PatrolAI.h(55,16): error C3536: 'currentTarget': 初期化前に使用することはできません
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,87): error C2065: 'route': 定義されていない識別子です。
+  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\PatrolAI.h(55,30): error C2088: 組み込み演算子 '-' を型 's3d::Vec2' のオペランドに適用することはできません
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\PatrolAI.h(57,24): error C2027: 認識できない型 'Jam::Domain::Physics::IPhysicsBody' が使われています。
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Physics\ICollisionListener.h(6,8):
+      'Jam::Domain::Physics::IPhysicsBody' の宣言を確認してください
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\PatrolAI.h(57,28): error C2039: 'applyForce': 'std::shared_ptr<Jam::Domain::Physics::IPhysicsBody>' のメンバーではありません
+  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(1565,7):
+      'std::shared_ptr<Jam::Domain::Physics::IPhysicsBody>' の宣言を確認してください
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.cpp(18,2): error C2789: 'Jam::Domain::Enemy::EnemyBase::PatrolRoute': const で修飾された型のオブジェクトは初期化する必要があります
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(84,29):
+      'Jam::Domain::Enemy::EnemyBase::PatrolRoute' の宣言を確認してください
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.cpp(21,22): warning C4305: '引数': 'int' から 'const bool' へ切り詰めます。
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.cpp(47,22): warning C4244: '-=': 'const double' から 'int' への変換です。データが失われる可能性があります。
+  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Player.h(80,44): warning C4100: 'info': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\UseCase\AttackProcessor.h(48,18): warning C4100: 'attackerBodyId': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(78,39): warning C4100: 'e': 参照されないパラメーター
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(19,36): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(85,38): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(20,68): warning C4100: 'speed': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(89,37): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(20,53): warning C4100: 'objectId': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(93,38): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(21,74): warning C4100: 'path': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Stage\IStage.h(19,36): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(21,52): warning C4100: 'objectId': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Stage\IStage.h(20,68): warning C4100: 'speed': 参照されないパラメーター
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingPlatformStage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Stage\IStage.h(20,53): warning C4100: 'objectId': 参照されないパラメーター
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingPlatformStage.h(46,42): warning C4100: 'objectId': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Stage\IStage.h(21,74): warning C4100: 'path': 参照されないパラメーター
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingPlatformStage.h(50,46): warning C4100: 'objectId': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Stage\IStage.h(21,52): warning C4100: 'objectId': 参照されないパラメーター
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingPlatformStage.h(59,28): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Stage\NormalStage.h(22,83): warning C4100: 'physicsBodies': 参照されないパラメーター
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingPlatformStage.h(72,45): warning C4100: 'objectId': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\UseCase\GameEventHandler.h(100,70): warning C4100: 'e': 参照されないパラメーター
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingPlatformStage.h(76,66): warning C4100: 'path': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Presentation\StoryManager.h(27,62): warning C4100: 'portraitSize': 参照されないパラメーター
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingPlatformStage.h(76,44): warning C4100: 'objectId': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-     ライブラリ C:\Users\usaha\Documents\GameJAM2025\Jam\Intermediate\Jam\Release\Jam.lib とオブジェクト C:\Users\usaha\Documents\GameJAM2025\Jam\Intermediate\Jam\Release\Jam.exp を作成中
-  コード生成しています。
-  2 of 8045 functions (<0.1%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    2 functions had inline decision re-evaluated but remain unchanged
-  コード生成が終了しました。
-  Jam.vcxproj -> C:\Users\usaha\Documents\GameJAM2025\Jam\Intermediate\Jam\Release\Jam.exe
-  C:\Users\usaha\Documents\GameJAM2025\Jam\Intermediate\Jam\Release\Jam.exe
-  1 個のファイルをコピーしました
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\UseCase\StageService.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,49): error C2039: 'PatrolRoute': 'Jam::Domain::Enemy' のメンバーではありません
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(14,11):
+      'Jam::Domain::Enemy' の宣言を確認してください
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,23): error C4430: 型指定子がありません - int と仮定しました。メモ: C++ は int を既定値としてサポートしていません
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,60): error C2143: 構文エラー: ',' が '&' の前にありません。
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(83,23): error C2039: 'PatrolRoute': 'Jam::Domain::Enemy' のメンバーではありません
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(14,11):
+      'Jam::Domain::Enemy' の宣言を確認してください
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(83,34): error C2143: 構文エラー: ';' が '&' の前にありません。
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(83,23): error C4430: 型指定子がありません - int と仮定しました。メモ: C++ は int を既定値としてサポートしていません
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(83,53): error C2334: '{' の前に予期しないトークンがありました。関数の本体は無視されます
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(84,29): error C2039: 'PatrolRoute': 'Jam::Domain::Enemy' のメンバーではありません
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(14,11):
+      'Jam::Domain::Enemy' の宣言を確認してください
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(84,3): error C4430: 型指定子がありません - int と仮定しました。メモ: C++ は int を既定値としてサポートしていません
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(84,40): error C2143: 構文エラー: ';' が '&' の前にありません。
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(84,65): error C2334: '{' の前に予期しないトークンがありました。関数の本体は無視されます
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(130,23): error C2039: 'PatrolRoute': 'Jam::Domain::Enemy' のメンバーではありません
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(14,11):
+      'Jam::Domain::Enemy' の宣言を確認してください
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(130,35): error C3646: 'm_patrolRoute': 不明なオーバーライド指定子です
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(130,23): error C4430: 型指定子がありません - int と仮定しました。メモ: C++ は int を既定値としてサポートしていません
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,49): warning C4458: 'PatrolRoute' を宣言すると、クラス メンバーが隠蔽されます
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(84,29):
+      'Jam::Domain::Enemy::EnemyBase::PatrolRoute' の宣言を確認してください
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,71): error C2065: 'm_patrolRoute': 定義されていない識別子です。
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,87): error C2065: 'route': 定義されていない識別子です。
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Infrastructure\EnemyLoader.h(109,14): error C2660: 'Jam::Domain::Enemy::EnemyBase::setPatrolRoute': 関数に 3 個の引数を指定できません。
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(82,8):
+      'Jam::Domain::Enemy::EnemyBase::setPatrolRoute' の宣言を確認してください
+      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Infrastructure\EnemyLoader.h(109,14):
+      引数リスト '(s3d::Array<s3d::Vec2,std::allocator<Type>>, bool, double)' を一致させようとしているとき
+          with
+          [
+              Type=s3d::Vec2
+          ]
+  
+C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\BackgroundTypes.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  

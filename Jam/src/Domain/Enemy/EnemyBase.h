@@ -77,6 +77,12 @@ namespace Jam::Domain::Enemy
 		// =========================
 		// AI 関連
 		// =========================
+
+		// 巡回ルート設定
+		void setPatrolRoute(const Jam::Domain::Enemy::PatrolRoute& route) { m_patrolRoute = route; }
+		Jam::Domain::Enemy::PatrolRoute& getPatrolRoute() { return m_patrolRoute; }
+		const Jam::Domain::Enemy::PatrolRoute& getPatrolRoute() const { return m_patrolRoute; }
+
 		virtual void onAIEvent(EnemyAIEvent e) {}; // AIからの通知を受け取るフック
 		void setAIList(std::vector<std::pair<AIType, std::unique_ptr<IEnemyAI>>> aiList);
 		void changeAI(AIType type);
@@ -121,5 +127,6 @@ namespace Jam::Domain::Enemy
 		Jam::Domain::Events::GameEventQueue& m_eventQueue;
 		Vec2 m_enemyImpluseDir = {0,0};
 		EnemyType m_enemyType = EnemyType::LittleDevil;
+		Jam::Domain::Enemy::PatrolRoute m_patrolRoute;
 	};
 }
