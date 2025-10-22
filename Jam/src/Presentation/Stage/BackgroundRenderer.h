@@ -87,19 +87,20 @@ namespace Jam::Presentation::Background {
 				const Size originalSize = texture->size();
 				const double originalAspectRatio = static_cast<double>(originalSize.x) / originalSize.y;
 				
-				// 高さに基づいてアスペクト比を保持した幅を計算
+				// 高さに基づいてアスペクト比を保持した幅を計算（整数化）
 				const double bgHeight = bgObj.rect.h;
-				const double bgWidth = bgHeight * originalAspectRatio;
+				const double calculatedWidth = bgHeight * originalAspectRatio;
+				const int32 bgWidth = static_cast<int32>(Math::Round(calculatedWidth));
 				
 				// 画面幅を考慮して必要な背景数を計算
 				const double screenWidth = Scene::Width();
-				const int instanceCount = static_cast<int>(Math::Ceil((screenWidth * 3) / bgWidth)) + 2; // 余裕を持たせる
+				const int instanceCount = static_cast<int>(Math::Ceil((screenWidth * 3) / bgWidth)) + 2;
 				
-				//タンスを横に並べて生成
+				// インスタンスを横に並べて生成（1ピクセルオーバーラップで境界線を消す）
 				for (int i = 0; i < instanceCount; ++i) {
 					BackgroundInstance instance;
-					instance.basePosition = Vec2(bgObj.rect.x + (i * bgWidth), bgObj.rect.y);
-					instance.rect = RectF(instance.basePosition, Size(static_cast<int32>(bgWidth), static_cast<int32>(bgHeight)));
+					instance.basePosition = Vec2(bgObj.rect.x + (i * bgWidth) - (i > 0 ? 1 : 0), bgObj.rect.y);
+					instance.rect = RectF(instance.basePosition, Size(bgWidth + 1, static_cast<int32>(bgHeight)));
 					instance.textureName = bgObj.textureName;
 					instance.opacity = bgObj.opacity;
 					instance.layer = bgObj.layer;
