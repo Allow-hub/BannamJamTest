@@ -408,6 +408,7 @@
     <ClInclude Include="src\Presentation\CameraManager.h" />
     <ClInclude Include="src\Presentation\EffectManager.h" />
     <ClInclude Include="src\Presentation\EnemyManager.h" />
+    <ClInclude Include="src\Presentation\FadeManager.h" />
     <ClInclude Include="src\Presentation\PlayerManager.h" />
     <ClInclude Include="src\Presentation\Scenes\GameScene.h" />
     <ClInclude Include="src\Presentation\Scenes\ResultScene.h" />

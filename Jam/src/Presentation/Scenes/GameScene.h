@@ -30,6 +30,7 @@
 #include "../../Infrastructure/GridRenderer.h"
 #include "../../UseCase/EffectEvents.h"
 #include "../../Presentation/EffectManager.h"
+#include "../../Presentation/FadeManager.h"
 
 
 namespace Jam::Presentation::Scenes
@@ -90,7 +91,7 @@ namespace Jam::Presentation::Scenes
 			auto& core = Jam::Foundation::CoreManager::Instance();
 			core.reset();
 			String stageName = Jam::Foundation::CoreManager::stageNameToString(core.stageInfo.stageName);//ステージ名
-
+			core.setCurrentStageData(core.getStageData(core.stageInfo.stageName));
 			// --- FactoryServiceLocator初期化 ---
 			auto& locator = Jam::Infrastructure::Locator::FactoryServiceLocator::instance();
 			auto physicsFactory = std::make_shared<Jam::Infrastructure::Locator::Siv3DPhysicsBodyFactory>();
@@ -287,7 +288,7 @@ namespace Jam::Presentation::Scenes
 			// カメラの更新
 			m_cameraService->update(Scene::DeltaTime());
 			m_effectManager->update();
-
+			Jam::Presentation::FadeManager::instance().update(Scene::DeltaTime());
 			//デバッグ用
 			if (KeyR.down())
 			{
@@ -349,8 +350,12 @@ namespace Jam::Presentation::Scenes
 					m_enemyManager->draw();
 				}
 				m_effectManager->draw();
+
 				//Jam::Util::GridRenderer::instance().draw();
 			}
+
+			//フェードのDraw
+			Jam::Presentation::FadeManager::instance().draw();
 		}
 
 	private:
