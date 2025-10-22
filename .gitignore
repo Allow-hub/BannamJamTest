@@ -1,6 +1,6 @@
 #ビルドによって生成されるフォルダ
-[Dd]ebug/
-[Rr]elease/
+Jam/Intermediate/Jam/[Dd]ebug/
+Jam/Intermediate/Jam/[Rr]elease/
 x64/
 [Bb]in/
 [Oo]bj/
@@ -55,6 +55,7 @@ x64/
 *.db
 *.db-shm
 *.db-wal
+
 Jam/Intermediate/Jam/Debug/Intermediate/Jam(debug).exe.recipe
 Jam/Intermediate/Jam/Debug/Intermediate/Jam.log
 Jam/Intermediate/Jam/Debug/Intermediate/Jam.tlog/CL.command.1.tlog
