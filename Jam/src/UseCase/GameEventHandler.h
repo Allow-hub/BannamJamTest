@@ -1,7 +1,9 @@
 ﻿#pragma once
+#include <Siv3D.hpp>
 #include "../Domain/Events/GameEvents.h"
 #include "CameraEvent.h"
 #include "AttackProcessor.h"
+#include "EffectEvents.h"
 
 namespace Jam::UseCase
 {
@@ -11,12 +13,14 @@ namespace Jam::UseCase
 	private:
 		Domain::Events::GameEventQueue& m_gameEventQueue;
 		CameraEventQueue& m_cameraEventQueue;
+		EffectEventQueue& m_effectEventQueue;
 
 	public:
 		GameEventHandler(Domain::Events::GameEventQueue& gameEventQueue,
-						 CameraEventQueue& cameraEventQueue)
+						 CameraEventQueue& cameraEventQueue, EffectEventQueue& effectEventQueue)
 			: m_gameEventQueue(gameEventQueue)
 			, m_cameraEventQueue(cameraEventQueue)
+			, m_effectEventQueue(effectEventQueue)
 		{
 		}
 
@@ -64,17 +68,28 @@ namespace Jam::UseCase
 	private:
 		void handleEnemyDamaged(const Domain::Events::EnemyDamagedEvent& e)
 		{
-
-			//if (e.damageInfo.isCritical)
-			//{
 			Jam::UseCase::AttackProcessor::getInstance().executeAttack(e.attacker, e.target, e.damageInfo);
-			//m_cameraEventQueue.push(CameraShakeEvent{ e.intensity, e.duration });
-			//}
-			//else
-			//{
-			//	Jam::UseCase::AttackProcessor::getInstance().executeAttack(e.attacker, e.target, e.damageInfo);
-			//	m_cameraEventQueue.push(CameraShakeEvent{ e.intensity, e.duration });
-			//}
+
+			constexpr double offsetRange = 2.0;
+
+			// -offsetRange ～ +offsetRange のランダム値をXとYに加える
+			Vec2 randomOffset{
+				Random(-offsetRange, offsetRange),
+				Random(-offsetRange, offsetRange)
+			};
+			String text = Format(e.damageInfo.amount);
+			m_effectEventQueue.push(TextEffectEvent{
+				e.damageInfo.position + randomOffset,
+				text,
+				Palette::Green
+			});
+			m_effectEventQueue.push(ParticleEffectEvent{
+				e.damageInfo.position,
+				e.damageInfo.direction,
+				Palette::Hotpink,
+				100,
+				500
+			});
 		}
 
 		void handleEnemyDefeated(const Domain::Events::EnemyDefeatedEvent& e)
