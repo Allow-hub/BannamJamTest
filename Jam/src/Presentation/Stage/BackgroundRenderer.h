@@ -65,10 +65,6 @@ namespace Jam::Presentation::Background {
 			}
 		}
 
-
-
-
-
 		// 読み込み状態の確認
 		bool isLoaded() const { return m_isLoaded; }
 
@@ -96,9 +92,7 @@ namespace Jam::Presentation::Background {
 				const double screenWidth = Scene::Width();
 				const int instanceCount = static_cast<int>(Math::Ceil((screenWidth * 3) / bgWidth)) + 2; // 余裕を持たせる
 				
-
-				
-				// 背景インスタンスを横に並べて生成
+				//タンスを横に並べて生成
 				for (int i = 0; i < instanceCount; ++i) {
 					BackgroundInstance instance;
 					instance.basePosition = Vec2(bgObj.rect.x + (i * bgWidth), bgObj.rect.y);
@@ -111,7 +105,5 @@ namespace Jam::Presentation::Background {
 				}
 			}
 		}
-
-
 	};
 }

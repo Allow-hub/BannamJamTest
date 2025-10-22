@@ -40,13 +40,13 @@ namespace Jam::Domain::Background {
 
 
 
-    // パララックス速度倍率（Playerが基準速度1.0）
+    // パララックス速度倍率
     inline double getParallaxMultiplier(ParallaxLayer layer) {
         switch (layer) {
-        case ParallaxLayer::Back: return 0.2;    // 背景は遅く（20%）
-        case ParallaxLayer::Middle: return 0.6;  // 中間（60%）
-        case ParallaxLayer::Front: return 0.9;   // 前景はほぼ同じ速度（90%）
-        default: return 0.3;
+        case ParallaxLayer::Back: return 0.01; // 画像ができ次第ここの値を調整
+        case ParallaxLayer::Middle: return 0.05; // 上記と同様
+        case ParallaxLayer::Front: return 1.0;
+        default: return 0.02;
         }
     }
 
