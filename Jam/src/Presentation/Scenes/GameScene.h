@@ -78,6 +78,7 @@ namespace Jam::Presentation::Scenes
 			Jam::Presentation::AudioService::get().play(Jam::Presentation::AudioService::Sound::BGM_Title, true);
 
 			auto& core = Jam::Foundation::CoreManager::Instance();
+			core.reset();
 			String stageName = Jam::Foundation::CoreManager::stageNameToString(core.stageInfo.stageName);//ステージ名
 
 			// --- FactoryServiceLocator初期化 ---
@@ -203,6 +204,7 @@ namespace Jam::Presentation::Scenes
 
 		void update() override
 		{
+			Jam::Foundation::CoreManager::Instance().addTimer(Scene::DeltaTime());
 			auto& cursorUtil = Jam::Infrastructure::CursorUtil::instance();
 			//cursorUtil.registerCursorFromImage(U"../Assets/Cursor/GameCursor.png", Jam::Infrastructure::CursorStyle::Game);
 			cursorUtil.setCursor(CursorStyle::Cross);

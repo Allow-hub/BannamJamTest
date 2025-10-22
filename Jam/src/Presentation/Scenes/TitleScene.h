@@ -12,6 +12,7 @@ namespace Jam::Presentation::Scenes
 		Select,
 		Story,
 		InGame,
+		Result
 	};
 
 	// シーン名を文字列に変換するヘルパー関数
@@ -21,6 +22,7 @@ namespace Jam::Presentation::Scenes
 		case SceneName::Select:  return U"Select";
 		case SceneName::Story:   return U"Story";
 		case SceneName::InGame:  return U"InGame";
+		case SceneName::Result:  return U"Result";
 		default:                 return U"";
 		}
 	}
