@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "StageTypes.h"
-#include "../Physics/IPhysicsBody.h"
 
 namespace Jam::Domain::Stage {
     /**
@@ -18,7 +17,7 @@ namespace Jam::Domain::Stage {
         virtual RectF getRenderRect() const = 0;
         virtual StageType getType() const = 0;
         
-        // 物理ボディの取得
-        virtual std::shared_ptr<Physics::IPhysicsBody> getPhysicsBody() const = 0;
+        // 現在の中心位置を取得（物理同期用）
+        virtual Vec2 getCurrentCenter() const = 0;
     };
 }

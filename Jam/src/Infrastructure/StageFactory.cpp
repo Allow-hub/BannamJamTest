@@ -2,30 +2,33 @@
 
 namespace Jam::Infrastructure {
     
-    Array<std::unique_ptr<Domain::Stage::IStage>> StageFactory::createStagesFromFile(
+    StageCreationResult StageFactory::createStagesFromFile(
         const String& filename,
         std::shared_ptr<Locator::IPhysicsBodyFactory> bodyFactory
     ) {
-        Array<std::unique_ptr<Domain::Stage::IStage>> stages;
+        StageCreationResult result;
         
         Array<Domain::Stage::StageObject> objects;
         if (!Stage::StageLoader::loadStageFromFile(filename, objects)) {
-            return stages;
+            return result;
         }
         
         for (const auto& obj : objects) {
-            auto stage = createStage(obj, bodyFactory);
-            if (stage) {
-                stages.push_back(std::move(stage));
+            std::shared_ptr<Domain::Physics::IPhysicsBody> body;
+            auto stage = createStage(obj, bodyFactory, body);
+            if (stage && body) {
+                result.stages.push_back(std::move(stage));
+                result.physicsBodies.push_back(body);
             }
         }
         
-        return stages;
+        return result;
     }
     
     std::unique_ptr<Domain::Stage::IStage> StageFactory::createStage(
         const Domain::Stage::StageObject& obj,
-        std::shared_ptr<Locator::IPhysicsBodyFactory> bodyFactory
+        std::shared_ptr<Locator::IPhysicsBodyFactory> bodyFactory,
+        std::shared_ptr<Domain::Physics::IPhysicsBody>& outBody
     ) {
         if (!bodyFactory) {
             return nullptr;
@@ -33,22 +36,22 @@ namespace Jam::Infrastructure {
         
         auto physicsLayer = getPhysicsLayerFromType(obj.type);
         
-        auto body = bodyFactory->createBody(
+        outBody = bodyFactory->createBody(
             obj.rect.center(),
             obj.rect.size,
             P2BodyType::Static,
             Domain::Physics::PhysicsMaterial{ 1.0, 0.0, 0.0 }
         );
         
-        if (!body) {
+        if (!outBody) {
             return nullptr;
         }
         
-        body->setLayer(physicsLayer);
+        outBody->setLayer(physicsLayer);
         
         switch (obj.type) {
             case Domain::Stage::StageType::MovingPlatform:
-                return std::make_unique<Domain::Stage::MovingPlatformStage>(obj, body);
+                return std::make_unique<Domain::Stage::MovingPlatformStage>(obj);
                 
             case Domain::Stage::StageType::Normal:
             case Domain::Stage::StageType::Platform:
@@ -56,7 +59,7 @@ namespace Jam::Infrastructure {
             case Domain::Stage::StageType::Trigger:
             case Domain::Stage::StageType::Breakable:
             default:
-                return std::make_unique<Domain::Stage::NormalStage>(obj, body);
+                return std::make_unique<Domain::Stage::NormalStage>(obj);
         }
     }
     

@@ -10,13 +10,11 @@ namespace Jam::Domain::Stage {
     private:
         RectF m_rect;
         StageType m_type;
-        std::shared_ptr<Physics::IPhysicsBody> m_body;
         
     public:
-        NormalStage(const StageObject& obj, std::shared_ptr<Physics::IPhysicsBody> body)
+        NormalStage(const StageObject& obj)
             : m_rect(obj.rect)
             , m_type(obj.type)
-            , m_body(body)
         {}
         
         // 静的なので何もしない
@@ -30,8 +28,8 @@ namespace Jam::Domain::Stage {
             return m_type;
         }
         
-        std::shared_ptr<Physics::IPhysicsBody> getPhysicsBody() const override {
-            return m_body;
+        Vec2 getCurrentCenter() const override {
+            return m_rect.center();
         }
     };
 }
