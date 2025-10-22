@@ -1,4 +1,4 @@
-#include "StageFactory.h"
+﻿#include "StageFactory.h"
 
 namespace Jam::Infrastructure {
     
@@ -54,7 +54,6 @@ namespace Jam::Infrastructure {
                 return std::make_unique<Domain::Stage::MovingPlatformStage>(obj);
                 
             case Domain::Stage::StageType::Normal:
-            case Domain::Stage::StageType::Platform:
             case Domain::Stage::StageType::Hazard:
             case Domain::Stage::StageType::Trigger:
             case Domain::Stage::StageType::Breakable:
@@ -68,7 +67,6 @@ namespace Jam::Infrastructure {
         
         switch (type) {
             case Domain::Stage::StageType::Normal:
-            case Domain::Stage::StageType::Platform:
             case Domain::Stage::StageType::MovingPlatform:
                 return PhysicsLayer::Ground;
                 

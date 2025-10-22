@@ -63,12 +63,11 @@ namespace Jam::Infrastructure {
 
     void TextureLoader::preloadStageTextures() {
         Array<Jam::Domain::Stage::StageType> stageTypes = {
-            Jam::Domain::Stage::StageType::Normal,
-            Jam::Domain::Stage::StageType::Platform,
+			Jam::Domain::Stage::StageType::Normal,
+            Jam::Domain::Stage::StageType::MovingPlatform,
             Jam::Domain::Stage::StageType::Hazard,
             Jam::Domain::Stage::StageType::Trigger,
             Jam::Domain::Stage::StageType::Breakable,
-            Jam::Domain::Stage::StageType::MovingPlatform
         };
         
         for (auto type : stageTypes) {
@@ -97,15 +96,13 @@ namespace Jam::Infrastructure {
         switch (type) {
         case Jam::Domain::Stage::StageType::Normal:
             return basePath + U"White_Test.png";
-        case Jam::Domain::Stage::StageType::Platform:
-            return basePath + U"Platform_Test.png";
+        case Jam::Domain::Stage::StageType::MovingPlatform:
+            return basePath + U"moving_platform.png";
         case Jam::Domain::Stage::StageType::Hazard:
             return basePath + U"White_Test.png";
         case Jam::Domain::Stage::StageType::Trigger:
             return basePath + U"White_Test.png";
         case Jam::Domain::Stage::StageType::Breakable:
-            return basePath + U"White_Test.png";
-        case Jam::Domain::Stage::StageType::MovingPlatform:
             return basePath + U"White_Test.png";
         default:
             return basePath + U"White_Test.png";
