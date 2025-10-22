@@ -9,7 +9,7 @@
   },
   "backgrounds": [
     {
-      "textureName": "BG1",
+      "textureName": "BG_back1",
       "layer": "Back",
       "rect": [-1000, -1500, 0, 2500],
       "opacity": 1.0

@@ -140,7 +140,8 @@ namespace Jam::Infrastructure {
         Array<String> backgroundNames = {
             U"BG",
             U"BG1",
-            U"BG2"
+            U"BG2",
+            U"BG3"
         };
         
         for (const auto& name : backgroundNames) {
@@ -164,11 +165,14 @@ namespace Jam::Infrastructure {
         if (textureName == U"BG") {
             return basePath + U"BG.png";
         }
-        if (textureName == U"BG1") {
+        if (textureName == U"BG1" || textureName == U"BG_back1") {
             return basePath + U"BG_Back1.png";
         }
-        if (textureName == U"BG2") {
+        if (textureName == U"BG2" || textureName == U"BG_back2") {
             return basePath + U"BG_Back2.png";
+        }
+        if (textureName == U"BG3" || textureName == U"BG_back3") {
+            return basePath + U"BG_Back3.png";
         }
         
         return basePath + textureName + U".png";

@@ -48,9 +48,13 @@ namespace Jam::Presentation::Stage {
             const RectF rect = stage->getRenderRect();
             const auto type = stage->getType();
             
+            // 位置を整数ピクセルに丸めて境界線の問題を軽減
+            const Vec2 roundedPos = rect.pos.asPoint();
+            const Size roundedSize = rect.size.asPoint();
+            
             Texture texture = Infrastructure::TextureLoader::getStageTexture(type);
             if (texture) {
-                texture.resized(rect.size).draw(rect.pos);
+                texture.resized(roundedSize).draw(roundedPos);
             }
         }
     };
