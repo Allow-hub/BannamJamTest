@@ -6,6 +6,7 @@
 #include "src/Foundation/CoreManager.h"
 #include "src/Foundation/CoroutineUtil.h"
 #include "src/Presentation/AudioService.h"
+#include "src/Presentation/Scenes/ResultScene.h"
 
 using App = SceneManager<String>;
 
@@ -23,6 +24,7 @@ void Main()
 	// =====================
 	auto& core = Jam::Foundation::CoreManager::Instance();
 	core.stageInfo.stageName = Jam::Foundation::StageName::Stage1_1;  // デフォルトステージ
+	core.reset();
 	core.audioSetting.masterVolume = 1.0;
 	core.audioSetting.bgmVolume = 0.7;
 	core.audioSetting.seVolume = 1.0;
@@ -33,14 +35,16 @@ void Main()
 
 	App manager;
 
-	manager.add<Jam::Presentation::Scenes::GameScene>(
-		Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::InGame));
 	manager.add<Jam::Presentation::Scenes::TitleScene>(
 		Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::Title));
+	manager.add<Jam::Presentation::Scenes::GameScene>(
+		Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::InGame));
 	manager.add<Jam::Presentation::Scenes::SelectScene>(
 	Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::Select));
 	manager.add<Jam::Presentation::Scenes::StoryScene>(
 	Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::Story));
+	manager.add<Jam::Presentation::Scenes::ResultScene>(
+		Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::Result));
 
 	// GameSceneから開始するように明示的に指定
 	manager.init(Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::InGame));

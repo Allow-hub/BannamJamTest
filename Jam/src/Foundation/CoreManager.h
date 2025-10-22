@@ -1,5 +1,4 @@
-﻿// CoreManager.h
-#pragma once
+﻿#pragma once
 #include <Siv3D.hpp>
 
 namespace Jam::Foundation
@@ -16,7 +15,11 @@ namespace Jam::Foundation
 	class CoreManager
 	{
 	private:
-		static	bool m_clear;
+		inline static bool m_clear;
+		inline static int m_flagmentMemory;
+		static const int m_maxFlagment = 3;
+		inline static double m_timer;
+
 	public:
 		static CoreManager& Instance()
 		{
@@ -43,6 +46,43 @@ namespace Jam::Foundation
 		static void setClear(bool b)
 		{
 			m_clear = b;
+		}
+
+		static void reset()
+		{
+			setClear(false);
+			m_timer = 0.0;
+			m_flagmentMemory = 0;
+		}
+
+		static int getFlagment()
+		{
+			return m_flagmentMemory;
+		}
+
+		static int getMaxFlagment()
+		{
+			return m_maxFlagment;
+		}
+
+		static void addFlagment(int amount)
+		{
+			if (m_flagmentMemory >= m_maxFlagment)
+			{
+				m_flagmentMemory = m_maxFlagment;
+				return;
+			}
+			m_flagmentMemory = amount;
+		}
+
+		static void addTimer(double t)
+		{
+			m_timer += t;
+		}
+
+		static double getTimer()
+		{
+			return m_timer;
 		}
 
 		// シーン間共通情報（純粋データのみ）
