@@ -10,6 +10,7 @@ namespace Jam::Domain::Enemy
 	{
 		std::vector<std::pair<AIType, std::unique_ptr<IEnemyAI>>> aiList;
 		aiList.emplace_back(AIType::Patrol, std::make_unique<PatrolAI>());
+		aiList.emplace_back(AIType::Chase, std::make_unique<ChaseAI>());
 
 		setAIList(std::move(aiList));//setしたときにそのAIのEnterも入ります
 		m_enemyType = EnemyType::Ribbon;
@@ -28,12 +29,20 @@ namespace Jam::Domain::Enemy
 		{
 		case EnemyAIEvent::PlayerFound:
 		{
+			Print << U"ChangeAi2Chase";
 			changeAI(AIType::Chase);
 		}break;
 
 		case EnemyAIEvent::PlayerLost:
 		{
+			Print << U"ChangeAi2Patrol";
 			changeAI(AIType::Patrol);
+		}break;
+
+		case EnemyAIEvent::ReachedGoal:
+		{
+			Print << U"ChangeAi2Attack";
+			changeAI(AIType::Attack);
 		}break;
 
 		default:
@@ -53,13 +62,11 @@ namespace Jam::Domain::Enemy
 		//プレイヤーと敵の距離
 		const double distance = vector.length();
 		//探知範囲
-		double foundRange = 300.0f;
-
-		Print << distance;
+		double foundRange = 250.0f;
 
 		if (distance <= foundRange)
 		{
-			EnemyAIEvent::PlayerFound;
+			onAIEvent(EnemyAIEvent::PlayerFound);
 		}
 	}
 
@@ -72,17 +79,17 @@ namespace Jam::Domain::Enemy
 		const double distance = vector.length();
 		//探知範囲
 		double attackRange = 200.0f;
-		double lostRange = 1000.0f;
+		double lostRange = 600.0f;
 
 		Print << distance;
 
 		if (distance <= attackRange)
 		{
-			changeAI(AIType::Attack);
+			onAIEvent(EnemyAIEvent::ReachedGoal);
 		}
 		if (distance >= lostRange)
 		{
-			changeAI(AIType::Patrol);
+			onAIEvent(EnemyAIEvent::PlayerLost);
 		}
 	}
 

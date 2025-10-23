@@ -14,7 +14,7 @@ namespace Jam::Domain::Enemy
 
 		void enter(EnemyBase& enemy) override
 		{
-			//enemy.onAIEvent(EnemyAIEvent::Chase);
+			enemy.onAIEvent(EnemyAIEvent::Chase);
 			// フック
 			enemy.onChaseEnter();
 		}

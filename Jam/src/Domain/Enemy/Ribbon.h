@@ -30,5 +30,7 @@ namespace Jam::Domain::Enemy
 		void onPatrolUpdate(double deltaTime) override;
 		void onChaseEnter() override;
 		void onChaseUpdate(double deltaTime) override;
+		void onAttackEnter()override;
+		void onAttackUpdate(double deltaTime) override;
 	};
 }
