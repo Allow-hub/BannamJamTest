@@ -33,4 +33,10 @@ namespace Jam::Domain::Enemy
 		void updateTimer(double dt) { waitTimer += dt; }
 		bool isWaitOver() const { return waitTimer >= waitTime; }
 	};
+
+	struct ChaseAISettings
+	{
+		double loseRange = 400.0;    // プレイヤーを見失う距離
+		double moveSpeedFactor = 1.2; // 通常移動より少し速い
+	};
 }

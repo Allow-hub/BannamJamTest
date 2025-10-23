@@ -4,14 +4,14 @@
 
 namespace Jam::Domain::Enemy
 {
-	// 小悪魔タイプの敵クラス
-	// 飛行や短距離突進など、特徴的な挙動を今後追加予定
-	class LittleDevil : public EnemyBase
+	// 目の敵
+	// プレイヤーに近づき、射程距離に入ると、目から長いビームを出す
+	class Eye : public EnemyBase
 	{
 	public:
-		explicit LittleDevil(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Physics::PhysicsBodyID playerId
+		explicit Eye(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Physics::PhysicsBodyID playerId
 		, Jam::Domain::Events::GameEventQueue& eventQueue);
-		virtual ~LittleDevil() = default;
+		virtual ~Eye() = default;
 
 		// 毎フレームの更新（AI挙動など）
 		void update(double deltaTime) override;

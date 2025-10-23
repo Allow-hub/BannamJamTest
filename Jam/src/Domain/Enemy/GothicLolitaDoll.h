@@ -4,14 +4,14 @@
 
 namespace Jam::Domain::Enemy
 {
-	// 小悪魔タイプの敵クラス
-	// 飛行や短距離突進など、特徴的な挙動を今後追加予定
-	class LittleDevil : public EnemyBase
+	// ゴスロリ人形
+	// 浮遊しながらプレイヤーに近づき、プレイヤーが射程距離に入ると3つの鬼火を体の周りに出し、プレイヤーに向かって連続で射出
+	class GothicLolitaDoll : public EnemyBase
 	{
 	public:
-		explicit LittleDevil(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Physics::PhysicsBodyID playerId
+		explicit GothicLolitaDoll(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Physics::PhysicsBodyID playerId
 		, Jam::Domain::Events::GameEventQueue& eventQueue);
-		virtual ~LittleDevil() = default;
+		virtual ~GothicLolitaDoll() = default;
 
 		// 毎フレームの更新（AI挙動など）
 		void update(double deltaTime) override;
@@ -25,5 +25,8 @@ namespace Jam::Domain::Enemy
 
 	private:
 		double m_patrolTimer = 0.0;
+	protected:
+		void onPatrolEnter() override;
+		void onChaseEnter() override;
 	};
 }
