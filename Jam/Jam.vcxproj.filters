@@ -79,6 +79,7 @@
     <ClInclude Include="src\UseCase\StageService.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyAI\AttackAI.h" />
+    <ClInclude Include="src\Presentation\Scenes\TransitionManager.h" />
     <ClInclude Include="src\Domain\Enemy\GothicLolitaDoll.h" />
     <ClInclude Include="src\Domain\Enemy\Spider.h" />
     <ClInclude Include="src\Domain\Enemy\Eye.h" />
