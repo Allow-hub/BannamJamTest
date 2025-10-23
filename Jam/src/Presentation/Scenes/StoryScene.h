@@ -68,7 +68,7 @@ namespace Jam::Presentation::Scenes
 			{
 				if (storyManager.isEnd())
 				{
-					::TransitionManager::Instance().rec.init(30);
+					Jam::Presentation::Scenes::TransitionManager::Instance().rec.init(30);
 					changeScene(ToSceneString(SceneName::InGame), 1.0s); 
 					//changeScene(ToSceneString(SceneName::InGame));
 					return;
@@ -79,7 +79,7 @@ namespace Jam::Presentation::Scenes
 			// クリック判定のみ
 			if (Rect{ Scene::Width() - 150, 20, 80, 80 }.leftClicked())
 			{
-				::TransitionManager::Instance().rec.init(30);
+				Jam::Presentation::Scenes::TransitionManager::Instance().rec.init(30);
 				changeScene(ToSceneString(SceneName::InGame), 1.0s);
 				//changeScene(ToSceneString(SceneName::InGame));
 			}
@@ -102,7 +102,7 @@ namespace Jam::Presentation::Scenes
 
 			// 2. トランジション（フェードイン）を上から描画
 			//    t が 0.0 -> 1.0 になるにつれて、RectSlideが画面外に消えていく
-			::TransitionManager::Instance().rec.drawFadeIn(t);
+			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeIn(t);
 		}
 
 		// シーンがフェードアウトする（消える）ときの描画
@@ -113,7 +113,7 @@ namespace Jam::Presentation::Scenes
 
 			// 2. トランジション（フェードアウト）を上から描画
 			//    t が 0.0 -> 1.0 になるにつれて、RectSlideが画面を覆っていく
-			::TransitionManager::Instance().rec.drawFadeOut(t);
+			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeOut(t);
 		}
 
 		bool button(const Rect& rect)

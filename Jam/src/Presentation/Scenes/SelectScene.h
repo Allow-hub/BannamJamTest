@@ -82,7 +82,7 @@ namespace Jam::Presentation::Scenes
 			// 2. トランジション（フェードイン）を上から描画
 			//    t が 0.0 -> 1.0 になるにつれて、RectSlideが画面外に消えていく
 			//    (TransitionManagerはグローバル名前空間と仮定)
-			::TransitionManager::Instance().rec.drawFadeIn(t);
+			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeIn(t);
 		}
 
 		// シーンがフェードアウトする（消える）ときの描画
@@ -94,7 +94,7 @@ namespace Jam::Presentation::Scenes
 			// 2. トランジション（フェードアウト）を上から描画
 			//    t が 0.0 -> 1.0 になるにつれて、RectSlideが画面を覆っていく
 			//    (TransitionManagerはグローバル名前空間と仮定)
-			::TransitionManager::Instance().rec.drawFadeOut(t);
+			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeOut(t);
 		}
 
 		// --- (ここまで追加) ---
@@ -184,9 +184,6 @@ namespace Jam::Presentation::Scenes
 				{
 					Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_1;
 					Print << U"Stage 1-1 Selected. CoreManager set.";
-
-					// (ここから変更) トランジションを初期化
-					::TransitionManager::Instance().rec.init(30);
 					// (変更) 1.0秒のトランジション時間を指定
 					changeScene(ToSceneString(SceneName::Story), 1.0s);
 				}
@@ -197,8 +194,6 @@ namespace Jam::Presentation::Scenes
 					Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_2;
 					Print << U"Stage 1-2 Selected. CoreManager set.";
 
-					// (ここから変更) トランジションを初期化
-					::TransitionManager::Instance().rec.init(30);
 					// (変更) 1.0秒のトランジション時間を指定
 					changeScene(ToSceneString(SceneName::Story), 1.0s);
 				}

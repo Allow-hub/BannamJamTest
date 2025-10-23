@@ -7,6 +7,7 @@
 #include "src/Foundation/CoroutineUtil.h"
 #include "src/Presentation/AudioService.h"
 #include "src/Presentation/Scenes/ResultScene.h"
+#include "src/Presentation/Scenes/TransitionManager.h"
 
 using App = SceneManager<String>;
 
@@ -32,6 +33,8 @@ void Main()
 	// --- 音声ロード ---
 	auto& audioService = Jam::Presentation::AudioService::get();
 	audioService.init();
+
+	Jam::Presentation::Scenes::TransitionManager::Instance().rec.init(30);
 
 	App manager;
 

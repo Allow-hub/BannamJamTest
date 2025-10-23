@@ -10,9 +10,9 @@ namespace Jam::Presentation::Scenes
 		Array<ColorF> colors;
 
 	public:
-		RectSlide(Size s, int32 kazu = 30) :area(s)
+		RectSlide(Size s, int32 amount = 30) :area(s)
 		{
-			init(kazu);
+			init(amount);
 		};
 		//ランダムに色を設定する (ピンクと紫系)
 		ColorF randomcol() const {
@@ -31,12 +31,12 @@ namespace Jam::Presentation::Scenes
 		}
 
 		//長方形の形、色、数を初期化
-		void init(int kazu) {
+		void init(int amount) {
 			rects.clear();
 			colors.clear();
 			Array<int32> p;
 			p << area.y;
-			for (auto i : step(kazu)) {
+			for (auto i : step(amount)) {
 				int32 num = p[0] * Random(0.2, 0.8);
 				p << num << p[0] - num;
 				p.remove_at(0);
