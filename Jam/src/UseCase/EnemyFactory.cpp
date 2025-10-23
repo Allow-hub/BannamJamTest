@@ -1,5 +1,6 @@
 ﻿#include "EnemyFactory.h"
 #include "../Domain/Enemy/LittleDevil.h"
+#include "../Domain/Enemy/Ribbon.h"
 #include "AttackProcessor.h"
 #include "../Domain/Events/GameEvents.h"
 
@@ -22,7 +23,7 @@ namespace Jam::UseCase
 			break;
 
 		case Jam::Domain::EnemyType::Ribbon:
-			// TODO: Ribbonの実装
+			enemy = std::make_shared<Ribbon>(body, playerId, eventQueue);
 			return nullptr;
 
 		default:

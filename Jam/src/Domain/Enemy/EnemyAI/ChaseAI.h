@@ -37,13 +37,15 @@ namespace Jam::Domain::Enemy
 			switch (moveState)
 			{
 			case MoveRight:
-			{
-				enemy.moveRight();
-			}break;
+				{
+					enemy.moveRight();
+				}break;
 			case MoveLeft:
-			{
-				enemy.moveLeft();
-			}break;
+				{
+					enemy.moveLeft();
+				}break;
+			default:
+				break;
 			}
 			// フック
 			enemy.onChaseUpdate(deltaTime);

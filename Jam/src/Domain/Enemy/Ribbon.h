@@ -1,14 +1,16 @@
 ﻿#pragma once
 #include "EnemyBase.h"
+#include "../Events/GameEvents.h"
 
 namespace Jam::Domain::Enemy
 {
-	// リボンタイプの敵クラス
-	// プレイヤーの感知と攻撃機能を実装予定
+	// 小悪魔タイプの敵クラス
+	// 飛行や短距離突進など、特徴的な挙動を今後追加予定
 	class Ribbon : public EnemyBase
 	{
 	public:
-		explicit Ribbon(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Physics::PhysicsBodyID playerId);
+		explicit Ribbon(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Physics::PhysicsBodyID playerId
+		, Jam::Domain::Events::GameEventQueue& eventQueue);
 		virtual ~Ribbon() = default;
 
 		// 毎フレームの更新（AI挙動など）
@@ -26,6 +28,5 @@ namespace Jam::Domain::Enemy
 	protected:
 		void onPatrolEnter() override;
 		void onChaseEnter() override;
-		void onPatrolUpdate(double deltaTime) override;
 	};
 }
