@@ -1,6 +1,7 @@
 ﻿#include "Ribbon.h"
 #include "EnemyAI/PatrolAI.h"
 #include "EnemyAI/ChaseAI.h"
+#include "EnemyAI/AttackAI.h"
 
 namespace Jam::Domain::Enemy
 {
@@ -11,10 +12,11 @@ namespace Jam::Domain::Enemy
 		std::vector<std::pair<AIType, std::unique_ptr<IEnemyAI>>> aiList;
 		aiList.emplace_back(AIType::Patrol, std::make_unique<PatrolAI>());
 		aiList.emplace_back(AIType::Chase, std::make_unique<ChaseAI>());
+		aiList.emplace_back(AIType::Attack, std::make_unique<AttackAI>());
 
 		setAIList(std::move(aiList));//setしたときにそのAIのEnterも入ります
 		m_enemyType = EnemyType::Ribbon;
-		m_body->setGravityScale(0);
+		m_body->setGravityScale(1);
 	}
 
 	void Ribbon::update(double deltaTime)
@@ -41,8 +43,7 @@ namespace Jam::Domain::Enemy
 
 		case EnemyAIEvent::ReachedGoal:
 		{
-			Print << U"ChangeAi2Attack";
-			changeAI(AIType::Attack);
+			Print << U"ChangeAi2Attack(仮)";
 		}break;
 
 		default:
@@ -62,7 +63,7 @@ namespace Jam::Domain::Enemy
 		//プレイヤーと敵の距離
 		const double distance = vector.length();
 		//探知範囲
-		double foundRange = 250.0f;
+		double foundRange = 400.0f;
 
 		if (distance <= foundRange)
 		{
@@ -72,30 +73,23 @@ namespace Jam::Domain::Enemy
 
 	void Ribbon::onChaseUpdate(double DeltaTime)
 	{
-		Vec2 plPos = getPlayerPos();
-		Vec2 enePos = getPosition();
-		Vec2 vector = plPos - enePos;
-		//プレイヤーと敵の距離
-		const double distance = vector.length();
-		//探知範囲
-		double attackRange = 200.0f;
-		double lostRange = 600.0f;
 
-		Print << distance;
-
-		if (distance <= attackRange)
-		{
-			onAIEvent(EnemyAIEvent::ReachedGoal);
-		}
-		if (distance >= lostRange)
-		{
-			onAIEvent(EnemyAIEvent::PlayerLost);
-		}
 	}
 
 	void Ribbon::onChaseEnter()
 	{
 
+	}
+
+	void Ribbon::onAttackUpdate(double deltaTime)
+	{
+
+
+	}
+
+	void Ribbon::onAttackEnter()
+	{
+		
 	}
 
 	void Ribbon::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
