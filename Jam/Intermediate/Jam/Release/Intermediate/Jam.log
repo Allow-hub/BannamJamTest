@@ -1,117 +1,4 @@
-﻿  stdafx.cpp
-  Main.cpp
-  EnemyBase.cpp
-  LittleDevil.cpp
-  Player.cpp
-  ChokerSkill.cpp
-  EnemyFactory.cpp
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(80,39): warning C4100: 'e': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(87,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(91,37): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(95,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(106,44): warning C4100: 'info': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(80,39): warning C4100: 'e': 参照されないパラメーター
-  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(87,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(91,37): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(95,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(106,44): warning C4100: 'info': 参照されないパラメーター
-  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.cpp(21,22): warning C4305: '引数': 'int' から 'const bool' へ切り詰めます。
-  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(80,39): warning C4100: 'e': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(87,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(91,37): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(95,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(106,44): warning C4100: 'info': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Player\Player.h(80,44): warning C4100: 'info': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.cpp(47,22): warning C4244: '-=': 'const double' から 'int' への変換です。データが失われる可能性があります。
-  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Player\Player.h(80,44): warning C4100: 'info': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\LittleDevil.cpp(56,88): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.cpp(191,86): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\UseCase\AttackProcessor.h(48,18): warning C4100: 'attackerBodyId': 参照されないパラメーター
-  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Player\Player.cpp(225,83): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Player\Player.cpp(226,83): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Player\Skill\ChokerSkill.cpp(59,50): warning C4100: 'facingRight': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Player\Skill\ChokerSkill.cpp(91,43): warning C4100: 'position': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Player\Skill\ChokerSkill.cpp(203,12): warning C4456: 'playerBody' を宣言すると、以前のローカル宣言が隠蔽されます
-  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
-      C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Player\Skill\ChokerSkill.cpp(184,11):
-      'playerBody' の宣言を確認してください
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Player\Skill\ChokerSkill.cpp(290,66): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
-  
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Player\Skill\ChokerSkill.cpp(291,66): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
-  
+﻿  Main.cpp
 C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Player\Player.h(80,44): warning C4100: 'info': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
@@ -157,19 +44,19 @@ C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,
 C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(80,39): warning C4100: 'e': 参照されないパラメーター
+C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(87,39): warning C4100: 'e': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(87,38): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(94,38): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(91,37): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(98,37): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(95,38): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(102,38): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(106,44): warning C4100: 'info': 参照されないパラメーター
+C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(113,44): warning C4100: 'info': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
 C:\Users\usaha\Documents\GameJAM2025\Jam\src\UseCase\GameEventHandler.h(119,70): warning C4100: 'e': 参照されないパラメーター
@@ -178,13 +65,30 @@ C:\Users\usaha\Documents\GameJAM2025\Jam\src\UseCase\GameEventHandler.h(119,70):
 C:\Users\usaha\Documents\GameJAM2025\Jam\src\Infrastructure\Background\BackgroundLoader.h(97,33): warning C4101: 'e': ローカル変数は 1 度も使われていません。
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
+C:\Users\usaha\Documents\GameJAM2025\Jam\src\Presentation\Scenes\TransitionManager.h(38,14): warning C4244: '初期化中': 'Arithmetic' から 's3d::int32' への変換です。データが失われる可能性があります。
+C:\Users\usaha\Documents\GameJAM2025\Jam\src\Presentation\Scenes\TransitionManager.h(38,14): warning C4244:         with
+C:\Users\usaha\Documents\GameJAM2025\Jam\src\Presentation\Scenes\TransitionManager.h(38,14): warning C4244:         [
+C:\Users\usaha\Documents\GameJAM2025\Jam\src\Presentation\Scenes\TransitionManager.h(38,14): warning C4244:             Arithmetic=double
+C:\Users\usaha\Documents\GameJAM2025\Jam\src\Presentation\Scenes\TransitionManager.h(38,14): warning C4244:         ]
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\usaha\Documents\GameJAM2025\Jam\src\Presentation\Scenes\TransitionManager.h(37,13): warning C4189: 'i': ローカル変数が初期化されましたが、参照されていません
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\usaha\Documents\GameJAM2025\Jam\src\Presentation\Scenes\TransitionManager.h(53,32): warning C4244: '引数': 'double' から 's3d::Rect::value_type' への変換です。データが失われる可能性があります。
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\usaha\Documents\GameJAM2025\Jam\src\Presentation\Scenes\TransitionManager.h(59,24): warning C4244: '引数': 'double' から 's3d::Rect::value_type' への変換です。データが失われる可能性があります。
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
 C:\Users\usaha\Documents\GameJAM2025\Jam\src\Presentation\StoryManager.h(30,62): warning C4100: 'portraitSize': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
      ライブラリ C:\Users\usaha\Documents\GameJAM2025\Jam\Intermediate\Jam\Release\Jam.lib とオブジェクト C:\Users\usaha\Documents\GameJAM2025\Jam\Intermediate\Jam\Release\Jam.exp を作成中
   コード生成しています。
-  Previous IPDB not found, fall back to full compilation.
-  All 10080 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  6 of 10326 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   Jam.vcxproj -> C:\Users\usaha\Documents\GameJAM2025\Jam\Intermediate\Jam\Release\Jam.exe
   C:\Users\usaha\Documents\GameJAM2025\Jam\Intermediate\Jam\Release\Jam.exe

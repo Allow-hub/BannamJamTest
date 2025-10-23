@@ -416,6 +416,7 @@
     <ClInclude Include="src\Presentation\Scenes\SelectScene.h" />
     <ClInclude Include="src\Presentation\Scenes\StoryScene.h" />
     <ClInclude Include="src\Presentation\Scenes\TitleScene.h" />
+    <ClInclude Include="src\Presentation\Scenes\TransitionManager.h" />
     <ClInclude Include="src\Presentation\Stage\BackgroundRenderer.h" />
     <ClInclude Include="src\Presentation\StoryManager.h" />
     <ClInclude Include="src\UseCase\AttackProcessor.h" />
