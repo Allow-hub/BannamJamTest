@@ -24,7 +24,7 @@ namespace Jam::UseCase
 
 		case Jam::Domain::EnemyType::Ribbon:
 			enemy = std::make_shared<Ribbon>(body, playerId, eventQueue);
-			return nullptr;
+			break;
 
 		default:
 			Print << U"[EnemyFactory] ⚠ Unknown enemy type!";

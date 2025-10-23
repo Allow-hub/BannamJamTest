@@ -24,17 +24,21 @@ namespace Jam::Domain::Enemy
 
 	void Ribbon::onAIEvent(EnemyAIEvent e)
 	{
-		//switch (e)
-		//{
-		//case EnemyAIEvent::PlayerFound:
-		//	break;
+		switch (e)
+		{
+		case EnemyAIEvent::PlayerFound:
+		{
+			changeAI(AIType::Chase);
+		}break;
 
-		//case EnemyAIEvent::PlayerLost:
-		//	break;
+		case EnemyAIEvent::PlayerLost:
+		{
+			changeAI(AIType::Patrol);
+		}break;
 
-		//default:
-		//	break;
-		//}
+		default:
+			break;
+		}
 	}
 
 	void Ribbon::onPatrolEnter()
@@ -46,19 +50,46 @@ namespace Jam::Domain::Enemy
 		Vec2 plPos = getPlayerPos();
 		Vec2 enePos = getPosition();
 		Vec2 vector = plPos - enePos;
+		//プレイヤーと敵の距離
 		const double distance = vector.length();
-		double foundRange = 150.0f;
+		//探知範囲
+		double foundRange = 300.0f;
+
+		Print << distance;
 
 		if (distance <= foundRange)
 		{
+			EnemyAIEvent::PlayerFound;
+		}
+	}
 
+	void Ribbon::onChaseUpdate(double DeltaTime)
+	{
+		Vec2 plPos = getPlayerPos();
+		Vec2 enePos = getPosition();
+		Vec2 vector = plPos - enePos;
+		//プレイヤーと敵の距離
+		const double distance = vector.length();
+		//探知範囲
+		double attackRange = 200.0f;
+		double lostRange = 1000.0f;
+
+		Print << distance;
+
+		if (distance <= attackRange)
+		{
+			changeAI(AIType::Attack);
+		}
+		if (distance >= lostRange)
+		{
+			changeAI(AIType::Patrol);
 		}
 	}
 
 	void Ribbon::onChaseEnter()
 	{
-	}
 
+	}
 
 	void Ribbon::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{

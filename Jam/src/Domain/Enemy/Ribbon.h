@@ -27,6 +27,8 @@ namespace Jam::Domain::Enemy
 		double m_patrolTimer = 0.0;
 	protected:
 		void onPatrolEnter() override;
+		void onPatrolUpdate(double deltaTime) override;
 		void onChaseEnter() override;
+		void onChaseUpdate(double deltaTime) override;
 	};
 }
