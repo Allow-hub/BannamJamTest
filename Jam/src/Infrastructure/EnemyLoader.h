@@ -52,6 +52,10 @@ namespace Jam::Infrastructure
 				Jam::Domain::EnemyType type;
 				if (typeStr == U"LittleDevil") type = Jam::Domain::EnemyType::LittleDevil;
 				else if (typeStr == U"Ribbon") type = Jam::Domain::EnemyType::Ribbon;
+				else if (typeStr == U"GothicLolitaDoll") type = Jam::Domain::EnemyType::GothicLolitaDoll;
+				else if (typeStr == U"Spider") type = Jam::Domain::EnemyType::Spider;
+				else if (typeStr == U"Eye") type = Jam::Domain::EnemyType::Eye;
+				else if (typeStr == U"Clown") type = Jam::Domain::EnemyType::Clown;
 				else
 				{
 					Console << U"[EnemyLoader] ⚠ Unknown enemy type: " << typeStr;
@@ -90,31 +94,35 @@ namespace Jam::Infrastructure
 				if (item.hasElement(U"extra"))
 				{
 					const JSON& extra = item[U"extra"];
+					const JSON& ai = extra[U"ai"];
 
-					// --- PatrolRoute にまとめる ---
-					Jam::Domain::Enemy::PatrolRoute route;
-
-					// パトロールポイントをロード
-					if (extra.hasElement(U"patrolPoints"))
+					// --- Patrol ---
+					if (ai.hasElement(U"patrol"))
 					{
-						const JSON& points = extra[U"patrolPoints"];
-						for (size_t j = 0; j < points.size(); ++j)
+						const JSON& patrol = ai[U"patrol"];
+						Jam::Domain::Enemy::PatrolRoute route;
+						for (const auto& p : patrol[U"patrolPoints"].arrayView())
 						{
-							const auto& p = points[j];
 							route.points << Vec2{ p[U"x"].get<double>(), p[U"y"].get<double>() };
 						}
-					}
-
-					// ループ・ウェイト
-					route.loop = extra[U"loop"].getOr<bool>(false);
-					route.waitTime = extra[U"waitTime"].getOr<double>(0.0);
-
-					// Enemy にルートを渡す
-					if (route.isValid())
-					{
+						route.loop = patrol[U"loop"].getOr<bool>(false);
+						route.waitTime = patrol[U"waitTime"].getOr<double>(0.0);
 						enemy->setPatrolRoute(route);
 					}
+
+					// --- Chase ---
+					if (ai.hasElement(U"chase"))
+					{
+						const JSON& chase = ai[U"chase"];
+						Jam::Domain::Enemy::ChaseAISettings chaseSettings;
+
+						chaseSettings.loseRange = chase[U"loseRange"].getOr<double>(400.0);
+						chaseSettings.moveSpeedFactor = chase[U"moveSpeedFactor"].getOr<double>(1.2);
+
+						enemy->setChaseSettings(chaseSettings);
+					}
 				}
+	
 
 				enemyBody->setCollisionListener(enemy);
 				int enemyId = enemyManager->AddEnemy(enemy, U"../Assets/Enemy/" + typeStr + U"/" + typeStr + U"_animation.json");
@@ -181,6 +189,22 @@ namespace Jam::Infrastructure
 				else if (key == U"Ribbon")
 				{	
 					outTable[EnemyType::Ribbon] = status;
+				}
+				else if (key == U"GothicLolitaDoll")
+				{
+					outTable[EnemyType::GothicLolitaDoll] = status;
+				}
+				else if (key == U"Spider")
+				{
+					outTable[EnemyType::Spider] = status;
+				}
+				else if (key == U"Eye")
+				{
+					outTable[EnemyType::Eye] = status;
+				}
+				else if (key == U"Clown")
+				{
+					outTable[EnemyType::Clown] = status;
 				}
 				else
 				{

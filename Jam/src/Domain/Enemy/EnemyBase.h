@@ -7,7 +7,7 @@
 #include "../ITakeDamageable.h"
 #include "../../Foundation/CoroutineUtil.h"
 #include "../Events/GameEvents.h"
-#include "EnemyAI/PatrolAISettings.h"
+#include "EnemyAI/AISettings.h"
 
 namespace Jam::Infrastructure {
 	class FactoryServiceLocator;
@@ -84,6 +84,10 @@ namespace Jam::Domain::Enemy
 		Jam::Domain::Enemy::PatrolRoute& getPatrolRoute() { return m_patrolRoute; }
 		const Jam::Domain::Enemy::PatrolRoute& getPatrolRoute() const { return m_patrolRoute; }
 
+		// 追跡設定
+		void setChaseSettings(const ChaseAISettings& settings) { m_chaseSettings = settings; }
+		const Jam::Domain::Enemy::ChaseAISettings& getChaseSettings() const { return m_chaseSettings; }
+	
 		virtual void onAIEvent(EnemyAIEvent e) {}; // AIからの通知を受け取るフック
 		void setAIList(std::vector<std::pair<AIType, std::unique_ptr<IEnemyAI>>> aiList);
 		void changeAI(AIType type);
@@ -129,5 +133,6 @@ namespace Jam::Domain::Enemy
 		Vec2 m_enemyImpluseDir = {0,0};
 		EnemyType m_enemyType = EnemyType::LittleDevil;
 		Jam::Domain::Enemy::PatrolRoute m_patrolRoute;
+		Jam::Domain::Enemy::ChaseAISettings m_chaseSettings;
 	};
 }
