@@ -1,6 +1,5 @@
 ﻿#include "LittleDevil.h"
 #include "EnemyAI/PatrolAI.h"
-#include "EnemyAI/ChaseAI.h"
 
 namespace Jam::Domain::Enemy
 {
@@ -24,28 +23,7 @@ namespace Jam::Domain::Enemy
 
 	void LittleDevil::onAIEvent(EnemyAIEvent e)
 	{
-		//switch (e)
-		//{
-		//case EnemyAIEvent::PlayerFound:
-		//	break;
-
-		//case EnemyAIEvent::PlayerLost:
-		//	break;
-
-		//default:
-		//	break;
-		//}
 	}
-
-	void LittleDevil::onPatrolEnter()
-	{
-	}
-
-	void LittleDevil::onChaseEnter()
-	{
-	}
-
-
 	void LittleDevil::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{
 		EnemyBase::onCollisionEnter(other);

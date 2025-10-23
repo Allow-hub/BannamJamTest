@@ -6,5 +6,9 @@ namespace Jam::Domain
 	{
 		LittleDevil,
 		Ribbon,
+		GothicLolitaDoll,
+		Spider,
+		Eye,
+		Clown
 	};
 }
