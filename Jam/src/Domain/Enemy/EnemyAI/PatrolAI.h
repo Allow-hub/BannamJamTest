@@ -31,6 +31,7 @@ namespace Jam::Domain::Enemy
 					route.advance();
 					route.resetTimer();
 				}
+				enemy.onAIEvent(EnemyAIEvent::PlayerFound);
 			}
 
 			enemy.onPatrolUpdate(deltaTime); // フック呼び出し

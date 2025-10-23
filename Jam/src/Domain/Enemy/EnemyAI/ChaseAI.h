@@ -14,6 +14,9 @@ namespace Jam::Domain::Enemy
 
 		void update(EnemyBase& enemy, double deltaTime) override
 		{
+			auto& setting = enemy.getChaseSettings();
+			Print << setting.moveSpeedFactor;
+
 			// フック
 			enemy.onChaseUpdate(deltaTime);
 		}
