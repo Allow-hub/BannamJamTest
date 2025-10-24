@@ -83,8 +83,6 @@ namespace Jam::Domain::Enemy
 
 	void Ribbon::onAttackUpdate(double deltaTime)
 	{
-
-
 	}
 
 	void Ribbon::onAttackEnter()
