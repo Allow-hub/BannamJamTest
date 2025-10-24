@@ -13,9 +13,10 @@ using namespace Jam::Domain::Physics;
 namespace Jam::Domain::Player
 {
 	ChokerSkill::ChokerSkill(Jam::Domain::Events::GameEventQueue& eventQueue,
-							 PhysicsBodyID ownerId, Jam::Domain::Player::PlayerStats& stats)
+							 PhysicsBodyID ownerId, Jam::Domain::Player::PlayerStats& stats, Player& player)
 		: IPlayerSkill(PlayerSkillType::Choker, eventQueue, stats)
 		, m_ownerId(ownerId)
+		, m_player(player)
 	{
 		m_body = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
 			.getPhysicsFactory()
@@ -225,6 +226,7 @@ namespace Jam::Domain::Player
 
 						// 到達できた場合のみ、攻撃処理を実行
 						const double launchPower = 2000.0;
+						m_player.controlCooldown(0.5);
 						m_eventQueue.push(Events::PlayerAttackedEvent{ 1.2, 0.2, 25.2 });
 						playerBody->applyImpulse(m_lastDir * launchPower);
 

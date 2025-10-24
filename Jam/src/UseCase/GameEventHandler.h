@@ -4,6 +4,8 @@
 #include "CameraEvent.h"
 #include "AttackProcessor.h"
 #include "EffectEvents.h"
+#include "../Presentation/Scenes/GameScene.h"	
+#include "../Foundation/CoroutineUtil.h"
 
 namespace Jam::UseCase
 {
@@ -14,13 +16,15 @@ namespace Jam::UseCase
 		Domain::Events::GameEventQueue& m_gameEventQueue;
 		CameraEventQueue& m_cameraEventQueue;
 		EffectEventQueue& m_effectEventQueue;
-
+		std::function<void()> m_onPlayerDeath;
 	public:
 		GameEventHandler(Domain::Events::GameEventQueue& gameEventQueue,
-						 CameraEventQueue& cameraEventQueue, EffectEventQueue& effectEventQueue)
+						 CameraEventQueue& cameraEventQueue, EffectEventQueue& effectEventQueue,
+						 std::function<void()> onPlayerDeath)
 			: m_gameEventQueue(gameEventQueue)
 			, m_cameraEventQueue(cameraEventQueue)
 			, m_effectEventQueue(effectEventQueue)
+			, m_onPlayerDeath(onPlayerDeath)
 		{
 		}
 
@@ -52,6 +56,10 @@ namespace Jam::UseCase
 					else if constexpr (std::is_same_v<T, Domain::Events::PlayerDamagedEvent>)
 					{
 						handlePlayerDamaged(e);
+					}
+					else if constexpr (std::is_same_v<T, Domain::Events::PlayerDeathEvent>)
+					{
+						handlePlayerDeath(e);
 					}
 					else if constexpr (std::is_same_v<T, Domain::Events::BossAppearedEvent>)
 					{
@@ -120,6 +128,21 @@ namespace Jam::UseCase
 		{
 			// プレイヤーがダメージを受けた時の演出
 			m_cameraEventQueue.push(CameraShakeEvent{ 15.0, 0.3 });
+		}
+
+		void handlePlayerDeath(const Domain::Events::PlayerDeathEvent& e)
+		{
+			Jam::Foundation::CoreManager::Instance().setDied(true);
+			playerDeath();
+			// プレイヤーがダメージを受けた時の演出
+			m_cameraEventQueue.push(CameraShakeEvent{ e.intensity, e.duration });
+			m_cameraEventQueue.push(CameraZoomEvent{ e.zoom, e.duration });
+		}
+
+		Jam::Util::Task playerDeath()
+		{
+			co_await Jam::Util::WaitSeconds(2.0);
+			if (m_onPlayerDeath) m_onPlayerDeath();
 		}
 
 		void handleBossAppeared(const Domain::Events::BossAppearedEvent& e)

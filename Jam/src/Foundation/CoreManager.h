@@ -26,6 +26,7 @@ namespace Jam::Foundation
 		static const int m_maxFlagment = 3;
 		inline static double m_timer;
 		inline static StageData m_currentStageData;
+		inline static bool m_isDied = false;
 
 	public:
 		static CoreManager& Instance()
@@ -50,13 +51,13 @@ namespace Jam::Foundation
 			switch (stage)
 			{
 			case StageName::Stage1_1:
-				return StageData{ Vec2(0, -5), 2000.0 }; // respawn, fallLimitY
+				return StageData{ Vec2(50, -5), 2000.0 }; // respawn, fallLimitY
 			case StageName::Stage1_2:
-				return StageData{ Vec2(0, -5), 2000.0 };
+				return StageData{ Vec2(50, -5), 2000.0 };
 			case StageName::Stage1_3:
-				return StageData{ Vec2(0, 300), 550.0 };
+				return StageData{ Vec2(50, 300), 550.0 };
 			default:
-				return StageData{ Vec2(0, 0), 1000.0 };
+				return StageData{ Vec2(50, 0), 1000.0 };
 			}
 		}
 
@@ -71,8 +72,19 @@ namespace Jam::Foundation
 			m_clear = b;
 		}
 
+		static bool getDied()
+		{
+			return m_isDied;
+		}
+
+		static void setDied(bool b)
+		{
+			m_isDied = b;
+		}
+
 		static void reset()
 		{
+			setDied(false);
 			setClear(false);
 			m_timer = 0.0;
 			m_flagmentMemory = 0;

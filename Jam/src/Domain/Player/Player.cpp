@@ -1,6 +1,5 @@
 ﻿#include "Player.h"
 #include "../Physics/IPhysicsBody.h"
-//#include "Skill/BombSkill.h"
 #include "Skill/ChokerSkill.h"
 #include "../../Presentation/AudioService.h"
 #include "../../Infrastructure/PhysicsFilterManager.h"
@@ -15,10 +14,9 @@ namespace Jam::Domain::Player
 		m_body->setGravityScale(1.5);
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::Team1);
 
-		auto chokerSkill = std::make_shared<ChokerSkill>(eventQueue, m_body->getID(),m_stats);
+		auto chokerSkill = std::make_shared<ChokerSkill>(eventQueue, m_body->getID(), m_stats, *this);
 		chokerSkill->init(); // shared_from_this()を使用する初期化
 		m_skills.push_back(chokerSkill);
-		//m_skills.push_back(std::make_shared<BombSkill>(eventQueue, m_stats));
 		m_currentSkill = m_skills.front();
 		auto& core = Jam::Foundation::CoreManager::Instance();
 		m_fallLimitY = core.getStageData(core.stageInfo.stageName).fallLimitY;
@@ -27,6 +25,24 @@ namespace Jam::Domain::Player
 	void Player::update(double deltaTime)
 	{
 		updateState();
+
+		if (m_isRespawning || !m_canControl)return;
+
+		// --- 落下中に下向きの力を追加 ---
+		auto velocity = m_body->getVelocity();
+
+		if (velocity.y > 0) // yが正なら下方向
+		{
+			double fallAccelerationBase = 3000.0;
+			double maxFallSpeed = 10000.0; // 最大落下速度
+
+			// 現在の速度が上限を超えていないときだけ力を加える
+			if (velocity.y < maxFallSpeed)
+				m_body->applyForce({ 0, fallAccelerationBase });
+			else
+				m_body->setVelocity({ velocity.x, maxFallSpeed });
+		}
+
 		// 全スキルを更新（アクティブ/非アクティブ問わず、必要なものだけ）
 		for (auto& skill : m_skills)
 		{
@@ -100,16 +116,15 @@ namespace Jam::Domain::Player
 		}
 	}
 
-
-	void Player::attack()
-	{
-
-	}
-
 	Jam::Util::Task Player::respawn()
 	{
+		if (m_isRespawning)co_return;
+		m_isRespawning = true;
 		// CoreManager参照
 		auto& core = Jam::Foundation::CoreManager::Instance();
+		if (core.getDied())co_return;
+		if (m_currentSkill)
+			m_currentSkill->onDeactivate();
 		const Vec2 respawnPos = core.getStageData(core.stageInfo.stageName).respawnPosition;
 		Jam::Presentation::FadeManager::instance().fadeOutAndIn();
 		co_await Jam::Util::WaitSeconds(1.0);
@@ -118,6 +133,7 @@ namespace Jam::Domain::Player
 		// --- リスポーン処理 ---
 		m_body->setPos(respawnPos);
 		m_body->setVelocity({ 0, 0 });
+		m_isRespawning = false;
 	}
 
 
@@ -135,25 +151,25 @@ namespace Jam::Domain::Player
 	void Player::changeSkill(int direction)
 	{
 		if (m_skills.empty()) return;
-		if (m_currentSkill)
-			m_currentSkill->onDeactivate();
+		//if (m_currentSkill)
+		//	m_currentSkill->onDeactivate();
 		// direction: 1 = ホイール上（次のスキル）、-1 = ホイール下（前のスキル）
-		auto it = std::find(m_skills.begin(), m_skills.end(), m_currentSkill);
-		if (it == m_skills.end())
-		{
-			m_currentSkill = m_skills.front();
-			return;
-		}
+		//auto it = std::find(m_skills.begin(), m_skills.end(), m_currentSkill);
+		//if (it == m_skills.end())
+		//{
+		//	m_currentSkill = m_skills.front();
+		//	return;
+		//}
 
-		// 次のスキル or 前のスキルに移動
-		int index = static_cast<int>(std::distance(m_skills.begin(), it));
-		index += direction;
+		//// 次のスキル or 前のスキルに移動
+		//int index = static_cast<int>(std::distance(m_skills.begin(), it));
+		//index += direction;
 
-		// 循環させる
-		if (index < 0) index = static_cast<int>(m_skills.size()) - 1;
-		else if (index >= static_cast<int>(m_skills.size())) index = 0;
+		//// 循環させる
+		//if (index < 0) index = static_cast<int>(m_skills.size()) - 1;
+		//else if (index >= static_cast<int>(m_skills.size())) index = 0;
 
-		m_currentSkill = m_skills[index];
+		//m_currentSkill = m_skills[index];
 	}
 
 	void Player::takeDamage(const DamageInfo& info)
@@ -166,11 +182,11 @@ namespace Jam::Domain::Player
 		{
 			m_stats.hp = 0;
 			m_isAlive = false;
-			//onDeath(); // 死んだとき
+			onDeath(); // 死んだとき
 		}
 		else
 		{
-			//onDamaged(info);//ダメージを受けた時の吹き飛ばし等
+			onDamaged(info);//ダメージを受けた時の吹き飛ばし等
 		}
 	}
 
@@ -186,6 +202,18 @@ namespace Jam::Domain::Player
 
 	void Player::updateState()
 	{
+	}
+
+	void Player::controlCooldown(double cooldown)
+	{
+		m_canControl = false;
+		controlCooldownProcess(cooldown);
+	}
+
+	Jam::Util::Task Player::controlCooldownProcess(double cooldown)
+	{
+		co_await Jam::Util::WaitSeconds(cooldown);
+		m_canControl = true;
 	}
 
 	double Player::getHookedSpeedMultiplier() const
@@ -204,6 +232,19 @@ namespace Jam::Domain::Player
 		}
 		return 1.0;  // フック中でなければ通常速度
 	}
+
+	void Player::onDamaged(const DamageInfo& info)
+	{
+		m_body->applyImpulse(info.direction * 100);
+	}
+
+	void Player::onDeath()
+	{
+		auto& core = Jam::Foundation::CoreManager::Instance();
+		core.setClear(false);
+		m_eventQueue.push(Events::PlayerDeathEvent{ 1.2, 0.2, 10000 });
+	}
+
 	void Player::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{
 		switch (other->getLayer())

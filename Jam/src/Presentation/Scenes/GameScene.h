@@ -109,7 +109,9 @@ namespace Jam::Presentation::Scenes
 			m_effectEventQueue = std::make_shared<Jam::UseCase::EffectEventQueue>();
 
 			m_eventHandler = std::make_shared<Jam::UseCase::GameEventHandler>(
-				*m_gameEventQueue, *m_cameraEventQueue, *m_effectEventQueue);
+				*m_gameEventQueue,*m_cameraEventQueue,*m_effectEventQueue,
+				[this]() { this->nextScene(); });
+
 
 			m_effectManager = std::make_unique<Jam::Presentation::EffectManager>(*m_effectEventQueue);
 
@@ -356,6 +358,12 @@ namespace Jam::Presentation::Scenes
 
 			//フェードのDraw
 			Jam::Presentation::FadeManager::instance().draw();
+		}
+
+		void nextScene()
+		{
+			resetScene();
+			changeScene(ToSceneString(SceneName::Result));
 		}
 
 	private:

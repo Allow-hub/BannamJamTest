@@ -17,6 +17,7 @@ namespace Jam::Domain::Player
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_body;
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_targetEnemy;
 		std::optional<s3d::P2DistanceJoint> m_joint;
+		Player& m_player;
 
 		bool m_isActive = false;
 		bool m_isFlying = false;
@@ -54,7 +55,8 @@ namespace Jam::Domain::Player
 	public:
 		ChokerSkill(Jam::Domain::Events::GameEventQueue& eventQueue,
 					Jam::Domain::Physics::PhysicsBodyID ownerId,
-					Jam::Domain::Player::PlayerStats& stats);
+					Jam::Domain::Player::PlayerStats& stats,
+					Player& player);//スキルからPlayerの固有能力っぽくなったので従属、直接持たせる
 
 		void init();
 		void use(const s3d::Vec2 position, bool facingRight) override;

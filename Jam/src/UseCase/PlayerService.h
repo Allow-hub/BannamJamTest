@@ -31,6 +31,9 @@ namespace Jam::UseCase
 			m_input.Update();
 			Domain::InputState inputState = m_input.GetState();
 
+			if (m_player->getIsRespawning())return;
+			if (!m_player->getCanControl())return;
+
 			bool isRunning = false;
 
 			if (inputState.left)
@@ -46,21 +49,11 @@ namespace Jam::UseCase
 				isRunning = true;
 			}
 			if (inputState.dash)
-			{
 				m_player->startDash();
-			}
 			else
-			{
 				m_player->endDash();
-			}
 			if (inputState.jump)
-			{
 				m_player->jump();
-			}
-			if (inputState.attack)
-			{
-				m_player->attack();
-			}
 			if (inputState.skillPush) // Skill ボタンが押されていたら
 			{
 				m_player->skillPush();
@@ -88,7 +81,6 @@ namespace Jam::UseCase
 			// ---------------------------------
 
 			m_manager.SetRunning(isRunning);
-
 			m_player->update(deltaTime);
 		}
 
