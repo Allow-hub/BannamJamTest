@@ -24,7 +24,7 @@ namespace Jam::Domain::Enemy
 
 			enemy.getPhysicsBody()->applyForce(dir * enemy.getStatus().moveSpeed);
 
-			if (pos.distanceFrom(currentTarget) < 5.0) // 到達判定
+			if (pos.distanceFrom(currentTarget) < route.foundDistance) // 到達判定
 			{
 				route.updateTimer(deltaTime);
 				if (route.isWaitOver()) {

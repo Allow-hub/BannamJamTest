@@ -1,6 +1,6 @@
 [
     {
-        "type": "LittleDevil",
+        "type": "Ribbon",
         "position": {
             "x": 200,
             "y": 0
@@ -19,7 +19,13 @@
                         }
                     ],
                     "loop": true,
-                    "waitTime": 1.0
+                    "waitTime": 1.0,
+                    "foundDistance": 500.0
+                },
+                "chase": {
+                    "attackRange": 100,
+                    "loseRange": 1000,
+                    "moveSpeedFactor": 1.2
                 }
             }
         }
@@ -44,9 +50,11 @@
                         }
                     ],
                     "loop": true,
-                    "waitTime": 1.0
+                    "waitTime": 1.0,
+                    "foundDistance" : 0.0
                 },
                 "chase": {
+                    "attackRange": 100,
                     "loseRange": 200,
                     "moveSpeedFactor": 1.3
                 }
