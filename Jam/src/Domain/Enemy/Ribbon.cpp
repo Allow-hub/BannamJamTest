@@ -19,14 +19,6 @@ namespace Jam::Domain::Enemy
 		m_body->setGravityScale(1);
 	}
 
-	enum class AttackState
-	{
-		StartAttack = 0,
-		IsAttack,
-		EndAttack
-	};
-	AttackState attackState;
-
 	void Ribbon::update(double deltaTime)
 	{
 		if (!isAlive()) return;
@@ -73,17 +65,58 @@ namespace Jam::Domain::Enemy
 
 	void Ribbon::onChaseUpdate(double DeltaTime)
 	{
-
+		
 	}
 
 	void Ribbon::onAttackEnter()
 	{
-
+		
 	}
 
 	void Ribbon::onAttackUpdate(double deltaTime)
 	{
-		
+		Vec2 plPos = getPlayerPos();
+		Vec2 enePos = getPosition();
+
+		switch (attackState)
+		{
+		case AttackState::WaitAttack:
+		{
+			if (AttackWaitTime >= 300)
+			{
+				//とりあえずイントのカウンターにしてます。後日調べて秒数計測の何かに置き換えます。
+				AttackWaitTime = 0;
+				attackState = AttackState::IsAttack;
+			}
+			else
+			{
+				AttackWaitTime++;
+			}
+		}break;
+
+		case AttackState::IsAttack:
+		{
+			if (plPos.x >= enePos.x)
+			{
+				m_body->applyImpulse(Vec2{ 2000,0 });
+			}
+			else
+			{
+				m_body->applyImpulse(Vec2{ -2000,0 });
+			}
+			attackState = AttackState::EndAttack;
+		}break;
+
+		case AttackState::EndAttack:
+		{
+			attackState = AttackState::WaitAttack;
+			changeAI(AIType::Patrol);
+		}break;
+
+		default:
+			attackState = AttackState::WaitAttack;
+			break;
+		}
 	}
 
 	void Ribbon::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
