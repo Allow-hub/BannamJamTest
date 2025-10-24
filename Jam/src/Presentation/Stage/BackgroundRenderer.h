@@ -23,6 +23,9 @@ namespace Jam::Presentation::Background {
 		Array<Jam::Domain::Background::BackgroundObject> m_backgroundObjects;
 		Array<BackgroundInstance> m_backgroundInstances; // 生成された背景インスタンス群
 		bool m_isLoaded = false;
+		
+		// 背景画像の境界線を消すためのオーバーラップ量（ピクセル）
+		static constexpr float OVERLAP_OFFSET = 1.f;
 
 	public:
 		BackgroundRenderer() = default;
@@ -92,15 +95,17 @@ namespace Jam::Presentation::Background {
 				const double calculatedWidth = bgHeight * originalAspectRatio;
 				const int32 bgWidth = static_cast<int32>(Math::Round(calculatedWidth));
 				
-				// 画面幅を考慮して必要な背景数を計算
+				// 画面幅を考慮して必要な背景数を計算（十分な余裕を持たせる）
 				const double screenWidth = Scene::Width();
-				const int instanceCount = static_cast<int>(Math::Ceil((screenWidth * 3) / bgWidth)) + 2;
+				const int instanceCount = static_cast<int>(Math::Ceil((screenWidth * 5) / bgWidth)) + 5;
 				
-				// インスタンスを横に並べて生成（1ピクセルオーバーラップで境界線を消す）
+				// インスタンスを横に並べて生成（各画像をOVERLAPピクセル重ねる）
 				for (int i = 0; i < instanceCount; ++i) {
 					BackgroundInstance instance;
-					instance.basePosition = Vec2(bgObj.rect.x + (i * bgWidth) - (i > 0 ? 1 : 0), bgObj.rect.y);
-					instance.rect = RectF(instance.basePosition, Size(bgWidth + 1, static_cast<int32>(bgHeight)));
+					// 各画像の開始位置 = 基準X + (画像幅 - オーバーラップ) * インデックス
+					const double xOffset = (bgWidth - OVERLAP_OFFSET) * i;
+					instance.basePosition = Vec2(bgObj.rect.x + xOffset, bgObj.rect.y);
+					instance.rect = RectF(instance.basePosition, Size(bgWidth, static_cast<int32>(bgHeight)));
 					instance.textureName = bgObj.textureName;
 					instance.opacity = bgObj.opacity;
 					instance.layer = bgObj.layer;
