@@ -19,6 +19,14 @@ namespace Jam::Domain::Enemy
 		m_body->setGravityScale(1);
 	}
 
+	enum class AttackState
+	{
+		StartAttack = 0,
+		IsAttack,
+		EndAttack
+	};
+	AttackState attackState;
+
 	void Ribbon::update(double deltaTime)
 	{
 		if (!isAlive()) return;
@@ -30,22 +38,18 @@ namespace Jam::Domain::Enemy
 		switch (e)
 		{
 		case EnemyAIEvent::PlayerFound:
-		{
 			Print << U"ChangeAi2Chase";
 			changeAI(AIType::Chase);
-		}break;
+			break;
 
 		case EnemyAIEvent::PlayerLost:
-		{
 			Print << U"ChangeAi2Patrol";
 			changeAI(AIType::Patrol);
-		}break;
-
+			break;
 		case EnemyAIEvent::ReachedGoal:
-		{
 			Print << U"ChangeAi2Attack";
 			changeAI(AIType::Attack);
-		}break;
+			break;
 
 		default:
 			break;
@@ -59,18 +63,7 @@ namespace Jam::Domain::Enemy
 
 	void Ribbon::onPatrolUpdate(double deltaTime)
 	{
-		Vec2 plPos = getPlayerPos();
-		Vec2 enePos = getPosition();
-		Vec2 vector = plPos - enePos;
-		const double distance = vector.length();
-
-		double foundRange = 400.0f;
-
-		if (distance <= foundRange)
-		{
-			EnemyAIEvent::PlayerFound;
-			onAIEvent(EnemyAIEvent::PlayerFound);
-		}
+		
 	}
 
 	void Ribbon::onChaseEnter()
@@ -90,17 +83,7 @@ namespace Jam::Domain::Enemy
 
 	void Ribbon::onAttackUpdate(double deltaTime)
 	{
-		Vec2 plPos = getPlayerPos();
-		Vec2 enePos = getPosition();
-
-		if (plPos.x >= enePos.x)
-		{
-
-		}
-		else
-		{
-
-		}
+		
 	}
 
 	void Ribbon::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
