@@ -70,19 +70,26 @@ namespace Jam::Domain::Enemy
 
 	void Ribbon::onAttackEnter()
 	{
-		
+		Vec2 plPos = getPlayerPos();
+		Vec2 enePos = getPosition();
+
+		if (plPos.x <= enePos.x)
+		{
+			IsRight = true;
+		}
+		else
+		{
+			IsRight = false;
+		}
 	}
 
 	void Ribbon::onAttackUpdate(double deltaTime)
 	{
-		Vec2 plPos = getPlayerPos();
-		Vec2 enePos = getPosition();
-
 		switch (attackState)
 		{
 		case AttackState::WaitAttack:
 		{
-			if (AttackWaitTime >= 300)
+			if (AttackWaitTime >= 200)
 			{
 				//とりあえずイントのカウンターにしてます。後日調べて秒数計測の何かに置き換えます。
 				AttackWaitTime = 0;
@@ -96,21 +103,29 @@ namespace Jam::Domain::Enemy
 
 		case AttackState::IsAttack:
 		{
-			if (plPos.x >= enePos.x)
+			if (true)
 			{
-				m_body->applyImpulse(Vec2{ 1500,0 });
+				m_body->applyImpulse(Vec2{ 1000,0 });
 			}
 			else
 			{
-				m_body->applyImpulse(Vec2{ -1500,0 });
+				m_body->applyImpulse(Vec2{ -1000,0 });
 			}
 			attackState = AttackState::EndAttack;
 		}break;
 
 		case AttackState::EndAttack:
 		{
-			attackState = AttackState::WaitAttack;
-			changeAI(AIType::Patrol);
+			if (AttackWaitTime >= 200)
+			{
+				AttackWaitTime = 0;
+				attackState = AttackState::WaitAttack;
+				changeAI(AIType::Patrol);
+			}
+			else
+			{
+				AttackWaitTime++;
+			}
 		}break;
 
 		default:

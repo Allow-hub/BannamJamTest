@@ -26,6 +26,7 @@ namespace Jam::Domain::Enemy
 	private:
 		double m_patrolTimer = 0.0;
 		int AttackWaitTime = 0;
+		bool IsRight;
 
 		enum class AttackState
 		{
