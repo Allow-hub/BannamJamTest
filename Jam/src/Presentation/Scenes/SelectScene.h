@@ -2,6 +2,7 @@
 #include <Siv3D.hpp> // Siv3D v0.6.14
 #include "TitleScene.h"
 #include "../../Foundation/CoreManager.h"
+#include "TransitionManager.h" // トランジションマネージャーをインクルード
 
 namespace Jam::Presentation::Scenes
 {
@@ -18,11 +19,8 @@ namespace Jam::Presentation::Scenes
 		State m_state = State::WorldSelect;
 		int32 m_selectedWorld = 0;
 
-		Jam::Foundation::CoreManager* m_coreManager;
-
 		s3d::Texture m_worldBackgroundTexture;
 		s3d::Texture m_stageBackgroundTexture;
-
 		s3d::Texture m_worldButtonTexture;
 		s3d::Texture m_stageButtonTexture;
 		s3d::Texture m_backButtonTexture;
@@ -35,8 +33,6 @@ namespace Jam::Presentation::Scenes
 			FontAsset::Register(U"SelectTitleFont", 60, Typeface::Bold);
 			FontAsset::Register(U"SelectMenuFont", 40, Typeface::Bold);
 			FontAsset::Register(U"SelectStageFont", 30, Typeface::Regular);
-
-			m_coreManager = &Jam::Foundation::CoreManager::Instance();
 
 			// 画像の読み込み
 			m_worldBackgroundTexture = s3d::Texture{ U"../Assets/Select/serect-AREA_back-screen.png" };
@@ -56,6 +52,7 @@ namespace Jam::Presentation::Scenes
 			case State::StageSelect:
 				updateStageSelect();
 				break;
+
 			}
 		}
 
@@ -74,11 +71,46 @@ namespace Jam::Presentation::Scenes
 			}
 		}
 
+		// --- (ここから追加) トランジション用の描画 ---
+
+		// シーンがフェードインする（現れる）ときの描画
+		void drawFadeIn(double t) const override
+		{
+			// 1. シーンを通常通り描画
+			draw();
+
+			// 2. トランジション（フェードイン）を上から描画
+			//    t が 0.0 -> 1.0 になるにつれて、RectSlideが画面外に消えていく
+			//    (TransitionManagerはグローバル名前空間と仮定)
+			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeIn(t);
+		}
+
+		// シーンがフェードアウトする（消える）ときの描画
+		void drawFadeOut(double t) const override
+		{
+			// 1. シーンを通常通り描画
+			draw();
+
+			// 2. トランジション（フェードアウト）を上から描画
+			//    t が 0.0 -> 1.0 になるにつれて、RectSlideが画面を覆っていく
+			//    (TransitionManagerはグローバル名前空間と仮定)
+			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeOut(t);
+		}
+
+		// --- (ここまで追加) ---
+
 	private:
 		// --- ワールド選択のロジック ---
 		void updateWorldSelect()
 		{
-			const RectF world1Button{ Arg::center = Scene::Center().movedBy(0, -100), 300, 80 };
+			const double buttonWidth = 400;
+			const double buttonHeight = 150;
+			const double buttonSpacing = 200;
+			const double startX = Scene::Width() - 490;
+			const double startY = 200;
+
+			// World 1 ボタン
+			const RectF world1Button{ startX, startY + (buttonHeight + buttonSpacing) * 0, buttonWidth, buttonHeight };
 			if (world1Button.leftClicked())
 			{
 				Print << U"World 1 Selected";
@@ -86,7 +118,8 @@ namespace Jam::Presentation::Scenes
 				m_state = State::StageSelect;
 			}
 
-			const RectF world2Button{ Arg::center = Scene::Center().movedBy(0, 0), 300, 80 };
+			// World 2 ボタン
+			const RectF world2Button{ startX, startY + (buttonHeight + buttonSpacing) * 1, buttonWidth, buttonHeight };
 			if (world2Button.leftClicked())
 			{
 				Print << U"World 2 Selected";
@@ -94,7 +127,8 @@ namespace Jam::Presentation::Scenes
 				m_state = State::StageSelect;
 			}
 
-			const RectF world3Button{ Arg::center = Scene::Center().movedBy(0, 100), 300, 80 };
+			// World 3 ボタン
+			const RectF world3Button{ startX, startY + (buttonHeight + buttonSpacing) * 2, buttonWidth, buttonHeight };
 			if (world3Button.leftClicked())
 			{
 				Print << U"World 3 Selected";
@@ -106,34 +140,41 @@ namespace Jam::Presentation::Scenes
 		// --- ワールド選択の描画 ---
 		void drawWorldSelect() const
 		{
-			FontAsset(U"SelectTitleFont")(U"ワールド選択").drawAt(Scene::Center().x, 100);
+			const double buttonWidth = 400;
+			const double buttonHeight = 150;
+			const double buttonSpacing = 200;
+			const double startX = Scene::Width() - 490;
+			const double startY = 200;
 
-			const RectF world1Button{ Arg::center = Scene::Center().movedBy(0, -100), 300, 80 };
-			drawButton(world1Button, U"World 1", world1Button.mouseOver(), m_worldButtonTexture);
+			// World 1 ボタン
+			const RectF world1Button{ startX, startY + (buttonHeight + buttonSpacing) * 0, buttonWidth, buttonHeight };
+			drawButton(world1Button, U"", world1Button.mouseOver(), m_worldButtonTexture);
 
-			const RectF world2Button{ Arg::center = Scene::Center().movedBy(0, 0), 300, 80 };
-			drawButton(world2Button, U"World 2", world2Button.mouseOver(), m_worldButtonTexture);
+			// World 2 ボタン
+			const RectF world2Button{ startX, startY + (buttonHeight + buttonSpacing) * 1, buttonWidth, buttonHeight };
+			drawButton(world2Button, U"", world2Button.mouseOver(), m_worldButtonTexture);
 
-			const RectF world3Button{ Arg::center = Scene::Center().movedBy(0, 100), 300, 80 };
-			drawButton(world3Button, U"World 3", world3Button.mouseOver(), m_worldButtonTexture);
+			// World 3 ボタン
+			const RectF world3Button{ startX, startY + (buttonHeight + buttonSpacing) * 2, buttonWidth, buttonHeight };
+			drawButton(world3Button, U"", world3Button.mouseOver(), m_worldButtonTexture);
 		}
 
 		// --- ステージ選択のロジック ---
 		void updateStageSelect()
 		{
 			// 「戻る」ボタンのクリック判定
-			const RectF backButton{ 20, 20, 150, 50 };
+			const RectF backButton{ 0, 0, 300, 100 };
 			if (backButton.leftClicked())
 			{
 				Print << U"Back to World Select";
 				m_state = State::WorldSelect;
 			}
 			// 画面右側に縦に並べる
-			const double buttonWidth = 280;
-			const double buttonHeight = 80;
-			const double buttonSpacing = 20; 
-			const double startX = Scene::Width() - 320; 
-			const double startY = 200; 
+			const double buttonWidth = 400;
+			const double buttonHeight = 150;
+			const double buttonSpacing = 200;
+			const double startX = Scene::Width() - 490;
+			const double startY = 200;
 
 			// 選択中のワールドに応じて処理を分岐
 			if (m_selectedWorld == 1)
@@ -141,17 +182,20 @@ namespace Jam::Presentation::Scenes
 				const RectF stage1_1_Button{ startX, startY + (buttonHeight + buttonSpacing) * 0, buttonWidth, buttonHeight };
 				if (stage1_1_Button.leftClicked())
 				{
-					m_coreManager->stageInfo.stageName = Jam::Foundation::StageName::Stage1_1;
+					Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_1;
 					Print << U"Stage 1-1 Selected. CoreManager set.";
-					changeScene(ToSceneString(SceneName::InGame));
+					// (変更) 1.0秒のトランジション時間を指定
+					changeScene(ToSceneString(SceneName::Story), 1.0s);
 				}
 
 				const RectF stage1_2_Button{ startX, startY + (buttonHeight + buttonSpacing) * 1, buttonWidth, buttonHeight };
 				if (stage1_2_Button.leftClicked())
 				{
-					m_coreManager->stageInfo.stageName = Jam::Foundation::StageName::Stage1_2;
+					Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_2;
 					Print << U"Stage 1-2 Selected. CoreManager set.";
-					changeScene(ToSceneString(SceneName::InGame));
+
+					// (変更) 1.0秒のトランジション時間を指定
+					changeScene(ToSceneString(SceneName::Story), 1.0s);
 				}
 
 				const RectF stage1_3_Button{ startX, startY + (buttonHeight + buttonSpacing) * 2, buttonWidth, buttonHeight };
@@ -159,41 +203,44 @@ namespace Jam::Presentation::Scenes
 				{
 					// m_coreManager->stageInfo.stageName = Jam::Foundation::StageName::Stage1_3; // CoreManagerのenumに追加が必要
 					Print << U"Stage 1-3 Selected. (Not Implemented)";
-					// changeScene(ToSceneString(SceneName::InGame));
+
+					// (仮に変更) もし実装するならここにも同様に追加
+					// ::TransitionManager::Instance().rec.init(30);
+					// changeScene(ToSceneString(SceneName::InGame), 1.0s); 
 				}
 			}
 			else if (m_selectedWorld == 2)
 			{
 				// (ここにWorld 2のステージボタンのロジックを同様に記述)
+				// (ステージ遷移時には同様に TransitionManager::Instance().rec.init(30); と changeScene(..., 1.0s); を呼び出す)
 			}
 		}
 
 		// --- ステージ選択の描画 ---
 		void drawStageSelect() const
 		{
-			FontAsset(U"SelectTitleFont")(U"ステージ選択 (World {})"_fmt(m_selectedWorld)).drawAt(Scene::Center().x, 100);
 
 			// 「戻る」ボタンの描画
-			const RectF backButton{ 20, 20, 150, 50 };
-			drawButton(backButton, U"戻る", backButton.mouseOver(), m_backButtonTexture);
+			const RectF backButton{ 0, 0, 250, 80 };
+			drawButton(backButton, U"", backButton.mouseOver(), m_backButtonTexture);
 
-			const double buttonWidth = 280;
-			const double buttonHeight = 80;
-			const double buttonSpacing = 20;
-			const double startX = Scene::Width() - 320;
+			const double buttonWidth = 400;
+			const double buttonHeight = 150;
+			const double buttonSpacing = 200;
+			const double startX = Scene::Width() - 490;
 			const double startY = 200;
 
 			// 選択中のワールドに応じてボタンを描画
 			if (m_selectedWorld == 1)
 			{
 				const RectF stage1_1_Button{ startX, startY + (buttonHeight + buttonSpacing) * 0, buttonWidth, buttonHeight };
-				drawButton(stage1_1_Button, U"1-1", stage1_1_Button.mouseOver(), m_stageButtonTexture, U"SelectStageFont");
+				drawButton(stage1_1_Button, U"", stage1_1_Button.mouseOver(), m_stageButtonTexture, U"SelectStageFont");
 
 				const RectF stage1_2_Button{ startX, startY + (buttonHeight + buttonSpacing) * 1, buttonWidth, buttonHeight };
-				drawButton(stage1_2_Button, U"1-2", stage1_2_Button.mouseOver(), m_stageButtonTexture, U"SelectStageFont");
+				drawButton(stage1_2_Button, U"", stage1_2_Button.mouseOver(), m_stageButtonTexture, U"SelectStageFont");
 
 				const RectF stage1_3_Button{ startX, startY + (buttonHeight + buttonSpacing) * 2, buttonWidth, buttonHeight };
-				drawButton(stage1_3_Button, U"1-3", stage1_3_Button.mouseOver(), m_stageButtonTexture, U"SelectStageFont");
+				drawButton(stage1_3_Button, U"", stage1_3_Button.mouseOver(), m_stageButtonTexture, U"SelectStageFont");
 			}
 			else if (m_selectedWorld == 2)
 			{

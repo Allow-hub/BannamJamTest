@@ -38,7 +38,6 @@ namespace Jam::Infrastructure
 			for (size_t i = 0; i < json.size(); ++i)
 			{
 				const JSON& item = json[i];
-
 				if (item.getType() != JSONValueType::Object)
 				{
 					Console << U"[EnemyLoader] ⚠ Invalid object at index: " << i;
@@ -53,6 +52,10 @@ namespace Jam::Infrastructure
 				Jam::Domain::EnemyType type;
 				if (typeStr == U"LittleDevil") type = Jam::Domain::EnemyType::LittleDevil;
 				else if (typeStr == U"Ribbon") type = Jam::Domain::EnemyType::Ribbon;
+				else if (typeStr == U"GothicLolitaDoll") type = Jam::Domain::EnemyType::GothicLolitaDoll;
+				else if (typeStr == U"Spider") type = Jam::Domain::EnemyType::Spider;
+				else if (typeStr == U"Eye") type = Jam::Domain::EnemyType::Eye;
+				else if (typeStr == U"Clown") type = Jam::Domain::EnemyType::Clown;
 				else
 				{
 					Console << U"[EnemyLoader] ⚠ Unknown enemy type: " << typeStr;
@@ -80,23 +83,53 @@ namespace Jam::Infrastructure
 					);
 				enemyBody->setLayer(Jam::Domain::Physics::PhysicsLayer::Enemy);
 
-				auto enemy = enemyFactory->createEnemy(type, enemyBody, playerId,eventQueue);
-				if (enemy)
-				{
-					enemyBody->setCollisionListener(enemy);
-					int enemyId = enemyManager->AddEnemy(enemy, U"../Assets/Enemy/" + typeStr + U"/" + typeStr + U"_animation.json");
-					enemyManager->getAnimator(enemyId).AddCondition({ { {U"isRunning", false} }, U"Idle", 0 });
-					enemyManager->getAnimator(enemyId).SetBool(U"isRunning", false);
-				}
-				else
+				auto enemy = enemyFactory->createEnemy(type, enemyBody, playerId, eventQueue);
+				if (!enemy)
 				{
 					Console << U"[EnemyLoader] ❌ Failed to create enemy of type: " << typeStr;
+					continue;
 				}
+
+				//　extra情報を処理
+				if (item.hasElement(U"extra"))
+				{
+					const JSON& extra = item[U"extra"];
+					const JSON& ai = extra[U"ai"];
+
+					// --- Patrol ---
+					if (ai.hasElement(U"patrol"))
+					{
+						const JSON& patrol = ai[U"patrol"];
+						Jam::Domain::Enemy::PatrolRoute route;
+						for (const auto& p : patrol[U"patrolPoints"].arrayView())
+						{
+							route.points << Vec2{ p[U"x"].get<double>(), p[U"y"].get<double>() };
+						}
+						route.loop = patrol[U"loop"].getOr<bool>(false);
+						route.waitTime = patrol[U"waitTime"].getOr<double>(0.0);
+						enemy->setPatrolRoute(route);
+					}
+
+					// --- Chase ---
+					if (ai.hasElement(U"chase"))
+					{
+						const JSON& chase = ai[U"chase"];
+						Jam::Domain::Enemy::ChaseAISettings chaseSettings;
+
+						chaseSettings.loseRange = chase[U"loseRange"].getOr<double>(400.0);
+						chaseSettings.moveSpeedFactor = chase[U"moveSpeedFactor"].getOr<double>(1.2);
+
+						enemy->setChaseSettings(chaseSettings);
+					}
+				}
+	
+
+				enemyBody->setCollisionListener(enemy);
+				int enemyId = enemyManager->AddEnemy(enemy, U"../Assets/Enemy/" + typeStr + U"/" + typeStr + U"_animation.json");
+				enemyManager->getAnimator(enemyId).AddCondition({ { {U"isRunning", false} }, U"Idle", 0 });
+				enemyManager->getAnimator(enemyId).SetBool(U"isRunning", false);
 			}
-
-			return true;
 		}
-
 
 
 		/// @brief JSON ファイルから敵ステータスを読み込む
@@ -157,12 +190,27 @@ namespace Jam::Infrastructure
 				{	
 					outTable[EnemyType::Ribbon] = status;
 				}
+				else if (key == U"GothicLolitaDoll")
+				{
+					outTable[EnemyType::GothicLolitaDoll] = status;
+				}
+				else if (key == U"Spider")
+				{
+					outTable[EnemyType::Spider] = status;
+				}
+				else if (key == U"Eye")
+				{
+					outTable[EnemyType::Eye] = status;
+				}
+				else if (key == U"Clown")
+				{
+					outTable[EnemyType::Clown] = status;
+				}
 				else
 				{
 					Console << U"[EnemyLoader] ⚠ Unknown enemy type: " << key;
 				}
 			}
-
 			return true;
 		}
 	};

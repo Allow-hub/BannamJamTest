@@ -10,6 +10,12 @@ namespace Jam::Foundation
 		Stage1_3
 	};
 
+	struct StageData
+	{
+		Vec2 respawnPosition;  // 落下後のリスタート位置
+		double fallLimitY;     // 落下判定Y位置
+	};
+
 	//ロジックは持たない、他のクラスへの参照は持たない
 	//ステージをまたいで情報をやり取りする
 	class CoreManager
@@ -19,6 +25,7 @@ namespace Jam::Foundation
 		inline static int m_flagmentMemory;
 		static const int m_maxFlagment = 3;
 		inline static double m_timer;
+		inline static StageData m_currentStageData;
 
 	public:
 		static CoreManager& Instance()
@@ -37,6 +44,22 @@ namespace Jam::Foundation
 			default: return U"UnknownStage";
 			}
 		}
+
+		static StageData getStageData(StageName stage)
+		{
+			switch (stage)
+			{
+			case StageName::Stage1_1:
+				return StageData{ Vec2(0, -5), 2000.0 }; // respawn, fallLimitY
+			case StageName::Stage1_2:
+				return StageData{ Vec2(0, -5), 2000.0 };
+			case StageName::Stage1_3:
+				return StageData{ Vec2(0, 300), 550.0 };
+			default:
+				return StageData{ Vec2(0, 0), 1000.0 };
+			}
+		}
+
 
 		static bool getClear()
 		{
@@ -83,6 +106,26 @@ namespace Jam::Foundation
 		static double getTimer()
 		{
 			return m_timer;
+		}
+
+		static void setCurrentStageData(const StageData& data)
+		{
+			m_currentStageData = data;
+		}
+
+		static const StageData& getCurrentStageData()
+		{
+			return m_currentStageData;
+		}
+
+		static void setRespawnPosition(const Vec2& pos)
+		{
+			m_currentStageData.respawnPosition = pos;
+		}
+
+		static void setFallLimitY(double y)
+		{
+			m_currentStageData.fallLimitY = y;
 		}
 
 		// シーン間共通情報（純粋データのみ）

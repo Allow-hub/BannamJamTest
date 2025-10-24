@@ -3,14 +3,8 @@
   "_使い方": {
     "説明": "当たり判定オブジェクトを簡略記法で定義します。",
     "rect": "[x, y, width, height] 形式の配列で位置とサイズを指定します。",
-    "type": "当たり判定の種類を指定します。solid(壁), moving_platform(動く床), breakable(破壊可能), hazard(ダメージ), trigger(イベント)など。",
-    "metadata": "識別用の任意文字列（好きに名前つけちゃって大丈夫です）。",
-    "動く床の設定": {
-      "movementType": "移動タイプ: horizontal(横移動), vertical(縦移動), circular(円運動)",
-      "movementSpeed": "移動速度（ピクセル/秒）。数値が大きいほど速く動きます。",
-      "movementDistance": "移動距離（横・縦移動の場合）または半径（円運動の場合）をピクセル単位で指定。",
-      "loopMovement": "true=ループする, false=一度だけ動く"
-    }
+    "type": "当たり判定の種類を指定します。solid(壁), platform(上から乗れる床), breakable(破壊可能), hazard(ダメージ), trigger(イベント)など。",
+    "metadata": "識別用の任意文字列（スクリプトやイベントで使用）。"
 
   },
   "objects": [
@@ -105,7 +99,7 @@
       "metadata": "ミニ床07"
     },
     {
-      "rect": [ 2500, -400, 2500, 50 ],
+      "rect": [ 2500, -400, 3500, 50 ],
       "type": "solid",
       "metadata": "天井"
     },
@@ -135,7 +129,7 @@
       "metadata": "ダメージ床02"
     },
     {
-      "rect": [ 5600, 0, 450, 850 ],
+      "rect": [ 5600, -500, 450, 1350 ],
       "type": "solid",
       "metadata": "ダメージ床地帯右の壁"
     },
@@ -155,7 +149,7 @@
       "metadata": "Platform_2"
     },
     {
-      "rect": [ 6050, 650, 300, 200 ],
+      "rect": [ 6050, 150, 300, 700 ],
       "type": "solid",
       "metadata": "記憶の欠片の床"
     },
@@ -165,12 +159,12 @@
       "metadata": "ダメージ床終わりの床"
     },
     {
-      "rect": [ 6250, 50, 100, 900 ],
+      "rect": [ 6250, -250, 100, 400 ],
       "type": "solid",
       "metadata": "記憶の欠片の壁"
     },
     {
-      "rect": [ 7000, 900, 300, 65 ],
+      "rect": [ 7000, 500, 300, 65 ],
       "type": "solid",
       "metadata": "テクニック床01"
     },
@@ -180,36 +174,93 @@
       "metadata": "テクニック床02"
     },
     {
-      "rect": [ 7800, -200, 100, 1300 ],
+      "rect": [ 7800, -200, 300, 1500 ],
       "type": "solid",
-      "metadata": "テクニック終わりの床"
+      "metadata": "テクニックの右壁"
     },
     {
-      "rect": [ 600, 600, 150, 30 ],
-      "type": "moving_platform",
-      "metadata": "moving_test_horizontal",
-      "movementType": "horizontal",
-      "movementSpeed": 100,
-      "movementDistance": 300,
-      "loopMovement": true
+      "rect": [ 6000, -700, 3500, 50 ],
+      "type": "solid",
+      "metadata": "天井"
     },
     {
-      "rect": [ 1000, 400, 150, 30 ],
-      "type": "moving_platform",
-      "metadata": "moving_test_vertical",
-      "movementType": "vertical",
-      "movementSpeed": 80,
-      "movementDistance": 250,
-      "loopMovement": true
+      "rect": [ 8400, -700, 2200, 500 ],
+      "type": "solid",
+      "metadata": "天井"
     },
     {
-      "rect": [ 1500, 200, 150, 30 ],
-      "type": "moving_platform",
-      "metadata": "moving_test_circular",
-      "movementType": "circular",
-      "movementSpeed": 60,
-      "movementDistance": 150,
-      "loopMovement": true
+      "rect": [ 8100, 300, 2500, 65 ],
+      "type": "solid",
+      "metadata": "ダメージ床05"
+    },
+    {
+      "rect": [ 10600, -700, 200, 65 ],
+      "type": "solid",
+      "metadata": "回復アイテム天井"
+    },
+    {
+      "rect": [ 9100, 835, 1300, 65 ],
+      "type": "solid",
+      "metadata": "ダメージ床06"
+    },
+    {
+      "rect": [ 10800, -700, 300, 1800 ],
+      "type": "solid",
+      "metadata": "幅跳びの右壁"
+    },
+    {
+      "rect": [ 10400, 800, 600, 100 ],
+      "type": "solid",
+      "metadata": "ダメージ床挟む床01"
+    },
+    {
+      "rect": [ 8800, 800, 300, 100 ],
+      "type": "solid",
+      "metadata": "ダメージ床挟む床02"
+    },
+    {
+      "rect": [ 9800, 365, 50, 50 ],
+      "type": "solid",
+      "metadata": "ジョイント02"
+    },
+    {
+      "rect": [ 8500, 365, 50, 50 ],
+      "type": "solid",
+      "metadata": "ジョイント02"
+    },
+    {
+      "rect": [ 8100, 600, 200, 1500 ],
+      "type": "solid",
+      "metadata": "テクニックの右壁"
+    },
+    {
+      "rect": [ 8600, 900, 80, 80 ],
+      "type": "solid",
+      "metadata": "空中足場01"
+    },
+    {
+      "rect": [ 9500, 1500, 80, 80 ],
+      "type": "solid",
+      "metadata": "空中足場02"
+    },
+    {
+      "rect": [ 10300, 1000, 80, 80 ],
+      "type": "solid",
+      "metadata": "空中足場03"
+    },
+    {
+      "rect": [ 10800, -700, 3500, 500 ],
+      "type": "solid",
+      "metadata": "幅跳びの右壁"
+    },
+    {
+      "rect": [ 0, 1900, 15000, 1500 ],
+      "type": "solid",
+      "metadata": "Platform_2"
     }
+
+
+
+
   ]
 }

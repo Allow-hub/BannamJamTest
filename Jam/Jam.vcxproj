@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -96,7 +96,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <DisableSpecificWarnings>26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:__cplusplus /utf-8 %(AdditionalOptions)</AdditionalOptions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <ForcedIncludeFiles>stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <BuildStlModules>false</BuildStlModules>
@@ -114,8 +114,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="src\Domain\Enemy\Clown.cpp" />
     <ClCompile Include="src\Domain\Enemy\EnemyBase.cpp" />
+    <ClCompile Include="src\Domain\Enemy\Eye.cpp" />
+    <ClCompile Include="src\Domain\Enemy\GothicLolitaDoll.cpp" />
     <ClCompile Include="src\Domain\Enemy\LittleDevil.cpp" />
+    <ClCompile Include="src\Domain\Enemy\Spider.cpp" />
     <ClCompile Include="src\Domain\Player\Player.cpp" />
     <ClCompile Include="src\Domain\Player\Skill\ChokerSkill.cpp" />
     <ClCompile Include="src\Infrastructure\StageFactory.cpp" />
@@ -151,8 +155,16 @@
     <Image Include="App\example\windmill.png" />
     <Image Include="App\icon.ico" />
     <Image Include="Assets\Cursor\GameCursor.png" />
+    <Image Include="Assets\Enemy\Clown\idle_0.png" />
+    <Image Include="Assets\Enemy\Clown\idle_1.png" />
+    <Image Include="Assets\Enemy\Eye\idle_0.png" />
+    <Image Include="Assets\Enemy\Eye\idle_1.png" />
+    <Image Include="Assets\Enemy\GothicLolitaDoll\idle_0.png" />
+    <Image Include="Assets\Enemy\GothicLolitaDoll\idle_1.png" />
     <Image Include="Assets\Enemy\LittleDevil\idle_0.png" />
     <Image Include="Assets\Enemy\LittleDevil\idle_1.png" />
+    <Image Include="Assets\Enemy\Spider\idle_0.png" />
+    <Image Include="Assets\Enemy\Spider\idle_1.png" />
     <Image Include="Assets\Player\idle_0.png" />
     <Image Include="Assets\Player\idle_1.png" />
     <Image Include="Assets\Player\idle_2.png" />
@@ -344,6 +356,10 @@
     <None Include="App\example\toml\config.toml" />
     <None Include="App\example\toml\test.toml" />
     <None Include="App\example\zip\zip_test.zip" />
+    <None Include="Assets\Enemy\Clown\Clown_animation.json" />
+    <None Include="Assets\Enemy\Eye\Eye_animation.json" />
+    <None Include="Assets\Enemy\GothicLolitaDoll\GothicLolitaDoll_animation.json" />
+    <None Include="Assets\Enemy\Spider\Spider_animation.json" />
     <None Include="Assets\Stage\background.json" />
     <None Include="Assets\Stage\stage1.json" />
     <None Include="Assets\Story\stage1_1.csv" />
@@ -370,12 +386,17 @@
     <Xml Include="App\example\xml\test.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Domain\Enemy\Clown.h" />
+    <ClInclude Include="src\Domain\Enemy\EnemyAI\AttackAI.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyAI\IEnemyAI.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyAI\PatrolAI.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyBase.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyType.h" />
+    <ClInclude Include="src\Domain\Enemy\Eye.h" />
+    <ClInclude Include="src\Domain\Enemy\GothicLolitaDoll.h" />
     <ClInclude Include="src\Domain\Enemy\LittleDevil.h" />
+    <ClInclude Include="src\Domain\Enemy\Spider.h" />
     <ClInclude Include="src\Domain\Events\GameEvents.h" />
     <ClInclude Include="src\Domain\IInputService.h" />
     <ClInclude Include="src\Domain\ITakeDamageable.h" />
@@ -416,12 +437,14 @@
     <ClInclude Include="src\Presentation\CameraManager.h" />
     <ClInclude Include="src\Presentation\EffectManager.h" />
     <ClInclude Include="src\Presentation\EnemyManager.h" />
+    <ClInclude Include="src\Presentation\FadeManager.h" />
     <ClInclude Include="src\Presentation\PlayerManager.h" />
     <ClInclude Include="src\Presentation\Scenes\GameScene.h" />
     <ClInclude Include="src\Presentation\Scenes\ResultScene.h" />
     <ClInclude Include="src\Presentation\Scenes\SelectScene.h" />
     <ClInclude Include="src\Presentation\Scenes\StoryScene.h" />
     <ClInclude Include="src\Presentation\Scenes\TitleScene.h" />
+    <ClInclude Include="src\Presentation\Scenes\TransitionManager.h" />
     <ClInclude Include="src\Presentation\Stage\BackgroundRenderer.h" />
     <ClInclude Include="src\Presentation\StoryManager.h" />
     <ClInclude Include="src\UseCase\AttackProcessor.h" />
