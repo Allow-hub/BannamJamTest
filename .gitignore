@@ -49,19 +49,5 @@
 *.db-shm
 *.db-wal
 
-Jam/Intermediate/Jam/Debug/Intermediate/Jam(debug).exe.recipe
-Jam/Intermediate/Jam/Debug/Intermediate/Jam.log
-Jam/Intermediate/Jam/Debug/Intermediate/Jam.tlog/CL.command.1.tlog
-Jam/Intermediate/Jam/Debug/Intermediate/Jam.tlog/Cl.items.tlog
-Jam/Intermediate/Jam/Debug/Intermediate/Jam.tlog/CL.read.1.tlog
-Jam/Intermediate/Jam/Debug/Intermediate/Jam.tlog/CL.write.1.tlog
-Jam/Intermediate/Jam/Debug/Intermediate/Jam.tlog/Jam.lastbuildstate
-Jam/Intermediate/Jam/Debug/Intermediate/Jam.tlog/link.command.1.tlog
-Jam/Intermediate/Jam/Debug/Intermediate/Jam.tlog/link.read.1.tlog
-Jam/Intermediate/Jam/Debug/Intermediate/Jam.tlog/link.secondary.1.tlog
-Jam/Intermediate/Jam/Debug/Intermediate/Jam.tlog/link.write.1.tlog
-Jam/Intermediate/Jam/Debug/Intermediate/Jam.tlog/rc.command.1.tlog
-Jam/Intermediate/Jam/Debug/Intermediate/Jam.tlog/rc.read.1.tlog
-Jam/Intermediate/Jam/Debug/Intermediate/Jam.tlog/rc.write.1.tlog
-Jam/Intermediate/Jam/Debug/Intermediate/vc143.idb
-Jam/Intermediate/Jam/Debug/Jam(debug).exp
+
+Jam/Intermediate/
