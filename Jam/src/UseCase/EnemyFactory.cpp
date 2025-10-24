@@ -1,8 +1,11 @@
 ﻿#include "EnemyFactory.h"
 #include "../Domain/Enemy/LittleDevil.h"
-#include "../Domain/Enemy/Ribbon.h"
 #include "AttackProcessor.h"
 #include "../Domain/Events/GameEvents.h"
+#include "../Domain/Enemy/GothicLolitaDoll.h"
+#include "../Domain/Enemy/Spider.h"
+#include "../Domain/Enemy/Eye.h"
+#include "../Domain/Enemy/Clown.h"
 
 namespace Jam::UseCase
 {
@@ -23,9 +26,20 @@ namespace Jam::UseCase
 			break;
 
 		case Jam::Domain::EnemyType::Ribbon:
-			enemy = std::make_shared<Ribbon>(body, playerId, eventQueue);
+			// TODO: Ribbonの実装
+			return nullptr;
+		case Jam::Domain::EnemyType::GothicLolitaDoll:
+			enemy = std::make_shared<GothicLolitaDoll>(body, playerId, eventQueue);
 			break;
-
+		case Jam::Domain::EnemyType::Spider:
+			enemy = std::make_shared<Spider>(body, playerId, eventQueue);
+			break;
+		case Jam::Domain::EnemyType::Eye:
+			enemy = std::make_shared<Eye>(body, playerId, eventQueue);
+			break;
+		case Jam::Domain::EnemyType::Clown:
+			enemy = std::make_shared<Clown>(body, playerId, eventQueue);
+			break;
 		default:
 			Print << U"[EnemyFactory] ⚠ Unknown enemy type!";
 			return nullptr;
@@ -45,7 +59,7 @@ namespace Jam::UseCase
 		{
 			enemy->setStatus(it->second);
 			//Print << U"[EnemyFactory] ✅ Applied status: HP=" << it->second.hp
-				//<< U", Speed=" << it->second.moveSpeed;
+			//	<< U", Speed=" << it->second.moveSpeed;
 		}
 
 		//攻撃対象に追加

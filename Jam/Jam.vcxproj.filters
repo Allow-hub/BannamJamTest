@@ -8,7 +8,10 @@
     <ClCompile Include="src\Domain\Player\Skill\ChokerSkill.cpp" />
     <ClCompile Include="src\UseCase\EnemyFactory.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="src\Domain\Enemy\Ribbon.cpp" />
+    <ClCompile Include="src\Domain\Enemy\GothicLolitaDoll.cpp" />
+    <ClCompile Include="src\Domain\Enemy\Spider.cpp" />
+    <ClCompile Include="src\Domain\Enemy\Eye.cpp" />
+    <ClCompile Include="src\Domain\Enemy\Clown.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
@@ -76,9 +79,11 @@
     <ClInclude Include="src\UseCase\StageService.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyAI\AttackAI.h" />
-    <ClInclude Include="src\Domain\Enemy\Ribbon.h" />
-    <ClInclude Include="src\Domain\Enemy\EnemyAI\PatrolAISettings.h" />
-    <ClInclude Include="src\Domain\Stage\MovingPlatformStage.h" />
+    <ClInclude Include="src\Presentation\Scenes\TransitionManager.h" />
+    <ClInclude Include="src\Domain\Enemy\GothicLolitaDoll.h" />
+    <ClInclude Include="src\Domain\Enemy\Spider.h" />
+    <ClInclude Include="src\Domain\Enemy\Eye.h" />
+    <ClInclude Include="src\Domain\Enemy\Clown.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />
@@ -126,7 +131,7 @@
     <Image Include="App\icon.ico" />
     <Image Include="Assets\Cursor\GameCursor.png" />
     <Image Include="Assets\Enemy\LittleDevil\idle_0.png" />
-    <Image Include="Assets\Enemy\LittleDevil\idle_1.png" />
+    <Image Include="Assets\Enemy\GothicLolitaDoll\idle_1.png" />
     <Image Include="Assets\Player\idle_0.png" />
     <Image Include="Assets\Player\idle_1.png" />
     <Image Include="Assets\Player\idle_2.png" />
@@ -139,21 +144,14 @@
     <Image Include="Assets\Story\Portrait\Player\player_smiling.png" />
     <Image Include="Assets\Story\Portrait\Player\player_surprised.png" />
     <Image Include="Assets\Story\Portrait\Player\player_suspicious.png" />
-    <Image Include="Assets\Stage\BG.png" />
-    <Image Include="Assets\Stage\Normal_Test.png" />
-    <Image Include="Assets\Stage\Platform_Test.png" />
-    <Image Include="Assets\Enemy\Ribbon\idle_0.png" />
-    <Image Include="Assets\Enemy\Ribbon\idle_1.png" />
-    <Image Include="Assets\Select\serect-area_BACK.png" />
-    <Image Include="Assets\Select\serect-AREA_back-screen.png" />
-    <Image Include="Assets\Select\serect-area_stage01.png" />
-    <Image Include="Assets\Select\serect-area_stage02.png" />
-    <Image Include="Assets\Select\serect-area_stage03.png" />
-    <Image Include="Assets\Select\serect-stage_back-screen.png" />
-    <Image Include="Assets\Select\stage-serect_BACK.png" />
-    <Image Include="Assets\Select\stage-serect_stage1-1.png" />
-    <Image Include="Assets\Select\stage-serect_stage1-2.png" />
-    <Image Include="Assets\Select\stage-serect_stage1-3.png" />
+    <Image Include="Assets\Enemy\GothicLolitaDoll\idle_0.png" />
+    <Image Include="Assets\Enemy\Eye\idle_1.png" />
+    <Image Include="Assets\Enemy\Eye\idle_0.png" />
+    <Image Include="Assets\Enemy\Clown\idle_1.png" />
+    <Image Include="Assets\Enemy\Clown\idle_0.png" />
+    <Image Include="Assets\Enemy\Spider\idle_1.png" />
+    <Image Include="Assets\Enemy\Spider\idle_0.png" />
+    <Image Include="Assets\Enemy\LittleDevil\idle_1.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />
@@ -327,10 +325,10 @@
     <None Include="App\example\shader\hlsl\swirl.hlsl" />
     <None Include="App\example\shader\hlsl\terrain_forward.hlsl" />
     <None Include="App\example\shader\hlsl\terrain_normal.hlsl" />
-    <None Include="Assets\Stage\stage1.json" />
-    <None Include="Assets\Enemy\Ribbon\Ribbon_animation.json" />
-    <None Include="src\Presentation\PresentationDoc.md" />
-    <None Include="src\Domain\Stage\task_stage.md" />
+    <None Include="Assets\Enemy\Eye\Eye_animation.json" />
+    <None Include="Assets\Enemy\Clown\Clown_animation.json" />
+    <None Include="Assets\Enemy\GothicLolitaDoll\GothicLolitaDoll_animation.json" />
+    <None Include="Assets\Enemy\Spider\Spider_animation.json" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="App\dll\soundtouch\COPYING.TXT" />

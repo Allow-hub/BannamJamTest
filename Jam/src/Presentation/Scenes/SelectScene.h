@@ -2,6 +2,7 @@
 #include <Siv3D.hpp> // Siv3D v0.6.14
 #include "TitleScene.h"
 #include "../../Foundation/CoreManager.h"
+#include "TransitionManager.h" // トランジションマネージャーをインクルード
 
 namespace Jam::Presentation::Scenes
 {
@@ -51,6 +52,7 @@ namespace Jam::Presentation::Scenes
 			case State::StageSelect:
 				updateStageSelect();
 				break;
+
 			}
 		}
 
@@ -68,6 +70,34 @@ namespace Jam::Presentation::Scenes
 				break;
 			}
 		}
+
+		// --- (ここから追加) トランジション用の描画 ---
+
+		// シーンがフェードインする（現れる）ときの描画
+		void drawFadeIn(double t) const override
+		{
+			// 1. シーンを通常通り描画
+			draw();
+
+			// 2. トランジション（フェードイン）を上から描画
+			//    t が 0.0 -> 1.0 になるにつれて、RectSlideが画面外に消えていく
+			//    (TransitionManagerはグローバル名前空間と仮定)
+			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeIn(t);
+		}
+
+		// シーンがフェードアウトする（消える）ときの描画
+		void drawFadeOut(double t) const override
+		{
+			// 1. シーンを通常通り描画
+			draw();
+
+			// 2. トランジション（フェードアウト）を上から描画
+			//    t が 0.0 -> 1.0 になるにつれて、RectSlideが画面を覆っていく
+			//    (TransitionManagerはグローバル名前空間と仮定)
+			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeOut(t);
+		}
+
+		// --- (ここまで追加) ---
 
 	private:
 		// --- ワールド選択のロジック ---
@@ -110,9 +140,6 @@ namespace Jam::Presentation::Scenes
 		// --- ワールド選択の描画 ---
 		void drawWorldSelect() const
 		{
-			
-
-
 			const double buttonWidth = 400;
 			const double buttonHeight = 150;
 			const double buttonSpacing = 200;
@@ -130,8 +157,8 @@ namespace Jam::Presentation::Scenes
 			// World 3 ボタン
 			const RectF world3Button{ startX, startY + (buttonHeight + buttonSpacing) * 2, buttonWidth, buttonHeight };
 			drawButton(world3Button, U"", world3Button.mouseOver(), m_worldButtonTexture);
-
 		}
+
 		// --- ステージ選択のロジック ---
 		void updateStageSelect()
 		{
@@ -157,7 +184,8 @@ namespace Jam::Presentation::Scenes
 				{
 					Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_1;
 					Print << U"Stage 1-1 Selected. CoreManager set.";
-					changeScene(ToSceneString(SceneName::Story));
+					// (変更) 1.0秒のトランジション時間を指定
+					changeScene(ToSceneString(SceneName::Story), 1.0s);
 				}
 
 				const RectF stage1_2_Button{ startX, startY + (buttonHeight + buttonSpacing) * 1, buttonWidth, buttonHeight };
@@ -165,7 +193,9 @@ namespace Jam::Presentation::Scenes
 				{
 					Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_2;
 					Print << U"Stage 1-2 Selected. CoreManager set.";
-					changeScene(ToSceneString(SceneName::Story));
+
+					// (変更) 1.0秒のトランジション時間を指定
+					changeScene(ToSceneString(SceneName::Story), 1.0s);
 				}
 
 				const RectF stage1_3_Button{ startX, startY + (buttonHeight + buttonSpacing) * 2, buttonWidth, buttonHeight };
@@ -173,12 +203,16 @@ namespace Jam::Presentation::Scenes
 				{
 					// m_coreManager->stageInfo.stageName = Jam::Foundation::StageName::Stage1_3; // CoreManagerのenumに追加が必要
 					Print << U"Stage 1-3 Selected. (Not Implemented)";
-					// changeScene(ToSceneString(SceneName::InGame));
+
+					// (仮に変更) もし実装するならここにも同様に追加
+					// ::TransitionManager::Instance().rec.init(30);
+					// changeScene(ToSceneString(SceneName::InGame), 1.0s); 
 				}
 			}
 			else if (m_selectedWorld == 2)
 			{
 				// (ここにWorld 2のステージボタンのロジックを同様に記述)
+				// (ステージ遷移時には同様に TransitionManager::Instance().rec.init(30); と changeScene(..., 1.0s); を呼び出す)
 			}
 		}
 

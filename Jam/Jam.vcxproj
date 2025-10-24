@@ -114,9 +114,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="src\Domain\Enemy\Clown.cpp" />
     <ClCompile Include="src\Domain\Enemy\EnemyBase.cpp" />
+    <ClCompile Include="src\Domain\Enemy\Eye.cpp" />
+    <ClCompile Include="src\Domain\Enemy\GothicLolitaDoll.cpp" />
     <ClCompile Include="src\Domain\Enemy\LittleDevil.cpp" />
-    <ClCompile Include="src\Domain\Enemy\Ribbon.cpp" />
+    <ClCompile Include="src\Domain\Enemy\Spider.cpp" />
     <ClCompile Include="src\Domain\Player\Player.cpp" />
     <ClCompile Include="src\Domain\Player\Skill\ChokerSkill.cpp" />
     <ClCompile Include="src\UseCase\EnemyFactory.cpp" />
@@ -151,29 +154,22 @@
     <Image Include="App\example\windmill.png" />
     <Image Include="App\icon.ico" />
     <Image Include="Assets\Cursor\GameCursor.png" />
+    <Image Include="Assets\Enemy\Clown\idle_0.png" />
+    <Image Include="Assets\Enemy\Clown\idle_1.png" />
+    <Image Include="Assets\Enemy\Eye\idle_0.png" />
+    <Image Include="Assets\Enemy\Eye\idle_1.png" />
+    <Image Include="Assets\Enemy\GothicLolitaDoll\idle_0.png" />
     <Image Include="Assets\Enemy\LittleDevil\idle_0.png" />
+    <Image Include="Assets\Enemy\GothicLolitaDoll\idle_1.png" />
     <Image Include="Assets\Enemy\LittleDevil\idle_1.png" />
-    <Image Include="Assets\Enemy\Ribbon\idle_0.png" />
-    <Image Include="Assets\Enemy\Ribbon\idle_1.png" />
+    <Image Include="Assets\Enemy\Spider\idle_0.png" />
+    <Image Include="Assets\Enemy\Spider\idle_1.png" />
     <Image Include="Assets\Player\idle_0.png" />
     <Image Include="Assets\Player\idle_1.png" />
     <Image Include="Assets\Player\idle_2.png" />
     <Image Include="Assets\Player\run_0.png" />
     <Image Include="Assets\Player\run_1.png" />
     <Image Include="Assets\Player\Skill\Bomb\Bomb.png" />
-    <Image Include="Assets\Select\serect-AREA_back-screen.png" />
-    <Image Include="Assets\Select\serect-area_BACK.png" />
-    <Image Include="Assets\Select\serect-area_stage01.png" />
-    <Image Include="Assets\Select\serect-area_stage02.png" />
-    <Image Include="Assets\Select\serect-area_stage03.png" />
-    <Image Include="Assets\Select\serect-stage_back-screen.png" />
-    <Image Include="Assets\Select\stage-serect_BACK.png" />
-    <Image Include="Assets\Select\stage-serect_stage1-1.png" />
-    <Image Include="Assets\Select\stage-serect_stage1-2.png" />
-    <Image Include="Assets\Select\stage-serect_stage1-3.png" />
-    <Image Include="Assets\Stage\BG.png" />
-    <Image Include="Assets\Stage\Normal_Test.png" />
-    <Image Include="Assets\Stage\Platform_Test.png" />
     <Image Include="Assets\Stage\White_Test.png" />
     <Image Include="Assets\Story\background_stage1_1.png" />
     <Image Include="Assets\Story\Portrait\Player\player_normal.png" />
@@ -354,12 +350,12 @@
     <None Include="App\example\toml\config.toml" />
     <None Include="App\example\toml\test.toml" />
     <None Include="App\example\zip\zip_test.zip" />
-    <None Include="Assets\Enemy\Ribbon\Ribbon_animation.json" />
+    <None Include="Assets\Enemy\Clown\Clown_animation.json" />
+    <None Include="Assets\Enemy\Eye\Eye_animation.json" />
+    <None Include="Assets\Enemy\GothicLolitaDoll\GothicLolitaDoll_animation.json" />
+    <None Include="Assets\Enemy\Spider\Spider_animation.json" />
     <None Include="Assets\Stage\background.json" />
-    <None Include="Assets\Stage\stage1.json" />
     <None Include="Assets\Story\stage1_1.csv" />
-    <None Include="src\Domain\Stage\task_stage.md" />
-    <None Include="src\Presentation\PresentationDoc.md" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="App\example\shot.mp3" />
@@ -383,15 +379,17 @@
     <Xml Include="App\example\xml\test.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Domain\Enemy\Clown.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyAI\AttackAI.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyAI\IEnemyAI.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyAI\PatrolAI.h" />
-    <ClInclude Include="src\Domain\Enemy\EnemyAI\PatrolAISettings.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyBase.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyType.h" />
+    <ClInclude Include="src\Domain\Enemy\Eye.h" />
+    <ClInclude Include="src\Domain\Enemy\GothicLolitaDoll.h" />
     <ClInclude Include="src\Domain\Enemy\LittleDevil.h" />
-    <ClInclude Include="src\Domain\Enemy\Ribbon.h" />
+    <ClInclude Include="src\Domain\Enemy\Spider.h" />
     <ClInclude Include="src\Domain\Events\GameEvents.h" />
     <ClInclude Include="src\Domain\IInputService.h" />
     <ClInclude Include="src\Domain\ITakeDamageable.h" />
@@ -406,7 +404,6 @@
     <ClInclude Include="src\Domain\Player\Player.h" />
     <ClInclude Include="src\Domain\Stage\BackgroundTypes.h" />
     <ClInclude Include="src\Domain\Stage\IStage.h" />
-    <ClInclude Include="src\Domain\Stage\MovingPlatformStage.h" />
     <ClInclude Include="src\Domain\Stage\NormalStage.h" />
     <ClInclude Include="src\Domain\Stage\StageTypes.h" />
     <ClInclude Include="src\Domain\StoryData.h" />
@@ -439,6 +436,7 @@
     <ClInclude Include="src\Presentation\Scenes\SelectScene.h" />
     <ClInclude Include="src\Presentation\Scenes\StoryScene.h" />
     <ClInclude Include="src\Presentation\Scenes\TitleScene.h" />
+    <ClInclude Include="src\Presentation\Scenes\TransitionManager.h" />
     <ClInclude Include="src\Presentation\Stage\BackgroundRenderer.h" />
     <ClInclude Include="src\Presentation\StoryManager.h" />
     <ClInclude Include="src\UseCase\AttackProcessor.h" />
