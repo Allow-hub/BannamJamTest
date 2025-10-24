@@ -98,11 +98,11 @@ namespace Jam::Domain::Enemy
 		{
 			if (plPos.x >= enePos.x)
 			{
-				m_body->applyImpulse(Vec2{ 2000,0 });
+				m_body->applyImpulse(Vec2{ 1500,0 });
 			}
 			else
 			{
-				m_body->applyImpulse(Vec2{ -2000,0 });
+				m_body->applyImpulse(Vec2{ -1500,0 });
 			}
 			attackState = AttackState::EndAttack;
 		}break;
