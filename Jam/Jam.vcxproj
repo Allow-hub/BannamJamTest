@@ -119,6 +119,7 @@
     <ClCompile Include="src\Domain\Enemy\Eye.cpp" />
     <ClCompile Include="src\Domain\Enemy\GothicLolitaDoll.cpp" />
     <ClCompile Include="src\Domain\Enemy\LittleDevil.cpp" />
+    <ClCompile Include="src\Domain\Enemy\Ribbon.cpp" />
     <ClCompile Include="src\Domain\Enemy\Spider.cpp" />
     <ClCompile Include="src\Domain\Player\Player.cpp" />
     <ClCompile Include="src\Domain\Player\Skill\ChokerSkill.cpp" />
@@ -389,6 +390,7 @@
     <ClInclude Include="src\Domain\Enemy\Eye.h" />
     <ClInclude Include="src\Domain\Enemy\GothicLolitaDoll.h" />
     <ClInclude Include="src\Domain\Enemy\LittleDevil.h" />
+    <ClInclude Include="src\Domain\Enemy\Ribbon.h" />
     <ClInclude Include="src\Domain\Enemy\Spider.h" />
     <ClInclude Include="src\Domain\Events\GameEvents.h" />
     <ClInclude Include="src\Domain\IInputService.h" />
