@@ -35,8 +35,6 @@ namespace Jam::Domain::Enemy
 			{
 				enemy.onAIEvent(EnemyAIEvent::PlayerLost);
 			}
-
-
 			// フック
 			enemy.onChaseUpdate(deltaTime);
 		}

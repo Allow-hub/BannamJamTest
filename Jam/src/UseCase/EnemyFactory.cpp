@@ -2,6 +2,7 @@
 #include "../Domain/Enemy/LittleDevil.h"
 #include "AttackProcessor.h"
 #include "../Domain/Events/GameEvents.h"
+#include "../Domain/Enemy/Ribbon.h"
 #include "../Domain/Enemy/GothicLolitaDoll.h"
 #include "../Domain/Enemy/Spider.h"
 #include "../Domain/Enemy/Eye.h"
@@ -24,10 +25,9 @@ namespace Jam::UseCase
 		case Jam::Domain::EnemyType::LittleDevil:
 			enemy = std::make_shared<LittleDevil>(body, playerId, eventQueue);
 			break;
-
 		case Jam::Domain::EnemyType::Ribbon:
-			// TODO: Ribbonの実装
-			return nullptr;
+			enemy = std::make_shared<Ribbon>(body, playerId, eventQueue);
+			break;
 		case Jam::Domain::EnemyType::GothicLolitaDoll:
 			enemy = std::make_shared<GothicLolitaDoll>(body, playerId, eventQueue);
 			break;

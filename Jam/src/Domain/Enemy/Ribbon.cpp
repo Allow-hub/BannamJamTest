@@ -43,7 +43,8 @@ namespace Jam::Domain::Enemy
 
 		case EnemyAIEvent::ReachedGoal:
 		{
-			Print << U"ChangeAi2Attack(仮)";
+			Print << U"ChangeAi2Attack";
+			changeAI(AIType::Attack);
 		}break;
 
 		default:
@@ -53,6 +54,7 @@ namespace Jam::Domain::Enemy
 
 	void Ribbon::onPatrolEnter()
 	{
+
 	}
 
 	void Ribbon::onPatrolUpdate(double deltaTime)
@@ -60,20 +62,15 @@ namespace Jam::Domain::Enemy
 		Vec2 plPos = getPlayerPos();
 		Vec2 enePos = getPosition();
 		Vec2 vector = plPos - enePos;
-		//プレイヤーと敵の距離
 		const double distance = vector.length();
-		//探知範囲
+
 		double foundRange = 400.0f;
 
 		if (distance <= foundRange)
 		{
+			EnemyAIEvent::PlayerFound;
 			onAIEvent(EnemyAIEvent::PlayerFound);
 		}
-	}
-
-	void Ribbon::onChaseUpdate(double DeltaTime)
-	{
-
 	}
 
 	void Ribbon::onChaseEnter()
@@ -81,13 +78,29 @@ namespace Jam::Domain::Enemy
 
 	}
 
-	void Ribbon::onAttackUpdate(double deltaTime)
+	void Ribbon::onChaseUpdate(double DeltaTime)
 	{
+
 	}
 
 	void Ribbon::onAttackEnter()
 	{
-		
+
+	}
+
+	void Ribbon::onAttackUpdate(double deltaTime)
+	{
+		Vec2 plPos = getPlayerPos();
+		Vec2 enePos = getPosition();
+
+		if (plPos.x >= enePos.x)
+		{
+
+		}
+		else
+		{
+
+		}
 	}
 
 	void Ribbon::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
