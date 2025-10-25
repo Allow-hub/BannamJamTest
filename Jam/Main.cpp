@@ -8,6 +8,7 @@
 #include "src/Presentation/AudioService.h"
 #include "src/Presentation/Scenes/ResultScene.h"
 #include "src/Presentation/Scenes/TransitionManager.h"
+#include "src/Presentation/SettingManager.h"
 
 using App = SceneManager<String>;
 
@@ -35,6 +36,7 @@ void Main()
 	audioService.init();
 
 	Jam::Presentation::Scenes::TransitionManager::Instance().rec.init(30);
+	Jam::Presentation::SettingManager::Instance().init();//設定画面の管理クラスを初期化
 
 	App manager;
 

@@ -85,6 +85,7 @@
     <ClInclude Include="src\Domain\Enemy\Clown.h" />
     <ClInclude Include="src\Domain\Enemy\Ribbon.h" />
     <ClInclude Include="src\Presentation\PostEffect\BloomManager.h" />
+    <ClInclude Include="src\Presentation\SettingManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />

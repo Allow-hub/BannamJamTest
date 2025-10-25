@@ -31,19 +31,19 @@ namespace Jam::Domain::Enemy
 		{
 		case EnemyAIEvent::PlayerFound:
 		{
-			Print << U"ChangeAi2Chase";
+			//Print << U"ChangeAi2Chase";
 			changeAI(AIType::Chase);
 		}break;
 
 		case EnemyAIEvent::PlayerLost:
 		{
-			Print << U"ChangeAi2Patrol";
+			//Print << U"ChangeAi2Patrol";
 			changeAI(AIType::Patrol);
 		}break;
 
 		case EnemyAIEvent::ReachedGoal:
 		{
-			Print << U"ChangeAi2Attack";
+			//Print << U"ChangeAi2Attack";
 			changeAI(AIType::Attack);
 		}break;
 

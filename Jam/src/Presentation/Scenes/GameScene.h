@@ -32,6 +32,7 @@
 #include "../../Presentation/EffectManager.h"
 #include "../../Presentation/FadeManager.h"
 #include "../PostEffect/BloomManager.h"
+#include "../SettingManager.h"
 
 
 namespace Jam::Presentation::Scenes
@@ -251,14 +252,20 @@ namespace Jam::Presentation::Scenes
 
 		void update() override
 		{
-			Jam::Foundation::CoreManager::Instance().addTimer(Scene::DeltaTime());
+			auto& core = Jam::Foundation::CoreManager::Instance();
+			core.addTimer(Scene::DeltaTime());
+
 			auto& cursorUtil = Jam::Infrastructure::CursorUtil::instance();
 			//cursorUtil.registerCursorFromImage(U"../Assets/Cursor/GameCursor.png", Jam::Infrastructure::CursorStyle::Game);
 			cursorUtil.setCursor(CursorStyle::Cross);
 			cursorUtil.setClipWindowCuror(true);
 			m_playerService->update(Scene::DeltaTime());
 			m_playerManager->update();
-
+			if (core.getPause())
+			{
+				Jam::Presentation::SettingManager::Instance().update();
+				return;
+			}
 			// Stage更新
 			if (m_stageManager)
 			{
@@ -307,6 +314,11 @@ namespace Jam::Presentation::Scenes
 			Scene::SetBackground(ColorF{ 0.9, 0.9, 1.0 });
 
 			{
+				if (Jam::Foundation::CoreManager::Instance().getPause())
+				{
+					Jam::Presentation::SettingManager::Instance().draw();
+					return;
+				}
 				//const auto t = Jam::Presentation::BloomManager::getInstance().getRenderTarget();
 				const auto transformer = m_cameraManager->createTransformer();
 				const Vec2 cameraOffset = m_cameraManager->getCameraOffset();
