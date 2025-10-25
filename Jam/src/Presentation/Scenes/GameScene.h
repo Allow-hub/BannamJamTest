@@ -31,6 +31,7 @@
 #include "../../UseCase/EffectEvents.h"
 #include "../../Presentation/EffectManager.h"
 #include "../../Presentation/FadeManager.h"
+#include "../PostEffect/BloomManager.h"
 
 
 namespace Jam::Presentation::Scenes
@@ -244,6 +245,8 @@ namespace Jam::Presentation::Scenes
 			config.gridSize = 100.0;
 			config.fontSize = 16;
 			Jam::Util::GridRenderer::instance().setConfig(config);
+			BloomManager::getInstance().setIntensities(0.03, 0.06, 0.1, 0.3);
+			BloomManager::getInstance().setVignette(0.3, 0.5);
 		}
 
 		void update() override
@@ -304,6 +307,7 @@ namespace Jam::Presentation::Scenes
 			Scene::SetBackground(ColorF{ 0.9, 0.9, 1.0 });
 
 			{
+				//const auto t = Jam::Presentation::BloomManager::getInstance().getRenderTarget();
 				const auto transformer = m_cameraManager->createTransformer();
 				const Vec2 cameraOffset = m_cameraManager->getCameraOffset();
 
@@ -352,10 +356,9 @@ namespace Jam::Presentation::Scenes
 					m_enemyManager->draw();
 				}
 				m_effectManager->draw();
-
 				//Jam::Util::GridRenderer::instance().draw();
 			}
-
+			//BloomManager::getInstance().draw();
 			//フェードのDraw
 			Jam::Presentation::FadeManager::instance().draw();
 		}

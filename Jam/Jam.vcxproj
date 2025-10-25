@@ -431,6 +431,7 @@
     <ClInclude Include="src\Presentation\EnemyManager.h" />
     <ClInclude Include="src\Presentation\FadeManager.h" />
     <ClInclude Include="src\Presentation\PlayerManager.h" />
+    <ClInclude Include="src\Presentation\PostEffect\BloomManager.h" />
     <ClInclude Include="src\Presentation\Scenes\GameScene.h" />
     <ClInclude Include="src\Presentation\Scenes\ResultScene.h" />
     <ClInclude Include="src\Presentation\Scenes\SelectScene.h" />
