@@ -83,9 +83,9 @@ C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\StoryManager.h(30,
   
      ライブラリ C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.lib とオブジェクト C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exp を作成中
   コード生成しています。
-  16 of 10778 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
-    1 functions were new in current compilation
-    8 functions had inline decision re-evaluated but remain unchanged
+  53 of 10786 functions ( 0.5%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    34 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   Jam.vcxproj -> C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exe
   C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exe

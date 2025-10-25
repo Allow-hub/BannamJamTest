@@ -36,9 +36,11 @@ void Main()
 	audioService.init();
 
 	Jam::Presentation::Scenes::TransitionManager::Instance().rec.init(30);
-	Jam::Presentation::SettingManager::Instance().init();//設定画面の管理クラスを初期化
 
 	App manager;
+	auto& settingMgr = Jam::Presentation::SettingManager::Instance();
+	settingMgr.init();
+	settingMgr.setSceneManager(&manager);
 
 	manager.add<Jam::Presentation::Scenes::TitleScene>(
 		Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::Title));
