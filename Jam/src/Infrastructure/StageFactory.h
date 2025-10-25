@@ -53,6 +53,12 @@ namespace Jam::Infrastructure {
          * StageTypeから適切な物理フィルターを取得
          */
         static Domain::Physics::PhysicsLayer getPhysicsLayerFromType(Domain::Stage::StageType type);
+        
+        /**
+         * groundSideに基づいてオブジェクトを展開
+         * 1つのオブジェクトから壁+床の複数オブジェクトを生成
+         */
+        static Array<Domain::Stage::StageObject> expandObjectByGroundSide(const Domain::Stage::StageObject& obj);
     };
 }
 

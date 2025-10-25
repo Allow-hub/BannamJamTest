@@ -106,6 +106,11 @@ namespace Jam::Infrastructure::Stage {
 				? objJson[U"metadata"].getString()
 				: U"";
 
+			// 地上判定の面を解析(デフォルトは上面のみ)
+			obj.groundSide = objJson.hasElement(U"groundSide")
+				? Jam::Domain::Stage::stringToGroundSide(objJson[U"groundSide"].getString())
+				: Jam::Domain::Stage::GroundSide::Up;
+
 			// 動くプラットフォーム用のデータ解析
 			if (obj.type == Jam::Domain::Stage::StageType::MovingPlatform) {
 				// 移動タイプの解析

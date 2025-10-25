@@ -14,6 +14,7 @@ namespace Jam::Domain::Stage {
 		Hazard = 3,     // ダメージゾーン
 		Trigger = 4,    // イベントトリガー
 		Breakable = 5,  // 破壊可能な壁
+		Wall = 6,        // 壁（地上判定なし）
 	};
 
 	// 動く床の移動タイプ
@@ -23,11 +24,19 @@ namespace Jam::Domain::Stage {
 		Circular     // 円運動
 	};
 
+	// 地上判定を付ける面
+	enum class GroundSide {
+		None,   // 地上判定なし（全面Wall）
+		Up,     // 上面のみGround
+		All     // 全面Ground（デフォルト）
+	};
+
 	// ステージオブジェクト（床・壁・足場など）
 	struct StageObject {
 		RectF rect;                     // 位置・サイズ
 		StageType type;                 // 当たり判定種別
 		String metadata;                // 識別用ID（破壊時などで使用）
+		GroundSide groundSide = GroundSide::Up;  // 地上判定を付ける面
 
 		// 動くプラットフォーム用の追加データ
 		MovementType movementType = MovementType::Horizontal; // 移動タイプ
@@ -45,11 +54,12 @@ namespace Jam::Domain::Stage {
 
 	// 文字列からCollisionTypeへの変換（StageLoaderで使用）
 	inline StageType stringToCollisionType(const String& typeStr) {
-		if (typeStr == U"normal") return StageType::Normal;
-		if (typeStr == U"moving_platform") return StageType::MovingPlatform;
+		if (typeStr == U"normal" || typeStr == U"solid") return StageType::Normal;
+		if (typeStr == U"moving_platform" || typeStr == U"moving" || typeStr == U"move") return StageType::MovingPlatform;
 		if (typeStr == U"hazard") return StageType::Hazard;
 		if (typeStr == U"trigger") return StageType::Trigger;
 		if (typeStr == U"breakable") return StageType::Breakable;
+		if (typeStr == U"wall") return StageType::Wall;
 		return StageType::None;
 	}
 
@@ -61,6 +71,14 @@ namespace Jam::Domain::Stage {
 		return MovementType::Horizontal;
 	}
 
+	// 文字列からGroundSideへの変換
+	inline GroundSide stringToGroundSide(const String& sideStr) {
+		if (sideStr == U"none") return GroundSide::None;
+		if (sideStr == U"up") return GroundSide::Up;
+		if (sideStr == U"all") return GroundSide::All;
+		return GroundSide::All;  // デフォルトは全面Ground
+	}
+
 	// CollisionTypeから文字列への変換（デバッグ用）
 	inline String collisionTypeToString(StageType type) {
 		switch (type) {
@@ -69,6 +87,7 @@ namespace Jam::Domain::Stage {
 		case StageType::Hazard: return U"hazard";
 		case StageType::Trigger: return U"trigger";
 		case StageType::Breakable: return U"breakable";
+		case StageType::Wall: return U"wall";
 		default: return U"none";
 		}
 	}

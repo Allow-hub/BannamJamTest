@@ -281,6 +281,9 @@ namespace Jam::Domain::Player
 		case PhysicsLayer::Ground:
 			hitGround();
 			break;
+		case PhysicsLayer::Wall:
+			hitGround();
+			break;
 		case PhysicsLayer::Enemy:
 			hitEnemy(other);
 			break;

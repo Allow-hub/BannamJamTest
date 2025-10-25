@@ -285,6 +285,45 @@ namespace Jam::Presentation::Scenes
 				m_stageManager->draw();
 			}
 
+			// === デバッグ: PhysicsLayer可視化(常時表示) ===
+			if (m_stageService)
+			{
+				const auto& physicsBodies = m_stageService->getPhysicsBodies();
+				for (const auto& body : physicsBodies)
+				{
+					if (!body) continue;
+					
+					// Siv3DPhysicsBodyにキャスト
+					auto siv3dBody = std::dynamic_pointer_cast<Jam::Infrastructure::Physics::Siv3DPhysicsBody>(body);
+					if (!siv3dBody) continue;
+					
+					const auto layer = body->getLayer();
+					const P2Body& p2body = siv3dBody->getBody();
+					
+					// レイヤーごとに色分け
+					ColorF color;
+					switch (layer)
+					{
+					case Jam::Domain::Physics::PhysicsLayer::Ground:
+						color = ColorF(0.0, 1.0, 0.0, 0.5);  // 緑 = Ground
+						break;
+					case Jam::Domain::Physics::PhysicsLayer::Wall:
+						color = ColorF(1.0, 0.0, 0.0, 0.5);  // 赤 = Wall
+						break;
+					case Jam::Domain::Physics::PhysicsLayer::Enemy:
+						color = ColorF(1.0, 1.0, 0.0, 0.5);  // 黄 = Enemy
+						break;
+					default:
+						color = ColorF(0.5, 0.5, 0.5, 0.5);  // 灰 = その他
+						break;
+					}
+					
+					// P2Bodyの図形を描画
+					p2body.draw(color);
+					p2body.drawFrame(2, ColorF(color, 1.0));
+				}
+			}
+
 			// プレイヤーの描画
 			m_playerManager->draw();				// === 前景背景描画 (プレイヤーより手前) ===
 				if (m_backgroundRenderer && m_backgroundRenderer->isLoaded()) {
