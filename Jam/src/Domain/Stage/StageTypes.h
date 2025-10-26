@@ -14,7 +14,6 @@ namespace Jam::Domain::Stage {
 		Hazard = 3,     // ダメージゾーン
 		Trigger = 4,    // イベントトリガー
 		Breakable = 5,  // 破壊可能な壁
-		Wall = 6,        // 壁（地上判定なし）
 	};
 
 	// 動く床の移動タイプ
@@ -59,7 +58,6 @@ namespace Jam::Domain::Stage {
 		if (typeStr == U"hazard") return StageType::Hazard;
 		if (typeStr == U"trigger") return StageType::Trigger;
 		if (typeStr == U"breakable") return StageType::Breakable;
-		if (typeStr == U"wall") return StageType::Wall;
 		return StageType::None;
 	}
 
@@ -87,7 +85,6 @@ namespace Jam::Domain::Stage {
 		case StageType::Hazard: return U"hazard";
 		case StageType::Trigger: return U"trigger";
 		case StageType::Breakable: return U"breakable";
-		case StageType::Wall: return U"wall";
 		default: return U"none";
 		}
 	}
