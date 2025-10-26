@@ -33,6 +33,7 @@
 #include "../../Presentation/FadeManager.h"
 #include "../PostEffect/BloomManager.h"
 #include "../SettingManager.h"
+#include "../../Domain/FlagmentMemory.h"
 
 
 namespace Jam::Presentation::Scenes
@@ -80,6 +81,8 @@ namespace Jam::Presentation::Scenes
 
 		// Enemy用
 		HashSet<P2ContactPair> m_previousContacts;
+
+		std::vector<std::shared_ptr<Jam::Domain::FlagmentMemory>> m_flagmentMemories;
 
 	public:
 		GameScene(const InitData& init)
@@ -242,6 +245,30 @@ namespace Jam::Presentation::Scenes
 			else {
 				Print << U"[GameScene] ⚠️ Failed to load background JSON, using fallback";
 			}
+
+			auto stageData = core.getStageData(core.stageInfo.stageName);
+			for (const auto& pos : stageData.flagmentMemoryPos)
+			{
+				auto flagmentBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+					.getPhysicsFactory()
+					->createCircleSensor(
+						pos,
+						30.0,  // センサーの半径
+						s3d::P2BodyType::Static
+					);
+
+				flagmentBody->setLayer(Jam::Domain::Physics::PhysicsLayer::Item);
+
+				// FlagmentMemoryインスタンスを作成
+				auto flagment = std::make_shared<Jam::Domain::FlagmentMemory>(pos, flagmentBody);
+
+				// 物理ボディにリスナーを設定
+				flagmentBody->setCollisionListener(flagment);
+
+				// 管理配列に追加
+				m_flagmentMemories.push_back(flagment);
+			}
+
 			Jam::Util::GridRenderer::GridConfig config;
 			config.gridSize = 100.0;
 			config.fontSize = 16;
@@ -301,6 +328,13 @@ namespace Jam::Presentation::Scenes
 			m_cameraService->update(Scene::DeltaTime());
 			m_effectManager->update();
 			Jam::Presentation::FadeManager::instance().update(Scene::DeltaTime());
+
+			//記憶のかけら
+			for (const auto& flagment : m_flagmentMemories)
+			{
+				flagment->update(Scene::DeltaTime());
+			}
+
 			//デバッグ用
 			if (KeyR.down())
 			{
@@ -368,6 +402,12 @@ namespace Jam::Presentation::Scenes
 					m_enemyManager->draw();
 				}
 				m_effectManager->draw();
+
+				//記憶のかけら
+				for (const auto& flagment : m_flagmentMemories)
+				{
+					flagment->draw();
+				}
 				//Jam::Util::GridRenderer::instance().draw();
 			}
 			//BloomManager::getInstance().draw();

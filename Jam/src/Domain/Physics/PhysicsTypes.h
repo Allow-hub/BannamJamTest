@@ -40,5 +40,6 @@ namespace Jam::Domain::Physics
 		Enemy,
 		Ground,
 		Weapon,
+		Item,
 	};
 }

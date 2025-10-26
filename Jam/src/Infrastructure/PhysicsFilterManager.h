@@ -13,6 +13,7 @@ namespace Jam::Infrastructure
 		Team2Death,//死亡時の敵
 		Attack,
 		Team1Ghost,  // 攻撃中に敵を貫通するプレイヤー
+		Item
 	};
 		
 	// === 基本的な層ビット定義 ===
@@ -20,7 +21,8 @@ namespace Jam::Infrastructure
 	constexpr uint16 Team1Bit = 0b0000'0000'0000'0010;
 	constexpr uint16 Team2Bit = 0b0000'0000'0000'0100;
 	constexpr uint16 AttackBit = 0b0000'0000'0000'1000;
-
+	constexpr uint16 ItemBit = 0b0000'0000'0001'0000;
+	
 	// === 個別フィルタ定義 ===
 	constexpr P2Filter WallFilter{
 		.categoryBits = WallBit,
@@ -52,7 +54,10 @@ namespace Jam::Infrastructure
 		.categoryBits = Team1Bit,
 		.maskBits = Team1Bit 
 	};
-
+	constexpr P2Filter ItemFilter{
+	.categoryBits = ItemBit,
+	.maskBits = Team1Bit // プレイヤーとだけ接触
+	};
 
 	// === Enum から Filter を取得するユーティリティ ===
 	inline constexpr const P2Filter& GetFilter(PhysicsFilter layer)
@@ -65,6 +70,7 @@ namespace Jam::Infrastructure
 		case PhysicsFilter::Team2Death:   return Team2DeathFilter;
 		case PhysicsFilter::Attack:     return AttackFilter;
 		case PhysicsFilter::Team1Ghost: return Team1GhostFilter;
+		case PhysicsFilter::Item:         return ItemFilter;
 		default:                       return WallFilter;
 		}
 	}

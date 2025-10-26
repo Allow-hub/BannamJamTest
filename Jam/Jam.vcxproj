@@ -165,6 +165,7 @@
     <Image Include="Assets\Enemy\LittleDevil\idle_1.png" />
     <Image Include="Assets\Enemy\Spider\idle_0.png" />
     <Image Include="Assets\Enemy\Spider\idle_1.png" />
+    <Image Include="Assets\FlagmentMemory.png" />
     <Image Include="Assets\Player\idle_0.png" />
     <Image Include="Assets\Player\idle_1.png" />
     <Image Include="Assets\Player\idle_2.png" />
@@ -393,6 +394,7 @@
     <ClInclude Include="src\Domain\Enemy\Ribbon.h" />
     <ClInclude Include="src\Domain\Enemy\Spider.h" />
     <ClInclude Include="src\Domain\Events\GameEvents.h" />
+    <ClInclude Include="src\Domain\FlagmentMemory.h" />
     <ClInclude Include="src\Domain\IInputService.h" />
     <ClInclude Include="src\Domain\ITakeDamageable.h" />
     <ClInclude Include="src\Domain\Physics\ICollisionListener.h" />

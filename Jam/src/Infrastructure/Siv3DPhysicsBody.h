@@ -39,6 +39,16 @@ namespace Jam::Infrastructure::Physics
 			m_body.setSleepEnabled(true);
 		}
 
+		// P2Bodyを直接受け取るコンストラクタ（センサー用）
+		explicit Siv3DPhysicsBody(P2Body body)
+			: m_body(body)
+			, m_layer(Jam::Domain::Physics::PhysicsLayer::None)
+		{
+			// センサーは回転や減衰の設定が不要な場合が多いので最小限の設定
+			m_body.setFixedRotation(true);
+			m_body.setSleepEnabled(true);
+		}
+
 		void applyForce(const Vec2& force) override { m_body.applyForce(force); }
 		void applyImpulse(const Vec2& impulse) { m_body.applyLinearImpulse(impulse); }
 		void setVelocity(const Vec2& v) override { m_body.setVelocity(v); }
