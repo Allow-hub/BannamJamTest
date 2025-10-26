@@ -246,9 +246,17 @@ namespace Jam::Presentation::Scenes
 				m_world.update(StepTime);
 				m_accumulatedTime -= StepTime;
 			}
-			m_eventHandler->processEvents();//ゲーム内イベントを各クラスに通知
+			m_eventHandler->processEvents();
 
-			// カメラの更新
+			if (m_stageService && m_player)
+			{
+				bool landed = m_stageService->checkOneWayPlatformLanding(m_player->getPhysicsBody());
+				if (landed)
+				{
+					m_player->resetJumpState();
+				}
+			}
+
 			m_cameraService->update(Scene::DeltaTime());
 			m_effectManager->update();
 			Jam::Presentation::FadeManager::instance().update(Scene::DeltaTime());

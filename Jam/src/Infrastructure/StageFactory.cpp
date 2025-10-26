@@ -81,6 +81,8 @@ namespace Jam::Infrastructure {
         
         outBody->setLayer(physicsLayer);
         
+        // OneWayPlatform全体にすり抜けフィルターを適用
+        // 着地判定は手動で行う
         if (obj.type == Domain::Stage::StageType::OneWayPlatform) {
             outBody->setFilter(Jam::Infrastructure::PhysicsFilter::OneWayPlatform);
         }
@@ -104,21 +106,23 @@ namespace Jam::Infrastructure {
     ) {
         using namespace Domain::Physics;
         
+        // OneWayPlatformの場合
+        if (type == Domain::Stage::StageType::OneWayPlatform) {
+            if (groundSide == Domain::Stage::GroundSide::None) {
+                // 本体: OneWayPlatformレイヤー(青色)
+                return PhysicsLayer::OneWayPlatform;
+            } else {
+                // 上面: Groundレイヤー(緑色)
+                return PhysicsLayer::Ground;
+            }
+        }
+        
+        // 通常のステージ
         if (groundSide == Domain::Stage::GroundSide::None) {
             return PhysicsLayer::Wall;
         }
         
-        switch (type) {
-            case Domain::Stage::StageType::Normal:
-            case Domain::Stage::StageType::MovingPlatform:
-                return PhysicsLayer::Ground;
-                
-            case Domain::Stage::StageType::OneWayPlatform:
-                return PhysicsLayer::OneWayPlatform;
-                
-            default:
-                return PhysicsLayer::Ground;
-        }
+        return PhysicsLayer::Ground;
     }
 
     Array<Domain::Stage::StageObject> StageFactory::expandObjectByGroundSide(const Domain::Stage::StageObject& obj) {
@@ -126,6 +130,7 @@ namespace Jam::Infrastructure {
         Array<StageObject> result;
         
         constexpr double groundThickness = 5.0;
+        
         
         if (obj.groundSide == GroundSide::All) {
             result.push_back(obj);

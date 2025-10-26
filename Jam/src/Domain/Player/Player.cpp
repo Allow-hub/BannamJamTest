@@ -15,7 +15,7 @@ namespace Jam::Domain::Player
 		m_body->setGravityScale(1.5);
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::Team1);
 
-		auto chokerSkill = std::make_shared<ChokerSkill>(eventQueue, m_body->getID(),m_stats);
+		auto chokerSkill = std::make_shared<ChokerSkill>(eventQueue, m_body->getID(), m_stats);
 		chokerSkill->init(); // shared_from_this()を使用する初期化
 		m_skills.push_back(chokerSkill);
 		//m_skills.push_back(std::make_shared<BombSkill>(eventQueue, m_stats));
@@ -175,7 +175,7 @@ namespace Jam::Domain::Player
 
 	s3d::Vec2 Player::getPosition() const
 	{
-		 return m_body->getPosition();
+		return m_body->getPosition();
 	}
 
 	bool Player::isFacingRight() const
@@ -208,19 +208,22 @@ namespace Jam::Domain::Player
 		switch (other->getLayer())
 		{
 		case Jam::Domain::Physics::PhysicsLayer::Ground:
-			{
-				auto v = m_body->getVelocity();
+		{
+			auto v = m_body->getVelocity();
+			// 下向きまたは静止中に着地判定(上向きや横からの衝突は無視)
+			if (v.y >= 0) {
 				m_body->setVelocity({ v.x, 0.0 });
 				m_isGrounded = true;
 				m_jumpCount = 0;
 			}
-			break;
+		}
+		break;
 		case Jam::Domain::Physics::PhysicsLayer::Wall:
-			{
-				auto v = m_body->getVelocity();
-				m_body->setVelocity({ v.x, 0.0 });
-			}
-			break;
+		{
+			auto v = m_body->getVelocity();
+			m_body->setVelocity({ v.x, 0.0 });
+		}
+		break;
 		case Jam::Domain::Physics::PhysicsLayer::Enemy:
 			break;
 		default:
@@ -229,5 +232,6 @@ namespace Jam::Domain::Player
 	}
 
 	void Player::onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) {}
+
 	void Player::onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) {}
 }
