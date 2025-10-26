@@ -90,7 +90,17 @@ namespace Jam::Presentation::Scenes
 			auto& core = Jam::Foundation::CoreManager::Instance();
 			core.reset();
 			String stageName = Jam::Foundation::CoreManager::stageNameToString(core.stageInfo.stageName);//ステージ名
-			core.setCurrentStageData(core.getStageData(core.stageInfo.stageName));
+			
+			// JSONからステージ設定を読み込み
+			Jam::Foundation::StageData stageData;
+			if (Jam::Infrastructure::Stage::StageLoader::loadStageSettings(stageName + U".json", stageData)) {
+				core.setCurrentStageData(stageData);
+			}
+			else {
+				// フォールバック: JSON読み込み失敗時はデフォルト値を使用
+				core.setCurrentStageData(core.getStageData(core.stageInfo.stageName));
+			}
+			
 			// --- FactoryServiceLocator初期化 ---
 			auto& locator = Jam::Infrastructure::Locator::FactoryServiceLocator::instance();
 			auto physicsFactory = std::make_shared<Jam::Infrastructure::Locator::Siv3DPhysicsBodyFactory>();
@@ -152,7 +162,8 @@ namespace Jam::Presentation::Scenes
 			auto bodyFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
 				.getPhysicsFactory();
 
-			m_stageService->initialize(U"stage1.json", bodyFactory);
+			// ステージ名からJSONファイル名を生成
+			m_stageService->initialize(stageName + U".json", bodyFactory);
 
 			m_stageManager = std::make_unique<Jam::Presentation::Stage::StageManager>();
 			m_stageManager->setService(m_stageService);
@@ -215,8 +226,8 @@ namespace Jam::Presentation::Scenes
 				Print << U"[GameScene] ⚠️ Failed to load background JSON, using fallback";
 			}
 
-			auto stageData = core.getStageData(core.stageInfo.stageName);
-			for (const auto& pos : stageData.flagmentMemoryPos)
+			auto currentStageData = core.getCurrentStageData();
+			for (const auto& pos : currentStageData.flagmentMemoryPos)
 			{
 				auto flagmentBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
 					.getPhysicsFactory()
@@ -254,7 +265,7 @@ namespace Jam::Presentation::Scenes
 			auto& cursorUtil = Jam::Infrastructure::CursorUtil::instance();
 			//cursorUtil.registerCursorFromImage(U"../Assets/Cursor/GameCursor.png", Jam::Infrastructure::CursorStyle::Game);
 			cursorUtil.setCursor(CursorStyle::Cross);
-			cursorUtil.setClipWindowCuror(true);
+			// cursorUtil.setClipWindowCuror(true);
 			m_playerService->update(Scene::DeltaTime());
 			m_playerManager->update();
 			if (core.getPause())
