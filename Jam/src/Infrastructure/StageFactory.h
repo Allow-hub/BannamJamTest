@@ -16,6 +16,11 @@ namespace Jam::Infrastructure {
     struct StageCreationResult {
         Array<std::unique_ptr<Domain::Stage::IStage>> stages;
         Array<std::shared_ptr<Domain::Physics::IPhysicsBody>> physicsBodies;
+        // 各ステージに対応する物理ボディのインデックス配列
+        // stages[i]はphysicsBodies[bodyIndices[i][0], bodyIndices[i][1], ...]を制御
+        Array<Array<size_t>> bodyIndices;
+        // 各物理ボディの基準位置からのオフセット
+        Array<Vec2> bodyOffsets;
     };
     
     /**
@@ -50,9 +55,12 @@ namespace Jam::Infrastructure {
         );
         
         /**
-         * StageTypeから適切な物理フィルターを取得
+         * StageTypeとGroundSideから適切な物理レイヤーを取得
          */
-        static Domain::Physics::PhysicsLayer getPhysicsLayerFromType(Domain::Stage::StageType type);
+        static Domain::Physics::PhysicsLayer getPhysicsLayerFromType(
+            Domain::Stage::StageType type,
+            Domain::Stage::GroundSide groundSide = Domain::Stage::GroundSide::Up
+        );
         
         /**
          * groundSideに基づいてオブジェクトを展開

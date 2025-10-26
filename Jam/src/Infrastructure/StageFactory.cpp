@@ -17,12 +17,43 @@ namespace Jam::Infrastructure {
             // groundSideに基づいて複数のオブジェクトを生成
             auto createdObjects = expandObjectByGroundSide(obj);
             
-            for (const auto& expandedObj : createdObjects) {
+            // このステージに属する物理ボディのインデックスを記録
+            Array<size_t> bodyIndicesForThisStage;
+            
+            // 元のオブジェクトの中心位置（基準位置）
+            Vec2 baseCenter = obj.rect.center();
+            
+            // 最初のオブジェクトからStageを生成
+            if (!createdObjects.isEmpty()) {
                 std::shared_ptr<Domain::Physics::IPhysicsBody> body;
-                auto stage = createStage(expandedObj, bodyFactory, body);
+                auto stage = createStage(createdObjects[0], bodyFactory, body);
+                
                 if (stage && body) {
-                    result.stages.push_back(std::move(stage));
+                    size_t bodyIndex = result.physicsBodies.size();
                     result.physicsBodies.push_back(body);
+                    bodyIndicesForThisStage.push_back(bodyIndex);
+                    
+                    // 基準位置からのオフセットを計算
+                    Vec2 offset = createdObjects[0].rect.center() - baseCenter;
+                    result.bodyOffsets.push_back(offset);
+                    
+                    // 残りのオブジェクトは物理ボディのみ生成（同じStageで制御）
+                    for (size_t i = 1; i < createdObjects.size(); ++i) {
+                        std::shared_ptr<Domain::Physics::IPhysicsBody> additionalBody;
+                        createStage(createdObjects[i], bodyFactory, additionalBody);
+                        if (additionalBody) {
+                            size_t additionalBodyIndex = result.physicsBodies.size();
+                            result.physicsBodies.push_back(additionalBody);
+                            bodyIndicesForThisStage.push_back(additionalBodyIndex);
+                            
+                            // このボディのオフセットも計算
+                            Vec2 additionalOffset = createdObjects[i].rect.center() - baseCenter;
+                            result.bodyOffsets.push_back(additionalOffset);
+                        }
+                    }
+                    
+                    result.stages.push_back(std::move(stage));
+                    result.bodyIndices.push_back(bodyIndicesForThisStage);
                 }
             }
         }
@@ -39,12 +70,18 @@ namespace Jam::Infrastructure {
             return nullptr;
         }
         
-        auto physicsLayer = getPhysicsLayerFromType(obj.type);
+        // GroundSideも考慮してPhysicsLayerを決定
+        auto physicsLayer = getPhysicsLayerFromType(obj.type, obj.groundSide);
+        
+        // 動く床はKinematicボディ、それ以外はStaticボディ
+        P2BodyType bodyType = (obj.type == Domain::Stage::StageType::MovingPlatform)
+            ? P2BodyType::Kinematic
+            : P2BodyType::Static;
         
         outBody = bodyFactory->createBody(
             obj.rect.center(),
             obj.rect.size,
-            P2BodyType::Static,
+            bodyType,
             Domain::Physics::PhysicsMaterial{ 1.0, 0.0, 0.0 }
         );
         
@@ -67,16 +104,21 @@ namespace Jam::Infrastructure {
         }
     }
     
-    Domain::Physics::PhysicsLayer StageFactory::getPhysicsLayerFromType(Domain::Stage::StageType type) {
+    Domain::Physics::PhysicsLayer StageFactory::getPhysicsLayerFromType(
+        Domain::Stage::StageType type, 
+        Domain::Stage::GroundSide groundSide
+    ) {
         using namespace Domain::Physics;
+        
+        // GroundSide::Noneの場合は常にWallレイヤー
+        if (groundSide == Domain::Stage::GroundSide::None) {
+            return PhysicsLayer::Wall;
+        }
         
         switch (type) {
             case Domain::Stage::StageType::Normal:
             case Domain::Stage::StageType::MovingPlatform:
                 return PhysicsLayer::Ground;
-                
-            case Domain::Stage::StageType::Wall:
-                return PhysicsLayer::Wall;
                 
             case Domain::Stage::StageType::Hazard:
                 return PhysicsLayer::Enemy;
@@ -103,7 +145,6 @@ namespace Jam::Infrastructure {
         // groundSideが"None"以外の場合、壁本体を追加
         if (obj.groundSide != GroundSide::None) {
             StageObject wallObj = obj;
-            wallObj.type = StageType::Wall;  // 壁として扱う
             wallObj.groundSide = GroundSide::None;  // 再帰防止
             result.push_back(wallObj);
         }
@@ -111,7 +152,7 @@ namespace Jam::Infrastructure {
         // 指定された面に薄い地上判定を追加
         StageObject groundObj = obj;
         groundObj.type = StageType::Normal;  // 床として扱う
-        groundObj.groundSide = GroundSide::None;  // 再帰防止
+        groundObj.groundSide = GroundSide::Up;  // Groundレイヤーになるように明示的にUpを設定
         
         switch (obj.groundSide) {
             case GroundSide::Up:
@@ -129,7 +170,6 @@ namespace Jam::Infrastructure {
                 // 地上判定なし（壁のみ）
                 if (result.empty()) {
                     StageObject wallOnlyObj = obj;
-                    wallOnlyObj.type = StageType::Wall;
                     result.push_back(wallOnlyObj);
                 }
                 break;

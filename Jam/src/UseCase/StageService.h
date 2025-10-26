@@ -3,6 +3,7 @@
 #include "../Domain/Physics/IPhysicsBody.h"
 #include "../Infrastructure/IPhysicsBodyFactory.h"
 #include "../Infrastructure/StageFactory.h"
+#include "../Infrastructure/Siv3DPhysicsBody.h"
 
 namespace Jam::UseCase {
     /**
@@ -14,6 +15,10 @@ namespace Jam::UseCase {
     private:
         Array<std::unique_ptr<Domain::Stage::IStage>> m_stages;
         Array<std::shared_ptr<Domain::Physics::IPhysicsBody>> m_physicsBodies;
+        // 各ステージに対応する物理ボディのインデックス
+        Array<Array<size_t>> m_bodyIndices;
+        // 各物理ボディの基準位置からのオフセット
+        Array<Vec2> m_bodyOffsets;
         
     public:
         /**
@@ -29,6 +34,8 @@ namespace Jam::UseCase {
             auto result = Infrastructure::StageFactory::createStagesFromFile(filename, bodyFactory);
             m_stages = std::move(result.stages);
             m_physicsBodies = std::move(result.physicsBodies);
+            m_bodyIndices = std::move(result.bodyIndices);
+            m_bodyOffsets = std::move(result.bodyOffsets);
             return !m_stages.isEmpty();
         }
         
@@ -48,9 +55,17 @@ namespace Jam::UseCase {
          */
         void syncPhysicsBodies() {
             for (size_t i = 0; i < m_stages.size(); ++i) {
-                if (i < m_physicsBodies.size() && m_physicsBodies[i]) {
-                    Vec2 currentCenter = m_stages[i]->getCurrentCenter();
-                    m_physicsBodies[i]->setPos(currentCenter);
+                if (i >= m_bodyIndices.size()) continue;
+                
+                Vec2 currentCenter = m_stages[i]->getCurrentCenter();
+                
+                // このステージに属する全ての物理ボディを同期
+                for (size_t bodyIdx : m_bodyIndices[i]) {
+                    if (bodyIdx < m_physicsBodies.size() && m_physicsBodies[bodyIdx]) {
+                        // オフセットを考慮した位置に設定
+                        Vec2 bodyPosition = currentCenter + m_bodyOffsets[bodyIdx];
+                        m_physicsBodies[bodyIdx]->setPos(bodyPosition);
+                    }
                 }
             }
         }
@@ -75,6 +90,45 @@ namespace Jam::UseCase {
         void clear() {
             m_stages.clear();
             m_physicsBodies.clear();
+            m_bodyIndices.clear();
+            m_bodyOffsets.clear();
+        }
+        
+        /**
+         * 物理レイヤー可視化のデバッグ描画
+         */
+        void drawPhysicsLayerDebug() const {
+            for (const auto& body : m_physicsBodies) {
+                if (!body) continue;
+                
+                // Siv3DPhysicsBodyにキャスト
+                auto siv3dBody = std::dynamic_pointer_cast<Jam::Infrastructure::Physics::Siv3DPhysicsBody>(body);
+                if (!siv3dBody) continue;
+                
+                const auto layer = body->getLayer();
+                const P2Body& p2body = siv3dBody->getBody();
+                
+                // レイヤーごとに色分け
+                ColorF color;
+                switch (layer) {
+                case Jam::Domain::Physics::PhysicsLayer::Ground:
+                    color = ColorF(0.0, 1.0, 0.0, 0.5);  // 緑 = Ground
+                    break;
+                case Jam::Domain::Physics::PhysicsLayer::Wall:
+                    color = ColorF(1.0, 0.0, 0.0, 0.5);  // 赤 = Wall
+                    break;
+                case Jam::Domain::Physics::PhysicsLayer::Enemy:
+                    color = ColorF(1.0, 1.0, 0.0, 0.5);  // 黄 = Enemy
+                    break;
+                default:
+                    color = ColorF(0.5, 0.5, 0.5, 0.5);  // 灰 = その他
+                    break;
+                }
+                
+                // P2Bodyの図形を描画
+                p2body.draw(color);
+                p2body.drawFrame(2, ColorF(color, 1.0));
+            }
         }
     };
 }

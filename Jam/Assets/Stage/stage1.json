@@ -20,11 +20,13 @@
     {
       "rect": [ 550, -650, 50, 50 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "ジョイント01"
     },
     {
       "rect": [ 1250, -650, 50, 50 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "ジョイント02"
     },
     {
@@ -38,8 +40,8 @@
       "metadata": "初期地点付近足場"
     },
     {
-      "rect": [ 600, 400, 150, 30 ],
-      "type": "moving",
+      "rect": [ 600, 0, 150, 30 ],
+      "type": "moving_platform",
       "movementType": "horizontal",
       "movementSpeed": 80.0,
       "movementDistance": 300.0,
@@ -48,7 +50,7 @@
     },
     {
       "rect": [ 900, 800, 120, 30 ],
-      "type": "move",
+      "type": "moving_platform",
       "movementType": "vertical",
       "movementSpeed": 100.0,
       "movementDistance": 400.0,

@@ -63,9 +63,9 @@ namespace Jam::Presentation::Scenes
 		Jam::Infrastructure::Siv3DInputManager m_inputManager;
 		std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody> m_ground;
 
-	// Stage用
-	std::shared_ptr<Jam::UseCase::StageService> m_stageService;
-	std::unique_ptr<Jam::Presentation::Stage::StageManager> m_stageManager;		// Stage用物理ボディ管理
+		// Stage用
+		std::shared_ptr<Jam::UseCase::StageService> m_stageService;
+		std::unique_ptr<Jam::Presentation::Stage::StageManager> m_stageManager;		// Stage用物理ボディ管理
 		std::vector<std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody>> m_stagePhysicsBodies;
 
 		// Background用
@@ -136,24 +136,24 @@ namespace Jam::Presentation::Scenes
 				*m_playerManager
 			);
 
-		// === Stage 初期化 ===
-		// ステージテクスチャの事前読み込み
-		Jam::Infrastructure::TextureLoader::preloadStageTextures();
+			// === Stage 初期化 ===
+			// ステージテクスチャの事前読み込み
+			Jam::Infrastructure::TextureLoader::preloadStageTextures();
 
-		m_stageService = std::make_shared<Jam::UseCase::StageService>();
-		
-		auto bodyFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
-			.getPhysicsFactory();
-		
-		m_stageService->initialize(U"stage1.json", bodyFactory);
-		
-		m_stageManager = std::make_unique<Jam::Presentation::Stage::StageManager>();
-		m_stageManager->setService(m_stageService);
-		m_stageManager->loadTextures();
-		
-		// === Camera 初期化 ===
-		m_cameraManager = std::make_shared<Jam::Presentation::CameraManager>(
-				m_player->getPosition()  // 初期位置をプレイヤー位置に合わせる
+			m_stageService = std::make_shared<Jam::UseCase::StageService>();
+
+			auto bodyFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+				.getPhysicsFactory();
+
+			m_stageService->initialize(U"stage1.json", bodyFactory);
+
+			m_stageManager = std::make_unique<Jam::Presentation::Stage::StageManager>();
+			m_stageManager->setService(m_stageService);
+			m_stageManager->loadTextures();
+
+			// === Camera 初期化 ===
+			m_cameraManager = std::make_shared<Jam::Presentation::CameraManager>(
+					m_player->getPosition()  // 初期位置をプレイヤー位置に合わせる
 			);
 
 			m_cameraService = std::make_shared<Jam::UseCase::CameraService>(
@@ -279,53 +279,20 @@ namespace Jam::Presentation::Scenes
 					}
 				}
 
-			// Stage描画（Managerで実行）
-			if (m_stageManager)
-			{
-				m_stageManager->draw();
-			}
-
-			// === デバッグ: PhysicsLayer可視化(常時表示) ===
-			if (m_stageService)
-			{
-				const auto& physicsBodies = m_stageService->getPhysicsBodies();
-				for (const auto& body : physicsBodies)
+				// Stage描画
+				if (m_stageManager)
 				{
-					if (!body) continue;
-					
-					// Siv3DPhysicsBodyにキャスト
-					auto siv3dBody = std::dynamic_pointer_cast<Jam::Infrastructure::Physics::Siv3DPhysicsBody>(body);
-					if (!siv3dBody) continue;
-					
-					const auto layer = body->getLayer();
-					const P2Body& p2body = siv3dBody->getBody();
-					
-					// レイヤーごとに色分け
-					ColorF color;
-					switch (layer)
-					{
-					case Jam::Domain::Physics::PhysicsLayer::Ground:
-						color = ColorF(0.0, 1.0, 0.0, 0.5);  // 緑 = Ground
-						break;
-					case Jam::Domain::Physics::PhysicsLayer::Wall:
-						color = ColorF(1.0, 0.0, 0.0, 0.5);  // 赤 = Wall
-						break;
-					case Jam::Domain::Physics::PhysicsLayer::Enemy:
-						color = ColorF(1.0, 1.0, 0.0, 0.5);  // 黄 = Enemy
-						break;
-					default:
-						color = ColorF(0.5, 0.5, 0.5, 0.5);  // 灰 = その他
-						break;
-					}
-					
-					// P2Bodyの図形を描画
-					p2body.draw(color);
-					p2body.drawFrame(2, ColorF(color, 1.0));
+					m_stageManager->draw();
 				}
-			}
 
-			// プレイヤーの描画
-			m_playerManager->draw();				// === 前景背景描画 (プレイヤーより手前) ===
+				// === デバッグ: PhysicsLayer可視化(常時表示) ===
+				if (m_stageService)
+				{
+					m_stageService->drawPhysicsLayerDebug();
+				}
+
+				// プレイヤーの描画
+				m_playerManager->draw();				// === 前景背景描画 (プレイヤーより手前) ===
 				if (m_backgroundRenderer && m_backgroundRenderer->isLoaded()) {
 					// Front Layer
 					m_backgroundRenderer->drawLayer(Jam::Domain::Background::ParallaxLayer::Front, cameraOffset);
