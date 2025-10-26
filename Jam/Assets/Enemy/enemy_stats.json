@@ -14,7 +14,7 @@
         }
     },
     "Ribbon": {
-        "hp": 100,
+        "hp": 200,
         "attackPower": 10.5,
         "moveSpeed": 2000.0,
         "jumpPower": 5.0,

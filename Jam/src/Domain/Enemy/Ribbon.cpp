@@ -30,22 +30,18 @@ namespace Jam::Domain::Enemy
 		switch (e)
 		{
 		case EnemyAIEvent::PlayerFound:
-		{
-			//Print << U"ChangeAi2Chase";
+			Print << U"ChangeAi2Chase";
 			changeAI(AIType::Chase);
-		}break;
+			break;
 
 		case EnemyAIEvent::PlayerLost:
-		{
-			//Print << U"ChangeAi2Patrol";
+			Print << U"ChangeAi2Patrol";
 			changeAI(AIType::Patrol);
-		}break;
-
+			break;
 		case EnemyAIEvent::ReachedGoal:
-		{
-			//Print << U"ChangeAi2Attack";
+			Print << U"ChangeAi2Attack";
 			changeAI(AIType::Attack);
-		}break;
+			break;
 
 		default:
 			break;
@@ -59,18 +55,7 @@ namespace Jam::Domain::Enemy
 
 	void Ribbon::onPatrolUpdate(double deltaTime)
 	{
-		Vec2 plPos = getPlayerPos();
-		Vec2 enePos = getPosition();
-		Vec2 vector = plPos - enePos;
-		const double distance = vector.length();
-
-		double foundRange = 400.0f;
-
-		if (distance <= foundRange)
-		{
-			EnemyAIEvent::PlayerFound;
-			onAIEvent(EnemyAIEvent::PlayerFound);
-		}
+		
 	}
 
 	void Ribbon::onChaseEnter()
@@ -80,26 +65,72 @@ namespace Jam::Domain::Enemy
 
 	void Ribbon::onChaseUpdate(double DeltaTime)
 	{
-
+		
 	}
 
 	void Ribbon::onAttackEnter()
 	{
-
+		
 	}
 
 	void Ribbon::onAttackUpdate(double deltaTime)
 	{
-		Vec2 plPos = getPlayerPos();
-		Vec2 enePos = getPosition();
-
-		if (plPos.x >= enePos.x)
+		switch (attackState)
 		{
-
-		}
-		else
+		case AttackState::AttackStart:
 		{
+			Vec2 plPos = getPlayerPos();
+			Vec2 enePos = getPosition();
 
+			IsRight = (plPos.x > enePos.x);
+
+			attackState = AttackState::WaitAttack;
+		}break;
+
+		case AttackState::WaitAttack:
+		{
+			if (AttackWaitTime >= 200)
+			{
+				//とりあえずイントのカウンターにしてます。後日調べて秒数計測の何かに置き換えます。
+				AttackWaitTime = 0;
+				attackState = AttackState::IsAttack;
+			}
+			else
+			{
+				AttackWaitTime++;
+			}
+		}break;
+
+		case AttackState::IsAttack:
+		{
+			if (IsRight == true)
+			{
+				m_body->applyImpulse(Vec2{ 1000,0 });
+			}
+			else
+			{
+				m_body->applyImpulse(Vec2{ -1000,0 });
+			}
+			attackState = AttackState::EndAttack;
+		}break;
+
+		case AttackState::EndAttack:
+		{
+			if (AttackWaitTime >= 200)
+			{
+				AttackWaitTime = 0;
+				attackState = AttackState::AttackStart;
+				changeAI(AIType::Patrol);
+			}
+			else
+			{
+				AttackWaitTime++;
+			}
+		}break;
+
+		default:
+			attackState = AttackState::AttackStart;
+			break;
 		}
 	}
 

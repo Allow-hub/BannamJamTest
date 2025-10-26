@@ -84,6 +84,9 @@ namespace Jam::Domain::Enemy
 		Jam::Domain::Enemy::PatrolRoute& getPatrolRoute() { return m_patrolRoute; }
 		const Jam::Domain::Enemy::PatrolRoute& getPatrolRoute() const { return m_patrolRoute; }
 
+		void setPatrolSettings(const PatrolAISettings& settings) { m_patpolSettings = settings; }
+		const Jam::Domain::Enemy::PatrolAISettings& getPatrolSettings() const { return m_patpolSettings; }
+
 		// 追跡設定
 		void setChaseSettings(const ChaseAISettings& settings) { m_chaseSettings = settings; }
 		const Jam::Domain::Enemy::ChaseAISettings& getChaseSettings() const { return m_chaseSettings; }
@@ -133,6 +136,7 @@ namespace Jam::Domain::Enemy
 		Vec2 m_enemyImpluseDir = {0,0};
 		EnemyType m_enemyType = EnemyType::LittleDevil;
 		Jam::Domain::Enemy::PatrolRoute m_patrolRoute;
+		Jam::Domain::Enemy::PatrolAISettings m_patpolSettings;
 		Jam::Domain::Enemy::ChaseAISettings m_chaseSettings;
 	};
 }

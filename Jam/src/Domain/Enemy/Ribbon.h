@@ -25,10 +25,18 @@ namespace Jam::Domain::Enemy
 
 	private:
 		double m_patrolTimer = 0.0;
+		int AttackWaitTime = 0;
+		bool IsRight;
+
 		enum class AttackState
 		{
-
+			AttackStart = 0,
+			WaitAttack,
+			IsAttack,
+			EndAttack
 		};
+		AttackState attackState;
+
 	protected:
 		void onPatrolEnter() override;
 		void onPatrolUpdate(double deltaTime) override;
