@@ -40,6 +40,12 @@
       "metadata": "初期地点付近足場"
     },
     {
+    "rect": [0, -100, 300, 20],
+    "type": "oneway_platform",
+    "groundSide": "up",
+    "metadata": "すり抜け床01"
+},
+    {
       "rect": [ 600, 0, 150, 30 ],
       "type": "moving_platform",
       "movementType": "horizontal",

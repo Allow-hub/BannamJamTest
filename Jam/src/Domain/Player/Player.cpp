@@ -34,7 +34,6 @@ namespace Jam::Domain::Player
 				skill->update(deltaTime);
 		}
 
-
 		if (getPosition().y >= m_fallLimitY)
 		{
 			respawn();
@@ -209,15 +208,22 @@ namespace Jam::Domain::Player
 		switch (other->getLayer())
 		{
 		case Jam::Domain::Physics::PhysicsLayer::Ground:
-			auto v = m_body->getVelocity();
-			m_body->setVelocity({ v.x, 0.0 });
-			m_isGrounded = true;
-			m_jumpCount = 0;
+			{
+				auto v = m_body->getVelocity();
+				m_body->setVelocity({ v.x, 0.0 });
+				m_isGrounded = true;
+				m_jumpCount = 0;
+			}
+			break;
+		case Jam::Domain::Physics::PhysicsLayer::Wall:
+			{
+				auto v = m_body->getVelocity();
+				m_body->setVelocity({ v.x, 0.0 });
+			}
 			break;
 		case Jam::Domain::Physics::PhysicsLayer::Enemy:
 			break;
 		default:
-			//Print(U"Not match tag");
 			break;
 		}
 	}

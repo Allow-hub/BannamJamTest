@@ -271,10 +271,7 @@ namespace Jam::Presentation::Scenes
 				// === 背景描画 (奥から手前へ) ===
 				if (m_backgroundRenderer) {
 					if (m_backgroundRenderer->isLoaded()) {
-						// Back Layer
 						m_backgroundRenderer->drawLayer(Jam::Domain::Background::ParallaxLayer::Back, cameraOffset);
-
-						// Middle Layer
 						m_backgroundRenderer->drawLayer(Jam::Domain::Background::ParallaxLayer::Middle, cameraOffset);
 					}
 				}
@@ -294,7 +291,6 @@ namespace Jam::Presentation::Scenes
 				// プレイヤーの描画
 				m_playerManager->draw();				// === 前景背景描画 (プレイヤーより手前) ===
 				if (m_backgroundRenderer && m_backgroundRenderer->isLoaded()) {
-					// Front Layer
 					m_backgroundRenderer->drawLayer(Jam::Domain::Background::ParallaxLayer::Front, cameraOffset);
 				}
 

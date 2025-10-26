@@ -412,6 +412,7 @@
     <ClInclude Include="src\Domain\Stage\BackgroundTypes.h" />
     <ClInclude Include="src\Domain\Stage\IStage.h" />
     <ClInclude Include="src\Domain\Stage\NormalStage.h" />
+    <ClInclude Include="src\Domain\Stage\OneWayPlatformStage.h" />
     <ClInclude Include="src\Domain\Stage\StageTypes.h" />
     <ClInclude Include="src\Domain\StoryData.h" />
     <ClInclude Include="src\Foundation\CoreManager.h" />

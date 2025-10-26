@@ -36,6 +36,7 @@ namespace Jam::UseCase {
             m_physicsBodies = std::move(result.physicsBodies);
             m_bodyIndices = std::move(result.bodyIndices);
             m_bodyOffsets = std::move(result.bodyOffsets);
+            
             return !m_stages.isEmpty();
         }
         
@@ -95,6 +96,44 @@ namespace Jam::UseCase {
         }
         
         /**
+         * すり抜け床への着地判定と処理
+         * @param playerBody プレイヤーの物理ボディ
+         * @param playerHeight プレイヤーの高さ
+         * @return 着地した場合true
+         */
+        bool checkOneWayPlatformLanding(
+            std::shared_ptr<Domain::Physics::IPhysicsBody> playerBody,
+            double playerHeight = 100.0
+        ) {
+            if (!playerBody) return false;
+            
+            auto playerPos = playerBody->getPosition();
+            auto playerVel = playerBody->getVelocity();
+            
+            if (playerVel.y <= 0) return false;
+            
+            constexpr double landingThreshold = 5.0;
+            
+            for (const auto& stage : m_stages) {
+                if (stage->getType() != Domain::Stage::StageType::OneWayPlatform) continue;
+                
+                auto platformRect = stage->getRenderRect();
+                double platformTop = platformRect.y;
+                double playerBottom = playerPos.y + playerHeight / 2.0;
+                
+                if (playerPos.x < platformRect.x || playerPos.x > platformRect.x + platformRect.w) continue;
+                
+                if (playerBottom < platformTop - landingThreshold || playerBottom > platformTop + landingThreshold) continue;
+                
+                playerBody->setPos({ playerPos.x, platformTop - playerHeight / 2.0 });
+                playerBody->setVelocity({ playerVel.x, 0.0 });
+                return true;
+            }
+            
+            return false;
+        }
+        
+        /**
          * 物理レイヤー可視化のデバッグ描画
          */
         void drawPhysicsLayerDebug() const {
@@ -119,6 +158,9 @@ namespace Jam::UseCase {
                     break;
                 case Jam::Domain::Physics::PhysicsLayer::Enemy:
                     color = ColorF(1.0, 1.0, 0.0, 0.5);  // 黄 = Enemy
+                    break;
+                case Jam::Domain::Physics::PhysicsLayer::OneWayPlatform:
+                    color = ColorF(0.0, 0.5, 1.0, 0.5);  // 青 = すり抜け床
                     break;
                 default:
                     color = ColorF(0.5, 0.5, 0.5, 0.5);  // 灰 = その他

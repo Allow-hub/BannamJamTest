@@ -54,6 +54,11 @@ namespace Jam::Domain::Player
 		std::shared_ptr<Domain::Physics::IPhysicsBody> getPhysicsBody() { return m_body; }
 		double getHookedSpeedMultiplier() const;
 
+		void resetJumpState() { 
+			m_isGrounded = true; 
+			m_jumpCount = 0; 
+		}
+
 		bool isAlive() const override { return m_isAlive; }
 		void takeDamage(const DamageInfo& info)override;
 		double getCurrentHp() const override { return m_stats.hp; }
@@ -76,7 +81,8 @@ namespace Jam::Domain::Player
 		Jam::Domain::Events::GameEventQueue& m_eventQueue;
 		std::vector<std::shared_ptr<IPlayerSkill>> m_skills;
 		std::shared_ptr<IPlayerSkill> m_currentSkill;
-		bool m_isAlive = true;// 生存フラグ
+		bool m_isAlive = true;
+		
 		virtual void onDamaged(const DamageInfo& info) {}
 		virtual void onDeath() {}
 		Jam::Util::Task respawn();
