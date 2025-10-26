@@ -62,8 +62,6 @@ namespace Jam::Domain::Player
 		void setPower(double p) { m_stats.power = p; }
 		void setSpeed(double s) { m_stats.moveSpeed = s; }
 		void setJumpPower(double j) { m_stats.jumpPower = j; }
-		std::shared_ptr<Domain::Physics::IPhysicsBody> getPhysicsBody() { return m_body; }
-		double getHookedSpeedMultiplier() const;
 
 		void resetJumpState() { 
 			m_isGrounded = true; 

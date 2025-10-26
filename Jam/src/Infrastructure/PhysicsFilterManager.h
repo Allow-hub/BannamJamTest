@@ -14,7 +14,6 @@ namespace Jam::Infrastructure
 		Attack,
 		Team1Ghost,  // 攻撃中に敵を貫通するプレイヤー
 		OneWayPlatform,  // すり抜ける床
-		Team1Ghost,       // 攻撃中に敵を貫通するプレイヤー
 		Item,
 		PlayerWeapon,     // プレイヤーの武器
 		EnemyWeapon       // 敵の武器
