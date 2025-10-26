@@ -157,6 +157,8 @@
     <Image Include="Assets\Cursor\GameCursor.png" />
     <Image Include="Assets\Enemy\Clown\idle_0.png" />
     <Image Include="Assets\Enemy\Clown\idle_1.png" />
+    <Image Include="Assets\Enemy\Eye\beam.png" />
+    <Image Include="Assets\Enemy\Eye\idle_0.jpg" />
     <Image Include="Assets\Enemy\Eye\idle_0.png" />
     <Image Include="Assets\Enemy\Eye\idle_1.png" />
     <Image Include="Assets\Enemy\GothicLolitaDoll\idle_0.png" />
@@ -392,6 +394,7 @@
     <ClInclude Include="src\Domain\Enemy\EnemyBase.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyType.h" />
     <ClInclude Include="src\Domain\Enemy\Eye.h" />
+    <ClInclude Include="src\Domain\Enemy\EyeBeam.h" />
     <ClInclude Include="src\Domain\Enemy\GothicLolitaDoll.h" />
     <ClInclude Include="src\Domain\Enemy\LittleDevil.h" />
     <ClInclude Include="src\Domain\Enemy\Ribbon.h" />

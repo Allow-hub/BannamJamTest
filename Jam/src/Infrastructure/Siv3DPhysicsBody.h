@@ -58,6 +58,7 @@ namespace Jam::Infrastructure::Physics
 		void setBullet(const bool b) override { m_body.setBullet(b); }
 		void setDamping(const bool b) override { m_body.setDamping(b); }
 		void setLayer(Jam::Domain::Physics::PhysicsLayer layer) override { m_layer = layer; }
+		void setAngle(double angle)override { m_body.setAngle(angle); }
 		void drawFrame(const double thickness = 1.0, const ColorF& color = Palette::White) { m_body.drawFrame(thickness, color); }
 		Jam::Domain::Physics::PhysicsLayer getLayer() const override { return m_layer; }
 		void* getNativeBody() override { return &m_body; }
