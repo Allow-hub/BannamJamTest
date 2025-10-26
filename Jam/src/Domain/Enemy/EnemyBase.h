@@ -41,6 +41,7 @@ namespace Jam::Domain::Enemy
 		// 基本操作
 		// =========================
 		virtual void update(double deltaTime) = 0;
+		virtual void draw() const = 0;
 		virtual void moveLeft();
 		virtual void moveRight();
 		virtual void jump();

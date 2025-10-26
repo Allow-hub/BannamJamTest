@@ -15,6 +15,7 @@ namespace Jam::Domain::Enemy
 
 		// 毎フレームの更新（AI挙動など）
 		void update(double deltaTime) override;
+		void draw() const override {};
 
 		// 当たり判定イベント（必要に応じて上書き）
 		void onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;

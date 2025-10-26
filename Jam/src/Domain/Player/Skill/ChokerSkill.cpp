@@ -28,7 +28,7 @@ namespace Jam::Domain::Player
 				Jam::Domain::Physics::PhysicsShape::Circle
 			);
 
-		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::Team1);
+		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::PlayerWeapon);
 		m_body->setGravityScale(0);
 		m_body->setBullet(true);
 	}
