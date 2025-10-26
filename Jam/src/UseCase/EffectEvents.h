@@ -71,13 +71,26 @@ namespace Jam::UseCase
 		double thickness = 3.0;
 	};
 
+	struct FallDeathEffectEvent
+	{
+		Vec2 startPosition;           // 開始位置
+		Vec2 knockbackDirection = Vec2::Up();      // 吹っ飛び方向
+		double knockbackPower = 500.0; // 吹っ飛びの強さ
+		double duration = 2.0;         // 演出の長さ
+		double gravity = 980.0;        // 重力
+		double rotationSpeed = 360.0;  // 回転速度（度/秒）
+		ColorF starColor = Palette::Pink; // 星の色
+		bool showExplosion = true;     // 最後に爆発を表示するか
+	};
+
 	using EffectEvent = std::variant<
 		StarEffectEvent,
 		ExplosionEffectEvent,
 		ParticleEffectEvent,
 		HitEffectEvent,
 		TextEffectEvent,
-		RingEffectEvent
+		RingEffectEvent,
+		FallDeathEffectEvent
 	>;
 
 	//エフェクトのキュー

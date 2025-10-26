@@ -191,6 +191,10 @@ namespace Jam::Domain::Enemy
 		}
 	}
 
+	void EnemyBase::draw() const
+	{
+	}
+
 	void EnemyBase::onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) {}
 	void EnemyBase::onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{

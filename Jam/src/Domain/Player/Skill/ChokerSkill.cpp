@@ -13,9 +13,10 @@ using namespace Jam::Domain::Physics;
 namespace Jam::Domain::Player
 {
 	ChokerSkill::ChokerSkill(Jam::Domain::Events::GameEventQueue& eventQueue,
-							 PhysicsBodyID ownerId, Jam::Domain::Player::PlayerStats& stats)
+							 PhysicsBodyID ownerId, Jam::Domain::Player::PlayerStats& stats, Player& player)
 		: IPlayerSkill(PlayerSkillType::Choker, eventQueue, stats)
 		, m_ownerId(ownerId)
+		, m_player(player)
 	{
 		m_body = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
 			.getPhysicsFactory()
@@ -27,7 +28,7 @@ namespace Jam::Domain::Player
 				Jam::Domain::Physics::PhysicsShape::Circle
 			);
 
-		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::Team1);
+		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::PlayerWeapon);
 		m_body->setGravityScale(0);
 		m_body->setBullet(true);
 	}
@@ -132,8 +133,14 @@ namespace Jam::Domain::Player
 		m_isHooked = false;
 		m_hookState = HookState::None;
 		m_targetEnemy.reset();
-
 		m_cooldownTimer = m_cooldownTime;
+		delayReset();
+	}
+
+	Jam::Util::Task ChokerSkill::delayReset()
+	{
+		co_await Jam::Util::WaitSeconds(0.5);
+		m_player.setIsInvincible(false);
 	}
 
 	void ChokerSkill::update(double deltaTime)
@@ -196,6 +203,11 @@ namespace Jam::Domain::Player
 					double minLength = 30.0;
 					m_joint->setMaxLength(std::max(newMax, minLength));
 
+					// Joint長が一定に達したら無敵に
+					if (newMax <= minLength + 50.0)
+					{
+						m_player.setIsInvincible(true);
+					}
 
 					// Joint長が最小値に達したら終了
 					if (newMax <= minLength + 1.0)
@@ -225,6 +237,7 @@ namespace Jam::Domain::Player
 
 						// 到達できた場合のみ、攻撃処理を実行
 						const double launchPower = 2000.0;
+						m_player.controlCooldown(0.5);
 						m_eventQueue.push(Events::PlayerAttackedEvent{ 1.2, 0.2, 25.2 });
 						playerBody->applyImpulse(m_lastDir * launchPower);
 

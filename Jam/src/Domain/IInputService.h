@@ -14,6 +14,7 @@ namespace Jam::Domain
 		bool skillPush = false;//チョーカーや爆弾
 		bool skillReleased = false;
 		double skillChange = false;//ホイールでスキル変更
+		bool settting = false;//ESCなどで設定画面を表示
 	};
 
 	// 入力サービスのインターフェース

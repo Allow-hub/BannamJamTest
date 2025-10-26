@@ -29,6 +29,9 @@
 #include "../../UseCase/EffectEvents.h"
 #include "../../Presentation/EffectManager.h"
 #include "../../Presentation/FadeManager.h"
+#include "../PostEffect/BloomManager.h"
+#include "../SettingManager.h"
+#include "../../Domain/FlagmentMemory.h"
 
 
 namespace Jam::Presentation::Scenes
@@ -74,6 +77,8 @@ namespace Jam::Presentation::Scenes
 		// Enemy用
 		HashSet<P2ContactPair> m_previousContacts;
 
+		std::vector<std::shared_ptr<Jam::Domain::FlagmentMemory>> m_flagmentMemories;
+
 	public:
 		GameScene(const InitData& init)
 			: IScene{ init },
@@ -103,7 +108,9 @@ namespace Jam::Presentation::Scenes
 			m_effectEventQueue = std::make_shared<Jam::UseCase::EffectEventQueue>();
 
 			m_eventHandler = std::make_shared<Jam::UseCase::GameEventHandler>(
-				*m_gameEventQueue, *m_cameraEventQueue, *m_effectEventQueue);
+				*m_gameEventQueue,*m_cameraEventQueue,*m_effectEventQueue,
+				[this]() { this->nextScene(); });
+
 
 			m_effectManager = std::make_unique<Jam::Presentation::EffectManager>(*m_effectEventQueue);
 
@@ -155,7 +162,7 @@ namespace Jam::Presentation::Scenes
 			m_cameraManager = std::make_shared<Jam::Presentation::CameraManager>(
 					m_player->getPosition()  // 初期位置をプレイヤー位置に合わせる
 			);
-
+			m_cameraManager->setYLimits(-1000, core.getCurrentStageData().fallLimitY-500);
 			m_cameraService = std::make_shared<Jam::UseCase::CameraService>(
 				*m_player,
 				*m_cameraManager,
@@ -207,24 +214,56 @@ namespace Jam::Presentation::Scenes
 			else {
 				Print << U"[GameScene] ⚠️ Failed to load background JSON, using fallback";
 			}
+
+			auto stageData = core.getStageData(core.stageInfo.stageName);
+			for (const auto& pos : stageData.flagmentMemoryPos)
+			{
+				auto flagmentBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+					.getPhysicsFactory()
+					->createCircleSensor(
+						pos,
+						30.0,  // センサーの半径
+						s3d::P2BodyType::Static
+					);
+
+				flagmentBody->setLayer(Jam::Domain::Physics::PhysicsLayer::Item);
+
+				// FlagmentMemoryインスタンスを作成
+				auto flagment = std::make_shared<Jam::Domain::FlagmentMemory>(pos, flagmentBody);
+
+				// 物理ボディにリスナーを設定
+				flagmentBody->setCollisionListener(flagment);
+
+				// 管理配列に追加
+				m_flagmentMemories.push_back(flagment);
+			}
+
 			Jam::Util::GridRenderer::GridConfig config;
 			config.gridSize = 100.0;
 			config.fontSize = 16;
 			Jam::Util::GridRenderer::instance().setConfig(config);
+			BloomManager::getInstance().setIntensities(0.03, 0.06, 0.1, 0.3);
+			BloomManager::getInstance().setVignette(0.3, 0.5);
 		}
 
 		void update() override
 		{
-			Jam::Foundation::CoreManager::Instance().addTimer(Scene::DeltaTime());
+			auto& core = Jam::Foundation::CoreManager::Instance();
+			core.addTimer(Scene::DeltaTime());
+
 			auto& cursorUtil = Jam::Infrastructure::CursorUtil::instance();
 			//cursorUtil.registerCursorFromImage(U"../Assets/Cursor/GameCursor.png", Jam::Infrastructure::CursorStyle::Game);
 			cursorUtil.setCursor(CursorStyle::Cross);
 			cursorUtil.setClipWindowCuror(true);
 			m_playerService->update(Scene::DeltaTime());
 			m_playerManager->update();
-
-			// Stage更新（Serviceで実行）
-			if (m_stageService)
+			if (core.getPause())
+			{
+				Jam::Presentation::SettingManager::Instance().update();
+				return;
+			}
+			// Stage更新
+			if (m_stageManager)
 			{
 				m_stageService->update(Scene::DeltaTime());
 			}
@@ -263,6 +302,13 @@ namespace Jam::Presentation::Scenes
 			m_cameraService->update(Scene::DeltaTime());
 			m_effectManager->update();
 			Jam::Presentation::FadeManager::instance().update(Scene::DeltaTime());
+
+			//記憶のかけら
+			for (const auto& flagment : m_flagmentMemories)
+			{
+				flagment->update(Scene::DeltaTime());
+			}
+
 			//デバッグ用
 			if (KeyR.down())
 			{
@@ -276,6 +322,12 @@ namespace Jam::Presentation::Scenes
 			Scene::SetBackground(ColorF{ 0.9, 0.9, 1.0 });
 
 			{
+				if (Jam::Foundation::CoreManager::Instance().getPause())
+				{
+					Jam::Presentation::SettingManager::Instance().draw();
+					return;
+				}
+				//const auto t = Jam::Presentation::BloomManager::getInstance().getRenderTarget();
 				const auto transformer = m_cameraManager->createTransformer();
 				const Vec2 cameraOffset = m_cameraManager->getCameraOffset();
 
@@ -312,11 +364,22 @@ namespace Jam::Presentation::Scenes
 				}
 				m_effectManager->draw();
 
+				//記憶のかけら
+				for (const auto& flagment : m_flagmentMemories)
+				{
+					flagment->draw();
+				}
 				//Jam::Util::GridRenderer::instance().draw();
 			}
-
+			//BloomManager::getInstance().draw();
 			//フェードのDraw
 			Jam::Presentation::FadeManager::instance().draw();
+		}
+
+		void nextScene()
+		{
+			resetScene();
+			changeScene(ToSceneString(SceneName::Result));
 		}
 
 	private:

@@ -42,5 +42,6 @@ namespace Jam::Domain::Physics
 		Weapon,
 		Wall,
 		OneWayPlatform,
+		Item,
 	};
 }

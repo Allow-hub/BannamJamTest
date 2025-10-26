@@ -39,7 +39,7 @@
 
 # debug information files
 *.dwo
-# Visual Studio �̈ꎞ�t�@�C���𖳎�
+# Visual Studio  ̈ꎞ t @ C   𖳎 
 .vs/
 *.suo
 *.user
@@ -48,3 +48,6 @@
 *.db
 *.db-shm
 *.db-wal
+
+
+Jam/Intermediate/
