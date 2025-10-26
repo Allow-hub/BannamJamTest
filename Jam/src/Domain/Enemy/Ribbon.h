@@ -30,7 +30,8 @@ namespace Jam::Domain::Enemy
 
 		enum class AttackState
 		{
-			WaitAttack = 0,
+			AttackStart = 0,
+			WaitAttack,
 			IsAttack,
 			EndAttack
 		};

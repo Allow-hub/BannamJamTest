@@ -70,23 +70,23 @@ namespace Jam::Domain::Enemy
 
 	void Ribbon::onAttackEnter()
 	{
-		Vec2 plPos = getPlayerPos();
-		Vec2 enePos = getPosition();
-
-		if (plPos.x <= enePos.x)
-		{
-			IsRight = true;
-		}
-		else
-		{
-			IsRight = false;
-		}
+		
 	}
 
 	void Ribbon::onAttackUpdate(double deltaTime)
 	{
 		switch (attackState)
 		{
+		case AttackState::AttackStart:
+		{
+			Vec2 plPos = getPlayerPos();
+			Vec2 enePos = getPosition();
+
+			IsRight = (plPos.x > enePos.x);
+
+			attackState = AttackState::WaitAttack;
+		}break;
+
 		case AttackState::WaitAttack:
 		{
 			if (AttackWaitTime >= 200)
@@ -103,7 +103,7 @@ namespace Jam::Domain::Enemy
 
 		case AttackState::IsAttack:
 		{
-			if (true)
+			if (IsRight == true)
 			{
 				m_body->applyImpulse(Vec2{ 1000,0 });
 			}
@@ -119,7 +119,7 @@ namespace Jam::Domain::Enemy
 			if (AttackWaitTime >= 200)
 			{
 				AttackWaitTime = 0;
-				attackState = AttackState::WaitAttack;
+				attackState = AttackState::AttackStart;
 				changeAI(AIType::Patrol);
 			}
 			else
@@ -129,7 +129,7 @@ namespace Jam::Domain::Enemy
 		}break;
 
 		default:
-			attackState = AttackState::WaitAttack;
+			attackState = AttackState::AttackStart;
 			break;
 		}
 	}
