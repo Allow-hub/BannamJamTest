@@ -43,6 +43,19 @@ namespace Jam::Domain::Enemy
 		}
 	}
 
+	void Eye::onDestroy(const DamageInfo& info)
+	{
+		// ビームを削除
+		if (m_beam)
+		{
+			Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+				.getPhysicsFactory()->removeBody(m_beam->getID());
+			m_beam.reset();
+			m_beamListener.reset();
+		}
+		EnemyBase::onDestroy(info);
+	}
+
 	void Eye::onAttackEnter()
 	{
 		attackState = AttackState::AttackStart;

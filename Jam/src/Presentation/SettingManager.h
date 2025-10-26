@@ -9,10 +9,10 @@ namespace Jam::Presentation
 		SettingManager() = default;
 		Font font;
 		Texture m_backgroundTexture;
-
-		// SceneManagerへのポインタ
 		SceneManager<String>* m_sceneManager = nullptr;
 
+		enum class Mode { Menu, Audio };
+		Mode m_mode = Mode::Menu;
 
 		struct Button
 		{
@@ -35,13 +35,9 @@ namespace Jam::Presentation
 			{
 				const double speed = 100.0;
 				if (isHovered())
-				{
 					underlineWidth = std::min(underlineWidth + speed, underlineTarget);
-				}
 				else
-				{
 					underlineWidth = std::max(underlineWidth - speed, 0.0);
-				}
 			}
 
 			void draw(const Font& font)
@@ -65,28 +61,15 @@ namespace Jam::Presentation
 			return instance;
 		}
 
-		// SceneManagerを設定
 		void setSceneManager(SceneManager<String>* manager)
 		{
 			m_sceneManager = manager;
 		}
 
-		// シーン遷移（SceneName enum を使用）
-		void changeScene(Scenes::SceneName scene)
-		{
-			if (m_sceneManager)
-			{
-				m_sceneManager->changeScene(Scenes::ToSceneString(scene));
-			}
-		}
-
-		// シーン遷移（String を直接使用）
 		void changeScene(const String& sceneName)
 		{
 			if (m_sceneManager)
-			{
 				m_sceneManager->changeScene(sceneName);
-			}
 		}
 
 		void init()
@@ -105,29 +88,66 @@ namespace Jam::Presentation
 
 		void update()
 		{
-			for (auto& b : buttons)
+			if (m_mode == Mode::Menu)
 			{
-				b.update();
-
-				if (b.isHovered() && MouseL.down())
+				for (auto& b : buttons)
 				{
-					if (b.label == U"AUDIO")
+					b.update();
+
+					if (b.isHovered() && MouseL.down())
 					{
-						Print << U"Audio button clicked";
+						if (b.label == U"AUDIO")
+						{
+							m_mode = Mode::Audio;
+						}
+						else if (b.label == U"RETRY")
+						{
+							changeScene(U"InGame");
+							Jam::Foundation::CoreManager::Instance().setPause(false);
+						}
+						else if (b.label == U"EXIT")
+						{
+							Jam::Foundation::CoreManager::Instance().setPause(false);
+						}
+						else if (b.label == U"BACK THE SELECT")
+						{
+							changeScene(U"Select");
+						}
 					}
-					else if (b.label == U"RETRY")
-					{
-						changeScene(Scenes::SceneName::InGame);
-						Jam::Foundation::CoreManager::Instance().setPause(false);
-					}
-					else if (b.label == U"EXIT")
-					{
-						Jam::Foundation::CoreManager::Instance().setPause(false);
-					}
-					else if (b.label == U"BACK THE SELECT")
-					{
-						changeScene(Scenes::SceneName::Select);
-					}
+				}
+			}
+			else if (m_mode == Mode::Audio)
+			{
+				auto& core = Jam::Foundation::CoreManager::Instance();
+				auto& audioService = Jam::Presentation::AudioService::get();
+
+				// スライダーの値を保存（変更検知用）
+				static double prevMaster = core.audioSetting.masterVolume;
+				static double prevBGM = core.audioSetting.bgmVolume;
+				static double prevSE = core.audioSetting.seVolume;
+
+				// 値が変更されたらAudioServiceに反映
+				if (prevMaster != core.audioSetting.masterVolume)
+				{
+					audioService.setMasterVolume(core.audioSetting.masterVolume);
+					prevMaster = core.audioSetting.masterVolume;
+				}
+
+				if (prevBGM != core.audioSetting.bgmVolume)
+				{
+					audioService.setBGMVolume(core.audioSetting.bgmVolume);
+					prevBGM = core.audioSetting.bgmVolume;
+				}
+
+				if (prevSE != core.audioSetting.seVolume)
+				{
+					audioService.setSEVolume(core.audioSetting.seVolume);
+					prevSE = core.audioSetting.seVolume;
+				}
+
+				if (SimpleGUI::Button(U"BACK", Vec2(70, 420), 120))
+				{
+					m_mode = Mode::Menu;
 				}
 			}
 		}
@@ -136,18 +156,29 @@ namespace Jam::Presentation
 		{
 			m_backgroundTexture.resized(Scene::Size()).draw(0, 0);
 
-			const Vec2 textPos(70, 40);
-			const ColorF settingTextColor = Palette::Red;
-			const ColorF shadowColor(0, 0, 0, 0.5);
-			const Vec2 shadowOffset(2, 5);
-			const int settingSize = 40;
-
-			font(U"SETTING").draw(settingSize, textPos + shadowOffset, shadowColor);
-			font(U"SETTING").draw(settingSize, textPos, settingTextColor);
-
-			for (auto& b : buttons)
+			if (m_mode == Mode::Menu)
 			{
-				b.draw(font);
+				const Vec2 textPos(70, 40);
+				font(U"SETTING").draw(40, textPos + Vec2(2, 5), ColorF(0, 0, 0, 0.5));
+				font(U"SETTING").draw(40, textPos, Palette::Red);
+
+				for (auto& b : buttons)
+				{
+					b.draw(font);
+				}
+			}
+			else if (m_mode == Mode::Audio)
+			{
+				const Vec2 textPos(70, 40);
+				auto& core = Jam::Foundation::CoreManager::Instance();
+				font(U"AUDIO SETTING").draw(40, textPos + Vec2(2, 5), ColorF(0, 0, 0, 0.5));
+				font(U"AUDIO SETTING").draw(40, textPos, Palette::Red);
+
+				SimpleGUI::Slider(U"Master", core.audioSetting.masterVolume, Vec2(70, 180), 200, 200, true);
+				SimpleGUI::Slider(U"BGM", core.audioSetting.bgmVolume, Vec2(70, 260), 200, 200, true);
+				SimpleGUI::Slider(U"SE", core.audioSetting.seVolume, Vec2(70, 340), 200, 200, true);
+
+				SimpleGUI::Button(U"BACK", Vec2(70, 420), 120, true);
 			}
 		}
 	};

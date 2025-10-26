@@ -24,6 +24,8 @@ namespace Jam::Domain::Enemy
 
 		void onAIEvent(EnemyAIEvent e) override;
 
+		void onDestroy(const DamageInfo& info)override;
+
 	private :
 		std::shared_ptr<EyeBeam> m_beamListener;
 
