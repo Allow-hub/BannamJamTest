@@ -72,10 +72,6 @@ namespace Jam::Domain::Enemy
 		//攻撃開始時に、プレイヤーがどちらの方向にいるのか特定する
 		case AttackState::AttackStart:
 		{
-			Vec2 plPos = getPlayerPos();
-			Vec2 enePos = getPosition();
-
-			IsRight = (plPos.x > enePos.x);
 			//ステート切り替えの際にタイマーを開始
 			attackTimer.start();
 			attackState = AttackState::WaitAttack;
@@ -94,15 +90,8 @@ namespace Jam::Domain::Enemy
 		//攻撃処理
 		case AttackState::IsAttack:
 		{
-			if (IsRight == true)
-			{
-				//とりあえず仮置きでリボンと同じ攻撃にしてます。
-				m_body->applyImpulse(Vec2{ 1000,0 });
-			}
-			else
-			{
-				m_body->applyImpulse(Vec2{ -1000,0 });
-			}
+			Vec2 plPos = getPlayerPos();
+			Vec2 enePos = getPosition();
 			//ステート切り替えの際にタイマーを開始
 			attackTimer.start();
 			attackState = AttackState::EndAttack;
