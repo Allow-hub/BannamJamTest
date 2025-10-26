@@ -9,6 +9,8 @@ namespace Jam::Presentation
 		SettingManager() = default;
 		Font font;
 		Texture m_backgroundTexture;
+		Texture m_backgroundMaskTexture;
+
 		SceneManager<String>* m_sceneManager = nullptr;
 
 		enum class Mode { Menu, Audio };
@@ -75,6 +77,7 @@ namespace Jam::Presentation
 		void init()
 		{
 			m_backgroundTexture = Texture{ U"../Assets/Stage/BG.png" };
+			m_backgroundMaskTexture = Texture{ U"../Assets/setting_back.png" };
 			const int32 mainFontSize = static_cast<int32>(Scene::Height() * 0.07);
 			font = Font(mainFontSize, U"../Assets/Font/PixelMplus12-Bold.ttf", FontStyle::Bold);
 			const double maxUnderline = font(U"BACK THE SELECT").region().w - 100.0;
@@ -155,6 +158,7 @@ namespace Jam::Presentation
 		void draw()
 		{
 			m_backgroundTexture.resized(Scene::Size()).draw(0, 0);
+			m_backgroundMaskTexture.resized(Scene::Size()).draw(0, 0);
 
 			if (m_mode == Mode::Menu)
 			{

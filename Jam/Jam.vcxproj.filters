@@ -162,6 +162,7 @@
     <Image Include="Assets\Title\Press.png" />
     <Image Include="Assets\Enemy\Eye\idle_0.png" />
     <Image Include="Assets\Enemy\Eye\beam.png" />
+    <Image Include="Assets\setting_back.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />
