@@ -3,6 +3,7 @@
 #include "Physics/ICollisionListener.h"
 #include "../Infrastructure/FactoryServiceLocator.h"
 #include "../Infrastructure/IPhysicsBodyFactory.h"
+#include "../Presentation/AudioService.h"
 
 namespace Jam::Domain
 {
@@ -53,7 +54,7 @@ namespace Jam::Domain
 			switch (other->getLayer())
 			{
 			case Jam::Domain::Physics::PhysicsLayer::Player:
-				Print << U"GT";
+				Jam::Presentation::AudioService::get().playOneShot(Jam::Presentation::AudioService::Sound::SE_GetFlagment, 0.1);
 				// フラグメント取得
 				Jam::Foundation::CoreManager::Instance().addFlagment(1);
 

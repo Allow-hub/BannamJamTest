@@ -176,7 +176,6 @@ namespace Jam::Domain::Player
 	{
 		if (!m_isAlive) return;
 		if (m_isInvincible)return;
-		Print << U"PlayerEvent";
 
 		m_stats.hp -= info.amount;
 
@@ -237,6 +236,7 @@ namespace Jam::Domain::Player
 
 	void Player::onDamaged(const DamageInfo& info)
 	{
+		Jam::Presentation::AudioService::get().playOneShot(Jam::Presentation::AudioService::Sound::SE_Damage, 0.2);
 		m_body->applyImpulse(info.direction * 1000);
 	}
 

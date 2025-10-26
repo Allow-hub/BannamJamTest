@@ -27,13 +27,21 @@ void Main()
 	auto& core = Jam::Foundation::CoreManager::Instance();
 	core.stageInfo.stageName = Jam::Foundation::StageName::Stage1_1;  // デフォルトステージ
 	core.reset();
-	core.audioSetting.masterVolume = 1.0;
-	core.audioSetting.bgmVolume = 0.7;
-	core.audioSetting.seVolume = 1.0;
+	core.audioSetting.masterVolume = 0.5;
+	core.audioSetting.bgmVolume = 0.1;
+	core.audioSetting.seVolume = 0.5;
 
 	// --- 音声ロード ---
 	auto& audioService = Jam::Presentation::AudioService::get();
 	audioService.init();
+	// === マスターボリューム設定 ===
+	audioService.setMasterVolume(core.audioSetting.masterVolume);
+
+	// === BGMボリューム設定 ===
+	audioService.setBGMVolume(core.audioSetting.bgmVolume); 
+
+	// === SEボリューム設定 ===
+	audioService.setSEVolume(core.audioSetting.seVolume); 
 
 	Jam::Presentation::Scenes::TransitionManager::Instance().rec.init(30);
 

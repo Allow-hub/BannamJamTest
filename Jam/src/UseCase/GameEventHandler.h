@@ -129,19 +129,6 @@ namespace Jam::UseCase
 		{
 			Jam::UseCase::AttackProcessor::getInstance().executeAttack(e.attacker, e.target, e.damageInfo);
 
-			constexpr double offsetRange = 10.0;
-
-			// -offsetRange ～ +offsetRange のランダム値をXとYに加える
-			Vec2 randomOffset{
-				Random(-offsetRange, offsetRange),
-				Random(-offsetRange, offsetRange)
-			};
-			String text = Format(e.damageInfo.amount);
-			m_effectEventQueue.push(TextEffectEvent{
-				e.damageInfo.position + randomOffset,
-				text,
-				Palette::Crimson
-			});
 			// プレイヤーがダメージを受けた時の演出
 			m_cameraEventQueue.push(CameraShakeEvent{ e.intensity,e.duration });
 		}
