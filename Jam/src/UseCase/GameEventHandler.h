@@ -124,10 +124,26 @@ namespace Jam::UseCase
 		{
 			m_cameraEventQueue.push(CameraZoomEvent{ e.zoom,e.duration });
 		}
+
 		void handlePlayerDamaged(const Domain::Events::PlayerDamagedEvent& e)
 		{
+			Jam::UseCase::AttackProcessor::getInstance().executeAttack(e.attacker, e.target, e.damageInfo);
+
+			constexpr double offsetRange = 10.0;
+
+			// -offsetRange ～ +offsetRange のランダム値をXとYに加える
+			Vec2 randomOffset{
+				Random(-offsetRange, offsetRange),
+				Random(-offsetRange, offsetRange)
+			};
+			String text = Format(e.damageInfo.amount);
+			m_effectEventQueue.push(TextEffectEvent{
+				e.damageInfo.position + randomOffset,
+				text,
+				Palette::Crimson
+			});
 			// プレイヤーがダメージを受けた時の演出
-			m_cameraEventQueue.push(CameraShakeEvent{ 15.0, 0.3 });
+			m_cameraEventQueue.push(CameraShakeEvent{ e.intensity,e.duration });
 		}
 
 		void handlePlayerDeath(const Domain::Events::PlayerDeathEvent& e)

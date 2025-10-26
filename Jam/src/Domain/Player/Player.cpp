@@ -25,7 +25,7 @@ namespace Jam::Domain::Player
 	void Player::update(double deltaTime)
 	{
 		updateState();
-
+	
 		if (m_isRespawning || !m_canControl)return;
 
 		// --- 落下中に下向きの力を追加 ---
@@ -175,6 +175,8 @@ namespace Jam::Domain::Player
 	void Player::takeDamage(const DamageInfo& info)
 	{
 		if (!m_isAlive) return;
+		if (m_isInvincible)return;
+		Print << U"PlayerEvent";
 
 		m_stats.hp -= info.amount;
 
@@ -235,7 +237,7 @@ namespace Jam::Domain::Player
 
 	void Player::onDamaged(const DamageInfo& info)
 	{
-		m_body->applyImpulse(info.direction * 100);
+		m_body->applyImpulse(info.direction * 1000);
 	}
 
 	void Player::onDeath()
