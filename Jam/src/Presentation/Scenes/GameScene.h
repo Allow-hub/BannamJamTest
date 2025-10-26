@@ -32,9 +32,6 @@
 #include "../../Presentation/EffectManager.h"
 #include "../../Presentation/FadeManager.h"
 
-#include "../ProjectileManager.h"
-
-
 namespace Jam::Presentation::Scenes
 {
 	using App = SceneManager<String>;
@@ -80,9 +77,6 @@ namespace Jam::Presentation::Scenes
 
 		// Enemy用
 		HashSet<P2ContactPair> m_previousContacts;
-
-		//仮追加
-		std::unique_ptr<Jam::Domain::Projectile::ProjectileManager> m_projectileManager;
 	public:
 		GameScene(const InitData& init)
 			: IScene{ init },
