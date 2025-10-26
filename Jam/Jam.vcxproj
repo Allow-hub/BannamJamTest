@@ -178,6 +178,7 @@
     <Image Include="Assets\Story\Portrait\Player\player_smiling.png" />
     <Image Include="Assets\Story\Portrait\Player\player_surprised.png" />
     <Image Include="Assets\Story\Portrait\Player\player_suspicious.png" />
+    <Image Include="Assets\Title\Press.png" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />
