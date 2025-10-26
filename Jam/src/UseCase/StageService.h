@@ -98,14 +98,19 @@ namespace Jam::UseCase {
         /**
          * すり抜け床への着地判定と処理
          * @param playerBody プレイヤーの物理ボディ
+         * @param isPressingDown 下ボタンが押されているか
          * @param playerHeight プレイヤーの高さ
          * @return 着地した場合true
          */
         bool checkOneWayPlatformLanding(
             std::shared_ptr<Domain::Physics::IPhysicsBody> playerBody,
+            bool isPressingDown = false,
             double playerHeight = 100.0
         ) {
             if (!playerBody) return false;
+            
+            // 下ボタンが押されている場合は着地判定をスキップ
+            if (isPressingDown) return false;
             
             auto playerPos = playerBody->getPosition();
             auto playerVel = playerBody->getVelocity();

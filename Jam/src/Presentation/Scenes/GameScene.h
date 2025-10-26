@@ -250,7 +250,10 @@ namespace Jam::Presentation::Scenes
 
 			if (m_stageService && m_player)
 			{
-				bool landed = m_stageService->checkOneWayPlatformLanding(m_player->getPhysicsBody());
+				bool landed = m_stageService->checkOneWayPlatformLanding(
+					m_player->getPhysicsBody(),
+					m_player->isPressingDown()
+				);
 				if (landed)
 				{
 					m_player->resetJumpState();

@@ -69,6 +69,9 @@ namespace Jam::UseCase
 			{
 				m_player->skillReleased();
 			}
+			
+			// 下ボタンの状態を更新
+			m_player->setPressingDown(inputState.down);
 
 			// ---------------------------------
 			// マウスホイールでスキル切り替え

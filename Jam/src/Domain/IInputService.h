@@ -10,6 +10,7 @@ namespace Jam::Domain
 		bool jump = false;
 		bool dash = false;
 		bool attack = false;
+		bool down = false;
 		bool skillPush = false;//チョーカーや爆弾
 		bool skillReleased = false;
 		double skillChange = false;//ホイールでスキル変更

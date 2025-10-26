@@ -59,6 +59,9 @@ namespace Jam::Domain::Player
 			m_jumpCount = 0; 
 		}
 
+		bool isPressingDown() const { return m_isPressingDown; }
+		void setPressingDown(bool pressing) { m_isPressingDown = pressing; }
+
 		bool isAlive() const override { return m_isAlive; }
 		void takeDamage(const DamageInfo& info)override;
 		double getCurrentHp() const override { return m_stats.hp; }
@@ -77,6 +80,7 @@ namespace Jam::Domain::Player
 		bool m_isGrounded = false;
 		bool m_facingRight = true;
 		bool m_isDashing = false;
+		bool m_isPressingDown = false;
 		double dashMagnification = 2.0;
 		Jam::Domain::Events::GameEventQueue& m_eventQueue;
 		std::vector<std::shared_ptr<IPlayerSkill>> m_skills;
