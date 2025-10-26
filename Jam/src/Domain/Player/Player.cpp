@@ -25,7 +25,7 @@ namespace Jam::Domain::Player
 	void Player::update(double deltaTime)
 	{
 		updateState();
-
+	
 		if (m_isRespawning || !m_canControl)return;
 
 		// --- 落下中に下向きの力を追加 ---
@@ -126,6 +126,9 @@ namespace Jam::Domain::Player
 		if (m_currentSkill)
 			m_currentSkill->onDeactivate();
 		const Vec2 respawnPos = core.getStageData(core.stageInfo.stageName).respawnPosition;
+		m_eventQueue.push(Events::PlayerFallOutEvent{ 1.2, 0.4, 100 ,m_body->getPosition() });
+		co_await Jam::Util::WaitSeconds(1.0);
+
 		Jam::Presentation::FadeManager::instance().fadeOutAndIn();
 		co_await Jam::Util::WaitSeconds(1.0);
 
@@ -175,6 +178,7 @@ namespace Jam::Domain::Player
 	void Player::takeDamage(const DamageInfo& info)
 	{
 		if (!m_isAlive) return;
+		if (m_isInvincible)return;
 
 		m_stats.hp -= info.amount;
 
@@ -235,7 +239,8 @@ namespace Jam::Domain::Player
 
 	void Player::onDamaged(const DamageInfo& info)
 	{
-		m_body->applyImpulse(info.direction * 100);
+		Jam::Presentation::AudioService::get().playOneShot(Jam::Presentation::AudioService::Sound::SE_Damage, 0.2);
+		m_body->applyImpulse(info.direction * 1000);
 	}
 
 	void Player::onDeath()

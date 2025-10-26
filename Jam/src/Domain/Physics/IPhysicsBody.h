@@ -29,6 +29,7 @@ namespace Jam::Domain::Physics
 		virtual void setDamping(const bool b) = 0;
 		virtual PhysicsLayer getLayer() const = 0;
 		virtual void setLayer(PhysicsLayer layer) = 0;
+		virtual void setAngle(double angle) = 0;
 		virtual void drawFrame(const double thickness = 1.0, const ColorF& color = Palette::White) = 0;
 		virtual void setCollisionListener(const std::shared_ptr<ICollisionListener>& listener) = 0;
 		virtual void setBodyType(Jam::Domain::Physics::PhysicsType type) = 0;

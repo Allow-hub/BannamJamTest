@@ -30,42 +30,19 @@ namespace Jam::Domain::Enemy
 		switch (e)
 		{
 		case EnemyAIEvent::PlayerFound:
-			Print << U"ChangeAi2Chase";
 			changeAI(AIType::Chase);
 			break;
 
 		case EnemyAIEvent::PlayerLost:
-			Print << U"ChangeAi2Patrol";
 			changeAI(AIType::Patrol);
 			break;
 		case EnemyAIEvent::ReachedGoal:
-			Print << U"ChangeAi2Attack";
 			changeAI(AIType::Attack);
 			break;
 
 		default:
 			break;
 		}
-	}
-
-	void Ribbon::onPatrolEnter()
-	{
-
-	}
-
-	void Ribbon::onPatrolUpdate(double deltaTime)
-	{
-		
-	}
-
-	void Ribbon::onChaseEnter()
-	{
-
-	}
-
-	void Ribbon::onChaseUpdate(double DeltaTime)
-	{
-		
 	}
 
 	void Ribbon::onAttackEnter()
@@ -79,14 +56,13 @@ namespace Jam::Domain::Enemy
 		{
 		//攻撃開始時に、プレイヤーがどちらの方向にいるのか特定する
 		case AttackState::AttackStart:
-		{
 			Vec2 plPos = getPlayerPos();
 			Vec2 enePos = getPosition();
 
 			IsRight = (plPos.x > enePos.x);
 			attackTimer.start();
 			attackState = AttackState::WaitAttack;
-		}break;
+			break;
 
 		//プレイヤーが有効射程に入ってから攻撃を出すまでの時間
 		case AttackState::WaitAttack:
@@ -94,13 +70,11 @@ namespace Jam::Domain::Enemy
 			if (attackTimer.reachedZero())
 			{
 				attackTimer.reset();
-				attackState = AttackState::IsAttack;
 			}
 		}break;
 
 		//攻撃処理
 		case AttackState::IsAttack:
-		{
 			if (IsRight == true)
 			{
 				m_body->applyImpulse(Vec2{ 1000,0 });
@@ -111,7 +85,7 @@ namespace Jam::Domain::Enemy
 			}
 			attackTimer.start();
 			attackState = AttackState::EndAttack;
-		}break;
+
 
 		//攻撃終了後の待機時間と、攻撃終了後にAIを変更する処理
 		case AttackState::EndAttack:
@@ -135,6 +109,25 @@ namespace Jam::Domain::Enemy
 	void Ribbon::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{
 		EnemyBase::onCollisionEnter(other);
+		switch (other->getLayer())
+		{
+		case Physics::PhysicsLayer::Player:
+			m_eventQueue.push(Events::PlayerDamagedEvent{
+				m_body->getID(),
+				m_playerId,
+				DamageInfo {
+				m_status.attackPower,
+				m_body->getPosition(),
+				(getPlayerPos() - m_body->getPosition()).normalized(),
+				true,
+				false
+				}
+				,0.0
+				,0.3
+				,15.0
+			});
+			break;
+		}
 	}
 
 	void Ribbon::onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) {}

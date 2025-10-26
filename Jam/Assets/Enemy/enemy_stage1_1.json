@@ -1,62 +1,26 @@
 [
     {
-        "type": "Ribbon",
+        "type": "Eye",
         "position": {
-            "x": 200,
-            "y": 0
+            "x": 300,
+            "y": -200
         },
         "extra": {
             "ai": {
                 "patrol": {
                     "patrolPoints": [
                         {
-                            "x": 100,
-                            "y": -100
+                            "x": 300,
+                            "y": -200
                         },
                         {
-                            "x": -10,
-                            "y": 0
+                            "x": -300,
+                            "y": -200
                         }
                     ],
                     "loop": true,
                     "waitTime": 1.0,
-                    "foundDistance": 500.0
-                },
-                "chase": {
-                    "attackRange": 100,
-                    "loseRange": 1000,
-                    "moveSpeedFactor": 1.2
-                }
-            }
-        }
-    },
-    {
-        "type": "Spider",
-        "position": {
-            "x": 20,
-            "y": -100
-        },
-        "extra": {
-            "ai": {
-                "patrol": {
-                    "patrolPoints": [
-                        {
-                            "x": 100,
-                            "y": -100
-                        },
-                        {
-                            "x": -10,
-                            "y": 0
-                        }
-                    ],
-                    "loop": true,
-                    "waitTime": 1.0,
-                    "foundDistance" : 0.0
-                },
-                "chase": {
-                    "attackRange": 100,
-                    "loseRange": 200,
-                    "moveSpeedFactor": 1.3
+                    "foundDistance": 700.0
                 }
             }
         }

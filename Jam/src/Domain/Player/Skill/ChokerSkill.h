@@ -3,6 +3,7 @@
 #include "../../Physics/ICollisionListener.h"
 #include "../../Events/GameEvents.h"
 #include "../Player.h"
+#include "../../../Foundation/CoroutineUtil.h"
 
 
 namespace Jam::Domain::Player
@@ -51,6 +52,7 @@ namespace Jam::Domain::Player
 
 		void releaseJoint();
 		void resetHook();
+		Jam::Util::Task	delayReset();
 
 	public:
 		ChokerSkill(Jam::Domain::Events::GameEventQueue& eventQueue,

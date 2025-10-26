@@ -84,6 +84,10 @@
     <ClInclude Include="src\Domain\Enemy\Eye.h" />
     <ClInclude Include="src\Domain\Enemy\Clown.h" />
     <ClInclude Include="src\Domain\Enemy\Ribbon.h" />
+    <ClInclude Include="src\Presentation\PostEffect\BloomManager.h" />
+    <ClInclude Include="src\Presentation\SettingManager.h" />
+    <ClInclude Include="src\Domain\FlagmentMemory.h" />
+    <ClInclude Include="src\Domain\Enemy\EyeBeam.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />
@@ -103,6 +107,8 @@
     <Media Include="Assets\Sounds\bgm_title.mp3" />
     <Media Include="Assets\Sounds\se_choker.mp3" />
     <Media Include="Assets\Sounds\se_jump.mp3" />
+    <Media Include="Assets\Sounds\se_damage.mp3" />
+    <Media Include="Assets\Sounds\se_getFlagment.mp3" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\engine\texture\box-shadow\128.png" />
@@ -146,12 +152,17 @@
     <Image Include="Assets\Story\Portrait\Player\player_suspicious.png" />
     <Image Include="Assets\Enemy\GothicLolitaDoll\idle_0.png" />
     <Image Include="Assets\Enemy\Eye\idle_1.png" />
-    <Image Include="Assets\Enemy\Eye\idle_0.png" />
     <Image Include="Assets\Enemy\Clown\idle_1.png" />
     <Image Include="Assets\Enemy\Clown\idle_0.png" />
     <Image Include="Assets\Enemy\Spider\idle_1.png" />
     <Image Include="Assets\Enemy\Spider\idle_0.png" />
     <Image Include="Assets\Enemy\LittleDevil\idle_1.png" />
+    <Image Include="Assets\Enemy\Eye\idle_0.jpg" />
+    <Image Include="Assets\FlagmentMemory.png" />
+    <Image Include="Assets\Title\Press.png" />
+    <Image Include="Assets\Enemy\Eye\idle_0.png" />
+    <Image Include="Assets\Enemy\Eye\beam.png" />
+    <Image Include="Assets\setting_back.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />

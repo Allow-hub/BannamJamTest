@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "EnemyBase.h"
 #include "../Events/GameEvents.h"
+#include "EyeBeam.h"
 
 namespace Jam::Domain::Enemy
 {
@@ -15,15 +16,39 @@ namespace Jam::Domain::Enemy
 
 		// 毎フレームの更新（AI挙動など）
 		void update(double deltaTime) override;
-
-		// 当たり判定イベント（必要に応じて上書き）
+		void draw() const override;
+		// 当たり判定イベント
 		void onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 		void onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 		void onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 
 		void onAIEvent(EnemyAIEvent e) override;
 
-	private:
-		double m_patrolTimer = 0.0;
+		void onDestroy(const DamageInfo& info)override;
+
+	private :
+		std::shared_ptr<EyeBeam> m_beamListener;
+
+		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_beam;
+		bool m_attacked = false;
+		bool m_rightMove = false;
+		double attackTimer;
+		double swingTimer;          // 揺れ動作用のタイマー
+		double waitDuration = 4.0;  // 攻撃前の待機時間
+		double attackDuration = 5.0; // 攻撃継続時間
+		double swingInterval = 0.3;  // 左右揺れの間隔（秒）
+
+		enum class AttackState
+		{
+			AttackStart = 0,
+			WaitAttack,
+			IsAttack,
+			EndAttack
+		};
+		AttackState attackState;
+
+	protected:
+		void onAttackEnter()override;
+		void onAttackUpdate(double deltaTime) override;
 	};
 }

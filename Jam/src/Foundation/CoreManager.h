@@ -14,6 +14,7 @@ namespace Jam::Foundation
 	{
 		Vec2 respawnPosition;  // 落下後のリスタート位置
 		double fallLimitY;     // 落下判定Y位置
+		std::array<Vec2, 3> flagmentMemoryPos;
 	};
 
 	//ロジックは持たない、他のクラスへの参照は持たない
@@ -27,6 +28,7 @@ namespace Jam::Foundation
 		inline static double m_timer;
 		inline static StageData m_currentStageData;
 		inline static bool m_isDied = false;
+		inline static bool m_isPause = false;
 
 	public:
 		static CoreManager& Instance()
@@ -51,13 +53,13 @@ namespace Jam::Foundation
 			switch (stage)
 			{
 			case StageName::Stage1_1:
-				return StageData{ Vec2(50, -5), 2000.0 }; // respawn, fallLimitY
+				return StageData{ Vec2(50, -5), 2000.0  ,{Vec2(200, -100),Vec2(800, -300),Vec2(1300, -250)} }; // respawn, fallLimitY
 			case StageName::Stage1_2:
-				return StageData{ Vec2(50, -5), 2000.0 };
+				return StageData{ Vec2(50, -5), 2000.0,{Vec2(200, -100),Vec2(800, -300),Vec2(1300, -250)} };
 			case StageName::Stage1_3:
-				return StageData{ Vec2(50, 300), 550.0 };
+				return StageData{ Vec2(50, 300), 550.0,{Vec2(200, -100),Vec2(800, -300),Vec2(1300, -250)} };
 			default:
-				return StageData{ Vec2(50, 0), 1000.0 };
+				return StageData{ Vec2(50, 0), 1000.0,{Vec2(200, -100),Vec2(800, -300),Vec2(1300, -250)} };
 			}
 		}
 
@@ -80,6 +82,16 @@ namespace Jam::Foundation
 		static void setDied(bool b)
 		{
 			m_isDied = b;
+		}
+
+		static bool getPause()
+		{
+			return m_isPause;
+		}
+
+		static void setPause(bool b)
+		{
+			m_isPause = b;
 		}
 
 		static void reset()

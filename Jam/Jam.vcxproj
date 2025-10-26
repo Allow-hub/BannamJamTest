@@ -157,6 +157,8 @@
     <Image Include="Assets\Cursor\GameCursor.png" />
     <Image Include="Assets\Enemy\Clown\idle_0.png" />
     <Image Include="Assets\Enemy\Clown\idle_1.png" />
+    <Image Include="Assets\Enemy\Eye\beam.png" />
+    <Image Include="Assets\Enemy\Eye\idle_0.jpg" />
     <Image Include="Assets\Enemy\Eye\idle_0.png" />
     <Image Include="Assets\Enemy\Eye\idle_1.png" />
     <Image Include="Assets\Enemy\GothicLolitaDoll\idle_0.png" />
@@ -165,18 +167,21 @@
     <Image Include="Assets\Enemy\LittleDevil\idle_1.png" />
     <Image Include="Assets\Enemy\Spider\idle_0.png" />
     <Image Include="Assets\Enemy\Spider\idle_1.png" />
+    <Image Include="Assets\FlagmentMemory.png" />
     <Image Include="Assets\Player\idle_0.png" />
     <Image Include="Assets\Player\idle_1.png" />
     <Image Include="Assets\Player\idle_2.png" />
     <Image Include="Assets\Player\run_0.png" />
     <Image Include="Assets\Player\run_1.png" />
     <Image Include="Assets\Player\Skill\Bomb\Bomb.png" />
+    <Image Include="Assets\setting_back.png" />
     <Image Include="Assets\Stage\White_Test.png" />
     <Image Include="Assets\Story\background_stage1_1.png" />
     <Image Include="Assets\Story\Portrait\Player\player_normal.png" />
     <Image Include="Assets\Story\Portrait\Player\player_smiling.png" />
     <Image Include="Assets\Story\Portrait\Player\player_surprised.png" />
     <Image Include="Assets\Story\Portrait\Player\player_suspicious.png" />
+    <Image Include="Assets\Title\Press.png" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />
@@ -364,6 +369,8 @@
     <Media Include="App\example\video\river.mp4" />
     <Media Include="Assets\Sounds\bgm_title.mp3" />
     <Media Include="Assets\Sounds\se_choker.mp3" />
+    <Media Include="Assets\Sounds\se_damage.mp3" />
+    <Media Include="Assets\Sounds\se_getFlagment.mp3" />
     <Media Include="Assets\Sounds\se_jump.mp3" />
   </ItemGroup>
   <ItemGroup>
@@ -389,11 +396,13 @@
     <ClInclude Include="src\Domain\Enemy\EnemyBase.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyType.h" />
     <ClInclude Include="src\Domain\Enemy\Eye.h" />
+    <ClInclude Include="src\Domain\Enemy\EyeBeam.h" />
     <ClInclude Include="src\Domain\Enemy\GothicLolitaDoll.h" />
     <ClInclude Include="src\Domain\Enemy\LittleDevil.h" />
     <ClInclude Include="src\Domain\Enemy\Ribbon.h" />
     <ClInclude Include="src\Domain\Enemy\Spider.h" />
     <ClInclude Include="src\Domain\Events\GameEvents.h" />
+    <ClInclude Include="src\Domain\FlagmentMemory.h" />
     <ClInclude Include="src\Domain\IInputService.h" />
     <ClInclude Include="src\Domain\ITakeDamageable.h" />
     <ClInclude Include="src\Domain\Physics\ICollisionListener.h" />
@@ -432,12 +441,14 @@
     <ClInclude Include="src\Presentation\EnemyManager.h" />
     <ClInclude Include="src\Presentation\FadeManager.h" />
     <ClInclude Include="src\Presentation\PlayerManager.h" />
+    <ClInclude Include="src\Presentation\PostEffect\BloomManager.h" />
     <ClInclude Include="src\Presentation\Scenes\GameScene.h" />
     <ClInclude Include="src\Presentation\Scenes\ResultScene.h" />
     <ClInclude Include="src\Presentation\Scenes\SelectScene.h" />
     <ClInclude Include="src\Presentation\Scenes\StoryScene.h" />
     <ClInclude Include="src\Presentation\Scenes\TitleScene.h" />
     <ClInclude Include="src\Presentation\Scenes\TransitionManager.h" />
+    <ClInclude Include="src\Presentation\SettingManager.h" />
     <ClInclude Include="src\Presentation\Stage\BackgroundRenderer.h" />
     <ClInclude Include="src\Presentation\StoryManager.h" />
     <ClInclude Include="src\UseCase\AttackProcessor.h" />

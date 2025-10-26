@@ -65,6 +65,7 @@ namespace Jam::Domain::Player
 		bool isAlive() const override { return m_isAlive; }
 		double getCurrentHp() const override { return m_stats.hp; }
 		void takeDamage(const DamageInfo& info) override;
+		bool setIsInvincible(bool b) { return m_isInvincible = b; }
 
 		// ICollisionListener
 		void onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
@@ -94,6 +95,7 @@ namespace Jam::Domain::Player
 		// 生存・ダメージ
 		bool m_isAlive = true; // 生存フラグ
 		bool m_isRespawning = false;
+		bool m_isInvincible = false;
 		void onDamaged(const DamageInfo& info);
 		void onDeath();
 		Jam::Util::Task respawn();

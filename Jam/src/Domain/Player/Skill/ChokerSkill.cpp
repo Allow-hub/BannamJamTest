@@ -28,7 +28,7 @@ namespace Jam::Domain::Player
 				Jam::Domain::Physics::PhysicsShape::Circle
 			);
 
-		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::Team1);
+		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::PlayerWeapon);
 		m_body->setGravityScale(0);
 		m_body->setBullet(true);
 	}
@@ -133,8 +133,14 @@ namespace Jam::Domain::Player
 		m_isHooked = false;
 		m_hookState = HookState::None;
 		m_targetEnemy.reset();
-
 		m_cooldownTimer = m_cooldownTime;
+		delayReset();
+	}
+
+	Jam::Util::Task ChokerSkill::delayReset()
+	{
+		co_await Jam::Util::WaitSeconds(0.5);
+		m_player.setIsInvincible(false);
 	}
 
 	void ChokerSkill::update(double deltaTime)
@@ -197,6 +203,11 @@ namespace Jam::Domain::Player
 					double minLength = 30.0;
 					m_joint->setMaxLength(std::max(newMax, minLength));
 
+					// Joint長が一定に達したら無敵に
+					if (newMax <= minLength + 50.0)
+					{
+						m_player.setIsInvincible(true);
+					}
 
 					// Joint長が最小値に達したら終了
 					if (newMax <= minLength + 1.0)

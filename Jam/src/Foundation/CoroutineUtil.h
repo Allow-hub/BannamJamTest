@@ -5,7 +5,7 @@
 
 namespace Jam::Util
 {
-	// --- Task型（前方宣言が必要） ---
+	// --- Task型 ---
 	struct Task {
 		struct promise_type {
 			Task get_return_object() {
@@ -26,11 +26,9 @@ namespace Jam::Util
 		}
 		Task(const Task&) = delete;
 		Task& operator=(const Task&) = delete;
-
 		~Task() {
-			// コルーチンの破棄はCoroutineUtilが管理するため、ここでは破棄しない
+			// 破棄はCoroutineUtilが管理
 		}
-
 		handle_type handle() const { return coro_handle; }
 	};
 
@@ -64,12 +62,13 @@ namespace Jam::Util
 				t.remaining -= delta;
 			}
 
-			// 時間切れのタスクを処理
-			for (auto it = tasks.begin(); it != tasks.end();) {
-				if (it->remaining <= 0) {
-					auto h = it->handle;
-					it = tasks.erase(it);  // 先にリストから削除
+			// 時間切れのタスクを処理（逆順で処理してイテレータの無効化を防ぐ）
+			for (int i = static_cast<int>(tasks.size()) - 1; i >= 0; --i) {
+				if (tasks[i].remaining <= 0) {
+					auto h = tasks[i].handle;
+					tasks.erase(tasks.begin() + i);
 
+					// ハンドルが有効かつ完了していない場合のみ再開
 					if (h && !h.done()) {
 						h.resume();
 
@@ -77,10 +76,8 @@ namespace Jam::Util
 						if (h.done()) {
 							h.destroy();
 						}
+						// まだ完了していない場合は、次のawaitで再度リストに追加される
 					}
-				}
-				else {
-					++it;
 				}
 			}
 		}
@@ -102,7 +99,9 @@ namespace Jam::Util
 
 		explicit WaitSeconds(double t) : time(t) {}
 
-		bool await_ready() const noexcept { return time <= 0.0; }
+		bool await_ready() const noexcept {
+			return time <= 0.0;
+		}
 
 		void await_suspend(std::coroutine_handle<> h) {
 			CoroutineUtil::AddWait(h, time);
@@ -129,12 +128,16 @@ namespace Jam::Util
 
 		explicit WaitUntil(Predicate p) : pred(std::move(p)) {}
 
-		bool await_ready() const { return pred(); }
+		bool await_ready() const {
+			return pred();
+		}
 
 		void await_suspend(std::coroutine_handle<> h) {
 			CoroutineUtil::AddWait(h, 0.0);
 		}
 
-		bool await_resume() const { return pred(); }
+		bool await_resume() const {
+			return pred();
+		}
 	};
 }

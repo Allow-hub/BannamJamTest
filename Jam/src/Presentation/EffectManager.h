@@ -52,6 +52,13 @@ namespace Jam::Presentation
 					{
 						m_effect.add<RingEffect>(e);
 					}
+					else if constexpr (std::is_same_v<T, FallDeathEffectEvent>)
+					{
+						// 爆発を追加するためのコールバックを渡す
+						m_effect.add<FallDeathEffect>(e, [this](const ExplosionEffectEvent& explosion) {
+							m_effect.add<ExplosionEffect>(explosion);
+						});
+					}
 				}, event);
 			}
 		}

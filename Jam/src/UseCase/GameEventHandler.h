@@ -61,6 +61,10 @@ namespace Jam::UseCase
 					{
 						handlePlayerDeath(e);
 					}
+					else if constexpr (std::is_same_v<T, Domain::Events::PlayerFallOutEvent>)
+					{
+						handlePlayerFallOut(e);
+					}
 					else if constexpr (std::is_same_v<T, Domain::Events::BossAppearedEvent>)
 					{
 						handleBossAppeared(e);
@@ -120,14 +124,36 @@ namespace Jam::UseCase
 			m_cameraEventQueue.push(CameraZoomEvent{e.zoom, e.duration });
 		}
 
+		//プレイヤーが落ちた時
+		void handlePlayerFallOut(const Domain::Events::PlayerFallOutEvent& e)
+		{
+			m_cameraEventQueue.push(CameraShakeEvent{ e.intensity,e.duration });
+			m_cameraEventQueue.push(CameraZoomEvent{ e.zoom, e.duration });
+
+			Vec2 pos = { e.pos.x,e.pos.y + 100 };
+			m_effectEventQueue.push(FallDeathEffectEvent{
+				pos,
+				Vec2::Up(),
+				1000.0,
+				1.0,
+				980,
+				360,
+				Palette::Crimson,
+				true
+			});
+		}
+
 		void handlePlayerChokerSkilled(const Domain::Events::PlayerChokerSkillEvent& e)
 		{
 			m_cameraEventQueue.push(CameraZoomEvent{ e.zoom,e.duration });
 		}
+
 		void handlePlayerDamaged(const Domain::Events::PlayerDamagedEvent& e)
 		{
+			Jam::UseCase::AttackProcessor::getInstance().executeAttack(e.attacker, e.target, e.damageInfo);
+
 			// プレイヤーがダメージを受けた時の演出
-			m_cameraEventQueue.push(CameraShakeEvent{ 15.0, 0.3 });
+			m_cameraEventQueue.push(CameraShakeEvent{ e.intensity,e.duration });
 		}
 
 		void handlePlayerDeath(const Domain::Events::PlayerDeathEvent& e)

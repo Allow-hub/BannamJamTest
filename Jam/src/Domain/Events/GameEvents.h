@@ -40,6 +40,14 @@ namespace Jam::Domain::Events
 		double intensity;
 	};
 
+	struct PlayerFallOutEvent
+	{
+		double zoom;
+		double duration;
+		double intensity;
+		Vec2 pos;
+	};
+
 	struct PlayerDamagedEvent
 	{
 		Jam::Domain::Physics::PhysicsBodyID attacker;
@@ -76,6 +84,7 @@ namespace Jam::Domain::Events
 		PlayerChokerSkillEvent,
 		PlayerDamagedEvent,
 		PlayerDeathEvent,
+		PlayerFallOutEvent,
 		BossAppearedEvent,
 		ItemCollectedEvent
 	>;

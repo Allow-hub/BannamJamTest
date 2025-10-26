@@ -1,4 +1,4 @@
-﻿	#pragma once
+﻿#pragma once
 #include "EnemyBase.h"
 #include "../Events/GameEvents.h"
 
@@ -14,6 +14,7 @@ namespace Jam::Domain::Enemy
 
 		// 毎フレームの更新（AI挙動など）
 		void update(double deltaTime) override;
+		void draw() const override {};
 
 		// 当たり判定イベント（必要に応じて上書き）
 		void onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
@@ -40,10 +41,6 @@ namespace Jam::Domain::Enemy
 		AttackState attackState;
 
 	protected:
-		void onPatrolEnter() override;
-		void onPatrolUpdate(double deltaTime) override;
-		void onChaseEnter() override;
-		void onChaseUpdate(double deltaTime) override;
 		void onAttackEnter()override;
 		void onAttackUpdate(double deltaTime) override;
 	};
