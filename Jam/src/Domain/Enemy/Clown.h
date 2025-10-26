@@ -24,10 +24,13 @@ namespace Jam::Domain::Enemy
 		void onAIEvent(EnemyAIEvent e) override;
 
 	private:
-		double m_patrolTimer = 0.0;
-		int AttackWaitTime = 0;
 		bool IsRight;
 
+		//タイマー関連
+		const Duration AttackInterval = SecondsF(1.0);
+		Timer attackTimer{ AttackInterval,StartImmediately::No };
+
+		//攻撃をステートパターンで管理するためのenum
 		enum class AttackState
 		{
 			AttackStart = 0,

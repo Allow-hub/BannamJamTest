@@ -4,8 +4,7 @@
 
 namespace Jam::Domain::Enemy
 {
-	// 小悪魔タイプの敵クラス
-	// 飛行や短距離突進など、特徴的な挙動を今後追加予定
+	// リボンタイプの敵クラス
 	class Ribbon : public EnemyBase
 	{
 	public:
@@ -24,9 +23,12 @@ namespace Jam::Domain::Enemy
 		void onAIEvent(EnemyAIEvent e) override;
 
 	private:
-		double m_patrolTimer = 0.0;
-		int AttackWaitTime = 0;
+		//プレイヤーが右にいるかどうか
 		bool IsRight;
+
+		//タイマー関連
+		const Duration AttackInterval = SecondsF(2.0);
+		Timer attackTimer{ AttackInterval,StartImmediately::No };
 
 		enum class AttackState
 		{

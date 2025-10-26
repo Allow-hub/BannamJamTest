@@ -76,23 +76,21 @@ namespace Jam::Domain::Enemy
 			Vec2 enePos = getPosition();
 
 			IsRight = (plPos.x > enePos.x);
-
+			//ステート切り替えの際にタイマーを開始
+			attackTimer.start();
 			attackState = AttackState::WaitAttack;
 		}break;
+
 		//プレイヤーが有効射程に入ってから攻撃を出すまでの時間
 		case AttackState::WaitAttack:
 		{
-			if (AttackWaitTime >= 200)
+			if (attackTimer.reachedZero())
 			{
-				//とりあえずイントのカウンターにしてます。後日調べて秒数計測の何かに置き換えます。
-				AttackWaitTime = 0;
+				attackTimer.reset();
 				attackState = AttackState::IsAttack;
 			}
-			else
-			{
-				AttackWaitTime++;
-			}
 		}break;
+
 		//攻撃処理
 		case AttackState::IsAttack:
 		{
@@ -105,21 +103,20 @@ namespace Jam::Domain::Enemy
 			{
 				m_body->applyImpulse(Vec2{ -1000,0 });
 			}
+			//ステート切り替えの際にタイマーを開始
+			attackTimer.start();
 			attackState = AttackState::EndAttack;
 		}break;
+
 		//攻撃終了後の待機時間と、攻撃終了後にAIを変更する処理
 		case AttackState::EndAttack:
 		{
-			if (AttackWaitTime >= 200)
+			if (attackTimer.reachedZero())
 			{
-				AttackWaitTime = 0;
+				attackTimer.reset();
 				attackState = AttackState::AttackStart;
 				Print << U"ChangeAi2RunAway";
 				changeAI(AIType::RunAway);
-			}
-			else
-			{
-				AttackWaitTime++;
 			}
 		}break;
 
