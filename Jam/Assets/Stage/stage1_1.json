@@ -1,4 +1,4 @@
-{
+﻿{
   "_comment": "Stage1のオブジェクトの配置",
   "_使い方": {
     "rect": "[x, y, width, height] 形式の配列で位置とサイズを指定します。",
@@ -22,13 +22,27 @@
       "metadata": "初期地点"
     },
     {
+      "rect": [0, -100, 300, 20],
+      "type": "oneway",
+      "metadata": "すり抜け床01(テスト)"
+    },
+    {
       "rect": [ -300, 0, 120, 30 ],
-      "type": "moving_platform",
+      "type": "move",
       "movementType": "circular",
       "movementSpeed": 50.0,
       "movementDistance": 150.0,
       "loopMovement": true,
       "metadata": "円形回転床(テスト)"
+    },
+    {
+      "rect": [ 600, 0, 150, 30 ],
+      "type": "move",
+      "movementType": "horizontal",
+      "movementSpeed": 80.0,
+      "movementDistance": 300.0,
+      "loopMovement": true,
+      "metadata": "動く床01(テスト)"
     },
     {
       "rect": [ 1250, 150, 200, 1500 ],
@@ -56,29 +70,6 @@
       "rect": [ 200, 75, 200, 1500 ],
       "type": "solid",
       "metadata": "初期地点付近足場"
-    },
-    {
-    "rect": [0, -100, 300, 20],
-    "type": "oneway_platform",
-    "metadata": "すり抜け床01(テスト)"
-},
-    {
-      "rect": [ 600, 0, 150, 30 ],
-      "type": "moving_platform",
-      "movementType": "horizontal",
-      "movementSpeed": 80.0,
-      "movementDistance": 300.0,
-      "loopMovement": true,
-      "metadata": "動く床01(テスト)"
-    },
-    {
-      "rect": [ 900, 800, 120, 30 ],
-      "type": "moving_platform",
-      "movementType": "vertical",
-      "movementSpeed": 100.0,
-      "movementDistance": 400.0,
-      "loopMovement": true,
-      "metadata": "動く床02(テスト)"
     },
     {
       "rect": [ 1650, -150, 300, 100 ],

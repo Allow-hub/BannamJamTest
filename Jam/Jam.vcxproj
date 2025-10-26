@@ -179,6 +179,7 @@
     <Image Include="Assets\Stage\BG\BG.png" />
     <Image Include="Assets\Stage\BG\BG_Back1.png" />
     <Image Include="Assets\Stage\BG\BG_Back2.png" />
+    <Image Include="Assets\Stage\moving_platform.png" />
     <Image Include="Assets\Stage\Normal_Test.png" />
     <Image Include="Assets\Stage\Platform_Test.png" />
     <Image Include="Assets\Stage\White_Test.png" />
@@ -368,6 +369,7 @@
     <None Include="Assets\Enemy\Spider\Spider_animation.json" />
     <None Include="Assets\Stage\background.json" />
     <None Include="Assets\Stage\stage1.json" />
+    <None Include="Assets\Stage\stage1_1.json" />
     <None Include="Assets\Story\stage1_1.csv" />
   </ItemGroup>
   <ItemGroup>
