@@ -8,6 +8,7 @@
 #include "src/Presentation/AudioService.h"
 #include "src/Presentation/Scenes/ResultScene.h"
 #include "src/Presentation/Scenes/TransitionManager.h"
+#include "src/Presentation/SettingManager.h"
 
 using App = SceneManager<String>;
 
@@ -37,6 +38,9 @@ void Main()
 	Jam::Presentation::Scenes::TransitionManager::Instance().rec.init(30);
 
 	App manager;
+	auto& settingMgr = Jam::Presentation::SettingManager::Instance();
+	settingMgr.init();
+	settingMgr.setSceneManager(&manager);
 
 	manager.add<Jam::Presentation::Scenes::TitleScene>(
 		Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::Title));

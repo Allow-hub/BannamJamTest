@@ -1,95 +1,92 @@
 ﻿  Main.cpp
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Player\Player.h(80,44): warning C4100: 'info': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\UseCase\AttackProcessor.h(48,18): warning C4100: 'attackerBodyId': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\UseCase\AttackProcessor.h(48,18): warning C4100: 'attackerBodyId': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(19,36): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Stage\IStage.h(19,36): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(20,68): warning C4100: 'speed': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Stage\IStage.h(20,68): warning C4100: 'speed': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(20,53): warning C4100: 'objectId': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Stage\IStage.h(20,53): warning C4100: 'objectId': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(21,74): warning C4100: 'path': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Stage\IStage.h(21,74): warning C4100: 'path': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\IStage.h(21,52): warning C4100: 'objectId': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Stage\IStage.h(21,52): warning C4100: 'objectId': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingPlatformStage.h(46,42): warning C4100: 'objectId': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Stage\MovingPlatformStage.h(46,42): warning C4100: 'objectId': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingPlatformStage.h(50,46): warning C4100: 'objectId': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Stage\MovingPlatformStage.h(50,46): warning C4100: 'objectId': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingPlatformStage.h(59,28): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Stage\MovingPlatformStage.h(59,28): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingPlatformStage.h(72,45): warning C4100: 'objectId': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Stage\MovingPlatformStage.h(72,45): warning C4100: 'objectId': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingPlatformStage.h(76,66): warning C4100: 'path': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Stage\MovingPlatformStage.h(76,66): warning C4100: 'path': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingPlatformStage.h(76,44): warning C4100: 'objectId': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Stage\MovingPlatformStage.h(76,44): warning C4100: 'objectId': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(91,39): warning C4100: 'e': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(87,39): warning C4100: 'e': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(98,38): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(94,38): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(102,37): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(98,37): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(106,38): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(102,38): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(117,44): warning C4100: 'info': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Domain\Enemy\EnemyBase.h(113,44): warning C4100: 'info': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\UseCase\GameEventHandler.h(127,70): warning C4100: 'e': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\UseCase\GameEventHandler.h(119,70): warning C4100: 'e': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Infrastructure\Background\BackgroundLoader.h(97,33): warning C4101: 'e': ローカル変数は 1 度も使われていません。
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Infrastructure\Background\BackgroundLoader.h(97,33): warning C4101: 'e': ローカル変数は 1 度も使われていません。
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TransitionManager.h(40,15): warning C4244: '初期化中': 'Arithmetic' から 's3d::int32' への変換です。データが失われる可能性があります。
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TransitionManager.h(40,15): warning C4244:         with
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TransitionManager.h(40,15): warning C4244:         [
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TransitionManager.h(40,15): warning C4244:             Arithmetic=double
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TransitionManager.h(40,15): warning C4244:         ]
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Presentation\Scenes\TransitionManager.h(38,14): warning C4244: '初期化中': 'Arithmetic' から 's3d::int32' への変換です。データが失われる可能性があります。
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Presentation\Scenes\TransitionManager.h(38,14): warning C4244:         with
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Presentation\Scenes\TransitionManager.h(38,14): warning C4244:         [
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Presentation\Scenes\TransitionManager.h(38,14): warning C4244:             Arithmetic=double
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Presentation\Scenes\TransitionManager.h(38,14): warning C4244:         ]
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TransitionManager.h(39,14): warning C4189: 'i': ローカル変数が初期化されましたが、参照されていません
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Presentation\Scenes\TransitionManager.h(37,13): warning C4189: 'i': ローカル変数が初期化されましたが、参照されていません
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TransitionManager.h(55,33): warning C4244: '引数': 'double' から 's3d::Rect::value_type' への変換です。データが失われる可能性があります。
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Presentation\Scenes\TransitionManager.h(53,32): warning C4244: '引数': 'double' から 's3d::Rect::value_type' への変換です。データが失われる可能性があります。
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TransitionManager.h(61,25): warning C4244: '引数': 'double' から 's3d::Rect::value_type' への変換です。データが失われる可能性があります。
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Presentation\Scenes\TransitionManager.h(59,24): warning C4244: '引数': 'double' から 's3d::Rect::value_type' への変換です。データが失われる可能性があります。
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\StoryManager.h(30,62): warning C4100: 'portraitSize': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\usaha\Documents\GameJAM2025\Jam\src\Presentation\StoryManager.h(30,62): warning C4100: 'portraitSize': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-     ライブラリ C:\Users\usaha\Documents\GameJAM2025\Jam\Intermediate\Jam\Release\Jam.lib とオブジェクト C:\Users\usaha\Documents\GameJAM2025\Jam\Intermediate\Jam\Release\Jam.exp を作成中
+     ライブラリ C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.lib とオブジェクト C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exp を作成中
   コード生成しています。
-  6 of 10326 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+  53 of 10786 functions ( 0.5%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+    34 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
-  Jam.vcxproj -> C:\Users\usaha\Documents\GameJAM2025\Jam\Intermediate\Jam\Release\Jam.exe
-  C:\Users\usaha\Documents\GameJAM2025\Jam\Intermediate\Jam\Release\Jam.exe
+  Jam.vcxproj -> C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exe
+  C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exe
   1 個のファイルをコピーしました

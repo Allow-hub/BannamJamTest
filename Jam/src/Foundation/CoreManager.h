@@ -27,6 +27,7 @@ namespace Jam::Foundation
 		inline static double m_timer;
 		inline static StageData m_currentStageData;
 		inline static bool m_isDied = false;
+		inline static bool m_isPause = false;
 
 	public:
 		static CoreManager& Instance()
@@ -80,6 +81,16 @@ namespace Jam::Foundation
 		static void setDied(bool b)
 		{
 			m_isDied = b;
+		}
+
+		static bool getPause()
+		{
+			return m_isPause;
+		}
+
+		static void setPause(bool b)
+		{
+			m_isPause = b;
 		}
 
 		static void reset()

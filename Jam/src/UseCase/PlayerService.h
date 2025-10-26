@@ -34,6 +34,13 @@ namespace Jam::UseCase
 			if (m_player->getIsRespawning())return;
 			if (!m_player->getCanControl())return;
 
+			if (inputState.settting)
+			{
+				auto& core = Jam::Foundation::CoreManager::Instance();
+				core.setPause(!core.getPause());
+				return;
+			}
+
 			bool isRunning = false;
 
 			if (inputState.left)
