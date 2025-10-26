@@ -22,22 +22,56 @@ namespace Jam::Presentation
 		double m_shakeDuration = 0.0;
 		double m_zoomDuration = 0.0;
 		double m_totalZoomDuration = 0.0;
+
+		// Y座標の制限
+		double m_minY = -std::numeric_limits<double>::infinity();
+		double m_maxY = std::numeric_limits<double>::infinity();
+
 	public:
 		CameraManager(const Vec2& initPos = { 0, 0 })
 		{
 			m_camera = Camera2D(initPos, 1.0, CameraControl::None_);
 			m_target = initPos;
 		}
+
+		// Y座標の範囲を設定
+		void setYLimits(double minY, double maxY)
+		{
+			m_minY = minY;
+			m_maxY = maxY;
+		}
+
+		// Y座標の最小値を設定
+		void setMinY(double minY)
+		{
+			m_minY = minY;
+		}
+
+		// Y座標の最大値を設定
+		void setMaxY(double maxY)
+		{
+			m_maxY = maxY;
+		}
+
+		// Y座標の制限をリセット
+		void resetYLimits()
+		{
+			m_minY = -std::numeric_limits<double>::infinity();
+			m_maxY = std::numeric_limits<double>::infinity();
+		}
+
 		void setTarget(const Vec2& target)
 		{
 			m_target = target;
 		}
+
 		void setZoom(double zoom, double zoomDuration)
 		{
 			m_targetZoom = Clamp(zoom, 0.01, 2.0);
 			m_zoomDuration = zoomDuration;
 			m_totalZoomDuration = zoomDuration;
 		}
+
 		void focusOn(const Vec2& point, double duration, double zoom = 1.0)
 		{
 			m_mode = CameraMode::FocusPoint;
@@ -45,11 +79,13 @@ namespace Jam::Presentation
 			m_modeDuration = duration;
 			m_targetZoom = zoom;
 		}
+
 		void shake(double intensity, double duration)
 		{
 			m_shakeIntensity = intensity;
 			m_shakeDuration = duration;
 		}
+
 		void resetToFollow()
 		{
 			m_mode = CameraMode::FollowPlayer;
@@ -81,6 +117,9 @@ namespace Jam::Presentation
 				break;
 			}
 
+			// === Y座標の制限を適用 ===
+			actualTarget.y = Clamp(actualTarget.y, m_minY, m_maxY);
+
 			// === カメラシェイク ===
 			Vec2 shakeOffset = Vec2::Zero();
 			if (m_shakeDuration > 0.0)
@@ -111,8 +150,11 @@ namespace Jam::Presentation
 				m_camera.setScale(newZoom);
 			}
 
-			// === シェイクを適用した位置に移動 ===
-			m_camera.jumpTo(actualTarget + shakeOffset, m_camera.getScale());
+			// === シェイクを適用した位置に移動（Y座標も制限） ===
+			Vec2 finalPosition = actualTarget + shakeOffset;
+			finalPosition.y = Clamp(finalPosition.y, m_minY, m_maxY);
+
+			m_camera.jumpTo(finalPosition, m_camera.getScale());
 			m_camera.update();
 		}
 
@@ -122,11 +164,9 @@ namespace Jam::Presentation
 			// カメラの中心位置とスケールを取得
 			const Vec2 center = m_camera.getCenter();
 			const double scale = m_camera.getScale();
-
 			// スクリーン中心からの相対座標を計算
 			const Vec2 screenCenter = Scene::Center();
 			const Vec2 offset = (screenPos - screenCenter) / scale;
-
 			// ワールド座標を計算
 			return center + offset;
 		}
@@ -141,8 +181,9 @@ namespace Jam::Presentation
 		{
 			return m_camera.createTransformer();
 		}
+
 		[[nodiscard]] CameraMode getMode() const { return m_mode; }
-		
+
 		// カメラオフセットを取得（パララックス計算用）
 		[[nodiscard]] Vec2 getCameraOffset() const
 		{

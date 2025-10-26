@@ -92,7 +92,6 @@ namespace Jam::UseCase
 	};
 
 	// パーティクルエフェクト
-	// パーティクルエフェクト
 	struct ParticleEffect : IEffect
 	{
 		struct Particle
@@ -120,6 +119,9 @@ namespace Jam::UseCase
 				Palette::White
 			};
 
+			// 全体で使う色を事前に決定（staticを使わない）
+			const ColorF sharedColor = colors.choice();
+
 			// --- パーティクル生成 ---
 			for (int32 i = 0; i < event.particleCount; ++i)
 			{
@@ -142,8 +144,7 @@ namespace Jam::UseCase
 				}
 				else
 				{
-					// 全体で同じランダム色（1つ目で決める）
-					static ColorF sharedColor = colors.choice();
+					// 全体で同じランダム色
 					particleColor = sharedColor;
 				}
 
@@ -171,7 +172,6 @@ namespace Jam::UseCase
 			return (t < 1.0);
 		}
 	};
-
 
 
 	// ヒットエフェクト
@@ -255,6 +255,139 @@ namespace Jam::UseCase
 			const double alpha = (1.0 - t);
 			Circle{ m_center, radius }.drawFrame(m_thickness, ColorF{ m_color, alpha });
 			return (t < 1.0);
+		}
+	};
+	// 落下演出エフェクト
+	// バージョン1: 光の柱と共に消える演出
+	struct FallDeathEffect : IEffect
+	{
+		Vec2 m_startPos;
+		Vec2 m_velocity;
+		double m_duration;
+		double m_gravity;
+		ColorF m_mainColor;
+		bool m_explosionTriggered = false;
+		std::function<void(const ExplosionEffectEvent&)> m_onExplosion;
+
+		FallDeathEffect(const FallDeathEffectEvent& event,
+						std::function<void(const ExplosionEffectEvent&)> onExplosion = nullptr)
+			: m_startPos(event.startPosition)
+			, m_velocity(event.knockbackDirection.normalized()* event.knockbackPower)
+			, m_duration(event.duration)
+			, m_gravity(event.gravity)
+			, m_mainColor(event.starColor)
+			, m_onExplosion(onExplosion)
+		{
+		}
+
+		bool update(double t) override
+		{
+			const double normalizedTime = t / m_duration;
+
+			// 物理演算
+			const Vec2 gravityVec = Vec2{ 0, m_gravity };
+			const Vec2 currentPos = m_startPos + m_velocity * t + 0.5 * gravityVec * t * t;
+
+			// フェーズ1: 吹っ飛び (0.0 - 0.6)
+			if (normalizedTime < 0.6)
+			{
+				const double phase1 = normalizedTime / 0.6;
+				const double size = Math::Lerp(40.0, 25.0, phase1);
+				const double rotation = t * 720.0 * 1_deg;
+
+				// メインの星
+				Shape2D::Star(size, currentPos, rotation)
+					.draw(m_mainColor);
+
+				// 光の軌跡
+				for (int i = 1; i <= 5; ++i)
+				{
+					const double trailTime = t - i * 0.03;
+					if (trailTime > 0)
+					{
+						const Vec2 trailPos = m_startPos + m_velocity * trailTime +
+							0.5 * gravityVec * trailTime * trailTime;
+						const double trailAlpha = 0.6 * (1.0 - i * 0.15);
+						const double trailSize = size * (1.0 - i * 0.15);
+
+						Circle{ trailPos, trailSize * 0.5 }
+						.draw(ColorF{ m_mainColor, trailAlpha });
+					}
+				}
+
+				// 周囲のパーティクル
+				if (Random(1.0) < 0.3)
+				{
+					const Vec2 offset = RandomVec2(Circle{ 20.0 });
+					Circle{ currentPos + offset, Random(2.0, 5.0) }
+					.draw(ColorF{ m_mainColor, 0.8 });
+				}
+			}
+			// フェーズ2: 光の柱出現 (0.6 - 0.85)
+			else if (normalizedTime < 0.85)
+			{
+				const double phase2 = (normalizedTime - 0.6) / 0.25;
+
+				// 縮小していく星
+				const double size = Math::Lerp(25.0, 15.0, phase2);
+				const double starAlpha = 1.0 - phase2 * 0.5;
+				Shape2D::Star(size, currentPos, t * 1080.0 * 1_deg)
+					.draw(ColorF{ m_mainColor, starAlpha });
+
+				// 光の柱（下から上へ）
+				const double beamHeight = Math::Lerp(-100.0, 300.0, EaseOutExpo(phase2));
+				const double beamWidth = 80.0 * (1.0 - phase2 * 0.3);
+				const double beamAlpha = Math::Lerp(0.8, 0.3, phase2);
+
+				RectF{ currentPos.x - beamWidth / 2, currentPos.y, beamWidth, beamHeight }
+				.draw(ColorF{ m_mainColor, beamAlpha * 0.3 });
+				RectF{ currentPos.x - beamWidth / 2, currentPos.y, beamWidth, beamHeight }
+				.drawFrame(3.0, ColorF{ m_mainColor, beamAlpha });
+
+				// 光の輪
+				for (int i = 0; i < 3; ++i)
+				{
+					const double ringRadius = 50.0 + i * 25.0 + phase2 * 50.0;
+					const double ringAlpha = beamAlpha * (1.0 - i * 0.3);
+					Circle{ currentPos, ringRadius }
+					.drawFrame(2.0, ColorF{ m_mainColor, ringAlpha * 0.5 });
+				}
+			}
+			// フェーズ3: 爆発と消滅 (0.85 - 1.0)
+			else
+			{
+				const double phase3 = (normalizedTime - 0.85) / 0.15;
+
+				if (!m_explosionTriggered && m_onExplosion)
+				{
+					// 爆発エフェクト
+					m_onExplosion(ExplosionEffectEvent{
+						.position = currentPos,
+						.color = m_mainColor,
+						.radius = 120.0,
+						.duration = 0.5,
+						.particleCount = 40
+					});
+
+					// リングエフェクト
+					m_onExplosion(ExplosionEffectEvent{
+						.position = currentPos,
+						.color = ColorF{ 1.0, 1.0, 1.0 },
+						.radius = 80.0,
+						.duration = 0.3,
+						.particleCount = 20
+					});
+
+					m_explosionTriggered = true;
+				}
+
+				// フェードアウトする光
+				const double fadeAlpha = 1.0 - phase3;
+				Circle{ currentPos, 80.0 * (1.0 + phase3) }
+				.draw(ColorF{ m_mainColor, fadeAlpha * 0.3 });
+			}
+
+			return (normalizedTime < 1.0);
 		}
 	};
 }

@@ -166,7 +166,7 @@ namespace Jam::Presentation::Scenes
 			m_cameraManager = std::make_shared<Jam::Presentation::CameraManager>(
 				m_player->getPosition()  // 初期位置をプレイヤー位置に合わせる
 			);
-
+			m_cameraManager->setYLimits(-1000, core.getCurrentStageData().fallLimitY-500);
 			m_cameraService = std::make_shared<Jam::UseCase::CameraService>(
 				*m_player,
 				*m_cameraManager,

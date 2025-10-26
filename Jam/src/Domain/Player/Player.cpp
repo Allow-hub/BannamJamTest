@@ -126,6 +126,9 @@ namespace Jam::Domain::Player
 		if (m_currentSkill)
 			m_currentSkill->onDeactivate();
 		const Vec2 respawnPos = core.getStageData(core.stageInfo.stageName).respawnPosition;
+		m_eventQueue.push(Events::PlayerFallOutEvent{ 1.2, 0.4, 100 ,m_body->getPosition() });
+		co_await Jam::Util::WaitSeconds(1.0);
+
 		Jam::Presentation::FadeManager::instance().fadeOutAndIn();
 		co_await Jam::Util::WaitSeconds(1.0);
 
