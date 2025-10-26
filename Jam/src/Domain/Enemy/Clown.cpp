@@ -2,6 +2,7 @@
 #include "EnemyAI/PatrolAI.h"
 #include "EnemyAI/ChaseAI.h"
 #include "EnemyAI/AttackAI.h"
+#include "EnemyAI/RunAwayAI.h"
 
 namespace Jam::Domain::Enemy
 {
@@ -13,21 +14,121 @@ namespace Jam::Domain::Enemy
 		aiList.emplace_back(AIType::Patrol, std::make_unique<PatrolAI>());
 		aiList.emplace_back(AIType::Chase, std::make_unique<ChaseAI>());
 		aiList.emplace_back(AIType::Attack, std::make_unique<AttackAI>());
+		aiList.emplace_back(AIType::RunAway, std::make_unique<RunAwayAI>());
 
 		setAIList(std::move(aiList));//setしたときにそのAIのEnterも入ります
 		m_enemyType = EnemyType::Clown;
-		m_body->setGravityScale(0);
+		m_body->setGravityScale(1);
 	}
 
 	void Clown::update(double deltaTime)
 	{
+
 		if (!isAlive()) return;
 		m_currentAI->update(*this, deltaTime);
 	}
 
 	void Clown::onAIEvent(EnemyAIEvent e)
 	{
+		switch (e)
+		{
+		case EnemyAIEvent::PlayerFound:
+			Print << U"ChangeAi2Chase";
+			changeAI(AIType::Chase);
+			break;
+
+		case EnemyAIEvent::PlayerLost:
+			Print << U"ChangeAi2Patrol";
+			changeAI(AIType::Patrol);
+			break;
+		case EnemyAIEvent::ReachedGoal:
+			Print << U"ChangeAi2Attack";
+			changeAI(AIType::Attack);
+			break;
+
+		default:
+			break;
+		}
 	}
+	void Clown::onChaseEnter()
+	{
+
+	}
+
+	void Clown::onChaseUpdate(double deltaTime)
+	{
+
+	}
+
+	void Clown::onAttackEnter()
+	{
+
+	}
+
+	void Clown::onAttackUpdate(double deltaTime)
+	{
+		switch (attackState)
+		{
+		//攻撃開始時に、プレイヤーがどちらの方向にいるのか特定する
+		case AttackState::AttackStart:
+		{
+			Vec2 plPos = getPlayerPos();
+			Vec2 enePos = getPosition();
+
+			IsRight = (plPos.x > enePos.x);
+
+			attackState = AttackState::WaitAttack;
+		}break;
+		//プレイヤーが有効射程に入ってから攻撃を出すまでの時間
+		case AttackState::WaitAttack:
+		{
+			if (AttackWaitTime >= 200)
+			{
+				//とりあえずイントのカウンターにしてます。後日調べて秒数計測の何かに置き換えます。
+				AttackWaitTime = 0;
+				attackState = AttackState::IsAttack;
+			}
+			else
+			{
+				AttackWaitTime++;
+			}
+		}break;
+		//攻撃処理
+		case AttackState::IsAttack:
+		{
+			if (IsRight == true)
+			{
+				//とりあえず仮置きでリボンと同じ攻撃にしてます。
+				m_body->applyImpulse(Vec2{ 1000,0 });
+			}
+			else
+			{
+				m_body->applyImpulse(Vec2{ -1000,0 });
+			}
+			attackState = AttackState::EndAttack;
+		}break;
+		//攻撃終了後の待機時間と、攻撃終了後にAIを変更する処理
+		case AttackState::EndAttack:
+		{
+			if (AttackWaitTime >= 200)
+			{
+				AttackWaitTime = 0;
+				attackState = AttackState::AttackStart;
+				Print << U"ChangeAi2RunAway";
+				changeAI(AIType::RunAway);
+			}
+			else
+			{
+				AttackWaitTime++;
+			}
+		}break;
+
+		default:
+			attackState = AttackState::AttackStart;
+			break;
+		}
+	}
+
 	void Clown::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{
 		EnemyBase::onCollisionEnter(other);

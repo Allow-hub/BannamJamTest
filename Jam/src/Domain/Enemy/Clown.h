@@ -4,8 +4,8 @@
 
 namespace Jam::Domain::Enemy
 {
-	// 目の敵
-	// プレイヤーに近づき、射程距離に入ると、目から長いビームを出す
+	// 小悪魔タイプの敵クラス
+	// 飛行や短距離突進など、特徴的な挙動を今後追加予定
 	class Clown : public EnemyBase
 	{
 	public:
@@ -25,5 +25,22 @@ namespace Jam::Domain::Enemy
 
 	private:
 		double m_patrolTimer = 0.0;
+		int AttackWaitTime = 0;
+		bool IsRight;
+
+		enum class AttackState
+		{
+			AttackStart = 0,
+			WaitAttack,
+			IsAttack,
+			EndAttack
+		};
+		AttackState attackState;
+
+	protected:
+		void onChaseEnter() override;
+		void onChaseUpdate(double deltaTime) override;
+		void onAttackEnter()override;
+		void onAttackUpdate(double deltaTime) override;
 	};
 }

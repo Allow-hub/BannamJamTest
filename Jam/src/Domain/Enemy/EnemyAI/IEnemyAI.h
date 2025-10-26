@@ -30,7 +30,8 @@ namespace Jam::Domain::Enemy
 		None = 0,
 		Patrol,
 		Chase,
-		Attack
+		Attack,
+		RunAway
 	};
 
 	inline const s3d::String AITypeToString(AIType type)
@@ -40,6 +41,7 @@ namespace Jam::Domain::Enemy
 		case AIType::Patrol: return U"Patrol";
 		case AIType::Chase:  return U"Chase";
 		case AIType::Attack: return U"Attack";
+		case AIType::RunAway: return U"Attack";
 		default:             return U"Unknown";
 		}
 	}

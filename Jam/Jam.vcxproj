@@ -385,6 +385,7 @@
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyAI\IEnemyAI.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyAI\PatrolAI.h" />
+    <ClInclude Include="src\Domain\Enemy\EnemyAI\RunAwayAI.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyBase.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyType.h" />
     <ClInclude Include="src\Domain\Enemy\Eye.h" />
