@@ -50,7 +50,6 @@ namespace Jam::Domain::Player
 				skill->update(deltaTime);
 		}
 
-
 		if (getPosition().y >= m_fallLimitY)
 		{
 			respawn();
@@ -196,7 +195,7 @@ namespace Jam::Domain::Player
 
 	s3d::Vec2 Player::getPosition() const
 	{
-		 return m_body->getPosition();
+		return m_body->getPosition();
 	}
 
 	bool Player::isFacingRight() const
@@ -255,19 +254,30 @@ namespace Jam::Domain::Player
 		switch (other->getLayer())
 		{
 		case Jam::Domain::Physics::PhysicsLayer::Ground:
+		{
+			auto v = m_body->getVelocity();
+			// 下向きまたは静止中に着地判定(上向きや横からの衝突は無視)
+			if (v.y >= 0) {
+				m_body->setVelocity({ v.x, 0.0 });
+				m_isGrounded = true;
+				m_jumpCount = 0;
+			}
+		}
+		break;
+		case Jam::Domain::Physics::PhysicsLayer::Wall:
+		{
 			auto v = m_body->getVelocity();
 			m_body->setVelocity({ v.x, 0.0 });
-			m_isGrounded = true;
-			m_jumpCount = 0;
-			break;
+		}
+		break;
 		case Jam::Domain::Physics::PhysicsLayer::Enemy:
 			break;
 		default:
-			//Print(U"Not match tag");
 			break;
 		}
 	}
 
 	void Player::onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) {}
+
 	void Player::onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) {}
 }

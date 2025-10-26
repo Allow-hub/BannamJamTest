@@ -52,23 +52,20 @@ namespace Jam::Infrastructure {
         
         if (FileSystem::Exists(texturePath)) {
             Texture texture(texturePath);
-            assert(texture && "Failed to load texture");
-            s_stageTextures[type] = texture;
-            return texture;
-        } else {
-            assert(false && "Texture file not found");
-            return Texture{}; // 空のテクスチャを返す
+            if (texture) {
+                s_stageTextures[type] = texture;
+                return texture;
+            }
         }
+        
+        return Texture{};
     }
 
     void TextureLoader::preloadStageTextures() {
         Array<Jam::Domain::Stage::StageType> stageTypes = {
-            Jam::Domain::Stage::StageType::Normal,
-            Jam::Domain::Stage::StageType::Platform,
-            Jam::Domain::Stage::StageType::Hazard,
-            Jam::Domain::Stage::StageType::Trigger,
-            Jam::Domain::Stage::StageType::Breakable,
-            Jam::Domain::Stage::StageType::MovingPlatform
+			Jam::Domain::Stage::StageType::Normal,
+            Jam::Domain::Stage::StageType::MovingPlatform,
+            Jam::Domain::Stage::StageType::OneWayPlatform,
         };
         
         for (auto type : stageTypes) {
@@ -97,15 +94,9 @@ namespace Jam::Infrastructure {
         switch (type) {
         case Jam::Domain::Stage::StageType::Normal:
             return basePath + U"White_Test.png";
-        case Jam::Domain::Stage::StageType::Platform:
-            return basePath + U"Platform_Test.png";
-        case Jam::Domain::Stage::StageType::Hazard:
-            return basePath + U"White_Test.png";
-        case Jam::Domain::Stage::StageType::Trigger:
-            return basePath + U"White_Test.png";
-        case Jam::Domain::Stage::StageType::Breakable:
-            return basePath + U"White_Test.png";
         case Jam::Domain::Stage::StageType::MovingPlatform:
+            return basePath + U"moving_platform.png";
+        case Jam::Domain::Stage::StageType::OneWayPlatform:
             return basePath + U"White_Test.png";
         default:
             return basePath + U"White_Test.png";
@@ -141,7 +132,10 @@ namespace Jam::Infrastructure {
 
     void TextureLoader::preloadBackgroundTextures() {
         Array<String> backgroundNames = {
-            U"BG"
+            U"BG",
+            U"BG1",
+            U"BG2",
+            U"BG3"
         };
         
         for (const auto& name : backgroundNames) {
@@ -160,13 +154,21 @@ namespace Jam::Infrastructure {
     }
 
     FilePath TextureLoader::getDefaultBackgroundTexturePath(const String& textureName) {
-        const FilePath basePath = U"../Assets/Stage/";
+        const FilePath basePath = U"../Assets/Stage/BG/";
         
         if (textureName == U"BG") {
             return basePath + U"BG.png";
         }
+        if (textureName == U"BG1" || textureName == U"BG_back1") {
+            return basePath + U"BG_Back1.png";
+        }
+        if (textureName == U"BG2" || textureName == U"BG_back2") {
+            return basePath + U"BG_Back2.png";
+        }
+        if (textureName == U"BG3" || textureName == U"BG_back3") {
+            return basePath + U"BG_Back3.png";
+        }
         
-        // デフォルト
         return basePath + textureName + U".png";
     }
 

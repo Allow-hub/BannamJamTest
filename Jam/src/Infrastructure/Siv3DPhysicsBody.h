@@ -136,5 +136,10 @@ namespace Jam::Infrastructure::Physics
 			if (auto l = m_listener.lock())
 				l->onCollisionExit(other);
 		}
+		
+		void setOneWayPlatform(bool enabled, double platformTopY = 0.0) override
+		{
+			// OneWayPlatformはPhysicsFilterで制御するため、ここでは何もしない
+		}
 	};
 }

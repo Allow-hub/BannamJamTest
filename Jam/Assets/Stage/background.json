@@ -9,9 +9,9 @@
   },
   "backgrounds": [
     {
-      "textureName": "BG",
+      "textureName": "BG_back1",
       "layer": "Back",
-      "rect": [-1000, -1000, 0, 3250],
+      "rect": [-1000, -1500, 0, 2500],
       "opacity": 1.0
     }
   ]

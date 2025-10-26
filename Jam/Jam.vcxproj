@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -123,6 +123,7 @@
     <ClCompile Include="src\Domain\Enemy\Spider.cpp" />
     <ClCompile Include="src\Domain\Player\Player.cpp" />
     <ClCompile Include="src\Domain\Player\Skill\ChokerSkill.cpp" />
+    <ClCompile Include="src\Infrastructure\StageFactory.cpp" />
     <ClCompile Include="src\UseCase\EnemyFactory.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -162,8 +163,8 @@
     <Image Include="Assets\Enemy\Eye\idle_0.png" />
     <Image Include="Assets\Enemy\Eye\idle_1.png" />
     <Image Include="Assets\Enemy\GothicLolitaDoll\idle_0.png" />
-    <Image Include="Assets\Enemy\LittleDevil\idle_0.png" />
     <Image Include="Assets\Enemy\GothicLolitaDoll\idle_1.png" />
+    <Image Include="Assets\Enemy\LittleDevil\idle_0.png" />
     <Image Include="Assets\Enemy\LittleDevil\idle_1.png" />
     <Image Include="Assets\Enemy\Spider\idle_0.png" />
     <Image Include="Assets\Enemy\Spider\idle_1.png" />
@@ -175,6 +176,12 @@
     <Image Include="Assets\Player\run_1.png" />
     <Image Include="Assets\Player\Skill\Bomb\Bomb.png" />
     <Image Include="Assets\setting_back.png" />
+    <Image Include="Assets\Stage\BG\BG.png" />
+    <Image Include="Assets\Stage\BG\BG_Back1.png" />
+    <Image Include="Assets\Stage\BG\BG_Back2.png" />
+    <Image Include="Assets\Stage\moving_platform.png" />
+    <Image Include="Assets\Stage\Normal_Test.png" />
+    <Image Include="Assets\Stage\Platform_Test.png" />
     <Image Include="Assets\Stage\White_Test.png" />
     <Image Include="Assets\Story\background_stage1_1.png" />
     <Image Include="Assets\Story\Portrait\Player\player_normal.png" />
@@ -361,6 +368,8 @@
     <None Include="Assets\Enemy\GothicLolitaDoll\GothicLolitaDoll_animation.json" />
     <None Include="Assets\Enemy\Spider\Spider_animation.json" />
     <None Include="Assets\Stage\background.json" />
+    <None Include="Assets\Stage\stage1.json" />
+    <None Include="Assets\Stage\stage1_1.json" />
     <None Include="Assets\Story\stage1_1.csv" />
   </ItemGroup>
   <ItemGroup>
@@ -408,12 +417,15 @@
     <ClInclude Include="src\Domain\Physics\IPhysicsBody.h" />
     <ClInclude Include="src\Domain\Physics\PhysicsTypes.h" />
     <ClInclude Include="src\Domain\Physics\PhysicsBodyID.h" />
+    <ClInclude Include="src\Domain\Player\Skill\BombEntity.h" />
+    <ClInclude Include="src\Domain\Player\Skill\BombSkill.h" />
     <ClInclude Include="src\Domain\Player\Skill\ChokerSkill.h" />
     <ClInclude Include="src\Domain\Player\Skill\IPlayerSkill.h" />
     <ClInclude Include="src\Domain\Player\Player.h" />
     <ClInclude Include="src\Domain\Stage\BackgroundTypes.h" />
     <ClInclude Include="src\Domain\Stage\IStage.h" />
     <ClInclude Include="src\Domain\Stage\NormalStage.h" />
+    <ClInclude Include="src\Domain\Stage\OneWayPlatformStage.h" />
     <ClInclude Include="src\Domain\Stage\StageTypes.h" />
     <ClInclude Include="src\Domain\StoryData.h" />
     <ClInclude Include="src\Foundation\CoreManager.h" />
@@ -430,6 +442,7 @@
     <ClInclude Include="src\Infrastructure\Siv3DInputManager.h" />
     <ClInclude Include="src\Infrastructure\Siv3DPhysicsBody.h" />
     <ClInclude Include="src\Infrastructure\Siv3DPhysicsBodyFactory.h" />
+    <ClInclude Include="src\Infrastructure\StageFactory.h" />
     <ClInclude Include="src\Infrastructure\StageLoader.h" />
     <ClInclude Include="src\Infrastructure\TextureLoader.h" />
     <ClInclude Include="src\Presentation\Animator.h" />

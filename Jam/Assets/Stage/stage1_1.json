@@ -1,17 +1,48 @@
-{
-  "_comment": "当たり判定専用ステージ定義",
+﻿{
+  "_comment": "Stage1のオブジェクトの配置",
   "_使い方": {
-    "説明": "当たり判定オブジェクトを簡略記法で定義します。",
     "rect": "[x, y, width, height] 形式の配列で位置とサイズを指定します。",
-    "type": "当たり判定の種類を指定します。solid(壁), platform(上から乗れる床), breakable(破壊可能), hazard(ダメージ), trigger(イベント)など。",
-    "metadata": "識別用の任意文字列（スクリプトやイベントで使用）。"
-
+    "type": "当たり判定の種類を指定します。solid(壁・床), move(動く床)",
+    "groundSide": "地上判定を付ける面を指定します。省略時は'up'(上面のみ)。all(全面), none(判定なし)なども指定可能。",
+    "metadata": "識別用の任意文字列(スクリプトやイベントで使用)。"
+  },
+  "stageSettings": {
+    "respawnPosition": [50, -5],
+    "fallLimitY": 2000.0,
+    "flagmentMemoryPositions": [
+      [200, -100],
+      [800, -300],
+      [1300, -250]
+    ]
   },
   "objects": [
     {
       "rect": [ 0, 50, 200, 1500 ],
       "type": "solid",
       "metadata": "初期地点"
+    },
+    {
+      "rect": [0, -100, 300, 20],
+      "type": "oneway",
+      "metadata": "すり抜け床01(テスト)"
+    },
+    {
+      "rect": [ -300, 0, 120, 30 ],
+      "type": "move",
+      "movementType": "circular",
+      "movementSpeed": 50.0,
+      "movementDistance": 150.0,
+      "loopMovement": true,
+      "metadata": "円形回転床(テスト)"
+    },
+    {
+      "rect": [ 600, 0, 150, 30 ],
+      "type": "move",
+      "movementType": "horizontal",
+      "movementSpeed": 80.0,
+      "movementDistance": 300.0,
+      "loopMovement": true,
+      "metadata": "動く床01(テスト)"
     },
     {
       "rect": [ 1250, 150, 200, 1500 ],
@@ -21,11 +52,13 @@
     {
       "rect": [ 550, -650, 50, 50 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "ジョイント01"
     },
     {
       "rect": [ 1250, -650, 50, 50 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "ジョイント02"
     },
     {
@@ -258,9 +291,5 @@
       "type": "solid",
       "metadata": "Platform_2"
     }
-
-
-
-
   ]
 }

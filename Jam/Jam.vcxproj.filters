@@ -8,6 +8,7 @@
     <ClCompile Include="src\Domain\Player\Skill\ChokerSkill.cpp" />
     <ClCompile Include="src\UseCase\EnemyFactory.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="src\Infrastructure\StageFactory.cpp" />
     <ClCompile Include="src\Domain\Enemy\GothicLolitaDoll.cpp" />
     <ClCompile Include="src\Domain\Enemy\Spider.cpp" />
     <ClCompile Include="src\Domain\Enemy\Eye.cpp" />
@@ -77,12 +78,14 @@
     <ClInclude Include="src\UseCase\PlayerService.h" />
     <ClInclude Include="src\UseCase\StageService.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="src\Infrastructure\StageFactory.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyAI\AttackAI.h" />
     <ClInclude Include="src\Presentation\Scenes\TransitionManager.h" />
     <ClInclude Include="src\Domain\Enemy\GothicLolitaDoll.h" />
     <ClInclude Include="src\Domain\Enemy\Spider.h" />
     <ClInclude Include="src\Domain\Enemy\Eye.h" />
     <ClInclude Include="src\Domain\Enemy\Clown.h" />
+    <ClInclude Include="src\Domain\Stage\OneWayPlatformStage.h" />
     <ClInclude Include="src\Domain\Enemy\Ribbon.h" />
     <ClInclude Include="src\Presentation\PostEffect\BloomManager.h" />
     <ClInclude Include="src\Presentation\SettingManager.h" />
@@ -137,6 +140,7 @@
     <Image Include="App\icon.ico" />
     <Image Include="Assets\Cursor\GameCursor.png" />
     <Image Include="Assets\Enemy\LittleDevil\idle_0.png" />
+    <Image Include="Assets\Enemy\LittleDevil\idle_1.png" />
     <Image Include="Assets\Enemy\GothicLolitaDoll\idle_1.png" />
     <Image Include="Assets\Player\idle_0.png" />
     <Image Include="Assets\Player\idle_1.png" />
@@ -157,6 +161,11 @@
     <Image Include="Assets\Enemy\Spider\idle_1.png" />
     <Image Include="Assets\Enemy\Spider\idle_0.png" />
     <Image Include="Assets\Enemy\LittleDevil\idle_1.png" />
+    <Image Include="Assets\Stage\BG\BG.png" />
+    <Image Include="Assets\Stage\BG\BG_Back1.png" />
+    <Image Include="Assets\Stage\BG\BG_Back2.png" />
+    <Image Include="Assets\Stage\Normal_Test.png" />
+    <Image Include="Assets\Stage\Platform_Test.png" />
     <Image Include="Assets\Enemy\Eye\idle_0.jpg" />
     <Image Include="Assets\FlagmentMemory.png" />
     <Image Include="Assets\Title\Press.png" />
@@ -340,6 +349,7 @@
     <None Include="Assets\Enemy\Clown\Clown_animation.json" />
     <None Include="Assets\Enemy\GothicLolitaDoll\GothicLolitaDoll_animation.json" />
     <None Include="Assets\Enemy\Spider\Spider_animation.json" />
+    <None Include="Assets\Stage\stage1.json" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="App\dll\soundtouch\COPYING.TXT" />

@@ -62,6 +62,15 @@ namespace Jam::Domain::Player
 		void setPower(double p) { m_stats.power = p; }
 		void setSpeed(double s) { m_stats.moveSpeed = s; }
 		void setJumpPower(double j) { m_stats.jumpPower = j; }
+
+		void resetJumpState() { 
+			m_isGrounded = true; 
+			m_jumpCount = 0; 
+		}
+
+		bool isPressingDown() const { return m_isPressingDown; }
+		void setPressingDown(bool pressing) { m_isPressingDown = pressing; }
+
 		bool isAlive() const override { return m_isAlive; }
 		double getCurrentHp() const override { return m_stats.hp; }
 		void takeDamage(const DamageInfo& info) override;
@@ -83,6 +92,7 @@ namespace Jam::Domain::Player
 		bool m_isGrounded = false;
 		bool m_facingRight = true;
 		bool m_isDashing = false;
+		bool m_isPressingDown = false;
 		double dashMagnification = 2.0;
 		double m_fallLimitY = 0;
 		int m_jumpCount = 0;

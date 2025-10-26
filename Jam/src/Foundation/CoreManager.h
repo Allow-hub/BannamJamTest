@@ -50,17 +50,9 @@ namespace Jam::Foundation
 
 		static StageData getStageData(StageName stage)
 		{
-			switch (stage)
-			{
-			case StageName::Stage1_1:
-				return StageData{ Vec2(50, -5), 2000.0  ,{Vec2(200, -100),Vec2(800, -300),Vec2(1300, -250)} }; // respawn, fallLimitY
-			case StageName::Stage1_2:
-				return StageData{ Vec2(50, -5), 2000.0,{Vec2(200, -100),Vec2(800, -300),Vec2(1300, -250)} };
-			case StageName::Stage1_3:
-				return StageData{ Vec2(50, 300), 550.0,{Vec2(200, -100),Vec2(800, -300),Vec2(1300, -250)} };
-			default:
-				return StageData{ Vec2(50, 0), 1000.0,{Vec2(200, -100),Vec2(800, -300),Vec2(1300, -250)} };
-			}
+			// 実際の読み込みはGameScene初期化時にStageLoader::loadStageSettings()で行われます
+			// ここではデフォルト値のみを返します
+			return StageData{ Vec2(50, 0), 1000.0, {Vec2(200, -100), Vec2(800, -300), Vec2(1300, -250)} };
 		}
 
 

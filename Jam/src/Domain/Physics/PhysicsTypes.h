@@ -40,6 +40,8 @@ namespace Jam::Domain::Physics
 		Enemy,
 		Ground,
 		Weapon,
+		Wall,
+		OneWayPlatform,
 		Item,
 	};
 }

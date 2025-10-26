@@ -44,5 +44,12 @@ namespace Jam::Domain::Physics
 			const Vec2& anchorOther,
 			double length
 		) = 0;
+		
+		/**
+		 * すり抜ける床として設定
+		 * @param enabled すり抜け床として機能させるか
+		 * @param platformTopY 床の上面のY座標（ワールド座標）
+		 */
+		virtual void setOneWayPlatform(bool enabled, double platformTopY = 0.0) = 0;
 	};
 }

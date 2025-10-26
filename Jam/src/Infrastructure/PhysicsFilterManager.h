@@ -12,7 +12,8 @@ namespace Jam::Infrastructure
 		Team2,            // 敵
 		Team2Death,       // 死亡時の敵
 		Attack,
-		Team1Ghost,       // 攻撃中に敵を貫通するプレイヤー
+		Team1Ghost,  // 攻撃中に敵を貫通するプレイヤー
+		OneWayPlatform,  // すり抜ける床
 		Item,
 		PlayerWeapon,     // プレイヤーの武器
 		EnemyWeapon       // 敵の武器
@@ -23,6 +24,7 @@ namespace Jam::Infrastructure
 	constexpr uint16 Team1Bit = 0b0000'0000'0000'0010;
 	constexpr uint16 Team2Bit = 0b0000'0000'0000'0100;
 	constexpr uint16 AttackBit = 0b0000'0000'0000'1000;
+	constexpr uint16 OneWayBit = 0b0000'0000'0001'0000;
 	constexpr uint16 ItemBit = 0b0000'0000'0001'0000;
 	constexpr uint16 PlayerWeaponBit = 0b0000'0000'0010'0000;
 	constexpr uint16 EnemyWeaponBit = 0b0000'0000'0100'0000;
@@ -59,6 +61,12 @@ namespace Jam::Infrastructure
 		.maskBits = WallBit
 	};
 
+	// すり抜け床（プレイヤーと衝突しない）
+	constexpr P2Filter OneWayPlatformFilter{
+		.categoryBits = OneWayBit,
+		.maskBits = 0x0000  // 誰とも衝突しない
+	};
+
 	// アイテム：プレイヤーとだけ接触
 	constexpr P2Filter ItemFilter{
 		.categoryBits = ItemBit,
@@ -87,6 +95,7 @@ namespace Jam::Infrastructure
 		case PhysicsFilter::Team2:         return Team2Filter;
 		case PhysicsFilter::Team2Death:    return Team2DeathFilter;
 		case PhysicsFilter::Team1Ghost:    return Team1GhostFilter;
+		case PhysicsFilter::OneWayPlatform: return OneWayPlatformFilter;
 		case PhysicsFilter::Item:          return ItemFilter;
 		case PhysicsFilter::PlayerWeapon:  return PlayerWeaponFilter;
 		case PhysicsFilter::EnemyWeapon:   return EnemyWeaponFilter;

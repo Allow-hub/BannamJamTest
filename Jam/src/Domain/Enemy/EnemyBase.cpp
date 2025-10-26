@@ -165,6 +165,9 @@ namespace Jam::Domain::Enemy
 		case Physics::PhysicsLayer::Ground:
 			m_isGrounded = true;
 			break;
+		case Physics::PhysicsLayer::Wall:
+			// 壁との衝突 - 地上判定はしない
+			break;
 		case Physics::PhysicsLayer::Enemy:
 			if (m_isDeadAttack)
 			{
@@ -199,6 +202,9 @@ namespace Jam::Domain::Enemy
 		{
 		case Physics::PhysicsLayer::Ground:
 			m_isGrounded = false;
+			break;
+		case Physics::PhysicsLayer::Wall:
+			// 壁との衝突終了 - 何もしない
 			break;
 		default:
 			break;

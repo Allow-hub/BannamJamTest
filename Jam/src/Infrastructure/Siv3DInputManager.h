@@ -20,6 +20,7 @@ namespace Jam::Infrastructure
 			m_state.jump = KeySpace.down() || KeyW.down();
 			m_state.dash = KeyLShift.pressed();
 			m_state.attack = MouseL.down();
+			m_state.down = KeyS.pressed();
 			m_state.skillPush = MouseR.down();
 			m_state.skillReleased = MouseR.up();
 			m_state.skillChange = Mouse::Wheel();
