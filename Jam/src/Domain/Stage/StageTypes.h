@@ -9,11 +9,9 @@ namespace Jam::Domain::Stage {
 	// 当たり判定の種類
 	enum class StageType {
 		None = 0,
-		Normal = 1,      // 壁・床（完全ブロック）
+		Normal = 1,          // 壁・床（完全ブロック）
 		MovingPlatform = 2,  // 動く足場
-		Hazard = 3,     // ダメージゾーン
-		Trigger = 4,    // イベントトリガー
-		Breakable = 5,  // 破壊可能な壁
+		OneWayPlatform = 3,  // すり抜ける床（下から上に通過可能）
 	};
 
 	// 動く床の移動タイプ
@@ -55,9 +53,7 @@ namespace Jam::Domain::Stage {
 	inline StageType stringToCollisionType(const String& typeStr) {
 		if (typeStr == U"normal" || typeStr == U"solid") return StageType::Normal;
 		if (typeStr == U"moving_platform" || typeStr == U"moving" || typeStr == U"move") return StageType::MovingPlatform;
-		if (typeStr == U"hazard") return StageType::Hazard;
-		if (typeStr == U"trigger") return StageType::Trigger;
-		if (typeStr == U"breakable") return StageType::Breakable;
+		if (typeStr == U"oneway_platform" || typeStr == U"oneway") return StageType::OneWayPlatform;
 		return StageType::None;
 	}
 
@@ -82,9 +78,7 @@ namespace Jam::Domain::Stage {
 		switch (type) {
 		case StageType::Normal: return U"normal";
 		case StageType::MovingPlatform: return U"moving_platform";
-		case StageType::Hazard: return U"hazard";
-		case StageType::Trigger: return U"trigger";
-		case StageType::Breakable: return U"breakable";
+		case StageType::OneWayPlatform: return U"oneway_platform";
 		default: return U"none";
 		}
 	}
