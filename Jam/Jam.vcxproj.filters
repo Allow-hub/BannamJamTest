@@ -13,6 +13,7 @@
     <ClCompile Include="src\Domain\Enemy\Eye.cpp" />
     <ClCompile Include="src\Domain\Enemy\Clown.cpp" />
     <ClCompile Include="src\Domain\Enemy\Ribbon.cpp" />
+    <ClCompile Include="src\Domain\Enemy\ClownBomb.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
@@ -88,6 +89,8 @@
     <ClInclude Include="src\Presentation\SettingManager.h" />
     <ClInclude Include="src\Domain\FlagmentMemory.h" />
     <ClInclude Include="src\Domain\Enemy\EyeBeam.h" />
+    <ClInclude Include="src\Domain\Enemy\EnemyAI\RunAwayAI.h" />
+    <ClInclude Include="src\Domain\Enemy\ClownBomb.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />

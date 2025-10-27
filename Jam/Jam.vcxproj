@@ -115,6 +115,7 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="src\Domain\Enemy\Clown.cpp" />
+    <ClCompile Include="src\Domain\Enemy\ClownBomb.cpp" />
     <ClCompile Include="src\Domain\Enemy\EnemyBase.cpp" />
     <ClCompile Include="src\Domain\Enemy\Eye.cpp" />
     <ClCompile Include="src\Domain\Enemy\GothicLolitaDoll.cpp" />
@@ -390,6 +391,7 @@
     <ClInclude Include="src\Domain\Enemy\Clown.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyAI\AttackAI.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
+    <ClInclude Include="src\Domain\Enemy\ClownBomb.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyAI\IEnemyAI.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyAI\PatrolAI.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyAI\RunAwayAI.h" />

@@ -23,7 +23,6 @@ namespace Jam::Domain::Enemy
 
 	void Clown::update(double deltaTime)
 	{
-
 		if (!isAlive()) return;
 		m_currentAI->update(*this, deltaTime);
 	}
@@ -92,7 +91,8 @@ namespace Jam::Domain::Enemy
 		{
 			Vec2 plPos = getPlayerPos();
 			Vec2 enePos = getPosition();
-			//ステート切り替えの際にタイマーを開始
+			// エネミーから爆弾を生成
+			// ステート切り替えの際にタイマーを開始
 			attackTimer.start();
 			attackState = AttackState::EndAttack;
 		}break;

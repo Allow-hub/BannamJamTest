@@ -54,7 +54,7 @@ namespace Jam::Domain::Enemy
 	{
 		switch (attackState)
 		{
-		//攻撃開始時に、プレイヤーがどちらの方向にいるのか特定する
+			//攻撃開始時に、プレイヤーがどちらの方向にいるのか特定する
 		case AttackState::AttackStart:
 			Vec2 plPos = getPlayerPos();
 			Vec2 enePos = getPosition();
@@ -64,7 +64,7 @@ namespace Jam::Domain::Enemy
 			attackState = AttackState::WaitAttack;
 			break;
 
-		//プレイヤーが有効射程に入ってから攻撃を出すまでの時間
+			//プレイヤーが有効射程に入ってから攻撃を出すまでの時間
 		case AttackState::WaitAttack:
 		{
 			if (attackTimer.reachedZero())
@@ -75,6 +75,7 @@ namespace Jam::Domain::Enemy
 
 		//攻撃処理
 		case AttackState::IsAttack:
+		{
 			if (IsRight == true)
 			{
 				m_body->applyImpulse(Vec2{ 1000,0 });
@@ -85,6 +86,7 @@ namespace Jam::Domain::Enemy
 			}
 			attackTimer.start();
 			attackState = AttackState::EndAttack;
+		}break;
 
 
 		//攻撃終了後の待機時間と、攻撃終了後にAIを変更する処理
