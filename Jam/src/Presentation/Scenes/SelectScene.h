@@ -201,12 +201,12 @@ namespace Jam::Presentation::Scenes
 				const RectF stage1_3_Button{ startX, startY + (buttonHeight + buttonSpacing) * 2, buttonWidth, buttonHeight };
 				if (stage1_3_Button.leftClicked())
 				{
-					// m_coreManager->stageInfo.stageName = Jam::Foundation::StageName::Stage1_3; // CoreManagerのenumに追加が必要
-					Print << U"Stage 1-3 Selected. (Not Implemented)";
+					Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_3; // CoreManagerのenumに追加が必要
+					//Print << U"Stage 1-3 Selected. (Not Implemented)";
 
 					// (仮に変更) もし実装するならここにも同様に追加
 					// ::TransitionManager::Instance().rec.init(30);
-					// changeScene(ToSceneString(SceneName::InGame), 1.0s); 
+					 changeScene(ToSceneString(SceneName::Story), 1.0s);
 				}
 			}
 			else if (m_selectedWorld == 2)
