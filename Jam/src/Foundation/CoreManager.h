@@ -52,7 +52,7 @@ namespace Jam::Foundation
 		{
 			// 実際の読み込みはGameScene初期化時にStageLoader::loadStageSettings()で行われます
 			// ここではデフォルト値のみを返します
-			return StageData{ Vec2(50, 0), 1000.0, {Vec2(200, -100), Vec2(800, -300), Vec2(1300, -250)} };
+			return StageData{ Vec2(50, 0), 2000.0, {Vec2(200, -100), Vec2(800, -300), Vec2(1300, -250)} };
 		}
 
 

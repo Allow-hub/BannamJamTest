@@ -365,6 +365,7 @@
     <None Include="Assets\Enemy\GothicLolitaDoll\GothicLolitaDoll_animation.json" />
     <None Include="Assets\Enemy\Spider\Spider_animation.json" />
     <None Include="Assets\Stage\background.json" />
+    <None Include="Assets\Stage\stage1_1.json" />
     <None Include="Assets\Stage\stage1_3.json" />
     <None Include="Assets\Story\stage1_1.csv" />
   </ItemGroup>

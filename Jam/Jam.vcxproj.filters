@@ -347,6 +347,7 @@
     <None Include="Assets\Enemy\GothicLolitaDoll\GothicLolitaDoll_animation.json" />
     <None Include="Assets\Enemy\Spider\Spider_animation.json" />
     <None Include="Assets\Stage\stage1_3.json" />
+    <None Include="Assets\Stage\stage1_1.json" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="App\dll\soundtouch\COPYING.TXT" />
