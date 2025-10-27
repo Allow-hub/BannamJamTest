@@ -27,6 +27,25 @@ namespace Jam::Domain::Enemy
 	void LittleDevil::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{
 		EnemyBase::onCollisionEnter(other);
+		switch (other->getLayer())
+		{
+		case Physics::PhysicsLayer::Player:
+			m_eventQueue.push(Events::PlayerDamagedEvent{
+				m_body->getID(),
+				m_playerId,
+				DamageInfo {
+				m_status.attackPower,
+				m_body->getPosition(),
+				(getPlayerPos() - m_body->getPosition()).normalized(),
+				true,
+				false
+				}
+				,0.0
+				,0.3
+				,15.0
+			});
+			break;
+		}
 	}
 
 	void LittleDevil::onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) {}

@@ -163,7 +163,6 @@
     <Image Include="Assets\Enemy\GothicLolitaDoll\idle_0.png" />
     <Image Include="Assets\Enemy\LittleDevil\idle_0.png" />
     <Image Include="Assets\Enemy\GothicLolitaDoll\idle_1.png" />
-    <Image Include="Assets\Enemy\LittleDevil\idle_1.png" />
     <Image Include="Assets\Enemy\Spider\idle_0.png" />
     <Image Include="Assets\Enemy\Spider\idle_1.png" />
     <Image Include="Assets\FlagmentMemory.png" />
@@ -173,6 +172,8 @@
     <Image Include="Assets\Player\run_0.png" />
     <Image Include="Assets\Player\run_1.png" />
     <Image Include="Assets\Player\Skill\Bomb\Bomb.png" />
+    <Image Include="Assets\setting_back.png" />
+    <Image Include="Assets\setting_backMain.png" />
     <Image Include="Assets\Stage\White_Test.png" />
     <Image Include="Assets\Story\background_stage1_1.png" />
     <Image Include="Assets\Story\Portrait\Player\player_normal.png" />
@@ -180,6 +181,11 @@
     <Image Include="Assets\Story\Portrait\Player\player_surprised.png" />
     <Image Include="Assets\Story\Portrait\Player\player_suspicious.png" />
     <Image Include="Assets\Title\Press.png" />
+    <Image Include="Assets\UI\face_happy.png" />
+    <Image Include="Assets\UI\face_normal.png" />
+    <Image Include="Assets\UI\face_sad.png" />
+    <Image Include="Assets\UI\hp_back.png" />
+    <Image Include="Assets\UI\hp_front.png" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />
@@ -438,6 +444,7 @@
     <ClInclude Include="src\Presentation\EffectManager.h" />
     <ClInclude Include="src\Presentation\EnemyManager.h" />
     <ClInclude Include="src\Presentation\FadeManager.h" />
+    <ClInclude Include="src\Presentation\InGameUIManager.h" />
     <ClInclude Include="src\Presentation\PlayerManager.h" />
     <ClInclude Include="src\Presentation\PostEffect\BloomManager.h" />
     <ClInclude Include="src\Presentation\Scenes\GameScene.h" />

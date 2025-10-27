@@ -32,6 +32,7 @@
 #include "../PostEffect/BloomManager.h"
 #include "../SettingManager.h"
 #include "../../Domain/FlagmentMemory.h"
+#include "../InGameUIManager.h"
 
 
 namespace Jam::Presentation::Scenes
@@ -73,6 +74,7 @@ namespace Jam::Presentation::Scenes
 
 		// Background用
 		std::unique_ptr<Jam::Presentation::Background::BackgroundRenderer> m_backgroundRenderer;
+		std::unique_ptr<Jam::Presentation::InGameUIManager> m_inGameUIManager;
 
 		// Enemy用
 		HashSet<P2ContactPair> m_previousContacts;
@@ -143,6 +145,7 @@ namespace Jam::Presentation::Scenes
 
 			m_player->setPower(stats.power);
 			m_player->setHp(stats.hp);
+			m_player->setMaxHp(stats.hp);
 			m_player->setSpeed(stats.moveSpeed);
 			m_player->setJumpPower(stats.jumpPower);
 
@@ -214,6 +217,7 @@ namespace Jam::Presentation::Scenes
 			// === Background 初期化 ===
 			m_backgroundRenderer = std::make_unique<Jam::Presentation::Background::BackgroundRenderer>();
 
+			m_inGameUIManager = std::make_unique<Jam::Presentation::InGameUIManager>(m_player);
 			// 背景テクスチャの事前読み込み
 			Jam::Infrastructure::TextureLoader::preloadBackgroundTextures();
 
@@ -319,6 +323,7 @@ namespace Jam::Presentation::Scenes
 			{
 				flagment->update(Scene::DeltaTime());
 			}
+			m_inGameUIManager->update();
 
 			//デバッグ用
 			if (KeyR.down())
@@ -382,6 +387,8 @@ namespace Jam::Presentation::Scenes
 				}
 				//Jam::Util::GridRenderer::instance().draw();
 			}
+			m_inGameUIManager->draw();
+
 			//BloomManager::getInstance().draw();
 			//フェードのDraw
 			Jam::Presentation::FadeManager::instance().draw();
