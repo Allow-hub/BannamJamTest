@@ -123,6 +123,7 @@
     <ClCompile Include="src\Domain\Enemy\Spider.cpp" />
     <ClCompile Include="src\Domain\Player\Player.cpp" />
     <ClCompile Include="src\Domain\Player\Skill\ChokerSkill.cpp" />
+    <ClCompile Include="src\Infrastructure\StageFactory.cpp" />
     <ClCompile Include="src\UseCase\EnemyFactory.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -427,6 +428,7 @@
     <ClInclude Include="src\Infrastructure\Siv3DInputManager.h" />
     <ClInclude Include="src\Infrastructure\Siv3DPhysicsBody.h" />
     <ClInclude Include="src\Infrastructure\Siv3DPhysicsBodyFactory.h" />
+    <ClInclude Include="src\Infrastructure\StageFactory.h" />
     <ClInclude Include="src\Infrastructure\StageLoader.h" />
     <ClInclude Include="src\Infrastructure\TextureLoader.h" />
     <ClInclude Include="src\Presentation\Animator.h" />
