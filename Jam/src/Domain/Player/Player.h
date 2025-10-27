@@ -52,6 +52,7 @@ namespace Jam::Domain::Player
 		void changeSkill(int direction);
 
 		// 情報取得
+		double getMaxHp() { return m_maxHp; }
 		s3d::Vec2 getPosition() const;
 		bool isFacingRight() const;
 		std::shared_ptr<Domain::Physics::IPhysicsBody> getPhysicsBody() { return m_body; }
@@ -62,10 +63,13 @@ namespace Jam::Domain::Player
 		void setPower(double p) { m_stats.power = p; }
 		void setSpeed(double s) { m_stats.moveSpeed = s; }
 		void setJumpPower(double j) { m_stats.jumpPower = j; }
+		void setMaxHp(double h) { m_maxHp = h; }
 
-		void resetJumpState() { 
-			m_isGrounded = true; 
-			m_jumpCount = 0; 
+		double getHp() { return m_stats.hp; }
+
+		void resetJumpState() {
+			m_isGrounded = true;
+			m_jumpCount = 0;
 		}
 
 		bool isPressingDown() const { return m_isPressingDown; }
@@ -86,6 +90,7 @@ namespace Jam::Domain::Player
 		PlayerStats m_stats;
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_body;
 		Jam::Domain::Events::GameEventQueue& m_eventQueue;
+		double m_maxHp = 0.0;
 
 		// 移動関連
 		bool m_canControl = true;

@@ -85,12 +85,11 @@
     <ClInclude Include="src\Domain\Enemy\Spider.h" />
     <ClInclude Include="src\Domain\Enemy\Eye.h" />
     <ClInclude Include="src\Domain\Enemy\Clown.h" />
-    <ClInclude Include="src\Domain\Stage\OneWayPlatformStage.h" />
     <ClInclude Include="src\Domain\Enemy\Ribbon.h" />
     <ClInclude Include="src\Presentation\PostEffect\BloomManager.h" />
     <ClInclude Include="src\Presentation\SettingManager.h" />
     <ClInclude Include="src\Domain\FlagmentMemory.h" />
-    <ClInclude Include="src\Domain\Enemy\EyeBeam.h" />
+    <ClInclude Include="src\Presentation\InGameUIManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />
@@ -140,7 +139,6 @@
     <Image Include="App\icon.ico" />
     <Image Include="Assets\Cursor\GameCursor.png" />
     <Image Include="Assets\Enemy\LittleDevil\idle_0.png" />
-    <Image Include="Assets\Enemy\LittleDevil\idle_1.png" />
     <Image Include="Assets\Enemy\GothicLolitaDoll\idle_1.png" />
     <Image Include="Assets\Player\idle_0.png" />
     <Image Include="Assets\Player\idle_1.png" />
@@ -161,17 +159,16 @@
     <Image Include="Assets\Enemy\Spider\idle_1.png" />
     <Image Include="Assets\Enemy\Spider\idle_0.png" />
     <Image Include="Assets\Enemy\LittleDevil\idle_1.png" />
-    <Image Include="Assets\Stage\BG\BG.png" />
-    <Image Include="Assets\Stage\BG\BG_Back1.png" />
-    <Image Include="Assets\Stage\BG\BG_Back2.png" />
-    <Image Include="Assets\Stage\Normal_Test.png" />
-    <Image Include="Assets\Stage\Platform_Test.png" />
-    <Image Include="Assets\Enemy\Eye\idle_0.jpg" />
     <Image Include="Assets\FlagmentMemory.png" />
     <Image Include="Assets\Title\Press.png" />
     <Image Include="Assets\Enemy\Eye\idle_0.png" />
-    <Image Include="Assets\Enemy\Eye\beam.png" />
     <Image Include="Assets\setting_back.png" />
+    <Image Include="Assets\setting_backMain.png" />
+    <Image Include="Assets\UI\hp_back.png" />
+    <Image Include="Assets\UI\hp_front.png" />
+    <Image Include="Assets\UI\face_happy.png" />
+    <Image Include="Assets\UI\face_normal.png" />
+    <Image Include="Assets\UI\face_sad.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />
@@ -349,7 +346,7 @@
     <None Include="Assets\Enemy\Clown\Clown_animation.json" />
     <None Include="Assets\Enemy\GothicLolitaDoll\GothicLolitaDoll_animation.json" />
     <None Include="Assets\Enemy\Spider\Spider_animation.json" />
-    <None Include="Assets\Stage\stage1.json" />
+    <None Include="Assets\Stage\stage1_3.json" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="App\dll\soundtouch\COPYING.TXT" />

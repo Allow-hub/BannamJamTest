@@ -76,7 +76,7 @@ namespace Jam::Presentation
 
 		void init()
 		{
-			m_backgroundTexture = Texture{ U"../Assets/Stage/BG.png" };
+			m_backgroundTexture = Texture{ U"../Assets/setting_backMain.png" };
 			m_backgroundMaskTexture = Texture{ U"../Assets/setting_back.png" };
 			const int32 mainFontSize = static_cast<int32>(Scene::Height() * 0.07);
 			font = Font(mainFontSize, U"../Assets/Font/PixelMplus12-Bold.ttf", FontStyle::Bold);
