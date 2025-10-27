@@ -4,7 +4,7 @@
 
 namespace Jam::Domain::Enemy
 {
-	// 爆弾の敵クラス
+	// 爆弾のクラス とりあえず仮で敵として作成
 	class ClownBomb : public EnemyBase
 	{
 	public:
