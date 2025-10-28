@@ -4,8 +4,7 @@
 
 namespace Jam::Domain::Enemy
 {
-	// 目の敵
-	// プレイヤーに近づき、射程距離に入ると、目から長いビームを出す
+	// 1_3のボス
 	class Boss1_3 : public EnemyBase
 	{
 	public:
@@ -22,9 +21,87 @@ namespace Jam::Domain::Enemy
 		void onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 		void onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 
-		void onAIEvent(EnemyAIEvent e) override;
-
 	private:
-		double m_patrolTimer = 0.0;
+		void updateAppearState(double deltaTime);
+		void updateNormalState(double deltaTime);
+		void updateWeakState(double deltaTime);
+
+		void executeMissileAttack(double deltaTime);
+		void executeSummonClown(double deltaTime);
+		void executeBombAttack(double deltaTime);
+
+		enum class BossState
+		{
+			Appear,//登場
+			Normal,//通常
+			Weak, //弱点露出
+			Dead//死亡時
+		};
+
+		BossState currentBossState;
+
+		enum class AttackState
+		{
+			Missile,//ミサイル発射
+			SummonClown,//ピエロ召喚
+			Bomb,//爆弾を投げる
+		};
+
+		AttackState currentAttackState;
+
+		struct AttackPattern
+		{
+			AttackState state;
+			float probability;  // 0.0f ～ 1.0f
+		};
+
+		std::vector<AttackPattern> m_attackPatterns;
+
+		// 攻撃パターンを抽選
+		AttackState selectNextAttack();
+
+		double m_stateTimer = 0.0;           // 状態遷移用タイマー
+		double m_weakStateDuration = 5.0;    // Weak状態の持続時間
+		double m_appearDuration = 3.0;       // Appear状態の持続時間
+		bool m_isReflectedMissileHit = false;  // 反射ミサイルが当たったか
+
+		// 攻撃クールダウン用
+		double m_attackCooldownTimer;      // 攻撃クールダウンタイマー
+		double m_attackCooldown;           // 攻撃間隔（秒）
+		bool m_isAttacking;                // 現在攻撃中か
+
+		// 各攻撃の実行時間
+		double m_missileAttackDuration;
+		double m_summonClownDuration;
+		double m_bombAttackDuration;
+
+		bool m_hasAttackEntered;  // 攻撃のEnterが実行されたか
+
+		// 攻撃のライフサイクルメソッド
+		// Missile
+		void enterMissileAttack();
+		void updateMissileAttack(double deltaTime);
+		void exitMissileAttack();
+
+		// SummonClown
+		void enterSummonClown();
+		void updateSummonClown(double deltaTime);
+		void exitSummonClown();
+
+		// Bomb
+		void enterBombAttack();
+		void updateBombAttack(double deltaTime);
+		void exitBombAttack();
+
+		const String toString(Boss1_3::AttackState state)
+		{
+			switch (state)
+			{
+			case Boss1_3::AttackState::Missile: return U"Missile";
+			case Boss1_3::AttackState::SummonClown: return U"SummonClown";
+			case Boss1_3::AttackState::Bomb: return U"Bomb";
+			default: return U"Unknown";
+			}
+		}
 	};
 }
