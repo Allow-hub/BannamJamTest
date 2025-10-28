@@ -114,14 +114,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="src\Domain\Enemy\Boss1_3.cpp" />
     <ClCompile Include="src\Domain\Enemy\Clown.cpp" />
     <ClCompile Include="src\Domain\Enemy\EnemyBase.cpp" />
     <ClCompile Include="src\Domain\Enemy\Eye.cpp" />
     <ClCompile Include="src\Domain\Enemy\GothicLolitaDoll.cpp" />
     <ClCompile Include="src\Domain\Enemy\LittleDevil.cpp" />
+    <ClCompile Include="src\Domain\Enemy\Ribbon.cpp" />
     <ClCompile Include="src\Domain\Enemy\Spider.cpp" />
     <ClCompile Include="src\Domain\Player\Player.cpp" />
     <ClCompile Include="src\Domain\Player\Skill\ChokerSkill.cpp" />
+    <ClCompile Include="src\Infrastructure\StageFactory.cpp" />
     <ClCompile Include="src\UseCase\EnemyFactory.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -154,6 +157,8 @@
     <Image Include="App\example\windmill.png" />
     <Image Include="App\icon.ico" />
     <Image Include="Assets\Cursor\GameCursor.png" />
+    <Image Include="Assets\Enemy\Boss1_3\idle_0.png" />
+    <Image Include="Assets\Enemy\Boss1_3\idle_1.png" />
     <Image Include="Assets\Enemy\Clown\idle_0.png" />
     <Image Include="Assets\Enemy\Clown\idle_1.png" />
     <Image Include="Assets\Enemy\Eye\idle_0.png" />
@@ -161,21 +166,29 @@
     <Image Include="Assets\Enemy\GothicLolitaDoll\idle_0.png" />
     <Image Include="Assets\Enemy\LittleDevil\idle_0.png" />
     <Image Include="Assets\Enemy\GothicLolitaDoll\idle_1.png" />
-    <Image Include="Assets\Enemy\LittleDevil\idle_1.png" />
     <Image Include="Assets\Enemy\Spider\idle_0.png" />
     <Image Include="Assets\Enemy\Spider\idle_1.png" />
+    <Image Include="Assets\FlagmentMemory.png" />
     <Image Include="Assets\Player\idle_0.png" />
     <Image Include="Assets\Player\idle_1.png" />
     <Image Include="Assets\Player\idle_2.png" />
     <Image Include="Assets\Player\run_0.png" />
     <Image Include="Assets\Player\run_1.png" />
     <Image Include="Assets\Player\Skill\Bomb\Bomb.png" />
+    <Image Include="Assets\setting_back.png" />
+    <Image Include="Assets\setting_backMain.png" />
     <Image Include="Assets\Stage\White_Test.png" />
     <Image Include="Assets\Story\background_stage1_1.png" />
     <Image Include="Assets\Story\Portrait\Player\player_normal.png" />
     <Image Include="Assets\Story\Portrait\Player\player_smiling.png" />
     <Image Include="Assets\Story\Portrait\Player\player_surprised.png" />
     <Image Include="Assets\Story\Portrait\Player\player_suspicious.png" />
+    <Image Include="Assets\Title\Press.png" />
+    <Image Include="Assets\UI\face_happy.png" />
+    <Image Include="Assets\UI\face_normal.png" />
+    <Image Include="Assets\UI\face_sad.png" />
+    <Image Include="Assets\UI\hp_back.png" />
+    <Image Include="Assets\UI\hp_front.png" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />
@@ -350,11 +363,14 @@
     <None Include="App\example\toml\config.toml" />
     <None Include="App\example\toml\test.toml" />
     <None Include="App\example\zip\zip_test.zip" />
+    <None Include="Assets\Enemy\Boss1_3\Boss1_3_animation.json" />
     <None Include="Assets\Enemy\Clown\Clown_animation.json" />
     <None Include="Assets\Enemy\Eye\Eye_animation.json" />
     <None Include="Assets\Enemy\GothicLolitaDoll\GothicLolitaDoll_animation.json" />
     <None Include="Assets\Enemy\Spider\Spider_animation.json" />
     <None Include="Assets\Stage\background.json" />
+    <None Include="Assets\Stage\stage1_1.json" />
+    <None Include="Assets\Stage\stage1_3.json" />
     <None Include="Assets\Story\stage1_1.csv" />
   </ItemGroup>
   <ItemGroup>
@@ -363,6 +379,8 @@
     <Media Include="App\example\video\river.mp4" />
     <Media Include="Assets\Sounds\bgm_title.mp3" />
     <Media Include="Assets\Sounds\se_choker.mp3" />
+    <Media Include="Assets\Sounds\se_damage.mp3" />
+    <Media Include="Assets\Sounds\se_getFlagment.mp3" />
     <Media Include="Assets\Sounds\se_jump.mp3" />
   </ItemGroup>
   <ItemGroup>
@@ -379,6 +397,7 @@
     <Xml Include="App\example\xml\test.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Domain\Enemy\Boss1_3.h" />
     <ClInclude Include="src\Domain\Enemy\Clown.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyAI\AttackAI.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
@@ -387,18 +406,19 @@
     <ClInclude Include="src\Domain\Enemy\EnemyBase.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyType.h" />
     <ClInclude Include="src\Domain\Enemy\Eye.h" />
+    <ClInclude Include="src\Domain\Enemy\EyeBeam.h" />
     <ClInclude Include="src\Domain\Enemy\GothicLolitaDoll.h" />
     <ClInclude Include="src\Domain\Enemy\LittleDevil.h" />
+    <ClInclude Include="src\Domain\Enemy\Ribbon.h" />
     <ClInclude Include="src\Domain\Enemy\Spider.h" />
     <ClInclude Include="src\Domain\Events\GameEvents.h" />
+    <ClInclude Include="src\Domain\FlagmentMemory.h" />
     <ClInclude Include="src\Domain\IInputService.h" />
     <ClInclude Include="src\Domain\ITakeDamageable.h" />
     <ClInclude Include="src\Domain\Physics\ICollisionListener.h" />
     <ClInclude Include="src\Domain\Physics\IPhysicsBody.h" />
     <ClInclude Include="src\Domain\Physics\PhysicsTypes.h" />
     <ClInclude Include="src\Domain\Physics\PhysicsBodyID.h" />
-    <ClInclude Include="src\Domain\Player\Skill\BombEntity.h" />
-    <ClInclude Include="src\Domain\Player\Skill\BombSkill.h" />
     <ClInclude Include="src\Domain\Player\Skill\ChokerSkill.h" />
     <ClInclude Include="src\Domain\Player\Skill\IPlayerSkill.h" />
     <ClInclude Include="src\Domain\Player\Player.h" />
@@ -421,6 +441,7 @@
     <ClInclude Include="src\Infrastructure\Siv3DInputManager.h" />
     <ClInclude Include="src\Infrastructure\Siv3DPhysicsBody.h" />
     <ClInclude Include="src\Infrastructure\Siv3DPhysicsBodyFactory.h" />
+    <ClInclude Include="src\Infrastructure\StageFactory.h" />
     <ClInclude Include="src\Infrastructure\StageLoader.h" />
     <ClInclude Include="src\Infrastructure\TextureLoader.h" />
     <ClInclude Include="src\Presentation\Animator.h" />
@@ -430,14 +451,18 @@
     <ClInclude Include="src\Presentation\EffectManager.h" />
     <ClInclude Include="src\Presentation\EnemyManager.h" />
     <ClInclude Include="src\Presentation\FadeManager.h" />
+    <ClInclude Include="src\Presentation\InGameUIManager.h" />
     <ClInclude Include="src\Presentation\PlayerManager.h" />
+    <ClInclude Include="src\Presentation\PostEffect\BloomManager.h" />
     <ClInclude Include="src\Presentation\Scenes\GameScene.h" />
     <ClInclude Include="src\Presentation\Scenes\ResultScene.h" />
     <ClInclude Include="src\Presentation\Scenes\SelectScene.h" />
     <ClInclude Include="src\Presentation\Scenes\StoryScene.h" />
     <ClInclude Include="src\Presentation\Scenes\TitleScene.h" />
     <ClInclude Include="src\Presentation\Scenes\TransitionManager.h" />
+    <ClInclude Include="src\Presentation\SettingManager.h" />
     <ClInclude Include="src\Presentation\Stage\BackgroundRenderer.h" />
+    <ClInclude Include="src\Presentation\Stage\StageManager.h" />
     <ClInclude Include="src\Presentation\StoryManager.h" />
     <ClInclude Include="src\UseCase\AttackProcessor.h" />
     <ClInclude Include="src\UseCase\CameraEvent.h" />

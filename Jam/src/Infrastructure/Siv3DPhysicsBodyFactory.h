@@ -57,6 +57,64 @@ namespace Jam::Infrastructure::Locator
 			return body;
 		}
 
+		// センサー専用の円形ボディを作成（物理衝突なし）
+		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> createCircleSensor(
+			const Vec2& pos,
+			double radius,
+			s3d::P2BodyType bodyType = s3d::P2BodyType::Static
+		)	override
+		{
+			if (!m_world)
+				throw std::runtime_error("Siv3DPhysicsBodyFactory not initialized!");
+
+			// P2Worldから直接センサーボディを作成
+			P2Body p2Body = m_world->createCircleSensor(bodyType, pos, radius);
+
+			// Siv3DPhysicsBodyでラップ（新しいコンストラクタを使用）
+			auto body = std::make_shared<Jam::Infrastructure::Physics::Siv3DPhysicsBody>(p2Body);
+
+			// PhysicsBodyIDに変換して登録
+			Jam::Domain::Physics::PhysicsBodyID id = static_cast<Jam::Domain::Physics::PhysicsBodyID>(p2Body.id());
+			m_bodies.emplace(id, body);
+
+			// コールバック
+			if (m_onBodyCreated)
+			{
+				m_onBodyCreated(body);
+			}
+
+			return body;
+		}
+
+		// センサー専用の矩形ボディを作成（物理衝突なし）
+		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> createRectSensor(
+			const Vec2& pos,
+			const SizeF& size,
+			s3d::P2BodyType bodyType = s3d::P2BodyType::Static
+		)override
+		{
+			if (!m_world)
+				throw std::runtime_error("Siv3DPhysicsBodyFactory not initialized!");
+
+			// P2Worldから直接センサーボディを作成
+			P2Body p2Body = m_world->createRectSensor(bodyType, pos, size);
+
+			// Siv3DPhysicsBodyでラップ（新しいコンストラクタを使用）
+			auto body = std::make_shared<Jam::Infrastructure::Physics::Siv3DPhysicsBody>(p2Body);
+
+			// PhysicsBodyIDに変換して登録
+			Jam::Domain::Physics::PhysicsBodyID id = static_cast<Jam::Domain::Physics::PhysicsBodyID>(p2Body.id());
+			m_bodies.emplace(id, body);
+
+			// コールバック
+			if (m_onBodyCreated)
+			{
+				m_onBodyCreated(body);
+			}
+
+			return body;
+		}
+
 		// PhysicsBodyID からボディを取得
 		[[nodiscard]]
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> getBody(Jam::Domain::Physics::PhysicsBodyID id) const override

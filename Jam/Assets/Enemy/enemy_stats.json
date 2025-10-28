@@ -1,86 +1,100 @@
 {
-    "LittleDevil": {
-        "hp": 100,
-        "attackPower": 10.5,
-        "moveSpeed": 2000.0,
-        "jumpPower": 5.0,
-        "colX": 60.0,
-        "colY": 100.0,
-        "physicsMaterial": {
-            "density": 10.0,
-            "friction": 0.4,
-            "restitution": 0.0,
-            "restitutionThreshold": 100.0
-        }
-    },
-    "Ribbon": {
-        "hp": 100,
-        "attackPower": 10.5,
-        "moveSpeed": 2000.0,
-        "jumpPower": 5.0,
-        "colX": 60.0,
-        "colY": 100.0,
-        "physicsMaterial": {
-            "density": 10.0,
-            "friction": 0.4,
-            "restitution": 0.0,
-            "restitutionThreshold": 100.0
-        }
-    },
-    "GothicLolitaDoll": {
-        "hp": 100,
-        "attackPower": 10.5,
-        "moveSpeed": 2000.0,
-        "jumpPower": 5.0,
-        "colX": 60.0,
-        "colY": 100.0,
-        "physicsMaterial": {
-            "density": 10.0,
-            "friction": 0.4,
-            "restitution": 0.0,
-            "restitutionThreshold": 100.0
-        }
-    },
-    "Eye": {
-        "hp": 100,
-        "attackPower": 10.5,
-        "moveSpeed": 2000.0,
-        "jumpPower": 5.0,
-        "colX": 60.0,
-        "colY": 100.0,
-        "physicsMaterial": {
-            "density": 10.0,
-            "friction": 0.4,
-            "restitution": 0.0,
-            "restitutionThreshold": 100.0
-        }
-    },
-    "Spider": {
-        "hp": 100,
-        "attackPower": 10.5,
-        "moveSpeed": 1000.0,
-        "jumpPower": 5.0,
-        "colX": 60.0,
-        "colY": 100.0,
-        "physicsMaterial": {
-            "density": 10.0,
-            "friction": 0.4,
-            "restitution": 0.0,
-            "restitutionThreshold": 100.0
-        }
-    },
-    "Clown": {
-        "hp": 100,
-        "attackPower": 10.5,
-        "moveSpeed": 2000.0,
-        "jumpPower": 5.0,
-        "colX": 60.0,
-        "colY": 100.0,
-        "physicsMaterial": {
-            "density": 10.0,
-            "friction": 0.4,
-            "restitution": 0.0,
-            "restitutionThreshold": 100.0
-        }
+  "LittleDevil": {
+    "hp": 100,
+    "attackPower": 50.5,
+    "moveSpeed": 2000.0,
+    "jumpPower": 5.0,
+    "colX": 60.0,
+    "colY": 100.0,
+    "physicsMaterial": {
+      "density": 10.0,
+      "friction": 0.4,
+      "restitution": 0.0,
+      "restitutionThreshold": 100.0
     }
+  },
+  "Ribbon": {
+    "hp": 200,
+    "attackPower": 10.5,
+    "moveSpeed": 2000.0,
+    "jumpPower": 5.0,
+    "colX": 60.0,
+    "colY": 100.0,
+    "physicsMaterial": {
+      "density": 10.0,
+      "friction": 0.4,
+      "restitution": 0.0,
+      "restitutionThreshold": 100.0
+    }
+  },
+  "GothicLolitaDoll": {
+    "hp": 100,
+    "attackPower": 10.5,
+    "moveSpeed": 2000.0,
+    "jumpPower": 5.0,
+    "colX": 60.0,
+    "colY": 100.0,
+    "physicsMaterial": {
+      "density": 10.0,
+      "friction": 0.4,
+      "restitution": 0.0,
+      "restitutionThreshold": 100.0
+    }
+  },
+  "Eye": {
+    "hp": 100,
+    "attackPower": 10.5,
+    "moveSpeed": 10000.0,
+    "jumpPower": 5.0,
+    "colX": 60.0,
+    "colY": 100.0,
+    "physicsMaterial": {
+      "density": 10.0,
+      "friction": 0.4,
+      "restitution": 0.0,
+      "restitutionThreshold": 100.0
+    }
+  },
+  "Spider": {
+    "hp": 100,
+    "attackPower": 10.5,
+    "moveSpeed": 1000.0,
+    "jumpPower": 5.0,
+    "colX": 60.0,
+    "colY": 100.0,
+    "physicsMaterial": {
+      "density": 10.0,
+      "friction": 0.4,
+      "restitution": 0.0,
+      "restitutionThreshold": 100.0
+    }
+  },
+  "Clown": {
+    "hp": 100,
+    "attackPower": 10.5,
+    "moveSpeed": 2000.0,
+    "jumpPower": 5.0,
+    "colX": 60.0,
+    "colY": 100.0,
+    "physicsMaterial": {
+      "density": 10.0,
+      "friction": 0.4,
+      "restitution": 0.0,
+      "restitutionThreshold": 100.0
+    }
+  },
+  "Boss1_3": {
+    "hp": 300,
+    "attackPower": 10.5,
+    "moveSpeed": 1000.0,
+    "jumpPower": 5.0,
+    "colX": 400.0,
+    "colY": 700.0,
+    "physicsMaterial": {
+      "density": 10.0,
+      "friction": 0.4,
+      "restitution": 0.0,
+      "restitutionThreshold": 100.0
+    }
+  }
 }

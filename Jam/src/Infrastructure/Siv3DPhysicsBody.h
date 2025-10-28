@@ -39,6 +39,16 @@ namespace Jam::Infrastructure::Physics
 			m_body.setSleepEnabled(true);
 		}
 
+		// P2Bodyを直接受け取るコンストラクタ（センサー用）
+		explicit Siv3DPhysicsBody(P2Body body)
+			: m_body(body)
+			, m_layer(Jam::Domain::Physics::PhysicsLayer::None)
+		{
+			// センサーは回転や減衰の設定が不要な場合が多いので最小限の設定
+			m_body.setFixedRotation(true);
+			m_body.setSleepEnabled(true);
+		}
+
 		void applyForce(const Vec2& force) override { m_body.applyForce(force); }
 		void applyImpulse(const Vec2& impulse) { m_body.applyLinearImpulse(impulse); }
 		void setVelocity(const Vec2& v) override { m_body.setVelocity(v); }
@@ -48,6 +58,7 @@ namespace Jam::Infrastructure::Physics
 		void setBullet(const bool b) override { m_body.setBullet(b); }
 		void setDamping(const bool b) override { m_body.setDamping(b); }
 		void setLayer(Jam::Domain::Physics::PhysicsLayer layer) override { m_layer = layer; }
+		void setAngle(double angle)override { m_body.setAngle(angle); }
 		void drawFrame(const double thickness = 1.0, const ColorF& color = Palette::White) { m_body.drawFrame(thickness, color); }
 		Jam::Domain::Physics::PhysicsLayer getLayer() const override { return m_layer; }
 		void* getNativeBody() override { return &m_body; }
@@ -124,6 +135,11 @@ namespace Jam::Infrastructure::Physics
 		{
 			if (auto l = m_listener.lock())
 				l->onCollisionExit(other);
+		}
+		
+		void setOneWayPlatform(bool enabled, double platformTopY = 0.0) override
+		{
+			// OneWayPlatformはPhysicsFilterで制御するため、ここでは何もしない
 		}
 	};
 }

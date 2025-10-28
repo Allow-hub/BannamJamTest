@@ -38,17 +38,23 @@ namespace Jam::Presentation::Scenes
 		// 更新処理
 		void update() override
 		{
-			// スペースキーでゲーム開始
-			if (KeySpace.down())
+			const auto& inputs = Keyboard::GetAllInputs();
+
+			// 何かキーが押されたかチェック
+			for (const auto& input : inputs)
 			{
-				// InGame へ遷移
-				changeScene(ToSceneString(SceneName::Select));
+				if (input.down())
+				{
+					Print << U"Key pressed!";
+					break;
+				}
 			}
 		}
 
 		// 描画処理
 		void draw() const override
 		{
+
 		}
 	};
 }

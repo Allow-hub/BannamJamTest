@@ -8,6 +8,7 @@
 #include "src/Presentation/AudioService.h"
 #include "src/Presentation/Scenes/ResultScene.h"
 #include "src/Presentation/Scenes/TransitionManager.h"
+#include "src/Presentation/SettingManager.h"
 
 using App = SceneManager<String>;
 
@@ -26,17 +27,28 @@ void Main()
 	auto& core = Jam::Foundation::CoreManager::Instance();
 	core.stageInfo.stageName = Jam::Foundation::StageName::Stage1_1;  // デフォルトステージ
 	core.reset();
-	core.audioSetting.masterVolume = 1.0;
-	core.audioSetting.bgmVolume = 0.7;
-	core.audioSetting.seVolume = 1.0;
+	core.audioSetting.masterVolume = 0.5;
+	core.audioSetting.bgmVolume = 0.1;
+	core.audioSetting.seVolume = 0.5;
 
 	// --- 音声ロード ---
 	auto& audioService = Jam::Presentation::AudioService::get();
 	audioService.init();
+	// === マスターボリューム設定 ===
+	audioService.setMasterVolume(core.audioSetting.masterVolume);
+
+	// === BGMボリューム設定 ===
+	audioService.setBGMVolume(core.audioSetting.bgmVolume); 
+
+	// === SEボリューム設定 ===
+	audioService.setSEVolume(core.audioSetting.seVolume); 
 
 	Jam::Presentation::Scenes::TransitionManager::Instance().rec.init(30);
 
 	App manager;
+	auto& settingMgr = Jam::Presentation::SettingManager::Instance();
+	settingMgr.init();
+	settingMgr.setSceneManager(&manager);
 
 	manager.add<Jam::Presentation::Scenes::TitleScene>(
 		Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::Title));

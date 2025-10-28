@@ -1,80 +1,104 @@
 #pragma once
 #include "IStage.h"
-#include "StageTypes.h"
-#include "../Physics/IPhysicsBody.h"
 
 namespace Jam::Domain::Stage {
-    
     /**
-     * 動的ステージの実装
+     * 動く床
+     * 横移動、縦移動、円運動の3種類の動作パターンを持つ
      */
     class MovingPlatformStage : public IStage {
     private:
-        Vec2 m_movementSpeed = {50.0, 0.0}; // デフォルトの移動速度
-        bool m_isLoaded = false;
+        RectF m_baseRect;              // 基準矩形
+        Vec2 m_baseCenter;             // 基準中心位置
+        Vec2 m_currentOffset;          // 現在のオフセット
+        MovementType m_movementType;   // 移動タイプ
+        double m_movementSpeed;        // 移動速度（ピクセル/秒）
+        double m_movementDistance;     // 移動距離または半径
+        bool m_loopMovement;           // ループするか
+        double m_elapsedTime;          // 経過時間
         
     public:
-        MovingPlatformStage() = default;
-        explicit MovingPlatformStage(std::shared_ptr<Physics::IPhysicsBody> physicsBody) 
-            : m_isLoaded(true)
-        {
-            m_body = physicsBody;
-        }
+        MovingPlatformStage(const StageObject& obj)
+            : m_baseRect(obj.rect)
+            , m_baseCenter(obj.rect.center())
+            , m_currentOffset(0, 0)
+            , m_movementType(obj.movementType)
+            , m_movementSpeed(obj.movementSpeed)
+            , m_movementDistance(obj.movementDistance)
+            , m_loopMovement(obj.loopMovement)
+            , m_elapsedTime(0.0)
+        {}
         
-        // IStage実装
-        Array<StageObject> getRenderableObjects() const override {
-            Array<StageObject> renderable;
-            // m_bodyから位置を取得して描画用オブジェクトを返す
-            if (m_body) {
-                StageObject obj;
-                obj.rect = RectF(Arg::center = m_body->getPosition(), 100, 20); // 100x20のプラットフォーム
-                obj.type = StageType::Platform;
-                obj.metadata = U"moving_platform";
-                renderable.push_back(obj);
-            }
-            return renderable;
-        }
-        
-        Array<std::shared_ptr<Physics::IPhysicsBody>> getPhysicsBodies() const override {
-            Array<std::shared_ptr<Physics::IPhysicsBody>> bodies;
-            if (m_body) {
-                bodies.push_back(m_body);
-            }
-            return bodies;
-        }
-        
-        bool destroyObject(const String& objectId) override {
-            return false; // 動くプラットフォームは破壊不可
-        }
-        
-        bool isObjectDestroyed(const String& objectId) const override {
-            return false;
-        }
-        
-        bool isLoaded() const {
-            return m_isLoaded;
-        }
-        
-        // 動的機能実装
         void update(double deltaTime) override {
-            if (m_body) {
-                // setVelocityを使って実際に動かす
-                m_body->setVelocity(m_movementSpeed);
-                
-                // 画面端で反転
-                Vec2 pos = m_body->getPosition();
-                if (pos.x > 800 || pos.x < 200) {
-                    m_movementSpeed.x *= -1;
-                }
+            m_elapsedTime += deltaTime;
+            
+            switch (m_movementType) {
+                case MovementType::Horizontal:
+                    updateHorizontal(deltaTime);
+                    break;
+                case MovementType::Vertical:
+                    updateVertical(deltaTime);
+                    break;
+                case MovementType::Circular:
+                    updateCircular(deltaTime);
+                    break;
             }
         }
         
-        void setMovementSpeed(const String& objectId, Vec2 speed) override {
-            m_movementSpeed = speed;
+        RectF getRenderRect() const override {
+            return RectF(m_baseRect.pos + m_currentOffset, m_baseRect.size);
         }
         
-        void setMovementPath(const String& objectId, Array<Vec2> path) override {
-            // 簡略化のため実装なし
+        StageType getType() const override {
+            return StageType::MovingPlatform;
+        }
+        
+        Vec2 getCurrentCenter() const override {
+            return m_baseCenter + m_currentOffset;
+        }
+        
+    private:
+        // 横移動の更新
+        void updateHorizontal(double deltaTime) {
+            double progress = (m_movementSpeed * m_elapsedTime) / m_movementDistance;
+            
+            if (m_loopMovement) {
+                progress = Math::Fmod(progress, 2.0);
+                if (progress > 1.0) {
+                    progress = 2.0 - progress;
+                }
+            } else {
+                progress = Math::Clamp(progress, 0.0, 1.0);
+            }
+            
+            m_currentOffset.x = progress * m_movementDistance;
+            m_currentOffset.y = 0;
+        }
+        
+        // 縦移動の更新
+        void updateVertical(double deltaTime) {
+            double progress = (m_movementSpeed * m_elapsedTime) / m_movementDistance;
+            
+            if (m_loopMovement) {
+                progress = Math::Fmod(progress, 2.0);
+                if (progress > 1.0) {
+                    progress = 2.0 - progress;
+                }
+            } else {
+                progress = Math::Clamp(progress, 0.0, 1.0);
+            }
+            
+            m_currentOffset.x = 0;
+            m_currentOffset.y = progress * m_movementDistance;
+        }
+        
+        // 円運動の更新
+        void updateCircular(double deltaTime) {
+            double circumference = 2.0 * Math::Pi * m_movementDistance;
+            double angle = (m_movementSpeed * m_elapsedTime / circumference) * 2.0 * Math::Pi;
+            
+            m_currentOffset.x = Math::Cos(angle) * m_movementDistance;
+            m_currentOffset.y = Math::Sin(angle) * m_movementDistance;
         }
     };
 }

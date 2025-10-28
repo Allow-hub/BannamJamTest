@@ -6,11 +6,9 @@
 #include "../../UseCase/PlayerService.h"
 #include "../../Infrastructure/Siv3DInputManager.h"
 #include "../../Infrastructure/Siv3DPhysicsBody.h"
-#include "../../Domain/Stage/NormalStage.h"
-#include "../../Domain/Stage/MovingPlatformStage.h"
 #include "../../Infrastructure/StageLoader.h"
 #include "../Stage/StageManager.h"
-#include "../Stage/StageRenderer.h"
+#include "../../UseCase/StageService.h"
 #include "../../Infrastructure/PhysicsConverter.h"
 #include "../EnemyManager.h"
 #include "../../UseCase/EnemyFactory.h"
@@ -31,6 +29,10 @@
 #include "../../UseCase/EffectEvents.h"
 #include "../../Presentation/EffectManager.h"
 #include "../../Presentation/FadeManager.h"
+#include "../PostEffect/BloomManager.h"
+#include "../SettingManager.h"
+#include "../../Domain/FlagmentMemory.h"
+#include "../InGameUIManager.h"
 
 
 namespace Jam::Presentation::Scenes
@@ -66,32 +68,34 @@ namespace Jam::Presentation::Scenes
 		std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody> m_ground;
 
 		// Stage用
-		std::unique_ptr<Jam::Presentation::Stage::StageManager> m_stageManager;
-		std::unique_ptr<Jam::Presentation::Stage::StageRenderer> m_stageRenderer;
-		std::unique_ptr<Jam::Domain::Stage::NormalStage> m_stage;
-
-		// Stage用物理ボディ管理
+		std::shared_ptr<Jam::UseCase::StageService> m_stageService;
+		std::unique_ptr<Jam::Presentation::Stage::StageManager> m_stageManager;		// Stage用物理ボディ管理
 		std::vector<std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody>> m_stagePhysicsBodies;
 
 		// Background用
 		std::unique_ptr<Jam::Presentation::Background::BackgroundRenderer> m_backgroundRenderer;
+		std::unique_ptr<Jam::Presentation::InGameUIManager> m_inGameUIManager;
 
 		// Enemy用
 		HashSet<P2ContactPair> m_previousContacts;
+
+		std::vector<std::shared_ptr<Jam::Domain::FlagmentMemory>> m_flagmentMemories;
 
 	public:
 		GameScene(const InitData& init)
 			: IScene{ init },
 			m_world({ 0, 980 }),//引数は重力
-			m_inputManager(),
-			m_stage(std::make_unique<Jam::Domain::Stage::NormalStage>())
+			m_inputManager()
 		{
 			Jam::Presentation::AudioService::get().play(Jam::Presentation::AudioService::Sound::BGM_Title, true);
+			//デバッグ用
+			Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_3; // CoreManagerのenumに追加が必要
 
 			auto& core = Jam::Foundation::CoreManager::Instance();
 			core.reset();
 			String stageName = Jam::Foundation::CoreManager::stageNameToString(core.stageInfo.stageName);//ステージ名
 			core.setCurrentStageData(core.getStageData(core.stageInfo.stageName));
+			
 			// --- FactoryServiceLocator初期化 ---
 			auto& locator = Jam::Infrastructure::Locator::FactoryServiceLocator::instance();
 			auto physicsFactory = std::make_shared<Jam::Infrastructure::Locator::Siv3DPhysicsBodyFactory>();
@@ -109,7 +113,9 @@ namespace Jam::Presentation::Scenes
 			m_effectEventQueue = std::make_shared<Jam::UseCase::EffectEventQueue>();
 
 			m_eventHandler = std::make_shared<Jam::UseCase::GameEventHandler>(
-				*m_gameEventQueue, *m_cameraEventQueue, *m_effectEventQueue);
+				*m_gameEventQueue,*m_cameraEventQueue,*m_effectEventQueue,
+				[this]() { this->nextScene(); });
+
 
 			m_effectManager = std::make_unique<Jam::Presentation::EffectManager>(*m_effectEventQueue);
 
@@ -132,6 +138,7 @@ namespace Jam::Presentation::Scenes
 
 			m_player->setPower(stats.power);
 			m_player->setHp(stats.hp);
+			m_player->setMaxHp(stats.hp);
 			m_player->setSpeed(stats.moveSpeed);
 			m_player->setJumpPower(stats.jumpPower);
 
@@ -146,20 +153,23 @@ namespace Jam::Presentation::Scenes
 			// ステージテクスチャの事前読み込み
 			Jam::Infrastructure::TextureLoader::preloadStageTextures();
 
+			m_stageService = std::make_shared<Jam::UseCase::StageService>();
+
+			auto bodyFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+				.getPhysicsFactory();
+
+			// ステージ名からJSONファイル名を生成
+			m_stageService->initialize(stageName + U".json", bodyFactory);
+
 			m_stageManager = std::make_unique<Jam::Presentation::Stage::StageManager>();
-			// TODO: ステージ選択機能の実装
-			// - ステージファイル名を動的に切り替え可能にする
-			// - StageManagerにステージ切り替えメソッドを追加
-			// - 例: m_stageManager->switchStage(selectedStageFile);
-			m_stageManager->initialize(m_world, m_physicsBodies);
-			m_stageRenderer = std::make_unique<Jam::Presentation::Stage::StageRenderer>();
-			m_stageRenderer->setStageManager(m_stageManager.get());
+			m_stageManager->setService(m_stageService);
+			m_stageManager->loadTextures();
 
 			// === Camera 初期化 ===
 			m_cameraManager = std::make_shared<Jam::Presentation::CameraManager>(
-				m_player->getPosition()  // 初期位置をプレイヤー位置に合わせる
+					m_player->getPosition()  // 初期位置をプレイヤー位置に合わせる
 			);
-
+			m_cameraManager->setYLimits(-1000, core.getCurrentStageData().fallLimitY-500);
 			m_cameraService = std::make_shared<Jam::UseCase::CameraService>(
 				*m_player,
 				*m_cameraManager,
@@ -197,36 +207,10 @@ namespace Jam::Presentation::Scenes
 				Console << U"[GameScene] ⚠ Failed to load stage enemies";
 			}
 
-			// === Stage 初期化 ===
-			// 物理ボディのラムダの定義
-			// json
-			auto physicsBodyFactory = [this](const RectF& rect, Jam::Domain::Physics::PhysicsLayer layer)
-				-> std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> {
-				auto body = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
-					.getPhysicsFactory()
-					->createBody(
-					rect.center(),
-					rect.size,
-					s3d::P2BodyType::Static,
-					Jam::Domain::Physics::PhysicsMaterial{ 1.0, 0.0, 0.0 }
-					);
-				body->setFilter(Jam::Infrastructure::PhysicsFilter::Wall);
-				body->setLayer(layer);
-				return body;
-				};
-
-			// Stage JSONファイルを読み込み
-			Array<Jam::Domain::Stage::StageObject> objects;
-			if (Jam::Infrastructure::Stage::StageLoader::loadStageFromFile(U"stage1.json", objects)) {
-				m_stage->setObjects(objects, physicsBodyFactory);
-			}
-			else {
-				Print << U"[GameScene] ❌ Failed to load stage1.json";
-			}
-
 			// === Background 初期化 ===
 			m_backgroundRenderer = std::make_unique<Jam::Presentation::Background::BackgroundRenderer>();
 
+			m_inGameUIManager = std::make_unique<Jam::Presentation::InGameUIManager>(m_player);
 			// 背景テクスチャの事前読み込み
 			Jam::Infrastructure::TextureLoader::preloadBackgroundTextures();
 
@@ -238,32 +222,58 @@ namespace Jam::Presentation::Scenes
 			else {
 				Print << U"[GameScene] ⚠️ Failed to load background JSON, using fallback";
 			}
+
+			auto currentStageData = core.getCurrentStageData();
+			for (const auto& pos : currentStageData.flagmentMemoryPos)
+			{
+				auto flagmentBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+					.getPhysicsFactory()
+					->createCircleSensor(
+						pos,
+						30.0,  // センサーの半径
+						s3d::P2BodyType::Static
+					);
+
+				flagmentBody->setLayer(Jam::Domain::Physics::PhysicsLayer::Item);
+
+				// FlagmentMemoryインスタンスを作成
+				auto flagment = std::make_shared<Jam::Domain::FlagmentMemory>(pos, flagmentBody);
+
+				// 物理ボディにリスナーを設定
+				flagmentBody->setCollisionListener(flagment);
+
+				// 管理配列に追加
+				m_flagmentMemories.push_back(flagment);
+			}
+
 			Jam::Util::GridRenderer::GridConfig config;
 			config.gridSize = 100.0;
 			config.fontSize = 16;
 			Jam::Util::GridRenderer::instance().setConfig(config);
+			BloomManager::getInstance().setIntensities(0.03, 0.06, 0.1, 0.3);
+			BloomManager::getInstance().setVignette(0.3, 0.5);
 		}
 
 		void update() override
 		{
-			Jam::Foundation::CoreManager::Instance().addTimer(Scene::DeltaTime());
+			auto& core = Jam::Foundation::CoreManager::Instance();
+			core.addTimer(Scene::DeltaTime());
+
 			auto& cursorUtil = Jam::Infrastructure::CursorUtil::instance();
 			//cursorUtil.registerCursorFromImage(U"../Assets/Cursor/GameCursor.png", Jam::Infrastructure::CursorStyle::Game);
 			cursorUtil.setCursor(CursorStyle::Cross);
 			cursorUtil.setClipWindowCuror(true);
 			m_playerService->update(Scene::DeltaTime());
 			m_playerManager->update();
-
+			if (core.getPause())
+			{
+				Jam::Presentation::SettingManager::Instance().update();
+				return;
+			}
 			// Stage更新
 			if (m_stageManager)
 			{
-				m_stageManager->update(Scene::DeltaTime());
-			}
-
-			// 古いステージシステム更新
-			if (m_stage)
-			{
-				m_stage->update(Scene::DeltaTime());
+				m_stageService->update(Scene::DeltaTime());
 			}
 
 			// 敵の更新
@@ -283,12 +293,31 @@ namespace Jam::Presentation::Scenes
 				m_world.update(StepTime);
 				m_accumulatedTime -= StepTime;
 			}
-			m_eventHandler->processEvents();//ゲーム内イベントを各クラスに通知
+			m_eventHandler->processEvents();
 
-			// カメラの更新
+			if (m_stageService && m_player)
+			{
+				bool landed = m_stageService->checkOneWayPlatformLanding(
+					m_player->getPhysicsBody(),
+					m_player->isPressingDown()
+				);
+				if (landed)
+				{
+					m_player->resetJumpState();
+				}
+			}
+
 			m_cameraService->update(Scene::DeltaTime());
 			m_effectManager->update();
 			Jam::Presentation::FadeManager::instance().update(Scene::DeltaTime());
+
+			//記憶のかけら
+			for (const auto& flagment : m_flagmentMemories)
+			{
+				flagment->update(Scene::DeltaTime());
+			}
+			m_inGameUIManager->update();
+
 			//デバッグ用
 			if (KeyR.down())
 			{
@@ -302,45 +331,38 @@ namespace Jam::Presentation::Scenes
 			Scene::SetBackground(ColorF{ 0.9, 0.9, 1.0 });
 
 			{
+				if (Jam::Foundation::CoreManager::Instance().getPause())
+				{
+					Jam::Presentation::SettingManager::Instance().draw();
+					return;
+				}
+				//const auto t = Jam::Presentation::BloomManager::getInstance().getRenderTarget();
 				const auto transformer = m_cameraManager->createTransformer();
 				const Vec2 cameraOffset = m_cameraManager->getCameraOffset();
 
 				// === 背景描画 (奥から手前へ) ===
 				if (m_backgroundRenderer) {
 					if (m_backgroundRenderer->isLoaded()) {
-						// Back Layer
 						m_backgroundRenderer->drawLayer(Jam::Domain::Background::ParallaxLayer::Back, cameraOffset);
-
-						// Middle Layer
 						m_backgroundRenderer->drawLayer(Jam::Domain::Background::ParallaxLayer::Middle, cameraOffset);
 					}
 				}
 
 				// Stage描画
-				if (m_stageRenderer)
+				if (m_stageManager)
 				{
-					m_stageRenderer->draw();
+					m_stageManager->draw();
 				}
 
-				// Stageの描画
-				if (m_stage && m_stage->isLoaded())
+				// === デバッグ: PhysicsLayer可視化(常時表示) ===
+				if (m_stageService)
 				{
-					//Print << U"[GameScene] Drawing " << m_stage->getObjects().size() << U" stage objects";
-					for (const auto& obj : m_stage->getRenderableObjects()) {
-						obj.rect.drawFrame(1, Palette::Blue);
-					}
-				}
-				else
-				{
-					Print << U"[GameScene] Stage not loaded or empty";
+					m_stageService->drawPhysicsLayerDebug();
 				}
 
 				// プレイヤーの描画
-				m_playerManager->draw();
-
-				// === 前景背景描画 (プレイヤーより手前) ===
+				m_playerManager->draw();				// === 前景背景描画 (プレイヤーより手前) ===
 				if (m_backgroundRenderer && m_backgroundRenderer->isLoaded()) {
-					// Front Layer
 					m_backgroundRenderer->drawLayer(Jam::Domain::Background::ParallaxLayer::Front, cameraOffset);
 				}
 
@@ -351,11 +373,24 @@ namespace Jam::Presentation::Scenes
 				}
 				m_effectManager->draw();
 
+				//記憶のかけら
+				for (const auto& flagment : m_flagmentMemories)
+				{
+					flagment->draw();
+				}
 				//Jam::Util::GridRenderer::instance().draw();
 			}
+			m_inGameUIManager->draw();
 
+			//BloomManager::getInstance().draw();
 			//フェードのDraw
 			Jam::Presentation::FadeManager::instance().draw();
+		}
+
+		void nextScene()
+		{
+			resetScene();
+			changeScene(ToSceneString(SceneName::Result));
 		}
 
 	private:

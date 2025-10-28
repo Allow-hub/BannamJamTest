@@ -29,6 +29,7 @@ namespace Jam::Domain::Physics
 		virtual void setDamping(const bool b) = 0;
 		virtual PhysicsLayer getLayer() const = 0;
 		virtual void setLayer(PhysicsLayer layer) = 0;
+		virtual void setAngle(double angle) = 0;
 		virtual void drawFrame(const double thickness = 1.0, const ColorF& color = Palette::White) = 0;
 		virtual void setCollisionListener(const std::shared_ptr<ICollisionListener>& listener) = 0;
 		virtual void setBodyType(Jam::Domain::Physics::PhysicsType type) = 0;
@@ -43,5 +44,12 @@ namespace Jam::Domain::Physics
 			const Vec2& anchorOther,
 			double length
 		) = 0;
+		
+		/**
+		 * すり抜ける床として設定
+		 * @param enabled すり抜け床として機能させるか
+		 * @param platformTopY 床の上面のY座標（ワールド座標）
+		 */
+		virtual void setOneWayPlatform(bool enabled, double platformTopY = 0.0) = 0;
 	};
 }

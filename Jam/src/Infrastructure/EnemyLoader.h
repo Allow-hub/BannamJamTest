@@ -56,6 +56,7 @@ namespace Jam::Infrastructure
 				else if (typeStr == U"Spider") type = Jam::Domain::EnemyType::Spider;
 				else if (typeStr == U"Eye") type = Jam::Domain::EnemyType::Eye;
 				else if (typeStr == U"Clown") type = Jam::Domain::EnemyType::Clown;
+				else if (typeStr == U"Boss1_3") type = Jam::Domain::EnemyType::Boss1_3;
 				else
 				{
 					Console << U"[EnemyLoader] ⚠ Unknown enemy type: " << typeStr;
@@ -107,6 +108,7 @@ namespace Jam::Infrastructure
 						}
 						route.loop = patrol[U"loop"].getOr<bool>(false);
 						route.waitTime = patrol[U"waitTime"].getOr<double>(0.0);
+						route.foundDistance = patrol[U"foundDistance"].getOr<double>(300.0);
 						enemy->setPatrolRoute(route);
 					}
 
@@ -116,6 +118,7 @@ namespace Jam::Infrastructure
 						const JSON& chase = ai[U"chase"];
 						Jam::Domain::Enemy::ChaseAISettings chaseSettings;
 
+						chaseSettings.attackRange = chase[U"attackRange"].getOr<double>(100.0);
 						chaseSettings.loseRange = chase[U"loseRange"].getOr<double>(400.0);
 						chaseSettings.moveSpeedFactor = chase[U"moveSpeedFactor"].getOr<double>(1.2);
 
@@ -205,6 +208,10 @@ namespace Jam::Infrastructure
 				else if (key == U"Clown")
 				{
 					outTable[EnemyType::Clown] = status;
+				}
+				else if (key == U"Boss1_3")
+				{
+					outTable[EnemyType::Boss1_3] = status;
 				}
 				else
 				{

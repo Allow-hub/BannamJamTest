@@ -1,0 +1,473 @@
+﻿{
+    "_comment": "Stage1�̃I�u�W�F�N�g�̔z�u",
+    "_�g����": {
+        "rect": "[x, y, width, height] �`���̔z��ňʒu�ƃT�C�Y��w�肵�܂��B",
+        "type": "�����蔻��̎�ނ�w�肵�܂��Bsolid(�ǁE��), move(������)",
+        "groundSide": "�n�㔻���t����ʂ�w�肵�܂��B�ȗ�����'up'(��ʂ̂�)�Ball(�S��), none(����Ȃ�)�Ȃǂ�w��\�B",
+        "metadata": "���ʗp�̔C�ӕ�����(�X�N���v�g��C�x���g�Ŏg�p)�B"
+    },
+    "objects": [
+        {
+            "rect": [ -100, 50, 300, 3000 ],
+            "type": "solid",
+            "metadata": "�����n�_"
+        },
+        {
+            "rect": [ 550, -650, 50, 50 ],
+            "type": "solid",
+            "groundSide": "All",
+            "metadata": "�W���C���g01"
+        },
+        {
+            "rect": [ 1250, -650, 50, 50 ],
+            "type": "solid",
+            "groundSide": "All",
+            "metadata": "�W���C���g02"
+        },
+        {
+            "rect": [ -100, -1500, 2300, 850 ],
+            "type": "solid",
+            "metadata": "�V��01"
+        },
+        {
+            "rect": [ 200, 75, 200, 3000 ],
+            "type": "solid",
+            "metadata": "�����n�_�t�ߑ���"
+        },
+        {
+            "rect": [ 1650, -150, 300, 150 ],
+            "type": "solid",
+            "metadata": "�Ί�01"
+        },
+        {
+            "rect": [ 1950, -300, 300, 3000 ],
+            "type": "solid",
+            "metadata": "�Ί�02"
+        },
+        {
+            "rect": [ 2500, -900, 300, 1350 ],
+            "type": "solid",
+            "metadata": "�W���C���g�ד��E��"
+        },
+        {
+            "rect": [ 2800, 900, 250, 900 ],
+            "type": "solid",
+            "metadata": "�_���[�W���̑Ί�"
+        },
+        {
+            "rect": [ 2250, 900, 250, 950 ],
+            "type": "solid",
+            "metadata": "�_���[�W��"
+        },
+        {
+            "rect": [ 3150, 750, 100, 100 ],
+            "type": "solid",
+            "metadata": "�~�j��01"
+        },
+        {
+            "rect": [ 3850, 750, 100, 100 ],
+            "type": "solid",
+            "metadata": "�~�j��02"
+        },
+        {
+            "rect": [ 3850, 750, 100, 100 ],
+            "type": "solid",
+            "metadata": "�~�j��02"
+        },
+        {
+            "rect": [ 3300, 400, 100, 65 ],
+            "type": "solid",
+            "metadata": "�~�j��03"
+        },
+        {
+            "rect": [ 4000, 600, 100, 100 ],
+            "type": "solid",
+            "metadata": "�~�j��04"
+        },
+        {
+            "rect": [ 3800, 200, 100, 65 ],
+            "type": "solid",
+            "metadata": "�~�j��05"
+        },
+        {
+            "rect": [ 4000, -100, 100, 65 ],
+            "type": "solid",
+            "metadata": "�~�j��05"
+        },
+        {
+            "rect": [ 3350, 0, 100, 65 ],
+            "type": "solid",
+            "metadata": "�~�j��06"
+        },
+        {
+            "rect": [ 2700, 5, 250, 50 ],
+            "type": "solid",
+            "metadata": "�~�j��07"
+        },
+        {
+            "rect": [ 2600, 450, 100, 200 ],
+            "type": "solid",
+            "metadata": "�~�j��07"
+        },
+        {
+            "rect": [ 3100, -500, 1050, 100 ],
+            "type": "solid",
+            "metadata": "�~�j����"
+        },
+        {
+            "rect": [ 3400, -600, 100, 50 ],
+            "type": "solid",
+            "metadata": "�~�j��01"
+        },
+        {
+            "rect": [ 3700, -800, 50, 150 ],
+            "type": "solid",
+            "metadata": "�~�j��02"
+        },
+        {
+            "rect": [ 4000, -650, 200, 50 ],
+            "type": "solid",
+            "metadata": "�~�j��02"
+        },
+        {
+            "rect": [ 2800, -900, 1700, 50 ],
+            "type": "solid",
+            "metadata": "�V��"
+        },
+        {
+            "rect": [ 4450, -400, 1650, 50 ],
+            "type": "solid",
+            "metadata": "�V��"
+        },
+        {
+            "rect": [ 5500, -1500, 50, 900 ],
+            "type": "solid",
+            "metadata": "�_���[�W���n�_�n�܂��"
+        },
+        {
+            "rect": [ 5100, 300, 50, 200 ],
+            "type": "solid",
+            "metadata": "�_���[�W���ז���01"
+        },
+        {
+            "rect": [ 5500, 500, 50, 150 ],
+            "type": "solid",
+            "metadata": "�_���[�W���ז���02"
+        },
+        {
+            "rect": [ 5350, 1000, 50, 150 ],
+            "type": "solid",
+            "metadata": "�_���[�W���ז���03"
+        },
+        {
+            "rect": [ 4450, -950, 100, 700 ],
+            "type": "solid",
+            "metadata": "�ד��̕�01"
+        },
+        {
+            "rect": [ 4150, 0, 400, 2500 ],
+            "type": "solid",
+            "metadata": "�~�j���n�яI���̏�"
+        },
+        {
+            "rect": [ 4150, -500, 100, 550 ],
+            "type": "solid",
+            "metadata": "�ד��̕�02"
+        },
+        {
+            "rect": [ 4550, 150, 1350, 50 ],
+            "type": "solid",
+            "metadata": "�_���[�W��02"
+        },
+        {
+            "rect": [ 6100, -200, 450, 1400 ],
+            "type": "solid",
+            "metadata": "�_���[�W���n�щE�̕�"
+        },
+        {
+            "rect": [ 4850, 800, 1550, 50 ],
+            "type": "solid",
+            "metadata": "�_���[�W��03"
+        },
+        {
+            "rect": [ 4150, 1350, 1550, 3000 ],
+            "type": "solid",
+            "metadata": "�_���[�W��04"
+        },
+        {
+            "rect": [ 6000, 1500, 550, 900 ],
+            "type": "solid",
+            "metadata": "�_���[�W���I���̏�"
+        },
+        {
+            "rect": [ 7750, -450, 100, 2500 ],
+            "type": "solid",
+            "metadata": "�L���̌��Ђ̕�"
+        },
+        {
+            "rect": [ 7000, 900, 300, 65 ],
+            "type": "solid",
+            "metadata": "�e�N�j�b�N��01"
+        },
+        {
+            "rect": [ 7850, -200, 300, 65 ],
+            "type": "solid",
+            "metadata": "�A�f�B�V���i���]�[�����߂̏�"
+        },
+        {
+            "rect": [ 7850, 400, 300, 65 ],
+            "type": "solid",
+            "metadata": "�A�f�B�V���i���]�[�����߂̏�"
+        },
+        {
+            "rect": [ 8200, 150, 300, 65 ],
+            "type": "solid",
+            "metadata": "�A�f�B�V���i���]�[�����߂̏�"
+        },
+        {
+            "rect": [ 8100, 1000, 300, 100 ],
+            "type": "solid",
+            "metadata": "�A�f�B�V���i���]�[�����߂̏�"
+        },
+        {
+            "rect": [ 7950, -350, 50, 50 ],
+            "type": "solid",
+            "metadata": "�K�i01_03"
+        },
+        {
+            "rect": [ 7850, -450, 50, 50 ],
+            "type": "solid",
+            "metadata": "�K�i01_01"
+        },
+        {
+            "rect": [ 7900, -400, 50, 50 ],
+            "type": "solid",
+            "metadata": "�K�i01_02"
+        },
+        {
+            "rect": [ 8000, -300, 50, 50 ],
+            "type": "solid",
+            "metadata": "�K�i01_04"
+        },
+        {
+            "rect": [ 8050, -250, 50, 50 ],
+            "type": "solid",
+            "metadata": "�K�i01_05"
+        },
+        {
+            "rect": [ 8450, -100, 50, 50 ],
+            "type": "solid",
+            "metadata": "�K�i02_01"
+        },
+        {
+            "rect": [ 8400, -50, 50, 50 ],
+            "type": "solid",
+            "metadata": "�K�i_02_02"
+        },
+        {
+            "rect": [ 8350, 0, 50, 50 ],
+            "type": "solid",
+            "metadata": "�K�i02_03"
+        },
+        {
+            "rect": [ 8300, 50, 50, 50 ],
+            "type": "solid",
+            "metadata": "�K�i02_04"
+        },
+        {
+            "rect": [ 8250, 100, 50, 50 ],
+            "type": "solid",
+            "metadata": "�K�i02_05"
+        },
+        {
+            "rect": [ 7950, 250, 50, 50 ],
+            "type": "solid",
+            "metadata": "�K�i03_03"
+        },
+        {
+            "rect": [ 7850, 150, 50, 50 ],
+            "type": "solid",
+            "metadata": "�K�i03_01"
+        },
+        {
+            "rect": [ 7900, 200, 50, 50 ],
+            "type": "solid",
+            "metadata": "�K�i03_02"
+        },
+        {
+            "rect": [ 8000, 300, 50, 50 ],
+            "type": "solid",
+            "metadata": "�K�i03_04"
+        },
+        {
+            "rect": [ 8050, 350, 50, 50 ],
+            "type": "solid",
+            "metadata": "�K�i03_05"
+        },
+        {
+            "rect": [ 9100, -600, 50, 200 ],
+            "type": "solid",
+            "metadata": "�A�f�B�V���i���]�[�����߂̏�"
+        },
+        {
+            "rect": [ 8900, -600, 200, 50 ],
+            "type": "solid",
+            "metadata": "���01"
+        },
+        {
+            "rect": [ 8550, -200, 200, 50 ],
+            "type": "solid",
+            "metadata": "���02"
+        },
+        {
+            "rect": [ 8900, 200, 200, 50 ],
+            "type": "solid",
+            "metadata": "���03"
+        },
+        {
+            "rect": [ 8550, 600, 200, 50 ],
+            "type": "solid",
+            "metadata": "���04"
+        },
+        {
+            "rect": [ 7000, 0, 300, 250 ],
+            "type": "solid",
+            "metadata": "�e�N�j�b�N��02"
+        },
+        {
+            "rect": [ 9100, -400, 300, 765 ],
+            "type": "solid",
+            "metadata": "�e�N�j�b�N�̉E��"
+        },
+        {
+            "rect": [ 9400, 0, 400, 365 ],
+            "type": "solid",
+            "metadata": "�e�N�j�b�N�̉E��"
+        },
+        {
+            "rect": [ 6100, -1400, 4500, 500 ],
+            "type": "solid",
+            "metadata": "�V��"
+        },
+        {
+            "rect": [ 10000, -900, 2200, 500 ],
+            "type": "solid",
+            "metadata": "�V��"
+        },
+        {
+            "rect": [ 9800, 50, 2400, 315 ],
+            "type": "solid",
+            "metadata": "�_���[�W��05"
+        },
+        {
+            "rect": [ 12200, -700, 300, 65 ],
+            "type": "solid",
+            "metadata": "�񕜃A�C�e���V��"
+        },
+        {
+            "rect": [ 10800, 835, 1300, 65 ],
+            "type": "solid",
+            "metadata": "�_���[�W��06"
+        },
+        {
+            "rect": [ 12500, -700, 800, 1800 ],
+            "type": "solid",
+            "metadata": "�����т̉E��"
+        },
+        {
+            "rect": [ 12100, 800, 600, 100 ],
+            "type": "solid",
+            "metadata": "�_���[�W�����ޏ�01"
+        },
+        {
+            "rect": [ 10500, 800, 300, 100 ],
+            "type": "solid",
+            "metadata": "�_���[�W�����ޏ�02"
+        },
+        {
+            "rect": [ 11500, 365, 150, 50 ],
+            "type": "solid",
+            "metadata": "�W���C���g02"
+        },
+        {
+            "rect": [ 10200, 365, 50, 50 ],
+            "type": "solid",
+            "metadata": "�W���C���g02"
+        },
+        {
+            "rect": [ 9100, 345, 200, 2000 ],
+            "type": "solid",
+            "metadata": "�����э����Е�"
+        },
+        {
+            "rect": [ 10900, 1600, 100, 100 ],
+            "type": "solid",
+            "metadata": "�󒆑���01"
+        },
+        {
+            "rect": [ 9300, 1500, 300, 900 ],
+            "type": "solid",
+            "metadata": "�󒆑���02"
+        },
+        {
+            "rect": [ 12000, 1200, 150, 150 ],
+            "type": "solid",
+            "metadata": "�󒆑���03"
+        },
+        {
+            "rect": [ 12500, -500, 5500, 500 ],
+            "type": "solid",
+            "metadata": "�����т̉E��"
+        },
+        {
+            "rect": [ -600, -1000, 500, 5300 ],
+            "type": "solid",
+            "metadata": "�X�^�[�g�n�_�̒["
+        },
+        {
+            "rect": [ 2200, -950, 500, 50 ],
+            "type": "solid",
+            "metadata": "�V��01"
+        },
+        {
+            "rect": [ 12500, 1600, 800, 2500 ],
+            "type": "solid",
+            "metadata": "�S�[���n�_"
+        },
+        {
+            "rect": [ 13300, -1600, 800, 3500 ],
+            "type": "solid",
+            "metadata": "�L���̌��Ђ̕�"
+        },
+        {
+            "rect": [ 7125, -300, 50, 50 ],
+            "type": "solid",
+            "metadata": "�e�N�j�b�N�W���C���g01"
+        },
+        {
+            "rect": [ 6100, -1000, 150, 800 ],
+            "type": "solid",
+            "metadata": "�L���̂������"
+        },
+        {
+            "rect": [ 6450, -700, 100, 500 ],
+            "type": "solid",
+            "metadata": "�L���̂�����������"
+        },
+        {
+            "rect": [ 7125, -750, 50, 50 ],
+            "type": "solid",
+            "metadata": "�e�N�j�b�N�W���C���g02"
+        },
+        {
+            "rect": [ 8500, -900, 50, 1600 ],
+            "type": "solid",
+            "metadata": "�����э����Е�"
+        },
+        {
+            "rect": [ 9300, 350, 300, 900 ],
+            "type": "solid",
+            "metadata": "�����э����Е�"
+        }
+    ]
+}

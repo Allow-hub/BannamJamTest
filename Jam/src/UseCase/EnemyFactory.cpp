@@ -2,10 +2,12 @@
 #include "../Domain/Enemy/LittleDevil.h"
 #include "AttackProcessor.h"
 #include "../Domain/Events/GameEvents.h"
+#include "../Domain/Enemy/Ribbon.h"
 #include "../Domain/Enemy/GothicLolitaDoll.h"
 #include "../Domain/Enemy/Spider.h"
 #include "../Domain/Enemy/Eye.h"
 #include "../Domain/Enemy/Clown.h"
+#include "../Domain/Enemy/Boss1_3.h"
 
 namespace Jam::UseCase
 {
@@ -24,10 +26,9 @@ namespace Jam::UseCase
 		case Jam::Domain::EnemyType::LittleDevil:
 			enemy = std::make_shared<LittleDevil>(body, playerId, eventQueue);
 			break;
-
 		case Jam::Domain::EnemyType::Ribbon:
-			// TODO: Ribbonの実装
-			return nullptr;
+			enemy = std::make_shared<Ribbon>(body, playerId, eventQueue);
+			break;
 		case Jam::Domain::EnemyType::GothicLolitaDoll:
 			enemy = std::make_shared<GothicLolitaDoll>(body, playerId, eventQueue);
 			break;
@@ -39,6 +40,9 @@ namespace Jam::UseCase
 			break;
 		case Jam::Domain::EnemyType::Clown:
 			enemy = std::make_shared<Clown>(body, playerId, eventQueue);
+			break;
+		case Jam::Domain::EnemyType::Boss1_3:
+			enemy = std::make_shared<Boss1_3>(body, playerId, eventQueue);
 			break;
 		default:
 			Print << U"[EnemyFactory] ⚠ Unknown enemy type!";

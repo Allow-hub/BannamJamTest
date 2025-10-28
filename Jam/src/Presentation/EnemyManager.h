@@ -63,7 +63,7 @@ namespace Jam::Presentation
 				{
 					continue;
 				}
-
+				enemy->draw();//Animationはイベントを送る形をとるが敵のアイテム系はそれぞれが描画
 				auto body = enemy->getPhysicsBody();
 				body->drawFrame(2.0, Palette::Red);
 				if (!body)

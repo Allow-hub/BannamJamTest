@@ -31,6 +31,16 @@ namespace Jam::UseCase
 			m_input.Update();
 			Domain::InputState inputState = m_input.GetState();
 
+			if (m_player->getIsRespawning())return;
+			if (!m_player->getCanControl())return;
+
+			if (inputState.settting)
+			{
+				auto& core = Jam::Foundation::CoreManager::Instance();
+				core.setPause(!core.getPause());
+				return;
+			}
+
 			bool isRunning = false;
 
 			if (inputState.left)
@@ -46,21 +56,11 @@ namespace Jam::UseCase
 				isRunning = true;
 			}
 			if (inputState.dash)
-			{
 				m_player->startDash();
-			}
 			else
-			{
 				m_player->endDash();
-			}
 			if (inputState.jump)
-			{
 				m_player->jump();
-			}
-			if (inputState.attack)
-			{
-				m_player->attack();
-			}
 			if (inputState.skillPush) // Skill ボタンが押されていたら
 			{
 				m_player->skillPush();
@@ -69,6 +69,9 @@ namespace Jam::UseCase
 			{
 				m_player->skillReleased();
 			}
+			
+			// 下ボタンの状態を更新
+			m_player->setPressingDown(inputState.down);
 
 			// ---------------------------------
 			// マウスホイールでスキル切り替え
@@ -88,7 +91,6 @@ namespace Jam::UseCase
 			// ---------------------------------
 
 			m_manager.SetRunning(isRunning);
-
 			m_player->update(deltaTime);
 		}
 

@@ -23,6 +23,9 @@ namespace Jam::Presentation::Background {
 		Array<Jam::Domain::Background::BackgroundObject> m_backgroundObjects;
 		Array<BackgroundInstance> m_backgroundInstances; // 生成された背景インスタンス群
 		bool m_isLoaded = false;
+		
+		// 背景画像の境界線を消すためのオーバーラップ量（ピクセル）
+		static constexpr float OVERLAP_OFFSET = 1.f;
 
 	public:
 		BackgroundRenderer() = default;
@@ -55,10 +58,13 @@ namespace Jam::Presentation::Background {
 						const double targetWidth = targetHeight * aspectRatio;
 						const Size scaledSize(static_cast<int32>(targetWidth), static_cast<int32>(targetHeight));
 						
+						// 位置を整数ピクセルに丸めて境界線の問題を軽減
+						const Vec2 roundedPosition = parallaxPosition.asPoint();
+						
 						if (instance.opacity < 1.0) {
-							texture->resized(scaledSize).draw(parallaxPosition, ColorF(1.0, instance.opacity));
+							texture->resized(scaledSize).draw(roundedPosition, ColorF(1.0, instance.opacity));
 						} else {
-							texture->resized(scaledSize).draw(parallaxPosition);
+							texture->resized(scaledSize).draw(roundedPosition);
 						}
 					}
 				}
@@ -84,19 +90,22 @@ namespace Jam::Presentation::Background {
 				const Size originalSize = texture->size();
 				const double originalAspectRatio = static_cast<double>(originalSize.x) / originalSize.y;
 				
-				// 高さに基づいてアスペクト比を保持した幅を計算
+				// 高さに基づいてアスペクト比を保持した幅を計算（整数化）
 				const double bgHeight = bgObj.rect.h;
-				const double bgWidth = bgHeight * originalAspectRatio;
+				const double calculatedWidth = bgHeight * originalAspectRatio;
+				const int32 bgWidth = static_cast<int32>(Math::Round(calculatedWidth));
 				
-				// 画面幅を考慮して必要な背景数を計算
+				// 画面幅を考慮して必要な背景数を計算（十分な余裕を持たせる）
 				const double screenWidth = Scene::Width();
-				const int instanceCount = static_cast<int>(Math::Ceil((screenWidth * 3) / bgWidth)) + 2; // 余裕を持たせる
+				const int instanceCount = static_cast<int>(Math::Ceil((screenWidth * 5) / bgWidth)) + 5;
 				
-				//タンスを横に並べて生成
+				// インスタンスを横に並べて生成（各画像をOVERLAPピクセル重ねる）
 				for (int i = 0; i < instanceCount; ++i) {
 					BackgroundInstance instance;
-					instance.basePosition = Vec2(bgObj.rect.x + (i * bgWidth), bgObj.rect.y);
-					instance.rect = RectF(instance.basePosition, Size(static_cast<int32>(bgWidth), static_cast<int32>(bgHeight)));
+					// 各画像の開始位置 = 基準X + (画像幅 - オーバーラップ) * インデックス
+					const double xOffset = (bgWidth - OVERLAP_OFFSET) * i;
+					instance.basePosition = Vec2(bgObj.rect.x + xOffset, bgObj.rect.y);
+					instance.rect = RectF(instance.basePosition, Size(bgWidth, static_cast<int32>(bgHeight)));
 					instance.textureName = bgObj.textureName;
 					instance.opacity = bgObj.opacity;
 					instance.layer = bgObj.layer;

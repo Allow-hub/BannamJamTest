@@ -8,10 +8,13 @@
     <ClCompile Include="src\Domain\Player\Skill\ChokerSkill.cpp" />
     <ClCompile Include="src\UseCase\EnemyFactory.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="src\Infrastructure\StageFactory.cpp" />
     <ClCompile Include="src\Domain\Enemy\GothicLolitaDoll.cpp" />
     <ClCompile Include="src\Domain\Enemy\Spider.cpp" />
     <ClCompile Include="src\Domain\Enemy\Eye.cpp" />
     <ClCompile Include="src\Domain\Enemy\Clown.cpp" />
+    <ClCompile Include="src\Domain\Enemy\Ribbon.cpp" />
+    <ClCompile Include="src\Domain\Enemy\Boss1_3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
@@ -27,8 +30,6 @@
     <ClInclude Include="src\Domain\Physics\IPhysicsBody.h" />
     <ClInclude Include="src\Domain\Physics\PhysicsTypes.h" />
     <ClInclude Include="src\Domain\Physics\PhysicsBodyID.h" />
-    <ClInclude Include="src\Domain\Player\Skill\BombEntity.h" />
-    <ClInclude Include="src\Domain\Player\Skill\BombSkill.h" />
     <ClInclude Include="src\Domain\Player\Skill\ChokerSkill.h" />
     <ClInclude Include="src\Domain\Player\Skill\IPlayerSkill.h" />
     <ClInclude Include="src\Domain\Player\Player.h" />
@@ -78,12 +79,20 @@
     <ClInclude Include="src\UseCase\PlayerService.h" />
     <ClInclude Include="src\UseCase\StageService.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="src\Infrastructure\StageFactory.h" />
     <ClInclude Include="src\Domain\Enemy\EnemyAI\AttackAI.h" />
     <ClInclude Include="src\Presentation\Scenes\TransitionManager.h" />
     <ClInclude Include="src\Domain\Enemy\GothicLolitaDoll.h" />
     <ClInclude Include="src\Domain\Enemy\Spider.h" />
     <ClInclude Include="src\Domain\Enemy\Eye.h" />
     <ClInclude Include="src\Domain\Enemy\Clown.h" />
+    <ClInclude Include="src\Domain\Enemy\Ribbon.h" />
+    <ClInclude Include="src\Presentation\PostEffect\BloomManager.h" />
+    <ClInclude Include="src\Presentation\SettingManager.h" />
+    <ClInclude Include="src\Domain\FlagmentMemory.h" />
+    <ClInclude Include="src\Presentation\InGameUIManager.h" />
+    <ClInclude Include="src\Domain\Enemy\EyeBeam.h" />
+    <ClInclude Include="src\Domain\Enemy\Boss1_3.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />
@@ -103,6 +112,8 @@
     <Media Include="Assets\Sounds\bgm_title.mp3" />
     <Media Include="Assets\Sounds\se_choker.mp3" />
     <Media Include="Assets\Sounds\se_jump.mp3" />
+    <Media Include="Assets\Sounds\se_damage.mp3" />
+    <Media Include="Assets\Sounds\se_getFlagment.mp3" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\engine\texture\box-shadow\128.png" />
@@ -146,12 +157,22 @@
     <Image Include="Assets\Story\Portrait\Player\player_suspicious.png" />
     <Image Include="Assets\Enemy\GothicLolitaDoll\idle_0.png" />
     <Image Include="Assets\Enemy\Eye\idle_1.png" />
-    <Image Include="Assets\Enemy\Eye\idle_0.png" />
     <Image Include="Assets\Enemy\Clown\idle_1.png" />
     <Image Include="Assets\Enemy\Clown\idle_0.png" />
     <Image Include="Assets\Enemy\Spider\idle_1.png" />
     <Image Include="Assets\Enemy\Spider\idle_0.png" />
-    <Image Include="Assets\Enemy\LittleDevil\idle_1.png" />
+    <Image Include="Assets\FlagmentMemory.png" />
+    <Image Include="Assets\Title\Press.png" />
+    <Image Include="Assets\Enemy\Eye\idle_0.png" />
+    <Image Include="Assets\setting_back.png" />
+    <Image Include="Assets\setting_backMain.png" />
+    <Image Include="Assets\UI\hp_back.png" />
+    <Image Include="Assets\UI\hp_front.png" />
+    <Image Include="Assets\UI\face_happy.png" />
+    <Image Include="Assets\UI\face_normal.png" />
+    <Image Include="Assets\UI\face_sad.png" />
+    <Image Include="Assets\Enemy\Boss1_3\idle_0.png" />
+    <Image Include="Assets\Enemy\Boss1_3\idle_1.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />
@@ -329,6 +350,9 @@
     <None Include="Assets\Enemy\Clown\Clown_animation.json" />
     <None Include="Assets\Enemy\GothicLolitaDoll\GothicLolitaDoll_animation.json" />
     <None Include="Assets\Enemy\Spider\Spider_animation.json" />
+    <None Include="Assets\Stage\stage1_3.json" />
+    <None Include="Assets\Stage\stage1_1.json" />
+    <None Include="Assets\Enemy\Boss1_3\Boss1_3_animation.json" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="App\dll\soundtouch\COPYING.TXT" />

@@ -1,135 +1,181 @@
-#pragma once
-#include <Siv3D.hpp>
-#include "../Domain/Stage/StageTypes.h"
-#include "../Infrastructure/StageLoader.h"
+﻿#pragma once
+#include "../Domain/Stage/IStage.h"
+#include "../Domain/Physics/IPhysicsBody.h"
+#include "../Infrastructure/IPhysicsBodyFactory.h"
+#include "../Infrastructure/StageFactory.h"
 #include "../Infrastructure/Siv3DPhysicsBody.h"
 
 namespace Jam::UseCase {
     /**
-     * StageService - ステージのビジネスロジック専用
-     * 必要最小限の機能のみ提供
+     * ステージサービス
+     * ステージの配列管理と更新を担当
+     * 物理ボディも別途管理し、同期処理を実施
      */
     class StageService {
-    public:
-        StageService() = default;
-        ~StageService() = default;
-
-        // === 初期化 ===
-        bool initializeStage(const String& stageFileName, 
-                           P2World& world, 
-                           std::vector<std::shared_ptr<Jam::Infrastructure::Physics::Siv3DPhysicsBody>>& physicsBodies);
-
-        // === Update処理（メインのビジネスロジック） ===
-        void update(double deltaTime);
-
-        // === データアクセス（Presentation層用） ===
-        const Array<Jam::Domain::Stage::StageObject>& getNormalObjects() const { return m_normalObjects; }
-        const Array<Jam::Domain::Stage::StageObject>& getMovingObjects() const { return m_movingObjects; }
-        const Array<std::shared_ptr<Jam::Infrastructure::Physics::Siv3DPhysicsBody>>& getMovingBodies() const { return m_movingBodies; }
-
-        // === ステージ状態 ===
-        bool isStageLoaded() const { return m_isLoaded; }
-
     private:
-        // === ビジネスルール定数 ===
-        static constexpr double SCREEN_BOUNDARY_MARGIN = 50.0;
-
-        // === データ ===
-        bool m_isLoaded = false;
-        Array<Jam::Domain::Stage::StageObject> m_normalObjects;
-        Array<Jam::Domain::Stage::StageObject> m_movingObjects;
-        Array<std::shared_ptr<Jam::Infrastructure::Physics::Siv3DPhysicsBody>> m_movingBodies;
-        Array<Vec2> m_movingVelocities;
+        Array<std::unique_ptr<Domain::Stage::IStage>> m_stages;
+        Array<std::shared_ptr<Domain::Physics::IPhysicsBody>> m_physicsBodies;
+        // 各ステージに対応する物理ボディのインデックス
+        Array<Array<size_t>> m_bodyIndices;
+        // 各物理ボディの基準位置からのオフセット
+        Array<Vec2> m_bodyOffsets;
         
-        // === Infrastructure層への参照 ===
-        P2World* m_world = nullptr;
-        std::vector<std::shared_ptr<Jam::Infrastructure::Physics::Siv3DPhysicsBody>>* m_physicsBodies = nullptr;
-
-        // === プライベートメソッド ===
-        void updateMovingPlatforms(double deltaTime);
-        void createPhysicsBodies();
-        std::shared_ptr<Jam::Infrastructure::Physics::Siv3DPhysicsBody> createPhysicsBody(
-            const Jam::Domain::Stage::StageObject& obj, 
-            P2BodyType bodyType) const;
-    };
-
-    // === インライン実装 ===
-    inline bool StageService::initializeStage(const String& stageFileName, 
-                                             P2World& world, 
-                                             std::vector<std::shared_ptr<Jam::Infrastructure::Physics::Siv3DPhysicsBody>>& physicsBodies) {
-        m_world = &world;
-        m_physicsBodies = &physicsBodies;
+    public:
+        /**
+         * ステージの初期化
+         * @param filename ステージファイル名
+         * @param bodyFactory 物理ボディファクトリー
+         * @return 初期化成功したか
+         */
+        bool initialize(
+            const String& filename,
+            std::shared_ptr<Infrastructure::Locator::IPhysicsBodyFactory> bodyFactory
+        ) {
+            auto result = Infrastructure::StageFactory::createStagesFromFile(filename, bodyFactory);
+            m_stages = std::move(result.stages);
+            m_physicsBodies = std::move(result.physicsBodies);
+            m_bodyIndices = std::move(result.bodyIndices);
+            m_bodyOffsets = std::move(result.bodyOffsets);
+            
+            return !m_stages.isEmpty();
+        }
         
-        // Infrastructure層を使用してデータロード
-        Jam::Infrastructure::Stage::StageLoader loader;
-        if (!loader.loadSeparatedStagesFromFile(stageFileName, m_normalObjects, m_movingObjects)) {
-            Print << U"[StageService] ❌ Failed to load " << stageFileName;
-            m_isLoaded = false;
+        /**
+         * 全ステージの更新
+         */
+        void update(double deltaTime) {
+            for (auto& stage : m_stages) {
+                stage->update(deltaTime);
+            }
+            
+            syncPhysicsBodies();
+        }
+        
+        /**
+         * ステージの位置を物理ボディに同期
+         */
+        void syncPhysicsBodies() {
+            for (size_t i = 0; i < m_stages.size(); ++i) {
+                if (i >= m_bodyIndices.size()) continue;
+                
+                Vec2 currentCenter = m_stages[i]->getCurrentCenter();
+                
+                // このステージに属する全ての物理ボディを同期
+                for (size_t bodyIdx : m_bodyIndices[i]) {
+                    if (bodyIdx < m_physicsBodies.size() && m_physicsBodies[bodyIdx]) {
+                        // オフセットを考慮した位置に設定
+                        Vec2 bodyPosition = currentCenter + m_bodyOffsets[bodyIdx];
+                        m_physicsBodies[bodyIdx]->setPos(bodyPosition);
+                    }
+                }
+            }
+        }
+        
+        /**
+         * ステージ配列の取得（読み取り専用）
+         */
+        const Array<std::unique_ptr<Domain::Stage::IStage>>& getStages() const {
+            return m_stages;
+        }
+        
+        /**
+         * 物理ボディ配列の取得（読み取り専用）
+         */
+        const Array<std::shared_ptr<Domain::Physics::IPhysicsBody>>& getPhysicsBodies() const {
+            return m_physicsBodies;
+        }
+        
+        /**
+         * ステージのクリア
+         */
+        void clear() {
+            m_stages.clear();
+            m_physicsBodies.clear();
+            m_bodyIndices.clear();
+            m_bodyOffsets.clear();
+        }
+        
+        /**
+         * すり抜け床への着地判定と処理
+         * @param playerBody プレイヤーの物理ボディ
+         * @param isPressingDown 下ボタンが押されているか
+         * @param playerHeight プレイヤーの高さ
+         * @return 着地した場合true
+         */
+        bool checkOneWayPlatformLanding(
+            std::shared_ptr<Domain::Physics::IPhysicsBody> playerBody,
+            bool isPressingDown = false,
+            double playerHeight = 100.0
+        ) {
+            if (!playerBody) return false;
+            
+            // 下ボタンが押されている場合は着地判定をスキップ
+            if (isPressingDown) return false;
+            
+            auto playerPos = playerBody->getPosition();
+            auto playerVel = playerBody->getVelocity();
+            
+            if (playerVel.y <= 0) return false;
+            
+            constexpr double landingThreshold = 5.0;
+            
+            for (const auto& stage : m_stages) {
+                if (stage->getType() != Domain::Stage::StageType::OneWayPlatform) continue;
+                
+                auto platformRect = stage->getRenderRect();
+                double platformTop = platformRect.y;
+                double playerBottom = playerPos.y + playerHeight / 2.0;
+                
+                if (playerPos.x < platformRect.x || playerPos.x > platformRect.x + platformRect.w) continue;
+                
+                if (playerBottom < platformTop - landingThreshold || playerBottom > platformTop + landingThreshold) continue;
+                
+                playerBody->setPos({ playerPos.x, platformTop - playerHeight / 2.0 });
+                playerBody->setVelocity({ playerVel.x, 0.0 });
+                return true;
+            }
+            
             return false;
         }
-
-        // Print << U"[StageService] ✅ Loaded " << m_normalObjects.size()
-        //       << U" normal and " << m_movingObjects.size() << U" moving stages";
-
-        createPhysicsBodies();
-        m_isLoaded = true;
-        return true;
-    }
-
-    inline void StageService::update(double deltaTime) {
-        if (!m_isLoaded) return;
-        updateMovingPlatforms(deltaTime);
-    }
-
-    inline void StageService::updateMovingPlatforms(double deltaTime) {
-        for (size_t i = 0; i < m_movingBodies.size() && i < m_movingVelocities.size(); ++i) {
-            if (i >= m_movingBodies.size() || !m_movingBodies[i]) continue;
-
-            Vec2 currentPos = m_movingBodies[i]->getPosition();
-            Vec2 newPos = currentPos + m_movingVelocities[i] * deltaTime;
-
-            // ビジネスルール：画面端での反転
-            if (newPos.x <= SCREEN_BOUNDARY_MARGIN || 
-                newPos.x >= Scene::Width() - SCREEN_BOUNDARY_MARGIN) {
-                m_movingVelocities[i].x *= -1;
+        
+        /**
+         * 物理レイヤー可視化のデバッグ描画
+         */
+        void drawPhysicsLayerDebug() const {
+            for (const auto& body : m_physicsBodies) {
+                if (!body) continue;
+                
+                // Siv3DPhysicsBodyにキャスト
+                auto siv3dBody = std::dynamic_pointer_cast<Jam::Infrastructure::Physics::Siv3DPhysicsBody>(body);
+                if (!siv3dBody) continue;
+                
+                const auto layer = body->getLayer();
+                const P2Body& p2body = siv3dBody->getBody();
+                
+                // レイヤーごとに色分け
+                ColorF color;
+                switch (layer) {
+                case Jam::Domain::Physics::PhysicsLayer::Ground:
+                    color = ColorF(0.0, 1.0, 0.0, 0.1);  // 緑 = Ground
+                    break;
+                case Jam::Domain::Physics::PhysicsLayer::Wall:
+                    color = ColorF(1.0, 0.0, 0.0, 0.5);  // 赤 = Wall
+                    break;
+                case Jam::Domain::Physics::PhysicsLayer::Enemy:
+                    color = ColorF(1.0, 1.0, 0.0, 0.5);  // 黄 = Enemy
+                    break;
+                case Jam::Domain::Physics::PhysicsLayer::OneWayPlatform:
+                    color = ColorF(0.0, 0.5, 1.0, 0.5);  // 青 = すり抜け床
+                    break;
+                default:
+                    color = ColorF(0.5, 0.5, 0.5, 0.5);  // 灰 = その他
+                    break;
+                }
+                
+                // P2Bodyの図形を描画
+                p2body.draw(color);
+                p2body.drawFrame(2, ColorF(color, 1.0));
             }
-            if (newPos.y <= SCREEN_BOUNDARY_MARGIN || 
-                newPos.y >= Scene::Height() - SCREEN_BOUNDARY_MARGIN) {
-                m_movingVelocities[i].y *= -1;
-            }
-
-            m_movingBodies[i]->setPos(newPos);
         }
-    }
-
-    inline void StageService::createPhysicsBodies() {
-        if (!m_world || !m_physicsBodies) return;
-
-        // 通常ステージの物理ボディ作成
-        for (const auto& obj : m_normalObjects) {
-            auto body = createPhysicsBody(obj, P2BodyType::Static);
-            m_physicsBodies->push_back(body);
-        }
-
-        // 動くプラットフォームの物理ボディ作成
-        for (const auto& obj : m_movingObjects) {
-            auto body = createPhysicsBody(obj, P2BodyType::Kinematic);
-            m_movingBodies.push_back(body);
-            m_movingVelocities.push_back(obj.movementSpeed);
-            m_physicsBodies->push_back(body);
-        }
-    }
-
-    inline std::shared_ptr<Jam::Infrastructure::Physics::Siv3DPhysicsBody> 
-    StageService::createPhysicsBody(const Jam::Domain::Stage::StageObject& obj, P2BodyType bodyType) const {
-        auto body = std::make_shared<Jam::Infrastructure::Physics::Siv3DPhysicsBody>(
-            *m_world,
-            obj.rect.center(),
-            obj.rect.size,
-            bodyType,
-            Jam::Domain::Physics::PhysicsMaterial{ 1.0, 0.0, 0.0 }
-        );
-        body->setLayer(Jam::Domain::Physics::PhysicsLayer::Ground);
-        return body;
-    }
+    };
 }
