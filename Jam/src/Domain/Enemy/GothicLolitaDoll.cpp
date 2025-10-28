@@ -57,6 +57,6 @@ namespace Jam::Domain::Enemy
 	void GothicLolitaDoll::onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) {}
 	void GothicLolitaDoll::onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{
-		EnemyBase::onCollisionEnter(other);
+		EnemyBase::onCollisionExit(other);
 	}
 }

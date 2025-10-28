@@ -43,5 +43,6 @@ namespace Jam::Domain::Physics
 		Wall,
 		OneWayPlatform,
 		Item,
+		ReflectableWeapon,//反射可能な敵の攻撃
 	};
 }

@@ -51,6 +51,6 @@ namespace Jam::Domain::Enemy
 	void LittleDevil::onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) {}
 	void LittleDevil::onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{
-		EnemyBase::onCollisionEnter(other);
+		EnemyBase::onCollisionExit(other);
 	}
 }
