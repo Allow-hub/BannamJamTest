@@ -2,6 +2,7 @@
 #include "../../Infrastructure/FactoryServiceLocator.h"
 #include "../../Infrastructure/IPhysicsBodyFactory.h"
 #include "../../Infrastructure/PhysicsFilterManager.h"
+#include "../../Foundation/CoroutineUtil.h"
 #include <random>
 
 namespace Jam::Domain::Enemy
@@ -27,7 +28,7 @@ namespace Jam::Domain::Enemy
 		, m_coreOffset(-70, 15)
 	{
 		m_enemyType = EnemyType::Boss1_3;
-		m_body->setGravityScale(1.5);
+		m_body->setGravityScale(2.0);
 
 		// 攻撃パターンの確率設定
 		m_attackPatterns = {
@@ -84,6 +85,11 @@ namespace Jam::Domain::Enemy
 	void Boss1_3::draw() const
 	{
 		m_weakBody->drawFrame(2.0, Palette::Blue);
+
+		if (m_shockWave)
+		{
+			m_shockWave->draw();
+		}
 	}
 
 	void Boss1_3::updateAppearState(double deltaTime)
@@ -315,16 +321,43 @@ namespace Jam::Domain::Enemy
 	void Boss1_3::enterShockWave()
 	{
 		Print << U"Enter: ShockWave";
-		m_body->applyImpulse(Vec2::Up() * 300000);
+		m_body->applyImpulse(Vec2::Up() * m_shockJumpForce);
+		m_shockWaveTask();
+	}
+
+	Jam::Util::Task Boss1_3::m_shockWaveTask()
+	{
+		co_await Jam::Util::WaitSeconds(m_shockWaveDelay);
+		auto pos = Vec2{ m_body->getPosition().x,m_body->getPosition().y + m_status.colSize.y / 2 };
+		// 衝撃波生成処理
+		m_shockWave = std::make_shared<ShockWave>(
+			pos ,
+			m_shockWaveDuration, // 継続時間
+			Vec2{ 100,150 },                // 開始半径
+			Vec2{ 4000,150},               // 終了半径
+			m_playerId,
+			m_eventQueue
+		);
 	}
 
 	void Boss1_3::updateShockWave(double deltaTime)
 	{
+		if (m_shockWave)
+		{
+			m_shockWave->update(deltaTime);
+
+			// ShockWaveが終了したら破棄
+			if (m_shockWave->isFinished())
+			{
+				m_shockWave.reset();
+			}
+		}
 	}
 
 	void Boss1_3::exitShockWave()
 	{
 		Print << U"Exit: ShockWave";
+		m_shockWave.reset();
 	}
 
 

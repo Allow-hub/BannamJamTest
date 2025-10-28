@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "EnemyBase.h"
 #include "../Events/GameEvents.h"
+#include "ShockWave.h"
+#include "../../Foundation/CoroutineUtil.h"
 
 namespace Jam::Domain::Enemy
 {
@@ -22,7 +24,6 @@ namespace Jam::Domain::Enemy
 		void onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 
 	private:
-		double m_multiplier = 100000.0;//質量による乗算値
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_weakBody;//弱点箇所
 		Vec2 coreSize = Vec2{ 100,100 };
 		Vec2 m_coreOffset;
@@ -77,6 +78,7 @@ namespace Jam::Domain::Enemy
 		double m_summonClownDuration;
 		double m_bombAttackDuration;
 		double m_shockWaveDuration;
+		double m_shockJumpForce = 400000.0;
 
 		bool m_hasAttackEntered;  // 攻撃のEnterが実行されたか
 
@@ -100,6 +102,9 @@ namespace Jam::Domain::Enemy
 		void enterShockWave();
 		void updateShockWave(double deltaTime);
 		void exitShockWave();
+		std::shared_ptr<ShockWave> m_shockWave;
+		const double m_shockWaveDelay = 1.2;
+		Jam::Util::Task m_shockWaveTask();
 
 		const String toString(Boss1_3::AttackState state)
 		{

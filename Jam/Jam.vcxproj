@@ -121,6 +121,7 @@
     <ClCompile Include="src\Domain\Enemy\GothicLolitaDoll.cpp" />
     <ClCompile Include="src\Domain\Enemy\LittleDevil.cpp" />
     <ClCompile Include="src\Domain\Enemy\Ribbon.cpp" />
+    <ClCompile Include="src\Domain\Enemy\ShockWave.cpp" />
     <ClCompile Include="src\Domain\Enemy\Spider.cpp" />
     <ClCompile Include="src\Domain\Player\Player.cpp" />
     <ClCompile Include="src\Domain\Player\Skill\ChokerSkill.cpp" />
@@ -410,6 +411,7 @@
     <ClInclude Include="src\Domain\Enemy\GothicLolitaDoll.h" />
     <ClInclude Include="src\Domain\Enemy\LittleDevil.h" />
     <ClInclude Include="src\Domain\Enemy\Ribbon.h" />
+    <ClInclude Include="src\Domain\Enemy\ShockWave.h" />
     <ClInclude Include="src\Domain\Enemy\Spider.h" />
     <ClInclude Include="src\Domain\Events\GameEvents.h" />
     <ClInclude Include="src\Domain\FlagmentMemory.h" />
