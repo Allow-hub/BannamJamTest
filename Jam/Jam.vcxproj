@@ -157,6 +157,9 @@
     <Image Include="App\example\texture\wood.jpg" />
     <Image Include="App\example\windmill.png" />
     <Image Include="App\icon.ico" />
+    <Image Include="Assets\Cursor\cursor_green.png" />
+    <Image Include="Assets\Cursor\cursor_orange.png" />
+    <Image Include="Assets\Cursor\cursor_yellow.png" />
     <Image Include="Assets\Cursor\GameCursor.png" />
     <Image Include="Assets\Enemy\Boss1_3\idle_0.png" />
     <Image Include="Assets\Enemy\Boss1_3\idle_1.png" />

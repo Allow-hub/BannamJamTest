@@ -52,5 +52,21 @@ namespace Jam::Infrastructure
 			// カメラが設定されていない場合はスクリーン座標をそのまま返す
 			return Cursor::PosF();
 		}
+
+
+		/// @brief カスタムカーソルを登録
+		/// @param name 登録名
+		/// @param image カーソル画像
+		/// @param hotSpot 画像中のクリック位置
+		/// @return 登録に成功した場合 true
+		bool registerCustomCursor(StringView name, const Image& image, Point hotSpot = Point{ 0, 0 })
+		{
+			return Cursor::RegisterCustomCursorStyle(name, image, hotSpot);
+		}
+
+		void requestStyle(StringView name)
+		{
+			return Cursor::RequestStyle(name);
+		}
 	};
 }
