@@ -23,13 +23,17 @@ namespace Jam::Domain::Enemy
 		m_body->setBodyType(Jam::Domain::Physics::PhysicsType::Static);
 		m_body->setGravityScale(0);
 		m_hittedPlayer = false;
+		// テクスチャ複数枚を読み込む
+		for (int i = 0; i < 5; ++i)
+		{
+			m_textures.emplace_back(Texture(U"../Assets/Enemy/Boss1_3/Shockwave/shockwave_0" + Format(i) + U".png"));
+		}
 	}
 
 	void ShockWave::update(double dt)
 	{
 		m_timer += dt;
 
-		// 寿命終了
 		if (m_timer >= m_duration)
 		{
 			m_finished = true;
@@ -40,13 +44,11 @@ namespace Jam::Domain::Enemy
 		double t = m_timer / (m_duration * 0.5);
 		Vec2 currentRect = Math::Lerp(m_startRect, m_endRect, t);
 
-		// 一定間隔ごとにのみ再生成（0.1秒ごと）
 		if (m_timer - m_lastRegenTime >= 0.1)
 		{
 			m_lastRegenTime = m_timer;
 			auto pos = m_body->getPosition();
 
-			// 古いボディを破棄して新しいものを生成
 			m_body.reset();
 			m_body = FactoryServiceLocator::instance()
 				.getPhysicsFactory()->createRectSensor(pos, currentRect);
@@ -56,19 +58,47 @@ namespace Jam::Domain::Enemy
 			m_body->setBodyType(Jam::Domain::Physics::PhysicsType::Static);
 			m_body->setGravityScale(0);
 		}
+
+		// アニメーションフレーム更新（0.01秒ごとに切り替え）
+		m_animTimer += dt;
+		if (m_animTimer >= 0.01)
+		{
+			m_animTimer = 0.0;
+			m_frameIndex = (m_frameIndex + 1) % m_textures.size();
+		}
 	}
 
 	void ShockWave::draw() const
 	{
 		if (!m_body) return;
 
-		double t = m_timer / (m_duration * 0.5);
-		Vec2 currentRect = Math::Lerp(m_startRect, m_endRect, t);
-		RectF rect(
-			m_body->getPosition() - currentRect / 2, // 左上座標
-			currentRect
-		);
-		rect.drawFrame(4.0, ColorF(0.3, 0.6, 1.0, 0.4));
+		// 伸びる速度倍率
+		constexpr double growthSpeed = 7.0; // 小さいほどゆっくり、大きいほど早く
+
+		// 進行率
+		double t = (m_timer / m_duration) * growthSpeed;
+
+		// 一定以上は伸びを止める
+		t = Clamp(t, 0.0, 1.0);
+
+		// 1まで達したら「完全に伸びきった状態」を維持
+		Vec2 currentRect = Math::Lerp(m_startRect, m_endRect, t >= 1.0 ? 1.0 : t);
+		Vec2 pos = m_body->getPosition();
+		pos.y -= 50;
+		const Texture& tex = m_textures[m_frameIndex];
+
+		// 画像の切り取り幅（1.0を超えても最大に固定）
+		int displayWidth = static_cast<int>(tex.width() * Min(t, 1.0));
+		if (displayWidth <= 0) return;
+
+		// スケーリング
+		Vec2 scale = currentRect / tex.size();
+		scale.y *= 2.5;
+
+		// 描画（完全に伸びきった後は幅固定・アニメのみ）
+		tex(0, 0, displayWidth, tex.height())
+			.scaled(scale)
+			.drawAt(pos, ColorF(1.0, 1.0, 1.0, 1.0));
 	}
 
 
@@ -93,7 +123,7 @@ namespace Jam::Domain::Enemy
 				,0.3
 				,15.0
 			});
-			m_hittedPlayer = true;
+			m_hittedPlayer = true;	
 			break;
 		}
 	}

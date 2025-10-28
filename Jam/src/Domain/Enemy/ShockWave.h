@@ -10,6 +10,9 @@ namespace Jam::Domain::Enemy
 					, public std::enable_shared_from_this<ShockWave>
 	{
 	private:
+		std::vector<s3d::Texture> m_textures;
+		int m_frameIndex = 0;
+		double m_animTimer = 0.0;
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_body;
 		Jam::Domain::Events::GameEventQueue& m_eventQueue;
 		double m_attackPower = 10.0;

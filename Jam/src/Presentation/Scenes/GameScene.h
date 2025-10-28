@@ -126,7 +126,7 @@ namespace Jam::Presentation::Scenes
 				.getPhysicsFactory()
 				->createBody(
 				Vec2{ 0, -5 },//地面に埋まらないように
-				SizeF{ 50, 100 },
+				SizeF{ 50, 120 },
 				s3d::P2BodyType::Dynamic,
 				stats.physicsMaterial
 				);
