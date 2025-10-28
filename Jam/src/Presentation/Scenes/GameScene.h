@@ -95,7 +95,7 @@ namespace Jam::Presentation::Scenes
 			core.reset();
 			String stageName = Jam::Foundation::CoreManager::stageNameToString(core.stageInfo.stageName);//ステージ名
 			core.setCurrentStageData(core.getStageData(core.stageInfo.stageName));
-			
+
 			// --- FactoryServiceLocator初期化 ---
 			auto& locator = Jam::Infrastructure::Locator::FactoryServiceLocator::instance();
 			auto physicsFactory = std::make_shared<Jam::Infrastructure::Locator::Siv3DPhysicsBodyFactory>();
@@ -106,6 +106,10 @@ namespace Jam::Presentation::Scenes
 			});
 			locator.registerPhysicsFactory(physicsFactory);
 
+			// EnemyFactory初期化と登録
+			m_enemyFactory = std::make_unique<Jam::UseCase::EnemyFactory>();
+			locator.registerEnemyFactory(m_enemyFactory.get());
+
 
 			// === Game内のイベント用クラスを初期化 ===
 			m_gameEventQueue = std::make_shared<Jam::Domain::Events::GameEventQueue>();
@@ -113,7 +117,7 @@ namespace Jam::Presentation::Scenes
 			m_effectEventQueue = std::make_shared<Jam::UseCase::EffectEventQueue>();
 
 			m_eventHandler = std::make_shared<Jam::UseCase::GameEventHandler>(
-				*m_gameEventQueue,*m_cameraEventQueue,*m_effectEventQueue,
+				*m_gameEventQueue, *m_cameraEventQueue, *m_effectEventQueue,
 				[this]() { this->nextScene(); });
 
 
@@ -169,7 +173,7 @@ namespace Jam::Presentation::Scenes
 			m_cameraManager = std::make_shared<Jam::Presentation::CameraManager>(
 					m_player->getPosition()  // 初期位置をプレイヤー位置に合わせる
 			);
-			m_cameraManager->setYLimits(-1000, core.getCurrentStageData().fallLimitY-500);
+			m_cameraManager->setYLimits(-1000, core.getCurrentStageData().fallLimitY - 500);
 			m_cameraService = std::make_shared<Jam::UseCase::CameraService>(
 				*m_player,
 				*m_cameraManager,
@@ -177,7 +181,6 @@ namespace Jam::Presentation::Scenes
 			);
 			Jam::Infrastructure::CursorUtil::instance().setCameraManager(m_cameraManager);
 			// === Enemy 初期化 ===
-			m_enemyFactory = std::make_unique<Jam::UseCase::EnemyFactory>();
 			m_enemyManager = std::make_unique<Jam::Presentation::EnemyManager>();
 
 
