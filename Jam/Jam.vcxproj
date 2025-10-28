@@ -167,7 +167,6 @@
     <Image Include="Assets\Enemy\LittleDevil\idle_0.png" />
     <Image Include="Assets\Enemy\GothicLolitaDoll\idle_1.png" />
     <Image Include="Assets\Enemy\Spider\idle_0.png" />
-    <Image Include="Assets\Enemy\Spider\idle_1.png" />
     <Image Include="Assets\FlagmentMemory.png" />
     <Image Include="Assets\Player\idle_0.png" />
     <Image Include="Assets\Player\idle_1.png" />
