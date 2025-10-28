@@ -14,29 +14,31 @@ namespace Jam::Domain::Enemy
 		, currentAttackState(AttackState::Missile)
 		, m_stateTimer(0.0)
 		, m_weakStateDuration(5.0)
-		, m_appearDuration(3.0)
+		, m_appearDuration(0.1)
 		, m_isReflectedMissileHit(false)
 		, m_attackCooldownTimer(0.0)
-		, m_attackCooldown(2.0)
+		, m_attackCooldown(1.0)
 		, m_isAttacking(false)
 		, m_hasAttackEntered(false)
 		, m_missileAttackDuration(3.0)
 		, m_summonClownDuration(2.0)
 		, m_bombAttackDuration(1.5)
+		, m_shockWaveDuration(5.0)
 		, m_coreOffset(-70, 15)
 	{
 		m_enemyType = EnemyType::Boss1_3;
-		m_body->setGravityScale(1);
+		m_body->setGravityScale(1.5);
 
 		// 攻撃パターンの確率設定
 		m_attackPatterns = {
-			{AttackState::Missile, 0.5f},
-			{AttackState::SummonClown, 0.3f},
-			{AttackState::Bomb, 0.2f}
+			{AttackState::Missile, 0.0f},
+			{AttackState::SummonClown, 0.0f},
+			{AttackState::Bomb, 0.0f},
+			{AttackState::Shockwave,1.0f}
 		};
 
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::BossHidden);//チョーカーとの接触をなくす
-
+		m_body->setBodyType(Jam::Domain::Physics::PhysicsType::Dynamic);
 		//弱点ボディ
 		m_weakBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
 			.getPhysicsFactory()->createBody(m_body->getPosition(), coreSize);
@@ -81,7 +83,7 @@ namespace Jam::Domain::Enemy
 
 	void Boss1_3::draw() const
 	{
-		m_weakBody->drawFrame(2.0,Palette::Blue);
+		m_weakBody->drawFrame(2.0, Palette::Blue);
 	}
 
 	void Boss1_3::updateAppearState(double deltaTime)
@@ -113,6 +115,9 @@ namespace Jam::Domain::Enemy
 					break;
 				case AttackState::Bomb:
 					exitBombAttack();
+					break;
+				case AttackState::Shockwave:
+					exitShockWave();
 					break;
 				}
 			}
@@ -179,6 +184,22 @@ namespace Jam::Domain::Enemy
 				if (m_attackCooldownTimer >= m_bombAttackDuration)
 				{
 					exitBombAttack();
+					m_isAttacking = false;
+					m_hasAttackEntered = false;
+					m_attackCooldownTimer = 0.0;
+				}
+				break;
+			case AttackState::Shockwave:
+				if (!m_hasAttackEntered)
+				{
+					enterShockWave();
+					m_hasAttackEntered = true;
+				}
+				updateShockWave(deltaTime);
+
+				if (m_attackCooldownTimer >= m_shockWaveDuration)
+				{
+					exitShockWave();
 					m_isAttacking = false;
 					m_hasAttackEntered = false;
 					m_attackCooldownTimer = 0.0;
@@ -289,6 +310,23 @@ namespace Jam::Domain::Enemy
 		Print << U"Exit: Bomb Attack";
 		// TODO: 投擲終了処理
 	}
+
+	// ===== shockWave =====
+	void Boss1_3::enterShockWave()
+	{
+		Print << U"Enter: ShockWave";
+		m_body->applyImpulse(Vec2::Up() * 300000);
+	}
+
+	void Boss1_3::updateShockWave(double deltaTime)
+	{
+	}
+
+	void Boss1_3::exitShockWave()
+	{
+		Print << U"Exit: ShockWave";
+	}
+
 
 	void Boss1_3::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{

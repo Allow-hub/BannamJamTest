@@ -45,6 +45,7 @@ namespace Jam::Domain::Enemy
 			Missile,//ミサイル発射
 			SummonClown,//ピエロ召喚
 			Bomb,//爆弾を投げる
+			Shockwave,//ジャンプして衝撃波
 		};
 
 		AttackState currentAttackState;
@@ -74,6 +75,7 @@ namespace Jam::Domain::Enemy
 		double m_missileAttackDuration;
 		double m_summonClownDuration;
 		double m_bombAttackDuration;
+		double m_shockWaveDuration;
 
 		bool m_hasAttackEntered;  // 攻撃のEnterが実行されたか
 
@@ -92,6 +94,11 @@ namespace Jam::Domain::Enemy
 		void enterBombAttack();
 		void updateBombAttack(double deltaTime);
 		void exitBombAttack();
+
+		// shockWave
+		void enterShockWave();
+		void updateShockWave(double deltaTime);
+		void exitShockWave();
 
 		const String toString(Boss1_3::AttackState state)
 		{
