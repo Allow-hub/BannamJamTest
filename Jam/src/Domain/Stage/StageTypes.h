@@ -24,7 +24,10 @@ namespace Jam::Domain::Stage {
 	// 地上判定を付ける面
 	enum class GroundSide {
 		None,   // 地上判定なし（全面Wall）
-		Up,     // 上面のみGround
+		Up,   // 上面のみGround
+		Down,
+		Left,
+		Right,
 		All     // 全面Ground（デフォルト）
 	};
 

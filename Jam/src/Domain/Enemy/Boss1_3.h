@@ -22,6 +22,7 @@ namespace Jam::Domain::Enemy
 		void onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 
 	private:
+		double m_multiplier = 100000.0;//質量による乗算値
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_weakBody;//弱点箇所
 		Vec2 coreSize = Vec2{ 100,100 };
 		Vec2 m_coreOffset;

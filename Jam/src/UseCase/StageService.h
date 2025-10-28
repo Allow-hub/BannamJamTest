@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../Domain/Stage/IStage.h"
 #include "../Domain/Physics/IPhysicsBody.h"
 #include "../Infrastructure/IPhysicsBodyFactory.h"
@@ -156,7 +156,7 @@ namespace Jam::UseCase {
                 ColorF color;
                 switch (layer) {
                 case Jam::Domain::Physics::PhysicsLayer::Ground:
-                    color = ColorF(0.0, 1.0, 0.0, 0.5);  // 緑 = Ground
+                    color = ColorF(0.0, 1.0, 0.0, 0.1);  // 緑 = Ground
                     break;
                 case Jam::Domain::Physics::PhysicsLayer::Wall:
                     color = ColorF(1.0, 0.0, 0.0, 0.5);  // 赤 = Wall
