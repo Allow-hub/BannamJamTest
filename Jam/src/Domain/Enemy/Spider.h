@@ -32,8 +32,8 @@ namespace Jam::Domain::Enemy
 	private:
 		double m_patrolTimer = 0.0;
 		// 飛びかかりの撃力
-		double pounceHorizonalImpulse = 3000.0;
-		double pounceVerticalImpulse = 3000.0;
+		double pounceHorizonalImpulse = 15000.0;
+		double pounceVerticalImpulse = 15000.0;
 		bool m_attacked = false;
 		// 着地してからの時間を計るタイマー
 		double loadingWaitTime = 0.2;
