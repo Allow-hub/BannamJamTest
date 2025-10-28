@@ -457,6 +457,7 @@
     <ClInclude Include="src\Presentation\Scenes\TransitionManager.h" />
     <ClInclude Include="src\Presentation\SettingManager.h" />
     <ClInclude Include="src\Presentation\Stage\BackgroundRenderer.h" />
+    <ClInclude Include="src\Presentation\Stage\StageManager.h" />
     <ClInclude Include="src\Presentation\StoryManager.h" />
     <ClInclude Include="src\UseCase\AttackProcessor.h" />
     <ClInclude Include="src\UseCase\CameraEvent.h" />

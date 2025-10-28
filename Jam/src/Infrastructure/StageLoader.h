@@ -1,12 +1,10 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
 #include "../Domain/Stage/StageTypes.h"
-#include "../Foundation/CoreManager.h"
 
 namespace Jam::Infrastructure::Stage {
 	using StageObject = Jam::Domain::Stage::StageObject;
 	using CollisionType = Jam::Domain::Stage::StageType;
-	using StageData = Jam::Foundation::StageData;
 	/**
 	 * ステージデータJSONローダー
 	 * ファイル読み込みとオブジェクト解析を担当
@@ -22,85 +20,6 @@ namespace Jam::Infrastructure::Stage {
 		static bool loadStageFromFile(const String& stageFileName, Array<StageObject>& outObjects) {
 			const String stagePath = U"../Assets/Stage/" + stageFileName;
 			return loadFromJson(stagePath, outObjects);
-		}
-
-		// ステージ設定読み込み（respawnPosition, fallLimitY, flagmentMemoryPos）
-		static bool loadStageSettings(const String& stageFileName, StageData& outStageData) {
-			const String stagePath = U"../Assets/Stage/" + stageFileName;
-
-			// ファイル存在確認
-			if (!FileSystem::Exists(stagePath)) {
-				Print << U"ステージファイルが見つかりません: " + stagePath;
-				return false;
-			}
-
-			// JSON読み込み
-			const JSON json = JSON::Load(stagePath);
-			if (!json) {
-				Print << U"JSONの解析に失敗しました: " + stagePath;
-				return false;
-			}
-
-			// stageSettings要素の確認
-			if (!json.hasElement(U"stageSettings")) {
-				Print << U"'stageSettings' 要素が見つかりません: " + stagePath;
-				return false;
-			}
-
-			const auto settings = json[U"stageSettings"];
-
-			// respawnPosition解析
-			if (settings.hasElement(U"respawnPosition") && settings[U"respawnPosition"].isArray()) {
-				try {
-					const auto posArray = settings[U"respawnPosition"].arrayView();
-					auto it = posArray.begin();
-					if (it != posArray.end()) {
-						double x = (*it).get<double>();
-						++it;
-						if (it != posArray.end()) {
-							double y = (*it).get<double>();
-							outStageData.respawnPosition = Vec2(x, y);
-						}
-					}
-				}
-				catch (...) {
-					Print << U"respawnPositionの解析に失敗しました";
-				}
-			}
-
-			// fallLimitY解析
-			if (settings.hasElement(U"fallLimitY")) {
-				outStageData.fallLimitY = settings[U"fallLimitY"].get<double>();
-			}
-
-			// flagmentMemoryPositions解析
-			if (settings.hasElement(U"flagmentMemoryPositions") && settings[U"flagmentMemoryPositions"].isArray()) {
-				try {
-					const auto flagArray = settings[U"flagmentMemoryPositions"].arrayView();
-					size_t index = 0;
-					for (const auto& pos : flagArray) {
-						if (index >= 3) break;
-						if (pos.isArray()) {
-							const auto posArray = pos.arrayView();
-							auto it = posArray.begin();
-							if (it != posArray.end()) {
-								double x = (*it).get<double>();
-								++it;
-								if (it != posArray.end()) {
-									double y = (*it).get<double>();
-									outStageData.flagmentMemoryPos[index] = Vec2(x, y);
-									index++;
-								}
-							}
-						}
-					}
-				}
-				catch (...) {
-					Print << U"flagmentMemoryPositionsの解析に失敗しました";
-				}
-			}
-
-			return true;
 		}
 
 		// ステージファイル読み込み(オブジェクトを種類別に分離して出力)
