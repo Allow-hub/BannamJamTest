@@ -14,7 +14,7 @@ namespace Jam::Domain::Enemy
 
 		// 毎フレームの更新（AI挙動など）
 		void update(double deltaTime) override;
-		void draw() const override {};
+		void draw() const override;
 
 		// 当たり判定イベント（必要に応じて上書き）
 		void onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
@@ -22,13 +22,13 @@ namespace Jam::Domain::Enemy
 		void onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 
 	private:
+		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_weakBody;//弱点箇所
+		Vec2 coreSize = Vec2{ 100,100 };
+		Vec2 m_coreOffset;
+
 		void updateAppearState(double deltaTime);
 		void updateNormalState(double deltaTime);
 		void updateWeakState(double deltaTime);
-
-		void executeMissileAttack(double deltaTime);
-		void executeSummonClown(double deltaTime);
-		void executeBombAttack(double deltaTime);
 
 		enum class BossState
 		{

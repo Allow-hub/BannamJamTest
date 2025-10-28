@@ -1,7 +1,7 @@
 ﻿#include "Boss1_3.h"
-#include "EnemyAI/PatrolAI.h"
-#include "EnemyAI/ChaseAI.h"
-#include "EnemyAI/AttackAI.h"
+#include "../../Infrastructure/FactoryServiceLocator.h"
+#include "../../Infrastructure/IPhysicsBodyFactory.h"
+#include "../../Infrastructure/PhysicsFilterManager.h"
 #include <random>
 
 namespace Jam::Domain::Enemy
@@ -23,9 +23,10 @@ namespace Jam::Domain::Enemy
 		, m_missileAttackDuration(3.0)
 		, m_summonClownDuration(2.0)
 		, m_bombAttackDuration(1.5)
+		, m_coreOffset(-70, 15)
 	{
 		m_enemyType = EnemyType::Boss1_3;
-		m_body->setGravityScale(0);
+		m_body->setGravityScale(1);
 
 		// 攻撃パターンの確率設定
 		m_attackPatterns = {
@@ -33,6 +34,26 @@ namespace Jam::Domain::Enemy
 			{AttackState::SummonClown, 0.3f},
 			{AttackState::Bomb, 0.2f}
 		};
+
+		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::BossHidden);//チョーカーとの接触をなくす
+
+		//弱点ボディ
+		m_weakBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+			.getPhysicsFactory()->createBody(m_body->getPosition(), coreSize);
+		m_weakBody->setLayer(Jam::Domain::Physics::PhysicsLayer::Enemy);
+		m_weakBody->setBodyType(Jam::Domain::Physics::PhysicsType::Static);
+		m_weakBody->setFilter(Jam::Infrastructure::PhysicsFilter::Team2Death);
+		m_weakBody->setPos(m_body->getPosition() + m_coreOffset);
+		m_weakBody->setGravityScale(0);
+
+		//テスト用ReflectableWeaponの当たり判定を降らせて当てるだけ
+		//Vec2 testOffset = Vec2(m_body->getPosition().x, m_body->getPosition().y + 600);
+		//auto test = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+		//	.getPhysicsFactory()->createBody(testOffset, coreSize);
+		//test->setGravityScale(2.0);
+		//test->setFilter(Jam::Infrastructure::PhysicsFilter::Team1);
+		//test->setLayer(Jam::Domain::Physics::PhysicsLayer::ReflectableWeapon);
+
 	}
 
 	void Boss1_3::update(double deltaTime)
@@ -40,7 +61,7 @@ namespace Jam::Domain::Enemy
 		if (!isAlive()) return;
 
 		m_stateTimer += deltaTime;
-
+		m_weakBody->setPos(m_body->getPosition() + m_coreOffset);
 		switch (currentBossState)
 		{
 		case BossState::Appear:
@@ -56,6 +77,11 @@ namespace Jam::Domain::Enemy
 			// 死亡演出処理
 			break;
 		}
+	}
+
+	void Boss1_3::draw() const
+	{
+		m_weakBody->drawFrame(2.0,Palette::Blue);
 	}
 
 	void Boss1_3::updateAppearState(double deltaTime)
@@ -177,6 +203,7 @@ namespace Jam::Domain::Enemy
 
 	void Boss1_3::updateWeakState(double deltaTime)
 	{
+		Print << U"弱点露出";
 		// 弱点露出中は何もしない
 		if (m_stateTimer >= m_weakStateDuration)
 		{
@@ -267,11 +294,29 @@ namespace Jam::Domain::Enemy
 	{
 		EnemyBase::onCollisionEnter(other);
 
-		// TODO: 反射されたミサイルとの衝突判定
-		// if (other->getType() == )
-		// {
-		//     m_isReflectedMissileHit = true;
-		// }
+		switch (other->getLayer())
+		{
+		case Jam::Domain::Physics::PhysicsLayer::Player:
+			if (currentBossState != BossState::Normal)return;//Normal以外はダメージ判定を出さない
+			m_eventQueue.push(Events::PlayerDamagedEvent{
+				m_body->getID(),
+				m_playerId,
+				DamageInfo {
+				m_status.attackPower,
+				m_body->getPosition(),
+				(getPlayerPos() - m_body->getPosition()).normalized(),
+				true,
+				false
+				}
+				,0.0
+				,0.3
+				,15.0
+			});
+			break;
+		case Jam::Domain::Physics::PhysicsLayer::ReflectableWeapon:
+			m_isReflectedMissileHit = true;
+			break;
+		}
 	}
 
 	void Boss1_3::onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
