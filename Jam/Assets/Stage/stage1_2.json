@@ -6,15 +6,6 @@
     "groundSide": "地上判定を付ける面を指定します。省略時は'up'(上面のみ)。all(全面), none(判定なし)なども指定可能。",
     "metadata": "識別用の任意文字列(スクリプトやイベントで使用)。"
   },
-  "stageSettings": {
-    "respawnPosition": [50, -5],
-    "fallLimitY": 2000.0,
-    "flagmentMemoryPositions": [
-      [200, -100],
-      [800, -300],
-      [1300, -250]
-    ]
-  },
   "objects": [
     {
       "rect": [ -100, 50, 300, 3000 ],

@@ -94,16 +94,7 @@ namespace Jam::Presentation::Scenes
 			auto& core = Jam::Foundation::CoreManager::Instance();
 			core.reset();
 			String stageName = Jam::Foundation::CoreManager::stageNameToString(core.stageInfo.stageName);//ステージ名
-			
-			// JSONからステージ設定を読み込み
-			Jam::Foundation::StageData stageData;
-			if (Jam::Infrastructure::Stage::StageLoader::loadStageSettings(stageName + U".json", stageData)) {
-				core.setCurrentStageData(stageData);
-			}
-			else {
-				// フォールバック: JSON読み込み失敗時はデフォルト値を使用
-				core.setCurrentStageData(core.getStageData(core.stageInfo.stageName));
-			}
+			core.setCurrentStageData(core.getStageData(core.stageInfo.stageName));
 			
 			// --- FactoryServiceLocator初期化 ---
 			auto& locator = Jam::Infrastructure::Locator::FactoryServiceLocator::instance();
