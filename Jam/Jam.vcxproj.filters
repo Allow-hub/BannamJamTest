@@ -14,6 +14,7 @@
     <ClCompile Include="src\Domain\Enemy\Eye.cpp" />
     <ClCompile Include="src\Domain\Enemy\Clown.cpp" />
     <ClCompile Include="src\Domain\Enemy\Ribbon.cpp" />
+    <ClCompile Include="src\Domain\Enemy\Boss1_3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
@@ -91,6 +92,7 @@
     <ClInclude Include="src\Domain\FlagmentMemory.h" />
     <ClInclude Include="src\Presentation\InGameUIManager.h" />
     <ClInclude Include="src\Domain\Enemy\EyeBeam.h" />
+    <ClInclude Include="src\Domain\Enemy\Boss1_3.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />
@@ -169,6 +171,8 @@
     <Image Include="Assets\UI\face_happy.png" />
     <Image Include="Assets\UI\face_normal.png" />
     <Image Include="Assets\UI\face_sad.png" />
+    <Image Include="Assets\Enemy\Boss1_3\idle_0.png" />
+    <Image Include="Assets\Enemy\Boss1_3\idle_1.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />
@@ -348,6 +352,7 @@
     <None Include="Assets\Enemy\Spider\Spider_animation.json" />
     <None Include="Assets\Stage\stage1_3.json" />
     <None Include="Assets\Stage\stage1_1.json" />
+    <None Include="Assets\Enemy\Boss1_3\Boss1_3_animation.json" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="App\dll\soundtouch\COPYING.TXT" />

@@ -7,6 +7,7 @@
 #include "../Domain/Enemy/Spider.h"
 #include "../Domain/Enemy/Eye.h"
 #include "../Domain/Enemy/Clown.h"
+#include "../Domain/Enemy/Boss1_3.h"
 
 namespace Jam::UseCase
 {
@@ -39,6 +40,9 @@ namespace Jam::UseCase
 			break;
 		case Jam::Domain::EnemyType::Clown:
 			enemy = std::make_shared<Clown>(body, playerId, eventQueue);
+			break;
+		case Jam::Domain::EnemyType::Boss1_3:
+			enemy = std::make_shared<Boss1_3>(body, playerId, eventQueue);
 			break;
 		default:
 			Print << U"[EnemyFactory] ⚠ Unknown enemy type!";
