@@ -9,6 +9,7 @@ namespace Jam::Domain
 		GothicLolitaDoll,
 		Spider,
 		Eye,
-		Clown
+		Clown,
+		Boss1_3
 	};
 }

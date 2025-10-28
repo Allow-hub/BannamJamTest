@@ -89,7 +89,7 @@ namespace Jam::Presentation::Scenes
 		{
 			Jam::Presentation::AudioService::get().play(Jam::Presentation::AudioService::Sound::BGM_Title, true);
 			//デバッグ用
-			Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_2; // CoreManagerのenumに追加が必要
+			Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_3; // CoreManagerのenumに追加が必要
 
 			auto& core = Jam::Foundation::CoreManager::Instance();
 			core.reset();
@@ -262,7 +262,7 @@ namespace Jam::Presentation::Scenes
 			auto& cursorUtil = Jam::Infrastructure::CursorUtil::instance();
 			//cursorUtil.registerCursorFromImage(U"../Assets/Cursor/GameCursor.png", Jam::Infrastructure::CursorStyle::Game);
 			cursorUtil.setCursor(CursorStyle::Cross);
-			// cursorUtil.setClipWindowCuror(true);
+			cursorUtil.setClipWindowCuror(true);
 			m_playerService->update(Scene::DeltaTime());
 			m_playerManager->update();
 			if (core.getPause())

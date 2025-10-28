@@ -56,6 +56,7 @@ namespace Jam::Infrastructure
 				else if (typeStr == U"Spider") type = Jam::Domain::EnemyType::Spider;
 				else if (typeStr == U"Eye") type = Jam::Domain::EnemyType::Eye;
 				else if (typeStr == U"Clown") type = Jam::Domain::EnemyType::Clown;
+				else if (typeStr == U"Boss1_3") type = Jam::Domain::EnemyType::Boss1_3;
 				else
 				{
 					Console << U"[EnemyLoader] ⚠ Unknown enemy type: " << typeStr;
@@ -207,6 +208,10 @@ namespace Jam::Infrastructure
 				else if (key == U"Clown")
 				{
 					outTable[EnemyType::Clown] = status;
+				}
+				else if (key == U"Boss1_3")
+				{
+					outTable[EnemyType::Boss1_3] = status;
 				}
 				else
 				{
