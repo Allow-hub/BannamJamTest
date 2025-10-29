@@ -291,50 +291,38 @@ namespace Jam::Domain::Enemy
 #pragma region ピエロ召喚
 	void Boss1_3::enterSummonClown()
 	{
-		Print << U"Enter: Summon Clown";
+		// Print << U"Enter: Summon Clown";
 
 		// ServiceLocator経由でFactoryを取得
 		auto physicsFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getPhysicsFactory();
 		auto enemyFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getEnemyFactory();
 
-		if (!physicsFactory || !enemyFactory)
-		{
-			Print << U"[Boss1_3] ❌ Factory取得失敗";
-			return;
-		}
-
 		// Clownのステータスを取得
 		const auto& statusTable = enemyFactory->getStatusTable();
 		auto it = statusTable.find(Jam::Domain::EnemyType::Clown);
-		if (it == statusTable.end())
-		{
-			Print << U"[Boss1_3] ❌ Clownのステータスが見つかりません";
-			return;
-		}
 
 		const auto& clownStatus = it->second;
 
 		// Bossが向いている方向(プレイヤーの方向)を取得
 		Vec2 playerPos = getPlayerPos();
 		bool isPlayerOnRight = playerPos.x > m_body->getPosition().x;
-		
+
 		// プレイヤーと同じ側(ボスが向いている方向)に生成
 		double direction = isPlayerOnRight ? 1.0 : -1.0;
-		
+
 		// 複数体のピエロを生成
 		for (int i = 0; i < CLOWN_SPAWN_COUNT; ++i)
 		{
-			// X座標: Bossの端から、各ピエロを横に並べて配置
+			// X座標: Bossの端から
 			double bossEdgeX = m_body->getPosition().x + direction * (m_status.colSize.x / 2.0);
-			double offsetX = (clownStatus.colSize.x + 10.0) * i;  // 10pxの間隔を開けて配置
+			double offsetX = (clownStatus.colSize.x + 10.0) * i;
 			double clownCenterX = bossEdgeX + direction * (clownStatus.colSize.x / 2.0 + offsetX);
-			
-			// Y座標: Bossの底面 - Clownの高さの半分（底面を揃える）
+
+			// Y座標: Bossの底面 
 			double bossBottomY = m_body->getPosition().y + (m_status.colSize.y / 2.0);
 			double clownCenterY = bossBottomY - (clownStatus.colSize.y / 2.0);
-			
+
 			Vec2 spawnPos = Vec2(clownCenterX, clownCenterY);
-			Print << U"[Boss1_3] ピエロ生成位置[" << i << U"]: " << spawnPos;
 
 			// 物理ボディを作成
 			auto clownBody = physicsFactory->createBody(
@@ -344,11 +332,6 @@ namespace Jam::Domain::Enemy
 				clownStatus.physicsMaterial
 			);
 
-			if (!clownBody)
-			{
-				Print << U"[Boss1_3] ❌ 物理ボディ作成失敗[" << i << U"]";
-				continue;
-			}
 
 			clownBody->setLayer(Jam::Domain::Physics::PhysicsLayer::Enemy);
 
@@ -363,20 +346,18 @@ namespace Jam::Domain::Enemy
 			if (clownEnemy)
 			{
 				clownBody->setCollisionListener(clownEnemy);
-				
-				// EnemySpawnedイベントを発行（生成済みインスタンスを含む）
+
+				// EnemySpawnedイベントを発行
 				m_eventQueue.push(Events::EnemySpawnedEvent{
 					m_body->getID(),
 					Jam::Domain::EnemyType::Clown,
 					spawnPos,
 					clownEnemy
 				});
-				
-				Print << U"[Boss1_3] ✅ ピエロ召喚イベント発行[" << i << U"]: " << spawnPos;
 			}
 			else
 			{
-				Print << U"[Boss1_3] ❌ Clown敵の生成失敗[" << i << U"]";
+				Console << U"[Boss1_3] ❌ Clown敵の生成失敗[" << i << U"]";
 			}
 		}
 	}
@@ -388,7 +369,7 @@ namespace Jam::Domain::Enemy
 
 	void Boss1_3::exitSummonClown()
 	{
-		Print << U"Exit: Summon Clown";
+		// Print << U"Exit: Summon Clown";
 		// TODO: 召喚終了処理
 	}
 #pragma endregion
@@ -426,10 +407,10 @@ namespace Jam::Domain::Enemy
 		auto pos = Vec2{ m_body->getPosition().x,m_body->getPosition().y + m_status.colSize.y / 2 };
 		// 衝撃波生成処理
 		m_shockWave = std::make_shared<ShockWave>(
-			pos ,
+			pos,
 			m_shockWaveDuration, // 継続時間
 			Vec2{ 100,150 },                // 開始半径
-			Vec2{ 4000,150},               // 終了半径
+			Vec2{ 4000,150 },               // 終了半径
 			m_playerId,
 			m_eventQueue
 		);

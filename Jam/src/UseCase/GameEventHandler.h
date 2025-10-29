@@ -197,8 +197,6 @@ namespace Jam::UseCase
 
 		void handleEnemySpawned(const Domain::Events::EnemySpawnedEvent& e)
 		{
-			Print << U"[GameEventHandler] 敵生成イベント受信: Type=" << static_cast<int>(e.enemyType) << U", Pos=" << e.position;
-
 			// コールバックが設定されていれば実行
 			if (m_onEnemySpawn && e.enemy)
 			{

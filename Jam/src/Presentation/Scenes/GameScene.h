@@ -227,7 +227,7 @@ namespace Jam::Presentation::Scenes
 				m_backgroundRenderer->setBackgroundObjects(backgroundObjects);
 			}
 			else {
-				Print << U"[GameScene] ⚠️ Failed to load background JSON, using fallback";
+				Console << U"[GameScene] ⚠️ Failed to load background JSON, using fallback";
 			}
 
 			auto currentStageData = core.getCurrentStageData();
@@ -469,7 +469,6 @@ namespace Jam::Presentation::Scenes
 				int id = m_enemyManager->AddEnemy(enemy, U"../Assets/Enemy/Clown/Clown_animation.json");
 				m_enemyManager->getAnimator(id).AddCondition({ { {U"isRunning", false} }, U"Idle", 0 });
 				m_enemyManager->getAnimator(id).SetBool(U"isRunning", false);
-				Print << U"[GameScene] ✅ 敵を追加: ID=" << id;
 			}
 		}
 	};
