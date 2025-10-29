@@ -73,6 +73,10 @@ namespace Jam::UseCase
 					{
 						handleItemCollected(e);
 					}
+					else if constexpr (std::is_same_v<T, Domain::Events::ExplosionEvent>)
+					{
+						handleExplosion(e);
+					}
 				}, event);
 			}
 		}
@@ -184,6 +188,12 @@ namespace Jam::UseCase
 				// レアアイテム取得時の演出
 				m_cameraEventQueue.push(CameraZoomEvent{ 1.3, 0.5 });
 			}
+		}
+		void handleExplosion(const Domain::Events::ExplosionEvent& e)
+		{
+			m_effectEventQueue.push(ExplosionEffectEvent{
+				e.position,e.color,e.radius,e.duration,e.particleCount
+			});
 		}
 	};
 }

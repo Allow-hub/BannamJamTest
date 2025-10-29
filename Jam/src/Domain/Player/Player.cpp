@@ -13,6 +13,7 @@ namespace Jam::Domain::Player
 		m_body->setLayer(Jam::Domain::Physics::PhysicsLayer::Player);
 		m_body->setGravityScale(1.5);
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::Team1);
+		m_body->setSleepEnabled(false);
 
 		auto chokerSkill = std::make_shared<ChokerSkill>(eventQueue, m_body->getID(), m_stats, *this);
 		chokerSkill->init(); // shared_from_this()を使用する初期化

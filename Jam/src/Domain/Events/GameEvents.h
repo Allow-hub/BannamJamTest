@@ -77,6 +77,15 @@ namespace Jam::Domain::Events
 		String itemName;
 	};
 
+	struct ExplosionEvent
+	{
+		Vec2 position;
+		ColorF color;
+		double radius = 100.0;
+		double duration = 0.6;
+		int32 particleCount = 20;
+	};
+
 	using GameEvent = std::variant<
 		EnemyDamagedEvent,
 		EnemyDefeatedEvent,
@@ -86,7 +95,8 @@ namespace Jam::Domain::Events
 		PlayerDeathEvent,
 		PlayerFallOutEvent,
 		BossAppearedEvent,
-		ItemCollectedEvent
+		ItemCollectedEvent,
+		ExplosionEvent
 	>;
 
 

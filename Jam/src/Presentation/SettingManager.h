@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
+#include "../Infrastructure/IndependentObjectFactory.h"
 
 namespace Jam::Presentation
 {
@@ -70,6 +71,7 @@ namespace Jam::Presentation
 
 		void changeScene(const String& sceneName)
 		{
+			Jam::Infrastructure::IndependentObjectFactory::instance().clearAllObjects();
 			if (m_sceneManager)
 				m_sceneManager->changeScene(sceneName);
 		}

@@ -49,7 +49,6 @@ namespace Jam::UseCase
 		}
 	};
 
-	// 爆発エフェクト
 	struct ExplosionEffect : IEffect
 	{
 		struct Particle
@@ -62,17 +61,28 @@ namespace Jam::UseCase
 		Vec2 m_center;
 		Array<Particle> m_particles;
 		double m_duration;
+		double m_radius;
+		ColorF m_baseColor;
 
 		ExplosionEffect(const ExplosionEffectEvent& event)
 			: m_center(event.position)
 			, m_duration(event.duration)
+			, m_radius(event.radius)
+			, m_baseColor(event.color)
 		{
 			for (int32 i = 0; i < event.particleCount; ++i)
 			{
+				// 色を少しずらす（赤ならオレンジ混ぜるなど）
+				double hueShift = Random(-0.5, 0.5);
+				ColorF particleColor = m_baseColor;
+				particleColor.r = Math::Clamp(particleColor.r + hueShift, 0.0, 1.0);
+				particleColor.g = Math::Clamp(particleColor.g + hueShift * 0.5, 0.0, 1.0);
+				particleColor.b = Math::Clamp(particleColor.b, 0.0, 1.0);
+
 				m_particles << Particle{
-					.velocity = RandomVec2(Circle{ event.radius }),
+					.velocity = RandomVec2(Circle{ m_radius }),
 					.size = Random(4.0, 12.0),
-					.color = event.color
+					.color = particleColor
 				};
 			}
 		}
@@ -80,16 +90,34 @@ namespace Jam::UseCase
 		bool update(double t) override
 		{
 			t /= m_duration;
+
+			// 爆心の芯サークル
+			double coreSize = 0.0;
+			if (t < 0.5)
+			{
+				// 0 → 半径
+				coreSize = m_radius * (t / 0.5);
+			}
+			else
+			{
+				// 半径 → 0
+				coreSize = m_radius * ((1.0 - t) / 0.5);
+			}
+			Circle{ m_center, coreSize }.draw(ColorF{ m_baseColor, 0.8 * (1.0 - t) });
+
+			// 粒子描画
 			for (const auto& particle : m_particles)
 			{
-				const Vec2 pos = m_center + particle.velocity * t;
-				const double alpha = (1.0 - t);
-				const double size = particle.size * (1.0 - t * 0.5);
+				Vec2 pos = m_center + particle.velocity * t;
+				double alpha = (1.0 - t);
+				double size = particle.size * (1.0 - t * 0.5);
 				Circle{ pos, size }.draw(ColorF{ particle.color, alpha });
 			}
-			return (t < 1.0);
+
+			return t < 1.0;
 		}
 	};
+
 
 	// パーティクルエフェクト
 	struct ParticleEffect : IEffect
