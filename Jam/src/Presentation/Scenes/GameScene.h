@@ -116,15 +116,6 @@ namespace Jam::Presentation::Scenes
 			m_cameraEventQueue = std::make_shared<Jam::UseCase::CameraEventQueue>();
 			m_effectEventQueue = std::make_shared<Jam::UseCase::EffectEventQueue>();
 
-			m_eventHandler = std::make_shared<Jam::UseCase::GameEventHandler>(
-				*m_gameEventQueue, 
-				*m_cameraEventQueue, 
-				*m_effectEventQueue,
-				[this]() { this->nextScene(); },
-				std::bind(&GameScene::handleEnemySpawn, this, std::placeholders::_1)
-			);
-
-
 			m_effectManager = std::make_unique<Jam::Presentation::EffectManager>(*m_effectEventQueue);
 
 			// === Player 初期化 ===
@@ -203,6 +194,15 @@ namespace Jam::Presentation::Scenes
 
 			// プレイヤーの Body ID を取得
 			auto playerBodyId = playerBody->getID();
+
+			// GameEventHandlerを初期化
+			m_eventHandler = std::make_shared<Jam::UseCase::GameEventHandler>(
+				*m_gameEventQueue,
+				*m_cameraEventQueue,
+				*m_effectEventQueue,
+				[this]() { this->nextScene(); },
+				m_enemyManager.get()
+			);
 
 			// ステージ用敵配置 JSON をロードして敵を生成
 			if (!Jam::Infrastructure::EnemyLoader::loadEnemyForStageFromJSON(
@@ -460,16 +460,6 @@ namespace Jam::Presentation::Scenes
 				if (body->getBodyID() == id)
 					return body;
 			return nullptr;
-		}
-
-		void handleEnemySpawn(std::shared_ptr<Jam::Domain::Enemy::EnemyBase> enemy)
-		{
-			if (m_enemyManager && enemy)
-			{
-				int id = m_enemyManager->AddEnemy(enemy, U"../Assets/Enemy/Clown/Clown_animation.json");
-				m_enemyManager->getAnimator(id).AddCondition({ { {U"isRunning", false} }, U"Idle", 0 });
-				m_enemyManager->getAnimator(id).SetBool(U"isRunning", false);
-			}
 		}
 	};
 }

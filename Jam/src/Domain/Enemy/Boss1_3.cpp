@@ -349,10 +349,8 @@ namespace Jam::Domain::Enemy
 
 				// EnemySpawnedイベントを発行
 				m_eventQueue.push(Events::EnemySpawnedEvent{
-					m_body->getID(),
-					Jam::Domain::EnemyType::Clown,
-					spawnPos,
-					clownEnemy
+					clownEnemy,
+					U"../Assets/Enemy/Clown/Clown_animation.json"  // 今後別の敵のアニメーションのパスを指定する場合は、EnemyTypeから適切なパスを返すヘルパー関数を作成すること
 				});
 			}
 			else

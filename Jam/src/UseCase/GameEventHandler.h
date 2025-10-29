@@ -5,6 +5,7 @@
 #include "AttackProcessor.h"
 #include "EffectEvents.h"
 #include "../Foundation/CoroutineUtil.h"
+#include "../Presentation/EnemyManager.h"
 
 namespace Jam::UseCase
 {
@@ -16,7 +17,7 @@ namespace Jam::UseCase
 		CameraEventQueue& m_cameraEventQueue;
 		EffectEventQueue& m_effectEventQueue;
 		std::function<void()> m_onPlayerDeath;
-		std::function<void(std::shared_ptr<Domain::Enemy::EnemyBase>)> m_onEnemySpawn;
+		Jam::Presentation::EnemyManager* m_enemyManager = nullptr;
 
 	public:
 		GameEventHandler(
@@ -24,12 +25,12 @@ namespace Jam::UseCase
 			CameraEventQueue& cameraEventQueue,
 			EffectEventQueue& effectEventQueue,
 			std::function<void()> onPlayerDeath,
-			std::function<void(std::shared_ptr<Domain::Enemy::EnemyBase>)> onEnemySpawn = nullptr)
+			Jam::Presentation::EnemyManager* enemyManager)
 			: m_gameEventQueue(gameEventQueue)
 			, m_cameraEventQueue(cameraEventQueue)
 			, m_effectEventQueue(effectEventQueue)
 			, m_onPlayerDeath(onPlayerDeath)
-			, m_onEnemySpawn(onEnemySpawn)
+			, m_enemyManager(enemyManager)
 		{
 		}
 
@@ -130,7 +131,7 @@ namespace Jam::UseCase
 		void handlePlayerAttacked(const Domain::Events::PlayerAttackedEvent& e)
 		{
 			m_cameraEventQueue.push(CameraShakeEvent{ e.intensity,e.duration });
-			m_cameraEventQueue.push(CameraZoomEvent{e.zoom, e.duration });
+			m_cameraEventQueue.push(CameraZoomEvent{ e.zoom, e.duration });
 		}
 
 		//プレイヤーが落ちた時
@@ -197,10 +198,14 @@ namespace Jam::UseCase
 
 		void handleEnemySpawned(const Domain::Events::EnemySpawnedEvent& e)
 		{
-			// コールバックが設定されていれば実行
-			if (m_onEnemySpawn && e.enemy)
+			if (m_enemyManager && e.enemy)
 			{
-				m_onEnemySpawn(e.enemy);
+				// EnemyManagerに敵を追加
+				int id = m_enemyManager->AddEnemy(e.enemy, e.animationPath);
+
+				// アニメーションの初期設定
+				m_enemyManager->getAnimator(id).AddCondition({ { {U"isRunning", false} }, U"Idle", 0 });
+				m_enemyManager->getAnimator(id).SetBool(U"isRunning", false);
 			}
 		}
 	};

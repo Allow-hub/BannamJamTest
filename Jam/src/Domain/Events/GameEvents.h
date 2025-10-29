@@ -86,10 +86,8 @@ namespace Jam::Domain::Events
 
 	struct EnemySpawnedEvent
 	{
-		Jam::Domain::Physics::PhysicsBodyID spawnerID;
-		Jam::Domain::EnemyType enemyType;
-		Vec2 position;
 		std::shared_ptr<Jam::Domain::Enemy::EnemyBase> enemy;
+		s3d::FilePath animationPath;
 	};
 
 	using GameEvent = std::variant<
