@@ -33,9 +33,9 @@ namespace Jam::Domain::Enemy
 		// 攻撃パターンの確率設定
 		m_attackPatterns = {
 			{AttackState::Missile, 0.0f},
-			{AttackState::SummonClown, 0.0f},
+			{AttackState::SummonClown, 1.0f},
 			{AttackState::Bomb, 0.0f},
-			{AttackState::Shockwave,1.0f}
+			{AttackState::Shockwave,0.0f}
 		};
 
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::BossHidden);//チョーカーとの接触をなくす
@@ -339,12 +339,13 @@ namespace Jam::Domain::Enemy
 		{
 			clownBody->setCollisionListener(clownEnemy);
 			
-			// イベント経由でEnemyManagerに登録依頼
-			// m_eventQueue.push(Events::EnemySpawnRequestEvent{
-			// 	spawnPos,
-			// 	Jam::Domain::EnemyType::Clown,
-			// 	clownEnemy
-			// });
+			// EnemySpawnedイベントを発行（生成済みインスタンスを含む）
+			m_eventQueue.push(Events::EnemySpawnedEvent{
+				m_body->getID(),
+				Jam::Domain::EnemyType::Clown,
+				spawnPos,
+				clownEnemy
+			});
 			
 			Print << U"[Boss1_3] ✅ ピエロ召喚イベント発行: " << spawnPos;
 		}

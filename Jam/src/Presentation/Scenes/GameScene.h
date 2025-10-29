@@ -117,8 +117,12 @@ namespace Jam::Presentation::Scenes
 			m_effectEventQueue = std::make_shared<Jam::UseCase::EffectEventQueue>();
 
 			m_eventHandler = std::make_shared<Jam::UseCase::GameEventHandler>(
-				*m_gameEventQueue, *m_cameraEventQueue, *m_effectEventQueue,
-				[this]() { this->nextScene(); });
+				*m_gameEventQueue, 
+				*m_cameraEventQueue, 
+				*m_effectEventQueue,
+				[this]() { this->nextScene(); },
+				std::bind(&GameScene::handleEnemySpawn, this, std::placeholders::_1)
+			);
 
 
 			m_effectManager = std::make_unique<Jam::Presentation::EffectManager>(*m_effectEventQueue);
@@ -456,6 +460,17 @@ namespace Jam::Presentation::Scenes
 				if (body->getBodyID() == id)
 					return body;
 			return nullptr;
+		}
+
+		void handleEnemySpawn(std::shared_ptr<Jam::Domain::Enemy::EnemyBase> enemy)
+		{
+			if (m_enemyManager && enemy)
+			{
+				int id = m_enemyManager->AddEnemy(enemy, U"../Assets/Enemy/Clown/Clown_animation.json");
+				m_enemyManager->getAnimator(id).AddCondition({ { {U"isRunning", false} }, U"Idle", 0 });
+				m_enemyManager->getAnimator(id).SetBool(U"isRunning", false);
+				Print << U"[GameScene] ✅ 敵を追加: ID=" << id;
+			}
 		}
 	};
 }

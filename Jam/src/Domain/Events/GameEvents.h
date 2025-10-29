@@ -2,9 +2,16 @@
 #include <HamFramework.hpp>
 #include <variant>
 #include <queue>
+#include <memory>
 #include "../Physics/PhysicsBodyID.h"
 #include "../ITakeDamageable.h"
 #include "../Enemy/EnemyType.h"
+
+// インクルードすると、循環してしまうため前方宣言
+namespace Jam::Domain::Enemy
+{
+	class EnemyBase;
+}
 
 namespace Jam::Domain::Events
 {
@@ -77,6 +84,14 @@ namespace Jam::Domain::Events
 		String itemName;
 	};
 
+	struct EnemySpawnedEvent
+	{
+		Jam::Domain::Physics::PhysicsBodyID spawnerID;
+		Jam::Domain::EnemyType enemyType;
+		Vec2 position;
+		std::shared_ptr<Jam::Domain::Enemy::EnemyBase> enemy;
+	};
+
 	using GameEvent = std::variant<
 		EnemyDamagedEvent,
 		EnemyDefeatedEvent,
@@ -86,7 +101,8 @@ namespace Jam::Domain::Events
 		PlayerDeathEvent,
 		PlayerFallOutEvent,
 		BossAppearedEvent,
-		ItemCollectedEvent
+		ItemCollectedEvent,
+		EnemySpawnedEvent
 	>;
 
 
