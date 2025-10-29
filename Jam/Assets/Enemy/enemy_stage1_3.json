@@ -1,33 +1,9 @@
 [
   {
-    "type": "Spider",
+    "type": "Boss1_3",
     "position": {
       "x": 300,
-      "y": 0
-    },
-    "extra": {
-        "ai": {
-            "patrol": {
-                "patrolPoints": [
-                    {
-                        "x": 300,
-                        "y": -200
-                    },
-                    {
-                        "x": -300,
-                        "y": -200
-                    }
-                ],
-                "loop": true,
-                "waitTime": 1.0,
-                "foundDistance": 1000.0
-            },
-            "chase": {
-                "attackRange": 600.0,
-                "loseRange": 1200.0,
-                "moveSpeedFactor": 1.5
-            }
-        }
+      "y": -300
     }
   }
 ]

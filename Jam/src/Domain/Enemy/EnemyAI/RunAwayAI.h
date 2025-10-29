@@ -29,6 +29,11 @@ namespace Jam::Domain::Enemy
 			Vec2 direction = plPos - enePos;
 			Vec2 velocity = direction.normalized();
 
+			// プレイヤーの方向と反対を向く
+			if (direction.x < 0)
+				enemy.setFaceLeft(false);
+			else
+				enemy.setFaceLeft(true);
 			// プレイヤーと逆方向に移動
 			enemy.getPhysicsBody()->applyForce(
 				-velocity * enemy.getStatus().moveSpeed * setting.moveSpeedFactor

@@ -22,15 +22,20 @@ namespace Jam::Domain::Enemy
 			Vec2 pos = enemy.getPosition();
 			Vec2 dir = (currentTarget - pos).normalized();
 
+			if (dir.x < 0)
+				enemy.setFaceLeft(true);
+			else
+				enemy.setFaceLeft(false);
+
 			enemy.getPhysicsBody()->applyForce(dir * enemy.getStatus().moveSpeed);
 
-			// 🔸 すでにプレイヤーが発見距離内にいる場合は即イベント発火
+			// すでにプレイヤーが発見距離内にいる場合は即イベント発火
 			Vec2 playerPos = enemy.getPlayerPos();
 			double distanceToPlayer = pos.distanceFrom(playerPos);
 			if (distanceToPlayer <= route.foundDistance)
 			{
 				enemy.onAIEvent(EnemyAIEvent::PlayerFound);
-				return; // 即座にChaseAIなどへ遷移させたい場合
+				return;
 			}
 
 			// 巡回目標に到達したら次へ
