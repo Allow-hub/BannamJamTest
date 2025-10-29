@@ -5,6 +5,8 @@
 namespace Jam::Domain::Enemy
 {
 	// ピエロ
+	// プレイヤーを見つけると近づき、一定距離まで接近すると爆弾を投げつける
+	// その後逃げる
 	class Clown : public EnemyBase
 	{
 	public:
@@ -27,5 +29,10 @@ namespace Jam::Domain::Enemy
 		void onAttackEnter()override;
 		void onAttackUpdate(double deltaTime)override;
 		void onAttackExit()override;
+
+	private:
+		Vec2 m_offset = Vec2{ 100, 0 };
+		Vec2 m_throwForce = Vec2{ 150, -300.0 };	
+		double m_explosionDelay = 2.0;
 	};
 }

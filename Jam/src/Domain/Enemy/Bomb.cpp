@@ -71,15 +71,8 @@ namespace Jam::Domain::Enemy
 		{
 			if (m_body)
 			{
-				m_body->drawFrame(2.0, Palette::Yellow);
 				bombTex.scaled(m_size * m_scaled)
 					.drawAt(m_body->getPosition());
-			}
-		}
-		else
-		{
-			if (m_explodeBody) {
-				//m_explodeBody->drawFrame(2.0, Palette::Yellow);
 			}
 		}
 	}

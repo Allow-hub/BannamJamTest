@@ -72,12 +72,12 @@
   "Clown": {
     "hp": 100,
     "attackPower": 10.5,
-    "moveSpeed": 2000.0,
-    "jumpPower": 5.0,
+    "moveSpeed": 2500.0,
+    "jumpPower": 1300.0,
     "colX": 130.0,
     "colY": 190.0,
     "physicsMaterial": {
-      "density": 10.0,
+      "density": 1.0,
       "friction": 0.4,
       "restitution": 0.0,
       "restitutionThreshold": 100.0
