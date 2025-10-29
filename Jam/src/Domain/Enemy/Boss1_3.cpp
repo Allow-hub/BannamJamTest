@@ -7,6 +7,7 @@
 
 namespace Jam::Domain::Enemy
 {
+#pragma region コンストラクタ
 	Boss1_3::Boss1_3(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body,
 					 Jam::Domain::Physics::PhysicsBodyID playerId,
 					 Jam::Domain::Events::GameEventQueue& eventQueue)
@@ -33,9 +34,9 @@ namespace Jam::Domain::Enemy
 		// 攻撃パターンの確率設定
 		m_attackPatterns = {
 			{AttackState::Missile, 0.0f},
-			{AttackState::SummonClown, 0.0f},
+			{AttackState::SummonClown, 1.0f},
 			{AttackState::Bomb, 0.0f},
-			{AttackState::Shockwave,1.0f}
+			{AttackState::Shockwave,0.0f}
 		};
 
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::BossHidden);//チョーカーとの接触をなくす
@@ -58,7 +59,9 @@ namespace Jam::Domain::Enemy
 		//test->setLayer(Jam::Domain::Physics::PhysicsLayer::ReflectableWeapon);
 
 	}
+#pragma endregion
 
+#pragma region 更新・描画
 	void Boss1_3::update(double deltaTime)
 	{
 		if (!isAlive()) return;
@@ -91,7 +94,9 @@ namespace Jam::Domain::Enemy
 			m_shockWave->draw();
 		}
 	}
+#pragma endregion
 
+#pragma region ステート管理
 	void Boss1_3::updateAppearState(double deltaTime)
 	{
 		// 登場演出
@@ -262,8 +267,9 @@ namespace Jam::Domain::Enemy
 
 		return Boss1_3::AttackState::Missile;
 	}
+#pragma endregion
 
-	// ===== Missile Attack =====
+#pragma region ミサイル攻撃
 	void Boss1_3::enterMissileAttack()
 	{
 		Print << U"Enter: Missile Attack";
@@ -280,12 +286,78 @@ namespace Jam::Domain::Enemy
 		Print << U"Exit: Missile Attack";
 		// TODO: 終了処理
 	}
+#pragma endregion
 
-	// ===== Summon Clown =====
+#pragma region ピエロ召喚
 	void Boss1_3::enterSummonClown()
 	{
-		Print << U"Enter: Summon Clown";
-		// TODO: 召喚開始処理
+		// Print << U"Enter: Summon Clown";
+
+		// ServiceLocator経由でFactoryを取得
+		auto physicsFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getPhysicsFactory();
+		auto enemyFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getEnemyFactory();
+
+		// Clownのステータスを取得
+		const auto& statusTable = enemyFactory->getStatusTable();
+		auto it = statusTable.find(Jam::Domain::EnemyType::Clown);
+
+		const auto& clownStatus = it->second;
+
+		// Bossが向いている方向(プレイヤーの方向)を取得
+		Vec2 playerPos = getPlayerPos();
+		bool isPlayerOnRight = playerPos.x > m_body->getPosition().x;
+
+		// プレイヤーと同じ側(ボスが向いている方向)に生成
+		double direction = isPlayerOnRight ? 1.0 : -1.0;
+
+		// 複数体のピエロを生成
+		for (int i = 0; i < CLOWN_SPAWN_COUNT; ++i)
+		{
+			// X座標: Bossの端から
+			double bossEdgeX = m_body->getPosition().x + direction * (m_status.colSize.x / 2.0);
+			double offsetX = (clownStatus.colSize.x + 10.0) * i;
+			double clownCenterX = bossEdgeX + direction * (clownStatus.colSize.x / 2.0 + offsetX);
+
+			// Y座標: Bossの底面 
+			double bossBottomY = m_body->getPosition().y + (m_status.colSize.y / 2.0);
+			double clownCenterY = bossBottomY - (clownStatus.colSize.y / 2.0);
+
+			Vec2 spawnPos = Vec2(clownCenterX, clownCenterY);
+
+			// 物理ボディを作成
+			auto clownBody = physicsFactory->createBody(
+				spawnPos,
+				clownStatus.colSize,
+				s3d::P2BodyType::Dynamic,
+				clownStatus.physicsMaterial
+			);
+
+
+			clownBody->setLayer(Jam::Domain::Physics::PhysicsLayer::Enemy);
+
+			// Clown敵を生成
+			auto clownEnemy = enemyFactory->createEnemy(
+				Jam::Domain::EnemyType::Clown,
+				clownBody,
+				m_playerId,
+				m_eventQueue
+			);
+
+			if (clownEnemy)
+			{
+				clownBody->setCollisionListener(clownEnemy);
+
+				// EnemySpawnedイベントを発行
+				m_eventQueue.push(Events::EnemySpawnedEvent{
+					clownEnemy,
+					U"../Assets/Enemy/Clown/Clown_animation.json"  // 今後別の敵のアニメーションのパスを指定する場合は、EnemyTypeから適切なパスを返すヘルパー関数を作成すること
+				});
+			}
+			else
+			{
+				Console << U"[Boss1_3] ❌ Clown敵の生成失敗[" << i << U"]";
+			}
+		}
 	}
 
 	void Boss1_3::updateSummonClown(double deltaTime)
@@ -295,11 +367,12 @@ namespace Jam::Domain::Enemy
 
 	void Boss1_3::exitSummonClown()
 	{
-		Print << U"Exit: Summon Clown";
+		// Print << U"Exit: Summon Clown";
 		// TODO: 召喚終了処理
 	}
+#pragma endregion
 
-	// ===== Bomb Attack =====
+#pragma region 爆弾攻撃
 	void Boss1_3::enterBombAttack()
 	{
 		Print << U"Enter: Bomb Attack";
@@ -316,8 +389,9 @@ namespace Jam::Domain::Enemy
 		Print << U"Exit: Bomb Attack";
 		// TODO: 投擲終了処理
 	}
+#pragma endregion
 
-	// ===== shockWave =====
+#pragma region 衝撃波攻撃
 	void Boss1_3::enterShockWave()
 	{
 		Print << U"Enter: ShockWave";
@@ -331,10 +405,10 @@ namespace Jam::Domain::Enemy
 		auto pos = Vec2{ m_body->getPosition().x,m_body->getPosition().y + m_status.colSize.y / 2 };
 		// 衝撃波生成処理
 		m_shockWave = std::make_shared<ShockWave>(
-			pos ,
+			pos,
 			m_shockWaveDuration, // 継続時間
 			Vec2{ 100,150 },                // 開始半径
-			Vec2{ 4000,150},               // 終了半径
+			Vec2{ 4000,150 },               // 終了半径
 			m_playerId,
 			m_eventQueue
 		);
@@ -359,8 +433,9 @@ namespace Jam::Domain::Enemy
 		Print << U"Exit: ShockWave";
 		m_shockWave.reset();
 	}
+#pragma endregion
 
-
+#pragma region 衝突処理
 	void Boss1_3::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{
 		EnemyBase::onCollisionEnter(other);
@@ -398,4 +473,5 @@ namespace Jam::Domain::Enemy
 	{
 		EnemyBase::onCollisionExit(other);
 	}
+#pragma endregion
 }
