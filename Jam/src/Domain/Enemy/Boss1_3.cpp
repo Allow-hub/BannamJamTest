@@ -281,11 +281,77 @@ namespace Jam::Domain::Enemy
 		// TODO: 終了処理
 	}
 
-	// ===== Summon Clown =====
+	// ===== ピエロを生成 =====
 	void Boss1_3::enterSummonClown()
 	{
 		Print << U"Enter: Summon Clown";
-		// TODO: 召喚開始処理
+
+		// ServiceLocator経由でFactoryを取得
+		auto physicsFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getPhysicsFactory();
+		auto enemyFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getEnemyFactory();
+
+		if (!physicsFactory || !enemyFactory)
+		{
+			Print << U"[Boss1_3] ❌ Factory取得失敗";
+			return;
+		}
+
+		// Clownのステータスを取得
+		const auto& statusTable = enemyFactory->getStatusTable();
+		auto it = statusTable.find(Jam::Domain::EnemyType::Clown);
+		if (it == statusTable.end())
+		{
+			Print << U"[Boss1_3] ❌ Clownのステータスが見つかりません";
+			return;
+		}
+
+		const auto& clownStatus = it->second;
+
+		// Bossの位置の近くに生成
+		Vec2 spawnPos = m_body->getPosition() + Vec2(150, -100);
+		Print << U"[Boss1_3] ピエロ生成位置: " << spawnPos;
+
+		// 物理ボディを作成
+		auto clownBody = physicsFactory->createBody(
+			spawnPos,
+			clownStatus.colSize,
+			s3d::P2BodyType::Dynamic,
+			clownStatus.physicsMaterial
+		);
+
+		if (!clownBody)
+		{
+			Print << U"[Boss1_3] ❌ 物理ボディ作成失敗";
+			return;
+		}
+
+		clownBody->setLayer(Jam::Domain::Physics::PhysicsLayer::Enemy);
+
+		// Clown敵を生成
+		auto clownEnemy = enemyFactory->createEnemy(
+			Jam::Domain::EnemyType::Clown,
+			clownBody,
+			m_playerId,
+			m_eventQueue
+		);
+
+		if (clownEnemy)
+		{
+			clownBody->setCollisionListener(clownEnemy);
+			
+			// イベント経由でEnemyManagerに登録依頼
+			// m_eventQueue.push(Events::EnemySpawnRequestEvent{
+			// 	spawnPos,
+			// 	Jam::Domain::EnemyType::Clown,
+			// 	clownEnemy
+			// });
+			
+			Print << U"[Boss1_3] ✅ ピエロ召喚イベント発行: " << spawnPos;
+		}
+		else
+		{
+			Print << U"[Boss1_3] ❌ Clown敵の生成失敗";
+		}
 	}
 
 	void Boss1_3::updateSummonClown(double deltaTime)
