@@ -21,7 +21,7 @@ namespace Jam::Foundation
 		Vec2 respawnPosition;  // 落下後のリスタート位置
 		double fallLimitY;     // 落下判定Y位置
 		std::array<Vec2, 3> flagmentMemoryPos;
-		GoalData goalData;     // ← これが使えるようになる
+		GoalData goalData;
 	};
 
 	class CoreManager
