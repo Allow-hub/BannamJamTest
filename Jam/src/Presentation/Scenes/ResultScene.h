@@ -230,7 +230,6 @@ namespace Jam::Presentation::Scenes
 
 			// TIME
 			if (m_titleTime) m_titleTime.draw(leftStatX, currentY + labelYOffset);
-
 			{
 				const Vec2 drawPos = Vec2(leftStatX + 20, currentY + labelYOffset + numberVerticalAdjustment + m_titleTime.height());
 				const Mat3x2 jam_matrix = Mat3x2::Scale(numberScale) * Mat3x2::Translate(drawPos);
@@ -246,7 +245,6 @@ namespace Jam::Presentation::Scenes
 			// KILL RACIO
 			const int killRacio_demo = 0;
 			if (m_titleKill) m_titleKill.draw(leftStatX, currentY + labelYOffset);
-
 			{
 				const Vec2 drawPos = Vec2(leftStatX + 20, currentY + labelYOffset + numberVerticalAdjustment + m_titleKill.height());
 				const Mat3x2 jam_matrix = Mat3x2::Scale(numberScale) * Mat3x2::Translate(drawPos);
@@ -302,7 +300,7 @@ namespace Jam::Presentation::Scenes
 				RectF(m_nextStageButton.x, barY, m_nextStageBarWidth, barHeight).draw(hoverColor);
 			}
 
-			// ★ 3. テキストを一番上に描画
+			// 3. テキストを一番上に描画
 			const Vec2 shadowOffset = Vec2(2, 5);
 			const ColorF shadowColor = ColorF(0, 0, 0, 0.5);
 
