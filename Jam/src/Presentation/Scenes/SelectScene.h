@@ -71,8 +71,6 @@ namespace Jam::Presentation::Scenes
 			}
 		}
 
-		// --- (ここから追加) トランジション用の描画 ---
-
 		// シーンがフェードインする（現れる）ときの描画
 		void drawFadeIn(double t) const override
 		{
@@ -96,8 +94,6 @@ namespace Jam::Presentation::Scenes
 			//    (TransitionManagerはグローバル名前空間と仮定)
 			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeOut(t);
 		}
-
-		// --- (ここまで追加) ---
 
 	private:
 		// --- ワールド選択のロジック ---
