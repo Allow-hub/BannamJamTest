@@ -53,9 +53,9 @@ namespace Jam::Foundation
 			switch (stage)
 			{
 			case StageName::Stage1_1:
-				return StageData{ Vec2(50, -5), 2000.0, {Vec2(200, -100),Vec2(800, -300),Vec2(1300, -250)} }; // respawn, fallLimitY
+				return StageData{ Vec2(50, -5), 2000.0, {Vec2(2800, -250),Vec2(12700, -900),Vec2(15450, -750)} }; // respawn, fallLimitY
 			case StageName::Stage1_2:
-				return StageData{ Vec2(50, -5), 2000.0, {Vec2(200, -100),Vec2(800, -300),Vec2(1300, -250)} };
+				return StageData{ Vec2(50, -5), 2000.0, {Vec2(4050, -200),Vec2(6350, -250),Vec2(9450, 1400)} };
 			case StageName::Stage1_3:
 				return StageData{ Vec2(50, -5), 550.0, {Vec2(-10000, -10000),Vec2(-10000, -10000),Vec2(-10000, -10000)} };
 			default:
