@@ -457,6 +457,7 @@
     <ClInclude Include="src\Domain\Enemy\Spider.h" />
     <ClInclude Include="src\Domain\Events\GameEvents.h" />
     <ClInclude Include="src\Domain\FlagmentMemory.h" />
+    <ClInclude Include="src\Domain\GoalArea.h" />
     <ClInclude Include="src\Domain\IIndependentObject.h" />
     <ClInclude Include="src\Domain\IInputService.h" />
     <ClInclude Include="src\Domain\ITakeDamageable.h" />
