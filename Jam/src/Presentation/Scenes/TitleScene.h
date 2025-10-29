@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <Siv3D.hpp> // Siv3D v0.6.14
 #include "../../Presentation/AudioService.h"
+#include "TransitionManager.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -55,6 +56,18 @@ namespace Jam::Presentation::Scenes
 		void draw() const override
 		{
 
+		}
+
+		void drawFadeIn(double t) const override
+		{
+			draw();
+			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeIn(t);
+		}
+
+		void drawFadeOut(double t) const override
+		{
+			draw();
+			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeOut(t);
 		}
 	};
 }

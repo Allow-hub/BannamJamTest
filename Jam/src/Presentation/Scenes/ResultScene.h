@@ -4,6 +4,7 @@
 #include "SelectScene.h"
 #include "../../Foundation/CoreManager.h"
 #include "../../Presentation/SettingManager.h"
+#include "TransitionManager.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -315,6 +316,18 @@ namespace Jam::Presentation::Scenes
 			// NEXT STAGE ボタン
 			m_buttonFont(U"NEXT STAGE").drawAt(m_nextStageButton.center() + shadowOffset, shadowColor);
 			m_buttonFont(U"NEXT STAGE").drawAt(m_nextStageButton.center(), Palette::White);
+		}
+
+		void drawFadeIn(double t) const override
+		{
+			draw();
+			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeIn(t);
+		}
+
+		void drawFadeOut(double t) const override
+		{
+			draw();
+			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeOut(t);
 		}
 	};
 }
