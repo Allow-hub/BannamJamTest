@@ -24,7 +24,25 @@ namespace Jam::Domain::Enemy
 
 		void onAIEvent(EnemyAIEvent e) override;
 
+	protected:
+		void onAttackEnter() override;
+		void onAttackUpdate(double deltaTime) override;
+		void onAttackExit() override;
+
 	private:
 		double m_patrolTimer = 0.0;
+		// 飛びかかりの撃力
+		double pounceHorizonalImpulse = 15000.0;
+		double pounceVerticalImpulse = 15000.0;
+		bool m_attacked = false;
+		// 着地してからの時間を計るタイマー
+		double loadingWaitTime = 0.2;
+		double m_landedTimer = 0.0; 
+		bool m_isLanding = false;
+		// 攻撃後のクールダウンタイマー
+		double m_attackCooldownTimer = 0.0;
+		// クールダウン時間（例: 1.0秒）
+		static constexpr double ATTACK_COOLDOWN_TIME = 1.0;
+		bool m_attackCanceled = false;
 	};
 }
