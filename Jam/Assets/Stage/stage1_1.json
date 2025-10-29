@@ -1,473 +1,395 @@
 ﻿{
-    "_comment": "Stage1�̃I�u�W�F�N�g�̔z�u",
-    "_�g����": {
-        "rect": "[x, y, width, height] �`���̔z��ňʒu�ƃT�C�Y��w�肵�܂��B",
-        "type": "�����蔻��̎�ނ�w�肵�܂��Bsolid(�ǁE��), move(������)",
-        "groundSide": "�n�㔻���t����ʂ�w�肵�܂��B�ȗ�����'up'(��ʂ̂�)�Ball(�S��), none(����Ȃ�)�Ȃǂ�w��\�B",
-        "metadata": "���ʗp�̔C�ӕ�����(�X�N���v�g��C�x���g�Ŏg�p)�B"
-    },
-    "objects": [
-        {
-            "rect": [ -100, 50, 300, 3000 ],
-            "type": "solid",
-            "metadata": "�����n�_"
-        },
-        {
-            "rect": [ 550, -650, 50, 50 ],
-            "type": "solid",
-            "groundSide": "All",
-            "metadata": "�W���C���g01"
-        },
-        {
-            "rect": [ 1250, -650, 50, 50 ],
-            "type": "solid",
-            "groundSide": "All",
-            "metadata": "�W���C���g02"
-        },
-        {
-            "rect": [ -100, -1500, 2300, 850 ],
-            "type": "solid",
-            "metadata": "�V��01"
-        },
-        {
-            "rect": [ 200, 75, 200, 3000 ],
-            "type": "solid",
-            "metadata": "�����n�_�t�ߑ���"
-        },
-        {
-            "rect": [ 1650, -150, 300, 150 ],
-            "type": "solid",
-            "metadata": "�Ί�01"
-        },
-        {
-            "rect": [ 1950, -300, 300, 3000 ],
-            "type": "solid",
-            "metadata": "�Ί�02"
-        },
-        {
-            "rect": [ 2500, -900, 300, 1350 ],
-            "type": "solid",
-            "metadata": "�W���C���g�ד��E��"
-        },
-        {
-            "rect": [ 2800, 900, 250, 900 ],
-            "type": "solid",
-            "metadata": "�_���[�W���̑Ί�"
-        },
-        {
-            "rect": [ 2250, 900, 250, 950 ],
-            "type": "solid",
-            "metadata": "�_���[�W��"
-        },
-        {
-            "rect": [ 3150, 750, 100, 100 ],
-            "type": "solid",
-            "metadata": "�~�j��01"
-        },
-        {
-            "rect": [ 3850, 750, 100, 100 ],
-            "type": "solid",
-            "metadata": "�~�j��02"
-        },
-        {
-            "rect": [ 3850, 750, 100, 100 ],
-            "type": "solid",
-            "metadata": "�~�j��02"
-        },
-        {
-            "rect": [ 3300, 400, 100, 65 ],
-            "type": "solid",
-            "metadata": "�~�j��03"
-        },
-        {
-            "rect": [ 4000, 600, 100, 100 ],
-            "type": "solid",
-            "metadata": "�~�j��04"
-        },
-        {
-            "rect": [ 3800, 200, 100, 65 ],
-            "type": "solid",
-            "metadata": "�~�j��05"
-        },
-        {
-            "rect": [ 4000, -100, 100, 65 ],
-            "type": "solid",
-            "metadata": "�~�j��05"
-        },
-        {
-            "rect": [ 3350, 0, 100, 65 ],
-            "type": "solid",
-            "metadata": "�~�j��06"
-        },
-        {
-            "rect": [ 2700, 5, 250, 50 ],
-            "type": "solid",
-            "metadata": "�~�j��07"
-        },
-        {
-            "rect": [ 2600, 450, 100, 200 ],
-            "type": "solid",
-            "metadata": "�~�j��07"
-        },
-        {
-            "rect": [ 3100, -500, 1050, 100 ],
-            "type": "solid",
-            "metadata": "�~�j����"
-        },
-        {
-            "rect": [ 3400, -600, 100, 50 ],
-            "type": "solid",
-            "metadata": "�~�j��01"
-        },
-        {
-            "rect": [ 3700, -800, 50, 150 ],
-            "type": "solid",
-            "metadata": "�~�j��02"
-        },
-        {
-            "rect": [ 4000, -650, 200, 50 ],
-            "type": "solid",
-            "metadata": "�~�j��02"
-        },
-        {
-            "rect": [ 2800, -900, 1700, 50 ],
-            "type": "solid",
-            "metadata": "�V��"
-        },
-        {
-            "rect": [ 4450, -400, 1650, 50 ],
-            "type": "solid",
-            "metadata": "�V��"
-        },
-        {
-            "rect": [ 5500, -1500, 50, 900 ],
-            "type": "solid",
-            "metadata": "�_���[�W���n�_�n�܂��"
-        },
-        {
-            "rect": [ 5100, 300, 50, 200 ],
-            "type": "solid",
-            "metadata": "�_���[�W���ז���01"
-        },
-        {
-            "rect": [ 5500, 500, 50, 150 ],
-            "type": "solid",
-            "metadata": "�_���[�W���ז���02"
-        },
-        {
-            "rect": [ 5350, 1000, 50, 150 ],
-            "type": "solid",
-            "metadata": "�_���[�W���ז���03"
-        },
-        {
-            "rect": [ 4450, -950, 100, 700 ],
-            "type": "solid",
-            "metadata": "�ד��̕�01"
-        },
-        {
-            "rect": [ 4150, 0, 400, 2500 ],
-            "type": "solid",
-            "metadata": "�~�j���n�яI���̏�"
-        },
-        {
-            "rect": [ 4150, -500, 100, 550 ],
-            "type": "solid",
-            "metadata": "�ד��̕�02"
-        },
-        {
-            "rect": [ 4550, 150, 1350, 50 ],
-            "type": "solid",
-            "metadata": "�_���[�W��02"
-        },
-        {
-            "rect": [ 6100, -200, 450, 1400 ],
-            "type": "solid",
-            "metadata": "�_���[�W���n�щE�̕�"
-        },
-        {
-            "rect": [ 4850, 800, 1550, 50 ],
-            "type": "solid",
-            "metadata": "�_���[�W��03"
-        },
-        {
-            "rect": [ 4150, 1350, 1550, 3000 ],
-            "type": "solid",
-            "metadata": "�_���[�W��04"
-        },
-        {
-            "rect": [ 6000, 1500, 550, 900 ],
-            "type": "solid",
-            "metadata": "�_���[�W���I���̏�"
-        },
-        {
-            "rect": [ 7750, -450, 100, 2500 ],
-            "type": "solid",
-            "metadata": "�L���̌��Ђ̕�"
-        },
-        {
-            "rect": [ 7000, 900, 300, 65 ],
-            "type": "solid",
-            "metadata": "�e�N�j�b�N��01"
-        },
-        {
-            "rect": [ 7850, -200, 300, 65 ],
-            "type": "solid",
-            "metadata": "�A�f�B�V���i���]�[�����߂̏�"
-        },
-        {
-            "rect": [ 7850, 400, 300, 65 ],
-            "type": "solid",
-            "metadata": "�A�f�B�V���i���]�[�����߂̏�"
-        },
-        {
-            "rect": [ 8200, 150, 300, 65 ],
-            "type": "solid",
-            "metadata": "�A�f�B�V���i���]�[�����߂̏�"
-        },
-        {
-            "rect": [ 8100, 1000, 300, 100 ],
-            "type": "solid",
-            "metadata": "�A�f�B�V���i���]�[�����߂̏�"
-        },
-        {
-            "rect": [ 7950, -350, 50, 50 ],
-            "type": "solid",
-            "metadata": "�K�i01_03"
-        },
-        {
-            "rect": [ 7850, -450, 50, 50 ],
-            "type": "solid",
-            "metadata": "�K�i01_01"
-        },
-        {
-            "rect": [ 7900, -400, 50, 50 ],
-            "type": "solid",
-            "metadata": "�K�i01_02"
-        },
-        {
-            "rect": [ 8000, -300, 50, 50 ],
-            "type": "solid",
-            "metadata": "�K�i01_04"
-        },
-        {
-            "rect": [ 8050, -250, 50, 50 ],
-            "type": "solid",
-            "metadata": "�K�i01_05"
-        },
-        {
-            "rect": [ 8450, -100, 50, 50 ],
-            "type": "solid",
-            "metadata": "�K�i02_01"
-        },
-        {
-            "rect": [ 8400, -50, 50, 50 ],
-            "type": "solid",
-            "metadata": "�K�i_02_02"
-        },
-        {
-            "rect": [ 8350, 0, 50, 50 ],
-            "type": "solid",
-            "metadata": "�K�i02_03"
-        },
-        {
-            "rect": [ 8300, 50, 50, 50 ],
-            "type": "solid",
-            "metadata": "�K�i02_04"
-        },
-        {
-            "rect": [ 8250, 100, 50, 50 ],
-            "type": "solid",
-            "metadata": "�K�i02_05"
-        },
-        {
-            "rect": [ 7950, 250, 50, 50 ],
-            "type": "solid",
-            "metadata": "�K�i03_03"
-        },
-        {
-            "rect": [ 7850, 150, 50, 50 ],
-            "type": "solid",
-            "metadata": "�K�i03_01"
-        },
-        {
-            "rect": [ 7900, 200, 50, 50 ],
-            "type": "solid",
-            "metadata": "�K�i03_02"
-        },
-        {
-            "rect": [ 8000, 300, 50, 50 ],
-            "type": "solid",
-            "metadata": "�K�i03_04"
-        },
-        {
-            "rect": [ 8050, 350, 50, 50 ],
-            "type": "solid",
-            "metadata": "�K�i03_05"
-        },
-        {
-            "rect": [ 9100, -600, 50, 200 ],
-            "type": "solid",
-            "metadata": "�A�f�B�V���i���]�[�����߂̏�"
-        },
-        {
-            "rect": [ 8900, -600, 200, 50 ],
-            "type": "solid",
-            "metadata": "���01"
-        },
-        {
-            "rect": [ 8550, -200, 200, 50 ],
-            "type": "solid",
-            "metadata": "���02"
-        },
-        {
-            "rect": [ 8900, 200, 200, 50 ],
-            "type": "solid",
-            "metadata": "���03"
-        },
-        {
-            "rect": [ 8550, 600, 200, 50 ],
-            "type": "solid",
-            "metadata": "���04"
-        },
-        {
-            "rect": [ 7000, 0, 300, 250 ],
-            "type": "solid",
-            "metadata": "�e�N�j�b�N��02"
-        },
-        {
-            "rect": [ 9100, -400, 300, 765 ],
-            "type": "solid",
-            "metadata": "�e�N�j�b�N�̉E��"
-        },
-        {
-            "rect": [ 9400, 0, 400, 365 ],
-            "type": "solid",
-            "metadata": "�e�N�j�b�N�̉E��"
-        },
-        {
-            "rect": [ 6100, -1400, 4500, 500 ],
-            "type": "solid",
-            "metadata": "�V��"
-        },
-        {
-            "rect": [ 10000, -900, 2200, 500 ],
-            "type": "solid",
-            "metadata": "�V��"
-        },
-        {
-            "rect": [ 9800, 50, 2400, 315 ],
-            "type": "solid",
-            "metadata": "�_���[�W��05"
-        },
-        {
-            "rect": [ 12200, -700, 300, 65 ],
-            "type": "solid",
-            "metadata": "�񕜃A�C�e���V��"
-        },
-        {
-            "rect": [ 10800, 835, 1300, 65 ],
-            "type": "solid",
-            "metadata": "�_���[�W��06"
-        },
-        {
-            "rect": [ 12500, -700, 800, 1800 ],
-            "type": "solid",
-            "metadata": "�����т̉E��"
-        },
-        {
-            "rect": [ 12100, 800, 600, 100 ],
-            "type": "solid",
-            "metadata": "�_���[�W�����ޏ�01"
-        },
-        {
-            "rect": [ 10500, 800, 300, 100 ],
-            "type": "solid",
-            "metadata": "�_���[�W�����ޏ�02"
-        },
-        {
-            "rect": [ 11500, 365, 150, 50 ],
-            "type": "solid",
-            "metadata": "�W���C���g02"
-        },
-        {
-            "rect": [ 10200, 365, 50, 50 ],
-            "type": "solid",
-            "metadata": "�W���C���g02"
-        },
-        {
-            "rect": [ 9100, 345, 200, 2000 ],
-            "type": "solid",
-            "metadata": "�����э����Е�"
-        },
-        {
-            "rect": [ 10900, 1600, 100, 100 ],
-            "type": "solid",
-            "metadata": "�󒆑���01"
-        },
-        {
-            "rect": [ 9300, 1500, 300, 900 ],
-            "type": "solid",
-            "metadata": "�󒆑���02"
-        },
-        {
-            "rect": [ 12000, 1200, 150, 150 ],
-            "type": "solid",
-            "metadata": "�󒆑���03"
-        },
-        {
-            "rect": [ 12500, -500, 5500, 500 ],
-            "type": "solid",
-            "metadata": "�����т̉E��"
-        },
-        {
-            "rect": [ -600, -1000, 500, 5300 ],
-            "type": "solid",
-            "metadata": "�X�^�[�g�n�_�̒["
-        },
-        {
-            "rect": [ 2200, -950, 500, 50 ],
-            "type": "solid",
-            "metadata": "�V��01"
-        },
-        {
-            "rect": [ 12500, 1600, 800, 2500 ],
-            "type": "solid",
-            "metadata": "�S�[���n�_"
-        },
-        {
-            "rect": [ 13300, -1600, 800, 3500 ],
-            "type": "solid",
-            "metadata": "�L���̌��Ђ̕�"
-        },
-        {
-            "rect": [ 7125, -300, 50, 50 ],
-            "type": "solid",
-            "metadata": "�e�N�j�b�N�W���C���g01"
-        },
-        {
-            "rect": [ 6100, -1000, 150, 800 ],
-            "type": "solid",
-            "metadata": "�L���̂������"
-        },
-        {
-            "rect": [ 6450, -700, 100, 500 ],
-            "type": "solid",
-            "metadata": "�L���̂�����������"
-        },
-        {
-            "rect": [ 7125, -750, 50, 50 ],
-            "type": "solid",
-            "metadata": "�e�N�j�b�N�W���C���g02"
-        },
-        {
-            "rect": [ 8500, -900, 50, 1600 ],
-            "type": "solid",
-            "metadata": "�����э����Е�"
-        },
-        {
-            "rect": [ 9300, 350, 300, 900 ],
-            "type": "solid",
-            "metadata": "�����э����Е�"
-        }
+  "_comment": "Stage1のオブジェクトの配置",
+  "_使い方": {
+    "rect": "[x, y, width, height] 形式の配列で位置とサイズを指定します。",
+    "type": "当たり判定の種類を指定します。solid(壁・床), move(動く床)",
+    "groundSide": "地上判定を付ける面を指定します。省略時は'up'(上面のみ)。all(全面), none(判定なし)なども指定可能。",
+    "metadata": "識別用の任意文字列(スクリプトやイベントで使用)。"
+  },
+  "stageSettings": {
+    "respawnPosition": [ 50, -5 ],
+    "fallLimitY": 2000.0,
+    "flagmentMemoryPositions": [
+      [ 200, -100 ],
+      [ 800, -300 ],
+      [ 1300, -250 ]
     ]
+  },
+  "objects": [
+    {
+      "rect": [ -100, 50, 2600, 3000 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "初期地点"
+    },
+    {
+      "rect": [ 900, -50, 1600, 100 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "初期段差01"
+    },
+    {
+      "rect": [ -200, -3000, 100, 5000 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "初期段差01"
+    },
+    {
+      "rect": [ 1500, -150, 1000, 100 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "初期段差02"
+    },
+    {
+      "rect": [ 3200, -150, 500, 3000 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "初期エリア対岸"
+    },
+    {
+      "rect": [ 2700, -700, 300, 50 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "ジョイント01"
+    },
+    {
+      "rect": [ 3700, 200, 1700, 200 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "対岸下床"
+    },
+    {
+      "rect": [ 4500, -1500, 500, 1400 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "圧迫壁"
+    },
+    {
+      "rect": [ 5400, 300, 500, 200 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "ただの床01"
+    },
+    {
+      "rect": [ 5800, -400, 300, 100 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "空中足場01"
+    },
+    {
+      "rect": [ 5700, 500, 1000, 100 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "ただの床03"
+    },
+    {
+      "rect": [ 7100, -600, 300, 100 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "空中足場02"
+    },
+    {
+      "rect": [ 7100, 400, 300, 100 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "空中足場02"
+    },
+    {
+      "rect": [ 7200, 0, 300, 30 ],
+      "type": "move",
+      "groundSide": "oneway",
+      "movementType": "circular",
+      "movementDistance": 250.0,
+      "movementSpeed": 100.0,
+      "loopMovement": true,
+      "metadata": "回転床01"
+    },
+    {
+      "rect": [ 6500, -500, 300, 30 ],
+      "type": "move",
+      "groundSide": "oneway",
+      "movementType": "circular",
+      "movementDistance": 250.0,
+      "movementSpeed": 100.0,
+      "loopMovement": true,
+      "metadata": "回転床01"
+    },
+    {
+      "rect": [ 5200, -150, 300, 30 ],
+      "type": "move",
+      "groundSide": "oneway",
+      "movementType": "circular",
+      "movementDistance": 200.0,
+      "movementSpeed": 100.0,
+      "loopMovement": true,
+      "metadata": "回転床01"
+    },
+    {
+      "rect": [ 7800, 0, 300, 3000 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "ジャンプ床01"
+    },
+    {
+      "rect": [ 8900, 0, 300, 300 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "ジャンプ床02上"
+    },
+    {
+      "rect": [ 8900, 700, 300, 3000 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "ジャンプ床02下"
+    },
+    {
+      "rect": [ 8350, -600, 300, 50 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "ジョイント01"
+    },
+    {
+      "rect": [ 9300, -1500, 300, 1000 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "ジョイント01"
+    },
+    {
+      "rect": [ 9700, 0, 300, 3000 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "ジャンプ床02下"
+    },
+    {
+      "rect": [ 10000, 150, 2400, 3000 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "対岸02"
+    },
+    {
+      "rect": [ 11600, -100, 200, 30 ],
+      "type": "move",
+      "groundSide": "oneway",
+      "movementType": "circular",
+      "movementDistance": 100.0,
+      "movementSpeed": 100.0,
+      "loopMovement": true,
+      "metadata": "回転床01"
+    },
+    {
+      "rect": [ 10900, -400, 200, 30 ],
+      "type": "move",
+      "groundSide": "oneway",
+      "movementType": "circular",
+      "movementDistance": -200.0,
+      "movementSpeed": 100.0,
+      "loopMovement": true,
+      "metadata": "回転床02"
+    },
+    {
+      "rect": [ 10600, -450, 200, 30 ],
+      "type": "move",
+      "groundSide": "oneway",
+      "movementType": "circular",
+      "movementDistance": 200.0,
+      "movementSpeed": 100.0,
+      "loopMovement": true,
+      "metadata": "回転床01"
+    },
+    {
+      "rect": [ 12000, -380, 200, 30 ],
+      "type": "move",
+      "groundSide": "oneway",
+      "movementType": "circular",
+      "movementDistance": -300.0,
+      "movementSpeed": 100.0,
+      "loopMovement": true,
+      "metadata": "回転床02"
+    },
+    {
+      "rect": [ 12300, -800, 200, 50 ],
+      "type": "oneway",
+      "metadata": "ジョイント01"
+    },
+    {
+      "rect": [ 12800, 300, 300, 500 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "ジャンプ床02下"
+    },
+    {
+      "rect": [ 12900, -3500, 1500, 3000 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "ジャンプ床02下"
+    },
+    {
+      "rect": [ 12600, -800, 300, 100 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "大壁"
+    },
+    {
+      "rect": [ 13500, -500, 600, 300 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "ジャンプ床02下"
+    },
+    {
+      "rect": [ 14100, -1200, 800, 1150 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "ジャンプ床02下"
+    },
+    {
+      "rect": [ 14200, 900, 300, 3000 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "ジャンプ床02下"
+    },
+    {
+      "rect": [ 14900, -300, 500, 800 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "ジャンプ床02下"
+    },
+    {
+      "rect": [ 14900, 1200, 1200, 100 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "でっぱり壁"
+    },
+    {
+      "rect": [ 15400, 300, 200, 100 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "ジャンプ床02下"
+    },
+    {
+      "rect": [ 15400, -300, 200, 100 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "ジャンプ床02下"
+    },
+    {
+      "rect": [ 15700, 0, 200, 100 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "ジャンプ床02下"
+    },
+    {
+      "rect": [ 14900, 800, 1200, 100 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "ジャンプ床02下"
+    },
+    {
+      "rect": [ 16300, 1300, 1200, 100 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "ジャンプ床02下"
+    },
+    {
+      "rect": [ 13500, 400, 300, 200 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "でっぱり壁"
+    },
+    {
+      "rect": [ 15900, -800, 1300, 1300 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "登り壁"
+    },
+    {
+      "rect": [ 17200, -800, 300, 1500 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "登り壁"
+    },
+    {
+      "rect": [ 17500, -800, 2500, 300 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "登り壁"
+    },
+    {
+      "rect": [ 19100, 800, 2500, 600 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "登り壁"
+    },
+    {
+      "rect": [ 18700, 1200, 400, 30 ],
+      "type": "oneway",
+      "metadata": "すり抜け床010"
+    },
+    {
+      "rect": [ 18700, 1000, 400, 30 ],
+      "type": "oneway",
+      "metadata": "すり抜け床010"
+    },
+    {
+      "rect": [ 18700, 800, 400, 30 ],
+      "type": "oneway",
+      "metadata": "すり抜け床010"
+    },
+    {
+      "rect": [ 18500, 1400, 600, 3000 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "登り壁"
+    },
+    {
+      "rect": [ 18000, 600, 200, 200 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "登り壁"
+    },
+    {
+      "rect": [ 15300, -1100, 100, 800 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "登り壁"
+    },
+    {
+      "rect": [ 15300, -900, 800, 100 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "登り壁"
+    },
+    {
+      "rect": [ 16000, -1400, 800, 100 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "登り壁"
+    },
+    {
+      "rect": [ 16000, -1400, 800, 100 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "登り壁"
+    },
+    {
+      "rect": [ 21000, -1400, 100, 2800 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "ゴール壁"
+    },
+    {
+      "rect": [ 19500, 600, 300, 200 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "登り壁"
+    },
+    {
+      "rect": [ 19900, 200, 300, 300 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "登り壁"
+    }
+
+
+
+  ]
 }

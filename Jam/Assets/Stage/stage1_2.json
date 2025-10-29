@@ -6,20 +6,49 @@
     "groundSide": "地上判定を付ける面を指定します。省略時は'up'(上面のみ)。all(全面), none(判定なし)なども指定可能。",
     "metadata": "識別用の任意文字列(スクリプトやイベントで使用)。"
   },
+  "stageSettings": {
+    "respawnPosition": [ 50, -5 ],
+    "fallLimitY": 2000.0,
+    "flagmentMemoryPositions": [
+      [ 200, -100 ],
+      [ 800, -300 ],
+      [ 1300, -250 ]
+    ]
+  },
   "objects": [
     {
       "rect": [ -100, 50, 300, 3000 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "初期地点"
+    },
+    {
+      "rect": [ 550, -650, 100, 50 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "ジョイント01"
+    },
+    {
+      "rect": [ 1250, -650, 100, 50 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "ジョイント02"
+    },
+    {
+      "rect": [ -100, -1500, 2400, 850 ],
+      "type": "solid",
+      "metadata": "天井01"
     },
     {
       "rect": [ 200, 75, 200, 3000 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "初期地点付近足場"
     },
     {
       "rect": [ 1650, -150, 300, 150 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "対岸01"
     },
     {
@@ -45,6 +74,7 @@
     {
       "rect": [ 3150, 750, 100, 100 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "ミニ床01"
     },
     {
@@ -55,21 +85,25 @@
     {
       "rect": [ 3850, 750, 100, 100 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "ミニ床02"
     },
     {
-      "rect": [ 3300, 400, 100, 65 ],
+      "rect": [ 3400, 400, 100, 65 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "ミニ床03"
     },
     {
       "rect": [ 4000, 600, 100, 100 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "ミニ床04"
     },
     {
       "rect": [ 3800, 200, 100, 65 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "ミニ床05"
     },
     {
@@ -80,15 +114,11 @@
     {
       "rect": [ 3350, 0, 100, 65 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "ミニ床06"
     },
     {
       "rect": [ 2700, 5, 250, 50 ],
-      "type": "solid",
-      "metadata": "ミニ床07"
-    },
-    {
-      "rect": [ 2600, 450, 100, 200 ],
       "type": "solid",
       "metadata": "ミニ床07"
     },
@@ -100,21 +130,25 @@
     {
       "rect": [ 3400, -600, 100, 50 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "ミニ壁01"
     },
     {
       "rect": [ 3700, -800, 50, 150 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "ミニ壁02"
     },
     {
       "rect": [ 4000, -650, 200, 50 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "ミニ壁02"
     },
     {
-      "rect": [ 2800, -900, 1700, 50 ],
+      "rect": [ 2800, -900, 1650, 50 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "天井"
     },
     {
@@ -130,16 +164,19 @@
     {
       "rect": [ 5100, 300, 50, 200 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "ダメージ床邪魔壁01"
     },
     {
       "rect": [ 5500, 500, 50, 150 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "ダメージ床邪魔壁02"
     },
     {
-      "rect": [ 5350, 1000, 50, 150 ],
+      "rect": [ 5350, 1100, 50, 150 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "ダメージ床邪魔壁03"
     },
     {
@@ -190,6 +227,7 @@
     {
       "rect": [ 7000, 900, 300, 65 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "テクニック床01"
     },
     {
@@ -288,6 +326,16 @@
       "metadata": "階段03_05"
     },
     {
+      "rect": [ 8250, 550, 200, 50 ],
+      "type": "move",
+      "groundSide": "top",
+      "movementType": "vertical",
+      "movementSpeed": 150,
+      "movementDistance": 250,
+      "loopMovement": true,
+      "metadata": "移動床06"
+    },
+    {
       "rect": [ 9100, -600, 50, 200 ],
       "type": "solid",
       "metadata": "アディショナルゾーン初めの床"
@@ -295,26 +343,31 @@
     {
       "rect": [ 8900, -600, 200, 50 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "上上01"
     },
     {
       "rect": [ 8550, -200, 200, 50 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "上上02"
     },
     {
       "rect": [ 8900, 200, 200, 50 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "上上03"
     },
     {
       "rect": [ 8550, 600, 200, 50 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "上上04"
     },
     {
       "rect": [ 7000, 0, 300, 250 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "テクニック床02"
     },
     {
@@ -345,6 +398,7 @@
     {
       "rect": [ 12200, -700, 300, 65 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "回復アイテム天井"
     },
     {
@@ -370,11 +424,13 @@
     {
       "rect": [ 11500, 365, 150, 50 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "ジョイント02"
     },
     {
-      "rect": [ 10200, 365, 50, 50 ],
+      "rect": [ 10200, 365, 150, 50 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "ジョイント02"
     },
     {
@@ -385,16 +441,19 @@
     {
       "rect": [ 10900, 1600, 100, 100 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "空中足場01"
     },
     {
       "rect": [ 9300, 1500, 300, 900 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "空中足場02"
     },
     {
       "rect": [ 12000, 1200, 150, 150 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "空中足場03"
     },
     {
@@ -415,6 +474,7 @@
     {
       "rect": [ 12500, 1600, 800, 2500 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "ゴール地点"
     },
     {
@@ -425,6 +485,7 @@
     {
       "rect": [ 7125, -300, 50, 50 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "テクニックジョイント01"
     },
     {
@@ -440,6 +501,7 @@
     {
       "rect": [ 7125, -750, 50, 50 ],
       "type": "solid",
+      "groundSide": "All",
       "metadata": "テクニックジョイント02"
     },
     {
@@ -451,6 +513,168 @@
       "rect": [ 9300, 350, 300, 900 ],
       "type": "solid",
       "metadata": "幅跳び左欠片壁"
+    },
+    {
+      "rect": [ 6300, -550, 100, 30 ],
+      "type": "oneway",
+      "metadata": "すり抜け床01"
+    },
+    {
+      "rect": [ 6300, -350, 100, 30 ],
+      "type": "oneway",
+      "metadata": "すり抜け床01"
+    },
+    {
+      "rect": [ 2850, -400, 100, 30 ],
+      "type": "oneway",
+      "metadata": "すり抜け床02"
+    },
+    {
+      "rect": [ 2850, -200, 100, 30 ],
+      "type": "oneway",
+      "metadata": "すり抜け床03"
+    },
+    {
+      "rect": [ 4750, 0, 200, 30 ],
+      "type": "move",
+      "groundSide": "All",
+      "movementType": "horizontal",
+      "movementSpeed": 100.0,
+      "movementDistance": 850.0,
+      "loopMovement": true,
+      "metadata": "移動床"
+    },
+    {
+      "rect": [ 5950, 200, 100, 30 ],
+      "type": "oneway",
+      "metadata": "すり抜け床04"
+    },
+    {
+      "rect": [ 5950, 500, 100, 30 ],
+      "type": "oneway",
+      "metadata": "すり抜け床05"
+    },
+    {
+      "rect": [ 5950, 350, 100, 30 ],
+      "type": "oneway",
+      "metadata": "すり抜け床05"
+    },
+    {
+      "rect": [ 5950, 650, 200, 200 ],
+      "type": "All",
+      "metadata": "すり抜け床06"
+    },
+    {
+      "rect": [ 4750, 680, 300, 30 ],
+      "type": "move",
+      "groundSide": "All",
+      "movementType": "horizontal",
+      "movementSpeed": 100.0,
+      "movementDistance": 850.0,
+      "loopMovement": true,
+      "metadata": "移動床01"
+    },
+    {
+      "rect": [ 4750, 1250, 300, 30 ],
+      "type": "move",
+      "groundSide": "All",
+      "movementType": "horizontal",
+      "movementSpeed": 100.0,
+      "movementDistance": 850.0,
+      "loopMovement": true,
+      "metadata": "移動床02"
+    },
+    {
+      "rect": [ 4600, 800, 200, 20 ],
+      "type": "oneway",
+      "metadata": "すり抜け床07"
+    },
+    {
+      "rect": [ 4600, 1000, 200, 30 ],
+      "type": "oneway",
+      "metadata": "すり抜け床08"
+    },
+    {
+      "rect": [ 4600, 1300, 300, 50 ],
+      "type": "solid",
+      "metadata": "ダメージ床救済足場"
+    },
+    {
+      "rect": [ 12250, 300, 200, 30 ],
+      "type": "oneway",
+      "metadata": "すり抜け床09"
+    },
+    {
+      "rect": [ 12250, 500, 200, 30 ],
+      "type": "oneway",
+      "metadata": "すり抜け床010"
+    },
+    {
+      "rect": [ 9800, -100, 300, 30 ],
+      "type": "move",
+      "groundSide": "All",
+      "movementType": "horizontal",
+      "movementSpeed": 100.0,
+      "movementDistance": 850.0,
+      "loopMovement": true,
+      "metadata": "移動床03"
+    },
+    {
+      "rect": [ 11500, -100, 300, 30 ],
+      "type": "move",
+      "groundSide": "All",
+      "movementType": "horizontal",
+      "movementSpeed": 100.0,
+      "movementDistance": 650.0,
+      "loopMovement": true,
+      "metadata": "移動床04"
+    },
+    {
+      "rect": [ 10500, -100, 300, 30 ],
+      "type": "move",
+      "groundSide": "All",
+      "movementType": "horizontal",
+      "movementSpeed": 100.0,
+      "movementDistance": 850.0,
+      "loopMovement": true,
+      "metadata": "移動床05"
+    },
+    {
+      "rect": [ 9800, 400, 200, 200 ],
+      "type": "move",
+      "groundSide": "top",
+      "movementType": "vertical",
+      "movementSpeed": 150,
+      "movementDistance": 850,
+      "loopMovement": true,
+      "metadata": "移動床06"
+    },
+    {
+      "rect": [ 10200, 800, 200, 200 ],
+      "type": "solid",
+      "groundSide": "All",
+      "metadata": "空中足場"
+    },
+    {
+      "rect": [ 10000, 1300, 300, 100 ],
+      "type": "move",
+      "groundSide": "All",
+      "movementType": "horizontal",
+      "movementSpeed": 100.0,
+      "movementDistance": 850.0,
+      "loopMovement": true,
+      "metadata": "移動床05"
+    },
+    {
+      "rect": [ 2350, -700, 100, 100 ],
+      "type": "move",
+      "groundSide": "top",
+      "movementType": "vertical",
+      "movementSpeed": 100,
+      "movementDistance": 1450,
+      "loopMovement": true,
+      "metadata": "移動床06"
     }
+
   ]
 }
