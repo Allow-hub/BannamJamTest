@@ -12,9 +12,9 @@ namespace Jam::Presentation::Scenes
 	{
 	private:
 		// --- メンバ変数の宣言 ---
-		bool m_isClear;//クリアしたかどうか
-		int m_flagmentAmount; //現在のステージでゲットした記憶のかけら
-		int m_maxFlagment;//最大の記憶のかけら
+		bool m_isClear;
+		int m_flagmentAmount;
+		int m_maxFlagment;
 		unsigned int m_time;
 
 		// --- フォント ---
@@ -32,6 +32,7 @@ namespace Jam::Presentation::Scenes
 		Texture m_titleTime;
 		Texture m_titleKill;
 		Texture m_titleGameOver;
+		Texture m_titleClear;
 
 		// --- カスタムボタン用の Rect ---
 		Rect m_retryButton;
@@ -42,7 +43,7 @@ namespace Jam::Presentation::Scenes
 		double m_mapBarWidth = 0.0;
 		double m_nextStageBarWidth = 0.0;
 
-		const Color m_statColor = Color(0x94, 0xC6, 0xFF);
+		const Color m_statColor = Color(164, 179, 255);
 
 	public:
 		// コンストラクタ
@@ -58,18 +59,29 @@ namespace Jam::Presentation::Scenes
 			// --- フォントの読み込み ---
 			m_titleFont = Font(100, Typeface::Heavy);
 			m_statLabelFont = Font(30, Typeface::Bold);
-			m_statValueFont = Font(60, Typeface::Bold);
 
-			m_statValueFont = Font(150, U"../Assets/Font/PixelMplus12-Bold.ttf");
+			m_statValueFont = Font(130, U"../Assets/Font/PixelMplus12-Bold.ttf");
+			if (not m_statValueFont)
+			{
+				Print(U"Error: StatValueFont 'PixelMplus12-Bold.ttf' not found. Using default.");
+				m_statValueFont = Font(130, Typeface::Bold);
+			}
+
 			const int32 mainFontSize = static_cast<int32>(Scene::Height() * 0.07);
 			m_buttonFont = Font(mainFontSize, U"../Assets/Font/PixelMplus12-Bold.ttf");
+			//フォールバック処理を追加
+			if (not m_buttonFont)
+			{
+				Print(U"Error: ButtonFont 'PixelMplus12-Bold.ttf' not found. Using default.");
+				m_buttonFont = Font(mainFontSize, Typeface::Bold);
+			}
 
-			// ★カスタムボタンの座標を初期化
+			// カスタムボタンの座標を初期化
 			const double buttonWidth = 400;
 			const double buttonX = Scene::Center().x - (buttonWidth / 2);
 			const double buttonHeight = 80;
-			const double buttonYBase = 650; 
-			const double buttonMargin = 90; 
+			const double buttonYBase = 650;
+			const double buttonMargin = 90;
 
 			m_retryButton = Rect(static_cast<int32>(buttonX), static_cast<int32>(buttonYBase), static_cast<int32>(buttonWidth), static_cast<int32>(buttonHeight));
 			m_mapButton = Rect(static_cast<int32>(buttonX), static_cast<int32>(buttonYBase + buttonMargin), static_cast<int32>(buttonWidth), static_cast<int32>(buttonHeight));
@@ -84,6 +96,7 @@ namespace Jam::Presentation::Scenes
 			m_iconRisuka = Texture(assetRoot + U"ICON-RISUKA.png");
 			m_iconYumemi = Texture(assetRoot + U"ICON-YUMEMI.png");
 			m_titleGameOver = Texture(assetRoot + U"Result_Game_Over.png");
+			m_titleClear = Texture(assetRoot + U"Result_Crear.png");
 			m_titleMemory = Texture(assetRoot + U"result_title-MEMORY.png");
 			m_titleTime = Texture(assetRoot + U"result_TIME.png");
 			m_titleKill = Texture(assetRoot + U"result_KILL.png");
@@ -94,6 +107,7 @@ namespace Jam::Presentation::Scenes
 			if (not m_iconRisuka) { m_iconRisuka = Texture(U"example/siv3d-kun.png"); }
 			if (not m_iconYumemi) { m_iconYumemi = Texture(U"example/siv3d-kun.png"); }
 			if (not m_titleGameOver) { Print(U"Error: Result_Game_Over.png not found!"); }
+			if (not m_titleClear) { Print(U"Error: Result_Crear.png not found!"); }
 			if (not m_titleMemory) { Print(U"Error: result_title-MEMORY.png not found!"); }
 			if (not m_titleTime) { Print(U"Error: result_TIME.png not found!"); }
 			if (not m_titleKill) { Print(U"Error: result_KILL.png not found!"); }
@@ -165,7 +179,14 @@ namespace Jam::Presentation::Scenes
 
 			if (m_isClear)
 			{
-				m_titleFont(U"CLEAR").drawAt(titleCenter, ColorF(Palette::White));
+				if (m_titleClear)
+				{
+					m_titleClear.drawAt(titleCenter, ColorF(Palette::White));
+				}
+				else
+				{
+					m_titleFont(U"CLEAR").drawAt(titleCenter, ColorF(Palette::White));
+				}
 			}
 			else
 			{
@@ -179,28 +200,45 @@ namespace Jam::Presentation::Scenes
 				}
 			}
 
-			// 3. 統計情報（左側）
+			// 3. 統計情報（左側） 
 			const double leftStatX = 50;
-			const double labelYOffset = -20; // ラベル画像のY座標の微調整用
-			const double statYOffset = 200; // 統計情報全体のY座標オフセット
+			const double labelYOffset = -20;
+			const double statYOffset = 200;
 			const double blockSpacing = 170;
-			const double numberVerticalAdjustment = -20; 
+			const double numberVerticalAdjustment = 20;
 
-			// --- 
-			double currentY = statYOffset + 250; // 最初のブロックのY座標
+			const double numberScaleY = 0.7;
+			const double numberScaleX = 1.0;
+			const Vec2 numberScale = Vec2(numberScaleX, numberScaleY);
+
+			double currentY = statYOffset + 250;
 
 			// FRAGMENTS OF MEMORY
 			if (m_titleMemory) m_titleMemory.draw(leftStatX, currentY + labelYOffset);
-			// ★修正: numberVerticalAdjustment を使用
-			m_statValueFont(U"{}/{}"_fmt(m_flagmentAmount, m_maxFlagment)).draw(leftStatX + 20, currentY + labelYOffset + numberVerticalAdjustment + m_titleMemory.height(), m_statColor);
+
+			{
+				const Vec2 drawPos = Vec2(leftStatX + 20, currentY + labelYOffset + numberVerticalAdjustment + m_titleMemory.height());
+				const Mat3x2 jam_matrix = Mat3x2::Scale(numberScale) * Mat3x2::Translate(drawPos);
+
+				const Transformer2D jam_scaler(jam_matrix);
+
+				m_statValueFont(U"{}/{}"_fmt(m_flagmentAmount, m_maxFlagment)).draw(Vec2(0, 0), m_statColor);
+			}
 
 			// 次のブロックのY座標
 			currentY += blockSpacing;
 
 			// TIME
 			if (m_titleTime) m_titleTime.draw(leftStatX, currentY + labelYOffset);
-			// ★修正: numberVerticalAdjustment を使用
-			m_statValueFont(FormatTime(SecondsF(m_time), U"mm:ss")).draw(leftStatX + 20, currentY + labelYOffset + numberVerticalAdjustment + m_titleTime.height(), m_statColor);
+
+			{
+				const Vec2 drawPos = Vec2(leftStatX + 20, currentY + labelYOffset + numberVerticalAdjustment + m_titleTime.height());
+				const Mat3x2 jam_matrix = Mat3x2::Scale(numberScale) * Mat3x2::Translate(drawPos);
+
+				const Transformer2D jam_scaler(jam_matrix);
+
+				m_statValueFont(FormatTime(SecondsF(m_time), U"mm:ss")).draw(Vec2(0, 0), m_statColor);
+			}
 
 			// 次のブロックのY座標
 			currentY += blockSpacing;
@@ -208,8 +246,16 @@ namespace Jam::Presentation::Scenes
 			// KILL RACIO
 			const int killRacio_demo = 0;
 			if (m_titleKill) m_titleKill.draw(leftStatX, currentY + labelYOffset);
-			// ★修正: numberVerticalAdjustment を使用
-			m_statValueFont(Pad(killRacio_demo, { 3, U'0' })).draw(leftStatX + 20, currentY + labelYOffset + numberVerticalAdjustment + m_titleKill.height(), m_statColor);
+
+			{
+				const Vec2 drawPos = Vec2(leftStatX + 20, currentY + labelYOffset + numberVerticalAdjustment + m_titleKill.height());
+				const Mat3x2 jam_matrix = Mat3x2::Scale(numberScale) * Mat3x2::Translate(drawPos);
+
+				const Transformer2D jam_scaler(jam_matrix);
+
+				m_statValueFont(Pad(killRacio_demo, { 3, U'0' })).draw(Vec2(0, 0), m_statColor);
+			}
+
 			// 4. チャットボックス（右側）
 			const double rightChatX = Scene::Width() - 420;
 			const double rightChatY = 250;
@@ -223,8 +269,7 @@ namespace Jam::Presentation::Scenes
 			RectF(rightChatX + 80, rightChatY + 120, 300, 80).draw(ColorF(0.2)).drawFrame(1, Palette::White);
 
 			// --- 5. ★カスタムボタンの描画 (アニメーション対応) ---
-
-			const ColorF hoverColor = Palette::Magenta;
+			const ColorF hoverColor = ColorF(244.0 / 255.0, 49.0 / 255.0, 89.0 / 255.0, 0.5);
 			const ColorF defaultColor = ColorF(0.0, 0.0);
 
 			// 1. ボタンの背景は常に透明で描画
@@ -257,21 +302,21 @@ namespace Jam::Presentation::Scenes
 				RectF(m_nextStageButton.x, barY, m_nextStageBarWidth, barHeight).draw(hoverColor);
 			}
 
-			// ★ 3. テキストを一番上に描画 (変更なし)
-			const Vec2 shadowOffset = Vec2(2, 5); // X方向に2, Y方向に5ずらす
-			const ColorF shadowColor = ColorF(0, 0, 0, 0.5); // 半透明の黒
+			// ★ 3. テキストを一番上に描画
+			const Vec2 shadowOffset = Vec2(2, 5);
+			const ColorF shadowColor = ColorF(0, 0, 0, 0.5);
 
 			// RETRY ボタン
 			m_buttonFont(U"RETRY").drawAt(m_retryButton.center() + shadowOffset, shadowColor);
-			m_buttonFont(U"RETRY").drawAt(m_retryButton.center(), Palette::White); 
+			m_buttonFont(U"RETRY").drawAt(m_retryButton.center(), Palette::White);
 
 			// MAP ボタン
-			m_buttonFont(U"MAP").drawAt(m_mapButton.center() + shadowOffset, shadowColor); 
-			m_buttonFont(U"MAP").drawAt(m_mapButton.center(), Palette::White); 
+			m_buttonFont(U"MAP").drawAt(m_mapButton.center() + shadowOffset, shadowColor);
+			m_buttonFont(U"MAP").drawAt(m_mapButton.center(), Palette::White);
 
 			// NEXT STAGE ボタン
-			m_buttonFont(U"NEXT STAGE").drawAt(m_nextStageButton.center() + shadowOffset, shadowColor); 
-			m_buttonFont(U"NEXT STAGE").drawAt(m_nextStageButton.center(), Palette::White); 
+			m_buttonFont(U"NEXT STAGE").drawAt(m_nextStageButton.center() + shadowOffset, shadowColor);
+			m_buttonFont(U"NEXT STAGE").drawAt(m_nextStageButton.center(), Palette::White);
 		}
 	};
 }
