@@ -98,6 +98,20 @@ namespace Jam::Domain::Events
 		int32 particleCount = 20;
 	};
 
+	struct MissileSpawnedEvent
+	{
+		Vec2 controlPoint0; // 開始点(ボスの真後ろ)
+		Vec2 controlPoint1; // 制御点1(ボスの上空)
+		Vec2 controlPoint2; // 制御点2(プレイヤーの上空)
+		Vec2 controlPoint3; // 終了点(プレイヤー位置)
+		Jam::Domain::Physics::PhysicsBodyID playerId;
+		Jam::Domain::Physics::PhysicsBodyID bossId;
+		double damage = 10.0;
+		double flightDuration = 3.0;
+		double radius = 15.0;
+		double reflectedSpeed = 500.0;
+	};
+
 	using GameEvent = std::variant<
 		EnemyDamagedEvent,
 		EnemyDefeatedEvent,
@@ -109,7 +123,8 @@ namespace Jam::Domain::Events
 		BossAppearedEvent,
 		ItemCollectedEvent,
 		EnemySpawnedEvent,
-		ExplosionEvent
+		ExplosionEvent,
+		MissileSpawnedEvent
 	>;
 
 

@@ -35,9 +35,9 @@ namespace Jam::Domain::Enemy
 
 		// 攻撃パターンの確率設定
 		m_attackPatterns = {
-			{AttackState::Missile, 0.0f},
+			{AttackState::Missile, 1.0f},
 			{AttackState::SummonClown, 0.0f},
-			{AttackState::Bomb, 1.0f},
+			{AttackState::Bomb, 0.0f},
 			{AttackState::Shockwave,0.0f}
 		};
 
@@ -275,7 +275,39 @@ namespace Jam::Domain::Enemy
 	void Boss1_3::enterMissileAttack()
 	{
 		Print << U"Enter: Missile Attack";
-		// TODO: 初期化処理
+		
+		// PhysicsFactoryを取得してプレイヤーとボスの位置を取得
+		auto physicsFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getPhysicsFactory();
+		auto playerBody = physicsFactory->getBody(m_playerId);
+		
+		if (!playerBody) return;
+
+		Vec2 bossPos = m_body->getPosition();
+		Vec2 playerPos = playerBody->getPosition();
+
+		// ベジェ曲線の制御点を計算
+		// P0: ボスの真後ろ(右後ろ)
+		Vec2 p0 = bossPos + Vec2{ 200, 0 };
+		
+		// P1: ボスのすぐ上
+		Vec2 p1 = bossPos + Vec2{ 200, -400 };
+		
+		// P2: プレイヤーの上空
+		Vec2 p2 = playerPos + Vec2{ 0, -400 };
+		
+		// P3: プレイヤー位置
+		Vec2 p3 = playerPos;
+
+		// MissileSpawnedEventを発行
+		m_eventQueue.push(Events::MissileSpawnedEvent{
+			p0, p1, p2, p3,
+			m_playerId,
+			m_body->getID(),
+			m_status.attackPower,  // ダメージ
+			3.0,                   // 飛行時間(秒)
+			50.0,                  // ミサイルの半径(テスト用に大きく)
+			500.0                  // 反射後の速度
+		});
 	}
 
 	void Boss1_3::updateMissileAttack(double deltaTime)
