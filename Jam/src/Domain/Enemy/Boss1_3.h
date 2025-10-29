@@ -81,7 +81,7 @@ namespace Jam::Domain::Enemy
 		double m_shockJumpForce = 400000.0;
 
 		// ピエロ召喚の設定
-		static constexpr int CLOWN_SPAWN_COUNT = 2;  // 1回あたりの召喚数
+		const int CLOWN_SPAWN_COUNT = 2;  // 1回あたりの召喚数
 
 		bool m_hasAttackEntered;  // 攻撃のEnterが実行されたか
 

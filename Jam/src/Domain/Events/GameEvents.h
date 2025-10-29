@@ -87,7 +87,7 @@ namespace Jam::Domain::Events
 	struct EnemySpawnedEvent
 	{
 		std::shared_ptr<Jam::Domain::Enemy::EnemyBase> enemy;
-		s3d::FilePath animationPath;
+		s3d::FilePath animationPath; // 今後別の敵のアニメーションのパスを指定する場合は、EnemyTypeから適切なパスを返すヘルパー関数を作成すること
 	};
 
 	using GameEvent = std::variant<
