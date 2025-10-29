@@ -108,7 +108,7 @@ namespace Jam::Domain::Events
 		PlayerFallOutEvent,
 		BossAppearedEvent,
 		ItemCollectedEvent,
-		EnemySpawnedEvent
+		EnemySpawnedEvent,
 		ExplosionEvent
 	>;
 
