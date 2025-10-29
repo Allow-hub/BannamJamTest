@@ -33,7 +33,9 @@
 #include "../SettingManager.h"
 #include "../../Domain/FlagmentMemory.h"
 #include "../InGameUIManager.h"
-
+#include "../../Infrastructure/IndependentObjectFactory.h"
+#include "../../UseCase/IndependentObjectService.h";
+#include "../../Presentation/IndependentObjectManager.h";
 
 namespace Jam::Presentation::Scenes
 {
@@ -297,6 +299,10 @@ namespace Jam::Presentation::Scenes
 				m_enemyManager->update(Scene::DeltaTime());
 			}
 
+			//単体オブジェクトの更新
+			Jam::UseCase::IndependentObjectService::update(Scene::DeltaTime());
+
+
 			constexpr double StepTime = 1.0 / 400.0;
 			m_accumulatedTime += Scene::DeltaTime();
 
@@ -386,6 +392,10 @@ namespace Jam::Presentation::Scenes
 				{
 					m_enemyManager->draw();
 				}
+
+				//単体オブジェクトの描画
+				Jam::Presentation::IndependentObjectManager::draw();
+
 				m_effectManager->draw();
 
 				//記憶のかけら
@@ -404,6 +414,7 @@ namespace Jam::Presentation::Scenes
 
 		void nextScene()
 		{
+			Jam::Infrastructure::IndependentObjectFactory::instance().clearAllObjects();
 			resetScene();
 			changeScene(ToSceneString(SceneName::Result));
 		}
@@ -412,6 +423,7 @@ namespace Jam::Presentation::Scenes
 
 		void resetScene()
 		{
+			Jam::Infrastructure::IndependentObjectFactory::instance().clearAllObjects();
 			Jam::UseCase::AttackProcessor::getInstance().reset();
 		}
 

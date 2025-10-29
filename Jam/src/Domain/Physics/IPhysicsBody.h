@@ -35,6 +35,8 @@ namespace Jam::Domain::Physics
 		virtual void setBodyType(Jam::Domain::Physics::PhysicsType type) = 0;
 		virtual void* getNativeBody() { return nullptr; }//継承先のボディを返す
 		virtual void setFilter(Jam::Infrastructure::PhysicsFilter filter) = 0;
+		virtual	void setSleepEnabled(bool b) = 0;
+
 		virtual void addCircleSensor(const s3d::Circle& localPos, const Jam::Infrastructure::PhysicsFilter& filter = {}) = 0;
 		virtual Jam::Domain::Physics::PhysicsBodyID getID() const = 0;
 		virtual std::optional<P2DistanceJoint> createDistanceJoint(

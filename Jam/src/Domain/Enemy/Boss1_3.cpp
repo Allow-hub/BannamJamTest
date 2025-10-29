@@ -2,8 +2,10 @@
 #include "../../Infrastructure/FactoryServiceLocator.h"
 #include "../../Infrastructure/IPhysicsBodyFactory.h"
 #include "../../Infrastructure/PhysicsFilterManager.h"
+#include "../../Infrastructure/IndependentObjectFactory.h"
 #include "../../Foundation/CoroutineUtil.h"
 #include <random>
+#include "Bomb.h"
 
 namespace Jam::Domain::Enemy
 {
@@ -24,7 +26,7 @@ namespace Jam::Domain::Enemy
 		, m_hasAttackEntered(false)
 		, m_missileAttackDuration(3.0)
 		, m_summonClownDuration(2.0)
-		, m_bombAttackDuration(1.5)
+		, m_bombAttackDuration(4.5)
 		, m_shockWaveDuration(5.0)
 		, m_coreOffset(-70, 15)
 	{
@@ -34,8 +36,8 @@ namespace Jam::Domain::Enemy
 		// 攻撃パターンの確率設定
 		m_attackPatterns = {
 			{AttackState::Missile, 0.0f},
-			{AttackState::SummonClown, 1.0f},
-			{AttackState::Bomb, 0.0f},
+			{AttackState::SummonClown, 0.0f},
+			{AttackState::Bomb, 1.0f},
 			{AttackState::Shockwave,0.0f}
 		};
 
@@ -376,7 +378,21 @@ namespace Jam::Domain::Enemy
 	void Boss1_3::enterBombAttack()
 	{
 		Print << U"Enter: Bomb Attack";
-		// TODO: 爆弾投擲開始処理
+
+		auto pos = m_body->getPosition() + Vec2{ -450, -50 }; // 手元から生成する位置
+		Vec2 size = { 120,120 };
+		// 物理ボディを設定
+		auto physicsFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getPhysicsFactory();
+		//P2BodyTypeの指定は後で修正
+		auto bombBody = physicsFactory->createBody(pos, size,
+			s3d::P2BodyType::Dynamic, { 0.2, 0.0, 1.0 },Jam::Domain::Physics::PhysicsShape::Circle);
+		auto bomb = std::make_shared<Jam::Domain::Enemy::Bomb>(bombBody, m_playerId, m_eventQueue, m_status.attackPower, size.x * 1.5, m_explosionDelay, size);
+		bomb->init();
+		//bombBody->applyImpulse(Vec2{ Random(-200.0, 200.0), -600.0 }); // 手から放り投げるように
+
+
+		// Factory に登録
+		Jam::Infrastructure::IndependentObjectFactory::instance().registerObject(bomb);
 	}
 
 	void Boss1_3::updateBombAttack(double deltaTime)

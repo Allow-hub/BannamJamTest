@@ -100,6 +100,7 @@ namespace Jam::Domain::Enemy
 		void enterBombAttack();
 		void updateBombAttack(double deltaTime);
 		void exitBombAttack();
+		double m_explosionDelay = 3.0;
 
 		// shockWave
 		void enterShockWave();

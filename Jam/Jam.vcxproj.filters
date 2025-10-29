@@ -15,6 +15,8 @@
     <ClCompile Include="src\Domain\Enemy\Clown.cpp" />
     <ClCompile Include="src\Domain\Enemy\Ribbon.cpp" />
     <ClCompile Include="src\Domain\Enemy\Boss1_3.cpp" />
+    <ClCompile Include="src\Domain\Enemy\ShockWave.cpp" />
+    <ClCompile Include="src\Domain\Enemy\Bomb.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
@@ -93,6 +95,14 @@
     <ClInclude Include="src\Presentation\InGameUIManager.h" />
     <ClInclude Include="src\Domain\Enemy\EyeBeam.h" />
     <ClInclude Include="src\Domain\Enemy\Boss1_3.h" />
+    <ClInclude Include="src\Domain\Enemy\EnemyAI\RunAwayAI.h" />
+    <ClInclude Include="src\Domain\Enemy\ShockWave.h" />
+    <ClInclude Include="src\Presentation\Stage\StageManager.h" />
+    <ClInclude Include="src\Domain\Enemy\Bomb.h" />
+    <ClInclude Include="src\Domain\IIndependentObject.h" />
+    <ClInclude Include="src\Infrastructure\IndependentObjectFactory.h" />
+    <ClInclude Include="src\UseCase\IndependentObjectService.h" />
+    <ClInclude Include="src\Presentation\IndependentObjectManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />
@@ -114,6 +124,7 @@
     <Media Include="Assets\Sounds\se_jump.mp3" />
     <Media Include="Assets\Sounds\se_damage.mp3" />
     <Media Include="Assets\Sounds\se_getFlagment.mp3" />
+    <Media Include="Assets\Sounds\se_explosion.mp3" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\engine\texture\box-shadow\128.png" />
@@ -143,9 +154,6 @@
     <Image Include="Assets\Cursor\GameCursor.png" />
     <Image Include="Assets\Enemy\LittleDevil\idle_0.png" />
     <Image Include="Assets\Enemy\GothicLolitaDoll\idle_1.png" />
-    <Image Include="Assets\Player\idle_0.png" />
-    <Image Include="Assets\Player\idle_1.png" />
-    <Image Include="Assets\Player\idle_2.png" />
     <Image Include="Assets\Player\run_0.png" />
     <Image Include="Assets\Player\run_1.png" />
     <Image Include="Assets\Player\Skill\Bomb\Bomb.png" />
@@ -157,7 +165,6 @@
     <Image Include="Assets\Story\Portrait\Player\player_suspicious.png" />
     <Image Include="Assets\Enemy\GothicLolitaDoll\idle_0.png" />
     <Image Include="Assets\Enemy\Eye\idle_1.png" />
-    <Image Include="Assets\Enemy\Clown\idle_1.png" />
     <Image Include="Assets\Enemy\Clown\idle_0.png" />
     <Image Include="Assets\Enemy\Spider\idle_1.png" />
     <Image Include="Assets\Enemy\Spider\idle_0.png" />
@@ -173,6 +180,45 @@
     <Image Include="Assets\UI\face_sad.png" />
     <Image Include="Assets\Enemy\Boss1_3\idle_0.png" />
     <Image Include="Assets\Enemy\Boss1_3\idle_1.png" />
+    <Image Include="Assets\Cursor\cursor_green.png" />
+    <Image Include="Assets\Cursor\cursor_orange.png" />
+    <Image Include="Assets\Cursor\cursor_yellow.png" />
+    <Image Include="Assets\Enemy\Boss1_3\Shockwave\shockwave_00.png" />
+    <Image Include="Assets\Enemy\Boss1_3\Shockwave\shockwave_01.png" />
+    <Image Include="Assets\Enemy\Boss1_3\Shockwave\shockwave_02.png" />
+    <Image Include="Assets\Enemy\Boss1_3\Shockwave\shockwave_03.png" />
+    <Image Include="Assets\Enemy\Boss1_3\Shockwave\shockwave_04.png" />
+    <Image Include="Assets\Player\Idle\idle_00.png" />
+    <Image Include="Assets\Player\Idle\idle_01.png" />
+    <Image Include="Assets\Player\Idle\idle_02.png" />
+    <Image Include="Assets\Player\Idle\idle_03.png" />
+    <Image Include="Assets\Player\Idle\idle_04.png" />
+    <Image Include="Assets\Player\Idle\idle_05.png" />
+    <Image Include="Assets\Player\Idle\idle_06.png" />
+    <Image Include="Assets\Player\Idle\idle_07.png" />
+    <Image Include="Assets\Player\Idle\idle_08.png" />
+    <Image Include="Assets\Player\Idle\idle_09.png" />
+    <Image Include="Assets\Player\Idle\idle_10.png" />
+    <Image Include="Assets\Player\Idle\idle_11.png" />
+    <Image Include="Assets\Player\Idle\idle_12.png" />
+    <Image Include="Assets\Player\Idle\idle_13.png" />
+    <Image Include="Assets\Player\Idle\idle_14.png" />
+    <Image Include="Assets\Player\Idle\idle_15.png" />
+    <Image Include="Assets\Player\Idle\idle_16.png" />
+    <Image Include="Assets\Player\Idle\idle_17.png" />
+    <Image Include="Assets\Player\Idle\idle_18.png" />
+    <Image Include="Assets\Player\Idle\idle_19.png" />
+    <Image Include="Assets\Player\Idle\idle_20.png" />
+    <Image Include="Assets\Player\Idle\idle_21.png" />
+    <Image Include="Assets\Player\Idle\idle_22.png" />
+    <Image Include="Assets\Player\Idle\idle_23.png" />
+    <Image Include="Assets\Player\Idle\idle_24.png" />
+    <Image Include="Assets\Player\Idle\idle_25.png" />
+    <Image Include="Assets\Player\Idle\idle_26.png" />
+    <Image Include="Assets\Player\Idle\idle_27.png" />
+    <Image Include="Assets\Player\Idle\idle_28.png" />
+    <Image Include="Assets\Player\Idle\idle_29.png" />
+    <Image Include="Assets\Item\bomb.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />

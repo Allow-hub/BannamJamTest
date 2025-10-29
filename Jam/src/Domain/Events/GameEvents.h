@@ -89,6 +89,14 @@ namespace Jam::Domain::Events
 		std::shared_ptr<Jam::Domain::Enemy::EnemyBase> enemy;
 		s3d::FilePath animationPath; // 今後別の敵のアニメーションのパスを指定する場合は、EnemyTypeから適切なパスを返すヘルパー関数を作成すること
 	};
+	struct ExplosionEvent
+	{
+		Vec2 position;
+		ColorF color;
+		double radius = 100.0;
+		double duration = 0.6;
+		int32 particleCount = 20;
+	};
 
 	using GameEvent = std::variant<
 		EnemyDamagedEvent,
@@ -101,6 +109,7 @@ namespace Jam::Domain::Events
 		BossAppearedEvent,
 		ItemCollectedEvent,
 		EnemySpawnedEvent
+		ExplosionEvent
 	>;
 
 

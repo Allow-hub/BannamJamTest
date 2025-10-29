@@ -20,6 +20,7 @@ namespace Jam::Domain::Enemy
 		m_body->setGravityScale(1);
 		m_body->setDamping(2);
 		m_body->setBullet(true);
+		m_body->setSleepEnabled(false);
 	}
 
 	void EnemyBase::moveLeft()

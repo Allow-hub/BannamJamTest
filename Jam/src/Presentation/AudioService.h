@@ -14,6 +14,7 @@ namespace Jam::Presentation
 			SE_Choker,
 			SE_GetFlagment,
 			SE_Damage,
+			SE_Explosion,
 			BGM_Title,
 			BGM_Game,
 		};
@@ -31,6 +32,7 @@ namespace Jam::Presentation
 			load(Sound::SE_Choker, samePath + U"se_choker.mp3");
 			load(Sound::SE_GetFlagment, samePath + U"se_getFlagment.mp3");
 			load(Sound::SE_Damage, samePath + U"se_damage.mp3");
+			load(Sound::SE_Explosion, samePath + U"se_explosion.mp3");
 			load(Sound::BGM_Title, samePath + U"bgm_title.mp3");
 		}
 

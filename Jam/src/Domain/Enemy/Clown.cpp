@@ -2,6 +2,7 @@
 #include "EnemyAI/PatrolAI.h"
 #include "EnemyAI/ChaseAI.h"
 #include "EnemyAI/AttackAI.h"
+#include "EnemyAI/RunAwayAI.h"
 
 namespace Jam::Domain::Enemy
 {
@@ -13,6 +14,7 @@ namespace Jam::Domain::Enemy
 		aiList.emplace_back(AIType::Patrol, std::make_unique<PatrolAI>());
 		aiList.emplace_back(AIType::Chase, std::make_unique<ChaseAI>());
 		aiList.emplace_back(AIType::Attack, std::make_unique<AttackAI>());
+		aiList.emplace_back(AIType::RunAway, std::make_unique<RunAwayAI>());
 
 		setAIList(std::move(aiList));//setしたときにそのAIのEnterも入ります
 		m_enemyType = EnemyType::Clown;

@@ -83,7 +83,11 @@ namespace Jam::UseCase
 					{
 						handleEnemySpawned(e);
 					}
-				}, event);
+					else if constexpr (std::is_same_v<T, Domain::Events::ExplosionEvent>)
+					{
+						handleExplosion(e);
+					}
+					}, event);
 			}
 		}
 
@@ -207,6 +211,12 @@ namespace Jam::UseCase
 				m_enemyManager->getAnimator(id).AddCondition({ { {U"isRunning", false} }, U"Idle", 0 });
 				m_enemyManager->getAnimator(id).SetBool(U"isRunning", false);
 			}
+		}
+		void handleExplosion(const Domain::Events::ExplosionEvent& e)
+		{
+			m_effectEventQueue.push(ExplosionEffectEvent{
+				e.position,e.color,e.radius,e.duration,e.particleCount
+			});
 		}
 	};
 }
