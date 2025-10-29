@@ -7,6 +7,7 @@
 
 namespace Jam::Domain::Enemy
 {
+#pragma region コンストラクタ
 	Boss1_3::Boss1_3(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body,
 					 Jam::Domain::Physics::PhysicsBodyID playerId,
 					 Jam::Domain::Events::GameEventQueue& eventQueue)
@@ -58,7 +59,9 @@ namespace Jam::Domain::Enemy
 		//test->setLayer(Jam::Domain::Physics::PhysicsLayer::ReflectableWeapon);
 
 	}
+#pragma endregion
 
+#pragma region 更新・描画
 	void Boss1_3::update(double deltaTime)
 	{
 		if (!isAlive()) return;
@@ -91,7 +94,9 @@ namespace Jam::Domain::Enemy
 			m_shockWave->draw();
 		}
 	}
+#pragma endregion
 
+#pragma region ステート管理
 	void Boss1_3::updateAppearState(double deltaTime)
 	{
 		// 登場演出
@@ -262,8 +267,9 @@ namespace Jam::Domain::Enemy
 
 		return Boss1_3::AttackState::Missile;
 	}
+#pragma endregion
 
-	// ===== Missile Attack =====
+#pragma region ミサイル攻撃
 	void Boss1_3::enterMissileAttack()
 	{
 		Print << U"Enter: Missile Attack";
@@ -280,8 +286,9 @@ namespace Jam::Domain::Enemy
 		Print << U"Exit: Missile Attack";
 		// TODO: 終了処理
 	}
+#pragma endregion
 
-	// ===== ピエロを生成 =====
+#pragma region ピエロ召喚
 	void Boss1_3::enterSummonClown()
 	{
 		Print << U"Enter: Summon Clown";
@@ -384,8 +391,9 @@ namespace Jam::Domain::Enemy
 		Print << U"Exit: Summon Clown";
 		// TODO: 召喚終了処理
 	}
+#pragma endregion
 
-	// ===== Bomb Attack =====
+#pragma region 爆弾攻撃
 	void Boss1_3::enterBombAttack()
 	{
 		Print << U"Enter: Bomb Attack";
@@ -402,8 +410,9 @@ namespace Jam::Domain::Enemy
 		Print << U"Exit: Bomb Attack";
 		// TODO: 投擲終了処理
 	}
+#pragma endregion
 
-	// ===== shockWave =====
+#pragma region 衝撃波攻撃
 	void Boss1_3::enterShockWave()
 	{
 		Print << U"Enter: ShockWave";
@@ -445,8 +454,9 @@ namespace Jam::Domain::Enemy
 		Print << U"Exit: ShockWave";
 		m_shockWave.reset();
 	}
+#pragma endregion
 
-
+#pragma region 衝突処理
 	void Boss1_3::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{
 		EnemyBase::onCollisionEnter(other);
@@ -484,4 +494,5 @@ namespace Jam::Domain::Enemy
 	{
 		EnemyBase::onCollisionExit(other);
 	}
+#pragma endregion
 }
