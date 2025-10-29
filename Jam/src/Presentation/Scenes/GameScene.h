@@ -36,6 +36,8 @@
 #include "../../Infrastructure/IndependentObjectFactory.h"
 #include "../../UseCase/IndependentObjectService.h";
 #include "../../Presentation/IndependentObjectManager.h";
+#include "../../Domain/GoalArea.h"
+#include "TitleScene.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -254,6 +256,13 @@ namespace Jam::Presentation::Scenes
 				// 管理配列に追加
 				m_flagmentMemories.push_back(flagment);
 			}
+
+			// === Goal 初期化 ===
+			auto goalBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+				.getPhysicsFactory()->createRectSensor(core.getCurrentStageData().goalData.position,core.getCurrentStageData().goalData.size);
+			auto goal = std::make_shared<Jam::Domain::GoalArea>(goalBody, [this]() { this->nextScene(); });
+			goalBody->setCollisionListener(goal);
+			Jam::Infrastructure::IndependentObjectFactory::instance().registerObject(goal);
 
 			Jam::Util::GridRenderer::GridConfig config;
 			config.gridSize = 100.0;

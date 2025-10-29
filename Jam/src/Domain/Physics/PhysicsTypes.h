@@ -44,6 +44,7 @@ namespace Jam::Domain::Physics
 		OneWayPlatform,
 		Item,
 		ReflectableWeapon,//反射可能な敵の攻撃
+		Goal,
 	};
 
 	inline String ToString(PhysicsLayer layer)
