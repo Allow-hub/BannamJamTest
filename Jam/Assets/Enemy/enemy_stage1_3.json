@@ -1,9 +1,28 @@
 [
-    {
-        "type": "Boss1_3",
-        "position": {
-            "x": 300,
-            "y": -310
+  {
+    "type": "Clown",
+    "position": {
+      "x": 300,
+      "y": -200
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 300,
+              "y": -200
+            },
+            {
+              "x": -300,
+              "y": -200
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
         }
+      }
     }
+  }
 ]

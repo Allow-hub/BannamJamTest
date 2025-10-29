@@ -3,6 +3,10 @@
 #include "EnemyAI/ChaseAI.h"
 #include "EnemyAI/AttackAI.h"
 #include "EnemyAI/RunAwayAI.h"
+#include "../../Infrastructure/FactoryServiceLocator.h"
+#include "../../Infrastructure/IPhysicsBodyFactory.h"
+#include "../../Infrastructure/PhysicsFilterManager.h"
+#include "../../Infrastructure/IndependentObjectFactory.h"
 
 namespace Jam::Domain::Enemy
 {
@@ -11,9 +15,9 @@ namespace Jam::Domain::Enemy
 		: EnemyBase(body, playerId, eventQueue)
 	{
 		std::vector<std::pair<AIType, std::unique_ptr<IEnemyAI>>> aiList;
+		aiList.emplace_back(AIType::Attack, std::make_unique<AttackAI>());
 		aiList.emplace_back(AIType::Patrol, std::make_unique<PatrolAI>());
 		aiList.emplace_back(AIType::Chase, std::make_unique<ChaseAI>());
-		aiList.emplace_back(AIType::Attack, std::make_unique<AttackAI>());
 		aiList.emplace_back(AIType::RunAway, std::make_unique<RunAwayAI>());
 
 		setAIList(std::move(aiList));//setしたときにそのAIのEnterも入ります
@@ -30,6 +34,18 @@ namespace Jam::Domain::Enemy
 	void Clown::onAIEvent(EnemyAIEvent e)
 	{
 	}
+
+	void Clown::onAttackEnter()
+	{
+
+	}
+	void Clown::onAttackUpdate(double deltaTime)
+	{
+	}
+	void Clown::onAttackExit()
+	{
+	}
+
 	void Clown::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{
 		EnemyBase::onCollisionEnter(other);
