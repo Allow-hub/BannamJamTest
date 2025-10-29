@@ -38,7 +38,7 @@ namespace Jam::Domain::Enemy
 	void EnemyBase::jump()
 	{
 		if (!m_isAlive) return;
-		m_body->applyForce({ 0, -m_status.jumpPower });
+		m_body->applyImpulse({ 0, -m_status.jumpPower });
 	}
 
 	void EnemyBase::takeDamage(const DamageInfo& info)

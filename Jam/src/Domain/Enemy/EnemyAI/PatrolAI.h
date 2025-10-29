@@ -15,7 +15,6 @@ namespace Jam::Domain::Enemy
 
 		void update(EnemyBase& enemy, double deltaTime) override
 		{
-
 			auto& route = enemy.getPatrolRoute();
 			if (!route.isValid()) return;
 
@@ -25,16 +24,27 @@ namespace Jam::Domain::Enemy
 
 			enemy.getPhysicsBody()->applyForce(dir * enemy.getStatus().moveSpeed);
 
-			if (pos.distanceFrom(currentTarget) < route.foundDistance) // 到達判定
+			// 🔸 すでにプレイヤーが発見距離内にいる場合は即イベント発火
+			Vec2 playerPos = enemy.getPlayerPos();
+			double distanceToPlayer = pos.distanceFrom(playerPos);
+			if (distanceToPlayer <= route.foundDistance)
+			{
+				enemy.onAIEvent(EnemyAIEvent::PlayerFound);
+				return; // 即座にChaseAIなどへ遷移させたい場合
+			}
+
+			// 巡回目標に到達したら次へ
+			if (pos.distanceFrom(currentTarget) < route.foundDistance)
 			{
 				route.updateTimer(deltaTime);
-				if (route.isWaitOver()) {
+				if (route.isWaitOver())
+				{
 					route.advance();
 					route.resetTimer();
 				}
-				enemy.onAIEvent(EnemyAIEvent::PlayerFound);
 			}
-			enemy.onPatrolUpdate(deltaTime); // フック呼び出し
+
+			enemy.onPatrolUpdate(deltaTime);
 		}
 
 
