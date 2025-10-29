@@ -130,7 +130,7 @@ namespace Jam::Presentation::Scenes
 				.getPhysicsFactory()
 				->createBody(
 				Vec2{ 0, -5 },//地面に埋まらないように
-				SizeF{ 50, 100 },
+				SizeF{ 50, 120 },
 				s3d::P2BodyType::Dynamic,
 				stats.physicsMaterial
 				);
@@ -253,6 +253,15 @@ namespace Jam::Presentation::Scenes
 			config.gridSize = 100.0;
 			config.fontSize = 16;
 			Jam::Util::GridRenderer::instance().setConfig(config);
+			// 元画像を読み込む
+			Image originalImage(U"../Assets/Cursor/cursor_yellow.png");
+			originalImage = originalImage.scaled(64, 64);
+			// カーソル登録
+			Jam::Infrastructure::CursorUtil::instance().registerCustomCursor(
+				U"Cross",
+				originalImage,
+				Point{ originalImage.width() / 2, originalImage.height() / 2 } // hotSpotは中央
+			);
 			BloomManager::getInstance().setIntensities(0.03, 0.06, 0.1, 0.3);
 			BloomManager::getInstance().setVignette(0.3, 0.5);
 		}
@@ -263,8 +272,7 @@ namespace Jam::Presentation::Scenes
 			core.addTimer(Scene::DeltaTime());
 
 			auto& cursorUtil = Jam::Infrastructure::CursorUtil::instance();
-			//cursorUtil.registerCursorFromImage(U"../Assets/Cursor/GameCursor.png", Jam::Infrastructure::CursorStyle::Game);
-			cursorUtil.setCursor(CursorStyle::Cross);
+			cursorUtil.requestStyle(U"Cross");
 			cursorUtil.setClipWindowCuror(true);
 			m_playerService->update(Scene::DeltaTime());
 			m_playerManager->update();

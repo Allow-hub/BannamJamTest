@@ -72,7 +72,7 @@ namespace Jam::Infrastructure {
             obj.rect.center(),
             obj.rect.size,
             bodyType,
-            Domain::Physics::PhysicsMaterial{ 1.0, 0.0, 0.0 }
+            Domain::Physics::PhysicsMaterial{ 0.0, 0.0, 0.0 }
         );
         
         if (!outBody) {
@@ -121,52 +121,129 @@ namespace Jam::Infrastructure {
         if (groundSide == Domain::Stage::GroundSide::None) {
             return PhysicsLayer::Wall;
         }
-        
         return PhysicsLayer::Ground;
     }
 
     Array<Domain::Stage::StageObject> StageFactory::expandObjectByGroundSide(const Domain::Stage::StageObject& obj) {
         using namespace Domain::Stage;
         Array<StageObject> result;
-        
+
         constexpr double groundThickness = 5.0;
         
-        
-        if (obj.groundSide == GroundSide::All) {
-            result.push_back(obj);
-            return result;
-        }
-        
-        if (obj.groundSide != GroundSide::None) {
-            StageObject wallObj = obj;
-            wallObj.groundSide = GroundSide::None;
-            result.push_back(wallObj);
-        }
-        
-        StageObject groundObj = obj;
-        groundObj.groundSide = GroundSide::Up;
-        
-        switch (obj.groundSide) {
-            case GroundSide::Up:
-                groundObj.rect = RectF(
-                    obj.rect.x,
-                    obj.rect.y,
-                    obj.rect.w,
-                    groundThickness
-                );
-                result.push_back(groundObj);
-                break;
-                
-            case GroundSide::None:
-                if (result.empty()) {
-                    result.push_back(obj);
-                }
-                break;
-                
-            default:
-                result.push_back(obj);
-                break;
-        }
+		if (obj.groundSide == GroundSide::All) {
+			// 中央の壁部分
+			StageObject wallObj = obj;
+			wallObj.groundSide = GroundSide::None;
+			result.push_back(wallObj);
+
+			// 上面
+			StageObject topGround = obj;
+			topGround.groundSide = GroundSide::Up;
+			topGround.rect = RectF(
+				obj.rect.x,
+				obj.rect.y,
+				obj.rect.w,
+				groundThickness
+			);
+			result.push_back(topGround);
+
+			// 下面
+			StageObject bottomGround = obj;
+			bottomGround.groundSide = GroundSide::Down;
+			bottomGround.rect = RectF(
+				obj.rect.x,
+				obj.rect.y + obj.rect.h - groundThickness,
+				obj.rect.w,
+				groundThickness
+			);
+			result.push_back(bottomGround);
+
+			// 左面
+			StageObject leftGround = obj;
+			leftGround.groundSide = GroundSide::Left;
+			leftGround.rect = RectF(
+				obj.rect.x,
+				obj.rect.y,
+				groundThickness,
+				obj.rect.h
+			);
+			result.push_back(leftGround);
+
+			// 右面
+			StageObject rightGround = obj;
+			rightGround.groundSide = GroundSide::Right;
+			rightGround.rect = RectF(
+				obj.rect.x + obj.rect.w - groundThickness,
+				obj.rect.y,
+				groundThickness,
+				obj.rect.h
+			);
+			result.push_back(rightGround);
+
+			return result;
+		}
+
+		// None以外の場合、壁部分を追加
+		if (obj.groundSide != GroundSide::None) {
+			StageObject wallObj = obj;
+			wallObj.groundSide = GroundSide::None;
+			result.push_back(wallObj);
+		}
+
+		// 地面判定を作成
+		StageObject groundObj = obj;
+
+		switch (obj.groundSide) {
+		case GroundSide::Up:
+			groundObj.rect = RectF(
+				obj.rect.x,
+				obj.rect.y,
+				obj.rect.w,
+				groundThickness
+			);
+			result.push_back(groundObj);
+			break;
+
+		case GroundSide::Down:
+			groundObj.rect = RectF(
+				obj.rect.x,
+				obj.rect.y + obj.rect.h - groundThickness,
+				obj.rect.w,
+				groundThickness
+			);
+			result.push_back(groundObj);
+			break;
+
+		case GroundSide::Left:
+			groundObj.rect = RectF(
+				obj.rect.x,
+				obj.rect.y,
+				groundThickness,
+				obj.rect.h
+			);
+			result.push_back(groundObj);
+			break;
+
+		case GroundSide::Right:
+			groundObj.rect = RectF(
+				obj.rect.x + obj.rect.w - groundThickness,
+				obj.rect.y,
+				groundThickness,
+				obj.rect.h
+			);
+			result.push_back(groundObj);
+			break;
+
+		case GroundSide::None:
+			if (result.empty()) {
+				result.push_back(obj);
+			}
+			break;
+
+		default:
+			result.push_back(obj);
+			break;
+		}
         
         return result;
     }

@@ -11,7 +11,8 @@
     {
       "rect": [ -400, 50, 3000, 1000 ],
       "type": "solid",
-      "metadata": "初期地点"
+      "metadata": "初期地点",
+      "groundSide": "all"
     }
   ]
 }

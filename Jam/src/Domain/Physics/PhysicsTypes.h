@@ -45,4 +45,21 @@ namespace Jam::Domain::Physics
 		Item,
 		ReflectableWeapon,//反射可能な敵の攻撃
 	};
+
+	inline String ToString(PhysicsLayer layer)
+	{
+		switch (layer)
+		{
+		case PhysicsLayer::None:              return U"None";
+		case PhysicsLayer::Player:            return U"Player";
+		case PhysicsLayer::Enemy:             return U"Enemy";
+		case PhysicsLayer::Ground:            return U"Ground";
+		case PhysicsLayer::Weapon:            return U"Weapon";
+		case PhysicsLayer::Wall:              return U"Wall";
+		case PhysicsLayer::OneWayPlatform:    return U"OneWayPlatform";
+		case PhysicsLayer::Item:              return U"Item";
+		case PhysicsLayer::ReflectableWeapon: return U"ReflectableWeapon";
+		default:                              return U"Unknown";
+		}
+	}
 }

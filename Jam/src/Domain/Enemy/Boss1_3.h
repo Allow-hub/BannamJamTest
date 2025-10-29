@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "EnemyBase.h"
 #include "../Events/GameEvents.h"
+#include "ShockWave.h"
+#include "../../Foundation/CoroutineUtil.h"
 
 namespace Jam::Domain::Enemy
 {
@@ -45,6 +47,7 @@ namespace Jam::Domain::Enemy
 			Missile,//ミサイル発射
 			SummonClown,//ピエロ召喚
 			Bomb,//爆弾を投げる
+			Shockwave,//ジャンプして衝撃波
 		};
 
 		AttackState currentAttackState;
@@ -74,6 +77,8 @@ namespace Jam::Domain::Enemy
 		double m_missileAttackDuration;
 		double m_summonClownDuration;
 		double m_bombAttackDuration;
+		double m_shockWaveDuration;
+		double m_shockJumpForce = 400000.0;
 
 		bool m_hasAttackEntered;  // 攻撃のEnterが実行されたか
 
@@ -92,6 +97,14 @@ namespace Jam::Domain::Enemy
 		void enterBombAttack();
 		void updateBombAttack(double deltaTime);
 		void exitBombAttack();
+
+		// shockWave
+		void enterShockWave();
+		void updateShockWave(double deltaTime);
+		void exitShockWave();
+		std::shared_ptr<ShockWave> m_shockWave;
+		const double m_shockWaveDelay = 1.2;
+		Jam::Util::Task m_shockWaveTask();
 
 		const String toString(Boss1_3::AttackState state)
 		{

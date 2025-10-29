@@ -5,34 +5,178 @@
             "loop": true,
             "frames": [
                 {
-                    "path": "../Assets/Player/idle_0.png",
-                    "duration": 0.5,
-                    "width": 64,
-                    "height" : 113
+                    "path": "../Assets/Player/Idle/idle_01.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
                 },
                 {
-                    "path": "../Assets/Player/idle_1.png",
-                    "duration": 0.3,
-                    "width": 64,
-                    "height": 113
+                    "path": "../Assets/Player/Idle/idle_02.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
                 },
                 {
-                    "path": "../Assets/Player/idle_2.png",
-                    "duration": 0.4,
-                    "width": 64,
-                    "height": 113
+                    "path": "../Assets/Player/Idle/idle_03.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
                 },
                 {
-                    "path": "../Assets/Player/idle_1.png",
-                    "duration": 0.3,
-                    "width": 64,
-                    "height": 113
+                    "path": "../Assets/Player/Idle/idle_04.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
                 },
                 {
-                    "path": "../Assets/Player/idle_0.png",
-                    "duration": 0.5,
-                    "width": 64,
-                    "height": 113
+                    "path": "../Assets/Player/Idle/idle_05.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
+                },
+                {
+                    "path": "../Assets/Player/Idle/idle_06.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
+                },
+                {
+                    "path": "../Assets/Player/Idle/idle_07.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
+                },
+                {
+                    "path": "../Assets/Player/Idle/idle_08.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
+                },
+                {
+                    "path": "../Assets/Player/Idle/idle_09.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
+                },
+                {
+                    "path": "../Assets/Player/Idle/idle_10.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
+                },
+                {
+                    "path": "../Assets/Player/Idle/idle_11.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
+                },
+                {
+                    "path": "../Assets/Player/Idle/idle_12.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
+                },
+                {
+                    "path": "../Assets/Player/Idle/idle_13.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
+                },
+                {
+                    "path": "../Assets/Player/Idle/idle_14.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
+                },
+                {
+                    "path": "../Assets/Player/Idle/idle_15.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
+                },
+                {
+                    "path": "../Assets/Player/Idle/idle_16.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
+                },
+                {
+                    "path": "../Assets/Player/Idle/idle_17.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
+                },
+                {
+                    "path": "../Assets/Player/Idle/idle_18.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
+                },
+                {
+                    "path": "../Assets/Player/Idle/idle_19.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
+                },
+                {
+                    "path": "../Assets/Player/Idle/idle_20.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
+                },
+                {
+                    "path": "../Assets/Player/Idle/idle_21.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
+                },
+                {
+                    "path": "../Assets/Player/Idle/idle_22.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
+                },
+                {
+                    "path": "../Assets/Player/Idle/idle_23.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
+                },
+                {
+                    "path": "../Assets/Player/Idle/idle_24.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
+                },
+                {
+                    "path": "../Assets/Player/Idle/idle_25.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
+                },
+                {
+                    "path": "../Assets/Player/Idle/idle_26.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
+                },
+                {
+                    "path": "../Assets/Player/Idle/idle_27.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
+                },
+                {
+                    "path": "../Assets/Player/Idle/idle_28.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
+                },
+                {
+                    "path": "../Assets/Player/Idle/idle_29.png",
+                    "duration": 0.03333333333,
+                    "width": 78,
+                    "height": 135
                 }
             ]
         },
@@ -43,14 +187,14 @@
                 {
                     "path": "../Assets/Player/run_0.png",
                     "duration": 0.08,
-                    "width": 64,
-                    "height": 113
+                    "width": 78,
+                    "height": 135
                 },
                 {
                     "path": "../Assets/Player/run_1.png",
                     "duration": 0.08,
-                    "width": 64,
-                    "height": 113
+                    "width": 78,
+                    "height": 135
                 }
             ]
         }
