@@ -176,6 +176,7 @@
     <Image Include="Assets\Enemy\GothicLolitaDoll\idle_0.png" />
     <Image Include="Assets\Enemy\LittleDevil\idle_0.png" />
     <Image Include="Assets\Enemy\GothicLolitaDoll\idle_1.png" />
+    <Image Include="Assets\Enemy\Ribbon\idle_0.png" />
     <Image Include="Assets\Enemy\Spider\idle_0.png" />
     <Image Include="Assets\Enemy\Spider\idle_1.png" />
     <Image Include="Assets\FlagmentMemory.png" />
@@ -405,6 +406,7 @@
     <None Include="Assets\Enemy\Clown\Clown_animation.json" />
     <None Include="Assets\Enemy\Eye\Eye_animation.json" />
     <None Include="Assets\Enemy\GothicLolitaDoll\GothicLolitaDoll_animation.json" />
+    <None Include="Assets\Enemy\Ribbon\Ribbon_animation.json" />
     <None Include="Assets\Enemy\Spider\Spider_animation.json" />
     <None Include="Assets\Stage\background.json" />
     <None Include="Assets\Stage\stage1_1.json" />

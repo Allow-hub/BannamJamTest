@@ -16,7 +16,7 @@ namespace Jam::Domain::Enemy
 
 		setAIList(std::move(aiList));//setしたときにそのAIのEnterも入ります
 		m_enemyType = EnemyType::Ribbon;
-		m_body->setGravityScale(1);
+		m_body->setGravityScale(1.5);
 	}
 
 	void Ribbon::update(double deltaTime)
@@ -79,11 +79,11 @@ namespace Jam::Domain::Enemy
 		case AttackState::IsAttack:
 			if (IsRight == true)
 			{
-				m_body->applyImpulse(Vec2{ 1000,0 });
+				m_body->applyImpulse(Vec2{ 1500,0 });
 			}
 			else
 			{
-				m_body->applyImpulse(Vec2{ -1000,0 });
+				m_body->applyImpulse(Vec2{ -1500,0 });
 			}
 			attackState = AttackState::EndAttack;
 			break;
@@ -127,6 +127,7 @@ namespace Jam::Domain::Enemy
 				,0.3
 				,15.0
 			});
+			m_body->setVelocity({ 0,0 });
 			break;
 		}
 	}
