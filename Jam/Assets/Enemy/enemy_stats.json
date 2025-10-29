@@ -58,12 +58,12 @@
   "Spider": {
     "hp": 100,
     "attackPower": 10.5,
-    "moveSpeed": 1000.0,
+    "moveSpeed": 4000.0,
     "jumpPower": 5.0,
-    "colX": 200.0,
-    "colY": 200.0,
+    "colX": 150.0,
+    "colY": 150.0,
     "physicsMaterial": {
-      "density": 10.0,
+      "density": 5.0,
       "friction": 0.4,
       "restitution": 0.0,
       "restitutionThreshold": 100.0

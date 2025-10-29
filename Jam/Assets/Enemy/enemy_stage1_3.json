@@ -1,9 +1,9 @@
 [
   {
-    "type": "Ribbon",
+    "type": "Spider",
     "position": {
       "x": 300,
-      "y": -200
+      "y": 0
     },
     "extra": {
         "ai": {

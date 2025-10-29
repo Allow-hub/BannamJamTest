@@ -7,8 +7,8 @@
                 {
                     "path": "../Assets/Enemy/Spider/idle_0.png",
                     "duration": 1.5,
-                    "width": 300,
-                    "height": 200
+                    "width": 250,
+                    "height": 150
                 }
             ]
         }
