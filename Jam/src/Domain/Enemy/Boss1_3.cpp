@@ -307,51 +307,70 @@ namespace Jam::Domain::Enemy
 
 		const auto& clownStatus = it->second;
 
-		// Bossの位置の近くに生成
-		Vec2 spawnPos = m_body->getPosition() + Vec2(150, -100);
-		Print << U"[Boss1_3] ピエロ生成位置: " << spawnPos;
-
-		// 物理ボディを作成
-		auto clownBody = physicsFactory->createBody(
-			spawnPos,
-			clownStatus.colSize,
-			s3d::P2BodyType::Dynamic,
-			clownStatus.physicsMaterial
-		);
-
-		if (!clownBody)
+		// Bossが向いている方向(プレイヤーの方向)を取得
+		Vec2 playerPos = getPlayerPos();
+		bool isPlayerOnRight = playerPos.x > m_body->getPosition().x;
+		
+		// プレイヤーと同じ側(ボスが向いている方向)に生成
+		double direction = isPlayerOnRight ? 1.0 : -1.0;
+		
+		// 複数体のピエロを生成
+		for (int i = 0; i < CLOWN_SPAWN_COUNT; ++i)
 		{
-			Print << U"[Boss1_3] ❌ 物理ボディ作成失敗";
-			return;
-		}
-
-		clownBody->setLayer(Jam::Domain::Physics::PhysicsLayer::Enemy);
-
-		// Clown敵を生成
-		auto clownEnemy = enemyFactory->createEnemy(
-			Jam::Domain::EnemyType::Clown,
-			clownBody,
-			m_playerId,
-			m_eventQueue
-		);
-
-		if (clownEnemy)
-		{
-			clownBody->setCollisionListener(clownEnemy);
+			// X座標: Bossの端から、各ピエロを横に並べて配置
+			double bossEdgeX = m_body->getPosition().x + direction * (m_status.colSize.x / 2.0);
+			double offsetX = (clownStatus.colSize.x + 10.0) * i;  // 10pxの間隔を開けて配置
+			double clownCenterX = bossEdgeX + direction * (clownStatus.colSize.x / 2.0 + offsetX);
 			
-			// EnemySpawnedイベントを発行（生成済みインスタンスを含む）
-			m_eventQueue.push(Events::EnemySpawnedEvent{
-				m_body->getID(),
-				Jam::Domain::EnemyType::Clown,
+			// Y座標: Bossの底面 - Clownの高さの半分（底面を揃える）
+			double bossBottomY = m_body->getPosition().y + (m_status.colSize.y / 2.0);
+			double clownCenterY = bossBottomY - (clownStatus.colSize.y / 2.0);
+			
+			Vec2 spawnPos = Vec2(clownCenterX, clownCenterY);
+			Print << U"[Boss1_3] ピエロ生成位置[" << i << U"]: " << spawnPos;
+
+			// 物理ボディを作成
+			auto clownBody = physicsFactory->createBody(
 				spawnPos,
-				clownEnemy
-			});
-			
-			Print << U"[Boss1_3] ✅ ピエロ召喚イベント発行: " << spawnPos;
-		}
-		else
-		{
-			Print << U"[Boss1_3] ❌ Clown敵の生成失敗";
+				clownStatus.colSize,
+				s3d::P2BodyType::Dynamic,
+				clownStatus.physicsMaterial
+			);
+
+			if (!clownBody)
+			{
+				Print << U"[Boss1_3] ❌ 物理ボディ作成失敗[" << i << U"]";
+				continue;
+			}
+
+			clownBody->setLayer(Jam::Domain::Physics::PhysicsLayer::Enemy);
+
+			// Clown敵を生成
+			auto clownEnemy = enemyFactory->createEnemy(
+				Jam::Domain::EnemyType::Clown,
+				clownBody,
+				m_playerId,
+				m_eventQueue
+			);
+
+			if (clownEnemy)
+			{
+				clownBody->setCollisionListener(clownEnemy);
+				
+				// EnemySpawnedイベントを発行（生成済みインスタンスを含む）
+				m_eventQueue.push(Events::EnemySpawnedEvent{
+					m_body->getID(),
+					Jam::Domain::EnemyType::Clown,
+					spawnPos,
+					clownEnemy
+				});
+				
+				Print << U"[Boss1_3] ✅ ピエロ召喚イベント発行[" << i << U"]: " << spawnPos;
+			}
+			else
+			{
+				Print << U"[Boss1_3] ❌ Clown敵の生成失敗[" << i << U"]";
+			}
 		}
 	}
 
