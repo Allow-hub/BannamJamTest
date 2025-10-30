@@ -308,7 +308,7 @@
       "metadata": "登り壁"
     },
     {
-      "rect": [ 17500, -800, 2500, 300 ],
+      "rect": [ 17500, -800, 4500, 300 ],
       "type": "solid",
       "groundSide": "All",
       "metadata": "登り壁"
@@ -383,7 +383,7 @@
       "metadata": "登り壁"
     },
     {
-      "rect": [ 19900, 200, 300, 300 ],
+      "rect": [ 20500, 100, 300, 300 ],
       "type": "solid",
       "groundSide": "All",
       "metadata": "登り壁"
