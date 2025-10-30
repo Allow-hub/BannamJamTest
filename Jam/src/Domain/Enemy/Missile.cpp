@@ -60,7 +60,8 @@ namespace Jam::Domain::Enemy
 			factory->removeBody(m_body->getID());
 			m_body.reset();
 		}
-		Jam::Infrastructure::IndependentObjectFactory::instance().removeObjectByPtr(this);
+		// 注意: removeObjectByPtr(this)は呼ばない
+		// デストラクタが呼ばれる時点で既にFactoryから削除されている
 	}
 
 	void Missile::update(double dt)
@@ -154,7 +155,8 @@ namespace Jam::Domain::Enemy
 
 		m_isReflected = true;
 		m_reflectedDirection = direction.normalized();
-		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::Team1);
+		// 反射後はPlayerWeaponフィルターに変更(敵にダメージエフェクトを与えるため)
+		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::PlayerWeapon);
 		// 反射後はLayerをWeaponに変更(ボス側で反射済みと判定するため)
 		m_body->setLayer(Jam::Domain::Physics::PhysicsLayer::Weapon);
 	}
@@ -213,4 +215,69 @@ namespace Jam::Domain::Enemy
 
 	void Missile::onCollisionStay(std::shared_ptr<IPhysicsBody> other) {}
 	void Missile::onCollisionExit(std::shared_ptr<IPhysicsBody> other) {}
+
+	// 静的メソッド: 3発セットのミサイルを生成
+	std::vector<std::shared_ptr<Missile>> Missile::createThreeMissileSet(
+		Vec2 bossPos,
+		Vec2 bossColSize,
+		Jam::Domain::Physics::PhysicsBodyID playerId,
+		Jam::Domain::Physics::PhysicsBodyID bossId,
+		Jam::Domain::Events::GameEventQueue& queue,
+		double damage,
+		double radius)
+	{
+		std::vector<std::shared_ptr<Missile>> missiles;
+		auto physicsFactory = FactoryServiceLocator::instance().getPhysicsFactory();
+		auto playerBody = physicsFactory->getBody(playerId);
+		if (!playerBody) return missiles;
+		
+		Vec2 playerPos = playerBody->getPosition();
+		
+		// 待機位置を計算(ボスの前方、少し上)
+		double waitY = bossPos.y - bossColSize.y / 2.0 + 50;
+		const double spacing = 120.0;
+		
+		// 3発のミサイルを生成
+		for (int i = 0; i < 3; ++i)
+		{
+			// 待機位置(左、中央、右)
+			Vec2 waitPos = Vec2{ bossPos.x + (i - 1) * spacing, waitY };
+			
+			// ベジェ曲線の制御点を設定
+			Vec2 p0 = waitPos;  // 待機位置から開始
+			Vec2 p1 = waitPos + Vec2{ 0, -200 };  // 待機位置の上空
+			Vec2 p2 = playerPos + Vec2{ 0, -200 };  // プレイヤーの上空
+			Vec2 p3 = playerPos;  // プレイヤー位置
+			
+			// 物理ボディを作成
+			auto missileBody = physicsFactory->createBody(
+				waitPos,
+				SizeF{ 100.0, 100.0 },
+				s3d::P2BodyType::Dynamic,
+				{ 0.0, 0.0, 1.0 },
+				Jam::Domain::Physics::PhysicsShape::Circle
+			);
+			
+			// Missileオブジェクトを作成
+			auto missile = std::make_shared<Missile>(
+				missileBody,
+				playerId,
+				bossId,
+				queue,
+				p0, p1, p2, p3,
+				damage,
+				2.0,   // 飛行時間
+				radius,
+				500.0  // 反射後の速度
+			);
+			
+			missile->init();
+			missiles.push_back(missile);
+			
+			// Factoryに登録
+			Jam::Infrastructure::IndependentObjectFactory::instance().registerObject(missile);
+		}
+		
+		return missiles;
+	}
 }

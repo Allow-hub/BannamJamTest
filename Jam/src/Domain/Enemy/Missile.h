@@ -65,5 +65,16 @@ namespace Jam::Domain::Enemy
 		// 設定可能なパラメータ
 		void setReflectedSpeed(double speed) { m_reflectedSpeed = speed; }
 		double getReflectedSpeed() const { return m_reflectedSpeed; }
+		
+		// 静的メソッド: 3発セットの生成・管理
+		static std::vector<std::shared_ptr<Missile>> createThreeMissileSet(
+			Vec2 bossPos,
+			Vec2 bossColSize,
+			Jam::Domain::Physics::PhysicsBodyID playerId,
+			Jam::Domain::Physics::PhysicsBodyID bossId,
+			Jam::Domain::Events::GameEventQueue& queue,
+			double damage,
+			double radius = 50.0
+		);
 	};
 }

@@ -90,10 +90,6 @@ namespace Jam::UseCase
 					{
 						handleExplosion(e);
 					}
-					else if constexpr (std::is_same_v<T, Domain::Events::MissileSpawnedEvent>)
-					{
-						handleMissileSpawned(e);
-					}
 					}, event);
 			}
 		}
@@ -224,34 +220,6 @@ namespace Jam::UseCase
 			m_effectEventQueue.push(ExplosionEffectEvent{
 				e.position,e.color,e.radius,e.duration,e.particleCount
 			});
-		}
-
-		void handleMissileSpawned(const Domain::Events::MissileSpawnedEvent& e)
-		{
-			// PhysicsBodyの作成
-			auto physicsFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getPhysicsFactory();
-			auto missileBody = physicsFactory->createCircleSensor(e.controlPoint0, e.radius);
-
-			// Missileオブジェクトの作成
-			auto missile = std::make_shared<Jam::Domain::Enemy::Missile>(
-				missileBody,
-				e.playerId,
-				e.bossId,
-				m_gameEventQueue,
-				e.controlPoint0,
-				e.controlPoint1,
-				e.controlPoint2,
-				e.controlPoint3,
-				e.damage,
-				e.flightDuration,
-				e.radius,
-				e.reflectedSpeed
-			);
-
-			missile->init();
-
-			// IndependentObjectFactoryに登録
-			Jam::Infrastructure::IndependentObjectFactory::instance().registerObject(missile);
 		}
 	};
 }
