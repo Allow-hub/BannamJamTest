@@ -1,4 +1,5 @@
 ﻿#include "Boss1_3.h"
+#include "Missile.h"
 #include "../../Infrastructure/FactoryServiceLocator.h"
 #include "../../Infrastructure/IPhysicsBodyFactory.h"
 #include "../../Infrastructure/PhysicsFilterManager.h"
@@ -29,6 +30,9 @@ namespace Jam::Domain::Enemy
 		, m_bombAttackDuration(4.5)
 		, m_shockWaveDuration(5.0)
 		, m_coreOffset(-70, 15)
+		, m_missileLaunchIndex(0)
+		, m_missileLaunchInterval(0.3)
+		, m_missileTimer(0.0)
 	{
 		m_enemyType = EnemyType::Boss1_3;
 		m_body->setGravityScale(2.0);
@@ -274,51 +278,44 @@ namespace Jam::Domain::Enemy
 #pragma region ミサイル攻撃
 	void Boss1_3::enterMissileAttack()
 	{
-		// Print << U"Enter: Missile Attack";
-
-		// PhysicsFactoryを取得してプレイヤーとボスの位置を取得
-		auto physicsFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getPhysicsFactory();
-		auto playerBody = physicsFactory->getBody(m_playerId);
-
-		if (!playerBody) return;
-
-		Vec2 bossPos = m_body->getPosition();
-		Vec2 playerPos = playerBody->getPosition();
-
-		// ベジェ曲線の制御点を計算
-		// P0: ボスの真後ろ(右後ろ)
-		Vec2 p0 = bossPos + Vec2{ 200, 0 };
+		// ミサイル管理変数を初期化
+		m_missileLaunchIndex = 0;
+		m_missileTimer = 0.0;
 		
-		// P1: ボスのすぐ上
-		Vec2 p1 = bossPos + Vec2{ 200, -400 };
-		
-		// P2: プレイヤーの上空
-		Vec2 p2 = playerPos + Vec2{ 0, -400 };
-		
-		// P3: プレイヤー位置
-		Vec2 p3 = playerPos;
-
-		// MissileSpawnedEventを発行
-		m_eventQueue.push(Events::MissileSpawnedEvent{
-			p0, p1, p2, p3,
+		// 3発セットのミサイルを生成
+		m_missiles = Missile::createThreeMissileSet(
+			m_body->getPosition(),
+			m_status.colSize,
 			m_playerId,
 			m_body->getID(),
-			m_status.attackPower,  // ダメージ
-			3.0,                   // 飛行時間(秒)
-			50.0,                  // ミサイルの半径(テスト用に大きく)
-			500.0                  // 反射後の速度
-		});
+			m_eventQueue,
+			m_status.attackPower,
+			50.0
+		);
 	}
 
 	void Boss1_3::updateMissileAttack(double deltaTime)
 	{
-		// TODO: ミサイル発射処理
+		m_missileTimer += deltaTime;
+		
+		// 0.5秒待機後、ミサイルを順次発射
+		const double launchStartTime = 0.5;
+		
+		if (m_missileTimer >= launchStartTime && m_missileLaunchIndex < MISSILE_COUNT)
+		{
+			double timeSinceStart = m_missileTimer - launchStartTime;
+			double targetTime = m_missileLaunchIndex * m_missileLaunchInterval;
+			
+			if (timeSinceStart >= targetTime)
+			{
+				m_missileLaunchIndex++;
+			}
+		}
 	}
 
 	void Boss1_3::exitMissileAttack()
 	{
-		// Print << U"Exit: Missile Attack";
-		// TODO: 終了処理
+		m_missiles.clear();
 	}
 #pragma endregion
 
