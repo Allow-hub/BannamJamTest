@@ -12,6 +12,7 @@ namespace Jam::Domain::Enemy
 		, public std::enable_shared_from_this<Missile>
 	{
 	private:
+		Texture m_missileTex;
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_body;
 		Jam::Domain::Events::GameEventQueue& m_eventQueue;
 		Jam::Domain::Physics::PhysicsBodyID m_playerId;

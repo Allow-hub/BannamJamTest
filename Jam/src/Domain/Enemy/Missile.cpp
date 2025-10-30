@@ -41,6 +41,9 @@ namespace Jam::Domain::Enemy
 		m_body->setGravityScale(0.0); // ミサイルは重力の影響を受けない
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::Team2);
 		m_body->setLayer(Jam::Domain::Physics::PhysicsLayer::ReflectableWeapon);
+		
+		// ミサイルテクスチャの読み込み
+		m_missileTex = Texture(U"../Assets/Item/Missile.png");
 	}
 
 	void Missile::init()
@@ -98,11 +101,9 @@ namespace Jam::Domain::Enemy
 	{
 		if (!m_body) return;
 
-		// 仮描画: 円
-		Circle(m_body->getPosition(), m_radius).draw(Palette::Orange);
-		
-		// 進行方向を示す線
+		// 進行方向の計算
 		Vec2 direction;
+		
 		if (!m_isReflected)
 		{
 			// ベジェ曲線の接線方向
@@ -117,7 +118,17 @@ namespace Jam::Domain::Enemy
 			direction = m_reflectedDirection;
 		}
 		
-		Line(m_body->getPosition(), m_body->getPosition() + direction * m_radius * 2).draw(3, Palette::Red);
+		// 方向から角度を計算
+		// 画像が左向き(180度)なので、進行方向に合わせて補正
+		double angle = Math::Atan2(direction.y, direction.x) + Math::Pi;
+		
+		// 画像のスケールを調整
+		double scale = (m_radius * 2.5) / m_missileTex.width();
+		
+		// 画像を回転して描画
+		m_missileTex.scaled(scale)
+			.rotated(angle)
+			.drawAt(m_body->getPosition());
 	}
 
 	Vec2 Missile::calculateBezierPoint(double t) const
