@@ -40,6 +40,7 @@ namespace Jam::Presentation::Scenes
 			m_worldButtonTexture = s3d::Texture{ U"../Assets/Select/serect-area_stage01.png" };
 			m_stageButtonTexture = s3d::Texture{ U"../Assets/Select/stage-serect_stage1-1.png" };
 			m_backButtonTexture = s3d::Texture{ U"../Assets/Select/stage-serect_BACK.png" };
+			Jam::Foundation::CoreManager::Instance().setClear(false);
 		}
 
 		void update() override

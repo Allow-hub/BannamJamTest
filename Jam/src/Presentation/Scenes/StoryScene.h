@@ -14,40 +14,81 @@ namespace Jam::Presentation::Scenes
 	private:
 		StoryManager storyManager;
 		Texture skipEmoji;
+
 	public:
 		// コンストラクタ
 		StoryScene(const InitData& init)
-			: IScene{ init }, skipEmoji{ U"▶️"_emoji }
+			: IScene{ init }
+			, skipEmoji{ U"▶️"_emoji }
+		{
+			initStory();
+		}
+
+		// 更新処理
+		void update() override
+		{
+			storyManager.update(Scene::DeltaTime());
+
+			// 左クリック・スペースで進行
+			if (MouseL.down())
+			{
+				if (storyManager.isEnd())
+				{
+					Jam::Presentation::Scenes::TransitionManager::Instance().rec.init(30);
+					handleStoryEnd();
+					return;
+				}
+
+				// ストーリーを次へ
+				storyManager.next();
+			}
+
+			// 右上のボタンクリックでスキップ
+			const Rect skipRect{ Scene::Width() - 150, 20, 80, 80 };
+			if (skipRect.leftClicked())
+			{
+				handleSkip();
+			}
+		}
+
+		// 描画処理
+		void draw() const override
+		{
+			storyManager.draw();
+			drawSkipButton();
+		}
+
+		void drawFadeIn(double t) const override
+		{
+			draw();
+			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeIn(t);
+		}
+
+		void drawFadeOut(double t) const override
+		{
+			draw();
+			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeOut(t);
+		}
+
+	private:
+		// ストーリー初期化
+		void initStory()
 		{
 			auto& core = Jam::Foundation::CoreManager::Instance();
 			String stageName = Jam::Foundation::CoreManager::stageNameToString(core.stageInfo.stageName);
-
 			String basePath = U"../Assets/Story/";
 
-			// 立ち絵マップ作成（キャラクター名 "Player" などで分ける）
+			// 立ち絵マップ作成
 			HashTable<Speaker, HashTable<Jam::Domain::Portrait, FilePath>> portraits;
+			initPortraits(basePath, portraits);
 
-			portraits[Speaker::Player][Jam::Domain::Portrait::Normal] = basePath + U"Portrait/Player/player_normal.png";
-			portraits[Speaker::Player][Jam::Domain::Portrait::Surprised] = basePath + U"Portrait/Player/player_surprised.png";
-			portraits[Speaker::Player][Jam::Domain::Portrait::Suspicious] = basePath + U"Portrait/Player/player_suspicious.png";
-			portraits[Speaker::Player][Jam::Domain::Portrait::Smiling] = basePath + U"Portrait/Player/player_smiling.png";
-			portraits[Speaker::Player][Jam::Domain::Portrait::Conversation] = basePath + U"Portrait/Player/player_conversation.png";
-
-			portraits[Speaker::Owner][Jam::Domain::Portrait::Normal] = basePath + U"Portrait/Owner/owner_normal.png";
-			portraits[Speaker::Owner][Jam::Domain::Portrait::Surprised] = basePath + U"Portrait/Owner/owner_surprised.png";
-			portraits[Speaker::Owner][Jam::Domain::Portrait::Suspicious] = basePath + U"Portrait/Owner/owner_suspicious.png";
-			portraits[Speaker::Owner][Jam::Domain::Portrait::Smiling] = basePath + U"Portrait/Owner/owner_smiling.png";
-			portraits[Speaker::Owner][Jam::Domain::Portrait::Conversation] = basePath + U"Portrait/Owner/owner_conversation.png";
-
-			portraits[Speaker::Riska][Jam::Domain::Portrait::Normal] = basePath + U"Portrait/Riska/riska_normal.png";
-			portraits[Speaker::Riska][Jam::Domain::Portrait::Surprised] = basePath + U"Portrait/Riska/riska_surprised.png";
-			portraits[Speaker::Riska][Jam::Domain::Portrait::Suspicious] = basePath + U"Portrait/Riska/riska_suspicious.png";
-			portraits[Speaker::Riska][Jam::Domain::Portrait::Smiling] = basePath + U"Portrait/Riska/riska_smiling.png";
-			portraits[Speaker::Riska][Jam::Domain::Portrait::Conversation] = basePath + U"Portrait/Riska/riska_conversation.png";
+			// ストーリーの開始ファイルを判定
+			String storySuffix = core.getClear() ? U"_clear" : U"_start";
+			Print << basePath + stageName + storySuffix + U".csv";
 
 			// StoryManager初期化
 			bool ok = storyManager.init(
-				basePath + stageName + U".csv",
+				basePath + stageName + storySuffix + U".csv",
 				portraits,
 				basePath + U"background_" + stageName + U".png"
 			);
@@ -58,77 +99,91 @@ namespace Jam::Presentation::Scenes
 			}
 		}
 
-		// 更新処理
-		void update() override
+		// 各キャラクターの立ち絵ファイルを登録
+		void initPortraits(const String& basePath, HashTable<Speaker, HashTable<Jam::Domain::Portrait, FilePath>>& portraits)
 		{
-			storyManager.update(Scene::DeltaTime());
+			// Player
+			portraits[Speaker::Player][Jam::Domain::Portrait::Normal] = basePath + U"Portrait/Player/player_normal.png";
+			portraits[Speaker::Player][Jam::Domain::Portrait::Surprised] = basePath + U"Portrait/Player/player_surprised.png";
+			portraits[Speaker::Player][Jam::Domain::Portrait::Suspicious] = basePath + U"Portrait/Player/player_suspicious.png";
+			portraits[Speaker::Player][Jam::Domain::Portrait::Smiling] = basePath + U"Portrait/Player/player_smiling.png";
+			portraits[Speaker::Player][Jam::Domain::Portrait::Conversation] = basePath + U"Portrait/Player/player_conversation.png";
 
-			// スペースキーでゲーム開始
-			if (MouseL.down())
+			// Owner
+			portraits[Speaker::Owner][Jam::Domain::Portrait::Normal] = basePath + U"Portrait/Owner/owner_normal.png";
+			portraits[Speaker::Owner][Jam::Domain::Portrait::Surprised] = basePath + U"Portrait/Owner/owner_surprised.png";
+			portraits[Speaker::Owner][Jam::Domain::Portrait::Suspicious] = basePath + U"Portrait/Owner/owner_suspicious.png";
+			portraits[Speaker::Owner][Jam::Domain::Portrait::Smiling] = basePath + U"Portrait/Owner/owner_smiling.png";
+			portraits[Speaker::Owner][Jam::Domain::Portrait::Conversation] = basePath + U"Portrait/Owner/owner_conversation.png";
+
+			// Riska
+			portraits[Speaker::Riska][Jam::Domain::Portrait::Normal] = basePath + U"Portrait/Riska/riska_normal.png";
+			portraits[Speaker::Riska][Jam::Domain::Portrait::Surprised] = basePath + U"Portrait/Riska/riska_surprised.png";
+			portraits[Speaker::Riska][Jam::Domain::Portrait::Suspicious] = basePath + U"Portrait/Riska/riska_suspicious.png";
+			portraits[Speaker::Riska][Jam::Domain::Portrait::Smiling] = basePath + U"Portrait/Riska/riska_smiling.png";
+			portraits[Speaker::Riska][Jam::Domain::Portrait::Conversation] = basePath + U"Portrait/Riska/riska_conversation.png";
+		}
+
+		// ストーリー終了時の処理
+		void handleStoryEnd()
+		{
+			auto& core = Jam::Foundation::CoreManager::Instance();
+
+			if (core.getClear())
 			{
-				if (storyManager.isEnd())
+				core.setClear(false);
+
+				// ネクストステージ押下ならストーリー画面、そうでなければセレクト
+				if (core.getNextStagePressed())
 				{
-					Jam::Presentation::Scenes::TransitionManager::Instance().rec.init(30);
-					changeScene(ToSceneString(SceneName::InGame), 1.0s); 
-					//changeScene(ToSceneString(SceneName::InGame));
-					return;
+					core.goToNextStage();
+					changeScene(ToSceneString(SceneName::Story), 1.0s);
 				}
-				storyManager.next();
+				else
+				{
+					changeScene(ToSceneString(SceneName::Select), 1.0s);
+				}
 			}
-
-			// クリック判定のみ
-			if (Rect{ Scene::Width() - 150, 20, 80, 80 }.leftClicked())
+			else
 			{
-				Jam::Presentation::Scenes::TransitionManager::Instance().rec.init(30);
+				core.setClear(false);
 				changeScene(ToSceneString(SceneName::InGame), 1.0s);
-				//changeScene(ToSceneString(SceneName::InGame));
 			}
 		}
 
-		// 描画処理
-		void draw() const override
+		// スキップボタン処理
+		void handleSkip()
 		{
-			storyManager.draw();
+			auto& core = Jam::Foundation::CoreManager::Instance();
 
-			// StoryManagerの上にボタンを描画
+			if (core.getClear())
+			{
+				core.setClear(false);
+
+				// ネクストステージ押下ならストーリー画面、そうでなければセレクト
+				if (core.getNextStagePressed())
+				{
+					core.goToNextStage();
+					changeScene(ToSceneString(SceneName::Story), 1.0s);
+				}
+				else
+				{
+					changeScene(ToSceneString(SceneName::Select), 1.0s);
+				}
+			}
+			else
+			{
+				core.setClear(false);
+				changeScene(ToSceneString(SceneName::InGame), 1.0s);
+			}
+		}
+
+		// スキップボタン描画
+		void drawSkipButton() const
+		{
 			const Rect rect{ Scene::Width() - 150, 20, 80, 80 };
 			const RoundRect roundRect = rect.rounded(6);
 			skipEmoji.scaled(0.7).drawAt((rect.x + 50), rect.center().y);
 		}
-		void drawFadeIn(double t) const override
-		{
-			// 1. シーンを通常通り描画
-			draw();
-
-			// 2. トランジション（フェードイン）を上から描画
-			//    t が 0.0 -> 1.0 になるにつれて、RectSlideが画面外に消えていく
-			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeIn(t);
-		}
-
-		// シーンがフェードアウトする（消える）ときの描画
-		void drawFadeOut(double t) const override
-		{
-			// 1. シーンを通常通り描画
-			draw();
-
-			// 2. トランジション（フェードアウト）を上から描画
-			//    t が 0.0 -> 1.0 になるにつれて、RectSlideが画面を覆っていく
-			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeOut(t);
-		}
-
-		bool button(const Rect& rect)
-		{
-			const RoundRect roundRect = rect.rounded(6);
-			roundRect
-				.drawShadow(Vec2{ 2, 2 }, 12, 0)
-				.draw(ColorF{ 0.9, 0.8, 0.6 });
-
-			// 枠を描く
-			rect.stretched(-3).rounded(3)
-				.drawFrame(2, ColorF{ 0.4, 0.3, 0.2 });
-			// ボタンが押されたら true を返す
-			return rect.leftClicked();
-		}
-
 	};
 }

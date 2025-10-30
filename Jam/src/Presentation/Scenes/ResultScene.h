@@ -121,13 +121,14 @@ namespace Jam::Presentation::Scenes
 			// 1. RETRY ボタン
 			if (m_retryButton.leftClicked())
 			{
-				changeScene(ToSceneString(SceneName::Title));
+				changeScene(ToSceneString(SceneName::InGame));
 			}
 
 			// 2. MAP ボタン
 			if (m_mapButton.leftClicked())
 			{
-				changeScene(ToSceneString(SceneName::Select));
+				Jam::Foundation::CoreManager::Instance().setNextStagePressed(false);
+				changeScene(ToSceneString(SceneName::Story));
 			}
 
 			// 3. NEXT STAGE ボタン
@@ -135,8 +136,8 @@ namespace Jam::Presentation::Scenes
 			{
 				if (m_isClear)
 				{
-					Print(U"Loading Next Stage...");
-					changeScene(ToSceneString(SceneName::Select));
+					Jam::Foundation::CoreManager::Instance().setNextStagePressed(true);
+					changeScene(ToSceneString(SceneName::Story));
 				}
 				else
 				{

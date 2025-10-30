@@ -411,7 +411,9 @@
     <None Include="Assets\Stage\background.json" />
     <None Include="Assets\Stage\stage1_1.json" />
     <None Include="Assets\Stage\stage1_3.json" />
-    <None Include="Assets\Story\stage1_1.csv" />
+    <None Include="Assets\Story\stage1_1_clear.csv" />
+    <None Include="Assets\Story\stage1_1_start.csv" />
+    <None Include="Assets\Story\stage1_2_start.csv" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="App\example\shot.mp3" />
