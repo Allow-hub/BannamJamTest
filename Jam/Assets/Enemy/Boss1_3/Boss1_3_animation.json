@@ -4,12 +4,11 @@
             "name": "Idle",
             "loop": true,
             "frames": [
-              {
-                "path": "../Assets/Enemy/Boss1_3/idle_1.png",
-                "duration": 1.5,
-                "width": 700,
-                "height": 700
-              }
+                {
+                    "path": "../Assets/Enemy/Boss1_3/idle_0.png",
+                    "duration": 1.5,
+                    "scale": 2.0
+                }
             ]
         }
     ]

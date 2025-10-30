@@ -10,7 +10,7 @@ namespace Jam::Util
 		struct GridConfig
 		{
 			double gridSize = 100.0;                        // グリッドのサイズ（ピクセル）
-			double gridRange = 10000.0;                     // グリッドの描画範囲（原点から±この値）
+			double gridRange = 50000.0;                     // グリッドの描画範囲（原点から±この値）
 			ColorF lineColor{ 0.7, 0.7, 0.7, 0.5 };        // グリッド線の色
 			ColorF axisColor{ 0.3, 0.3, 0.3, 0.8 };        // 軸の色
 			ColorF textColor{ 0.0, 0.0, 0.0, 1.0 };        // 座標テキストの色（黒）

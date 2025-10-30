@@ -56,6 +56,8 @@ namespace Jam::Domain::Enemy
 		m_weakBody->setPos(m_body->getPosition() + m_coreOffset);
 		m_weakBody->setGravityScale(0);
 
+		m_isFaceLeft = true;
+
 		//テスト用ReflectableWeaponの当たり判定を降らせて当てるだけ
 		//Vec2 testOffset = Vec2(m_body->getPosition().x, m_body->getPosition().y + 600);
 		//auto test = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
@@ -73,7 +75,8 @@ namespace Jam::Domain::Enemy
 		if (!isAlive()) return;
 
 		m_stateTimer += deltaTime;
-		m_weakBody->setPos(m_body->getPosition() + m_coreOffset);
+		double dir = m_isFaceLeft ? -1.0 : 1.0;
+		m_weakBody->setPos(m_body->getPosition() + m_coreOffset * m_isFaceLeft);
 		switch (currentBossState)
 		{
 		case BossState::Appear:
@@ -93,7 +96,7 @@ namespace Jam::Domain::Enemy
 
 	void Boss1_3::draw() const
 	{
-		m_weakBody->drawFrame(2.0, Palette::Blue);
+		m_weakBody->drawFrame(5.0, Palette::Blue);
 
 		if (m_shockWave)
 		{
@@ -407,21 +410,28 @@ namespace Jam::Domain::Enemy
 	void Boss1_3::enterBombAttack()
 	{
 		Print << U"Enter: Bomb Attack";
+		m_bombAttackTask();
+	}
+	Jam::Util::Task Boss1_3::m_bombAttackTask()
+	{
+		for (unsigned int i = 0; i < m_bombsThrown; ++i)
+		{
+			auto dir = m_isFaceLeft ? -1.0 : 1.0;
+			auto offset = Vec2((m_xOffset * i * dir)+dir* m_xBombInitOffset, m_bombSpawnY);
+			auto pos = m_body->getPosition() + offset;
+			Vec2 size = { 140,140 };
+			// 物理ボディを設定
+			auto physicsFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getPhysicsFactory();
+			//P2BodyTypeの指定は後で修正
+			auto bombBody = physicsFactory->createBody(pos, size,
+				s3d::P2BodyType::Dynamic, { 0.2, 0.0, 1.0 }, Jam::Domain::Physics::PhysicsShape::Circle);
+			auto bomb = std::make_shared<Jam::Domain::Enemy::Bomb>(bombBody, m_playerId, m_eventQueue, m_status.attackPower, size.x * 1.5, m_explosionDelay, size);
+			bomb->init();
 
-		auto pos = m_body->getPosition() + Vec2{ -450, -50 }; // 手元から生成する位置
-		Vec2 size = { 120,120 };
-		// 物理ボディを設定
-		auto physicsFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getPhysicsFactory();
-		//P2BodyTypeの指定は後で修正
-		auto bombBody = physicsFactory->createBody(pos, size,
-			s3d::P2BodyType::Dynamic, { 0.2, 0.0, 1.0 }, Jam::Domain::Physics::PhysicsShape::Circle);
-		auto bomb = std::make_shared<Jam::Domain::Enemy::Bomb>(bombBody, m_playerId, m_eventQueue, m_status.attackPower, size.x * 1.5, m_explosionDelay, size);
-		bomb->init();
-		//bombBody->applyImpulse(Vec2{ Random(-200.0, 200.0), -600.0 }); // 手から放り投げるように
-
-
-		// Factory に登録
-		Jam::Infrastructure::IndependentObjectFactory::instance().registerObject(bomb);
+			// Factory に登録
+			Jam::Infrastructure::IndependentObjectFactory::instance().registerObject(bomb);
+			co_await Jam::Util::WaitSeconds(m_bombSpawnInterval);
+		}
 	}
 
 	void Boss1_3::updateBombAttack(double deltaTime)
@@ -439,25 +449,59 @@ namespace Jam::Domain::Enemy
 #pragma region 衝撃波攻撃
 	void Boss1_3::enterShockWave()
 	{
-		Print << U"Enter: ShockWave";
-		m_body->applyImpulse(Vec2::Up() * m_shockJumpForce);
-		m_shockWaveTask();
+		// 現在の位置を取得
+		Vec2 currentPos = m_body->getPosition();
+
+		// 移動先を決定
+		Vec2 targetPos;
+		if ((currentPos - m_leftPos).length() < (currentPos - m_rightPos).length())
+		{
+			targetPos = m_rightPos;
+		}
+		else
+		{
+			targetPos = m_leftPos;
+		}
+
+		// 放物線ジャンプ処理（Y上方向に強めの力 + X方向に向けた力）
+		Vec2 jumpDir = (targetPos - currentPos).normalized();
+		double horizontalForce = jumpDir.x * m_shockJumpForce * 1.1; // 横方向
+		double verticalForce = -m_shockJumpForce * 1.6;              // 上方向
+
+		m_body->applyImpulse(Vec2(horizontalForce, verticalForce));
+
+		// 衝撃波タスクを開始（ジャンプ後、一定時間経過で地面にShockWave発生）
+		m_shockWaveTask(targetPos);
 	}
 
-	Jam::Util::Task Boss1_3::m_shockWaveTask()
+
+	Jam::Util::Task Boss1_3::m_shockWaveTask(Vec2 targetPos)
 	{
+		// ジャンプ中の待機
 		co_await Jam::Util::WaitSeconds(m_shockWaveDelay);
-		auto pos = Vec2{ m_body->getPosition().x,m_body->getPosition().y + m_status.colSize.y / 2 };
-		// 衝撃波生成処理
+
+		// --- 着地処理 ---
+		// 速度をゼロにして位置を固定
+		m_body->setVelocity(Vec2{ 0, 0 });
+		m_body->setPos(targetPos);
+
+		// 向きを反転
+		m_isFaceLeft = !m_isFaceLeft;
+
+		// 衝撃波の中心は、ジャンプ先（targetPos）の足元
+		Vec2 shockPos = Vec2{ targetPos.x, targetPos.y + (m_status.colSize.y / 2.0) };
+
 		m_shockWave = std::make_shared<ShockWave>(
-			pos,
-			m_shockWaveDuration, // 継続時間
-			Vec2{ 100,150 },                // 開始半径
-			Vec2{ 4000,150 },               // 終了半径
+			shockPos,
+			m_shockWaveDuration,
+			Vec2{ 100, 150 },
+			Vec2{ 4000, 150 },
 			m_playerId,
 			m_eventQueue
 		);
 	}
+
+
 
 	void Boss1_3::updateShockWave(double deltaTime)
 	{
@@ -475,7 +519,6 @@ namespace Jam::Domain::Enemy
 
 	void Boss1_3::exitShockWave()
 	{
-		Print << U"Exit: ShockWave";
 		m_shockWave.reset();
 	}
 #pragma endregion

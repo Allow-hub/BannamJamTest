@@ -25,7 +25,7 @@ namespace Jam::Domain::Enemy
 
 	private:
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_weakBody;//弱点箇所
-		Vec2 coreSize = Vec2{ 100,100 };
+		Vec2 coreSize = Vec2{ 150,150 };
 		Vec2 m_coreOffset;
 
 		void updateAppearState(double deltaTime);
@@ -108,14 +108,22 @@ namespace Jam::Domain::Enemy
 		void updateBombAttack(double deltaTime);
 		void exitBombAttack();
 		double m_explosionDelay = 3.0;
+		unsigned int m_bombsThrown = 3;//一回で投げる爆弾の数
+		double m_bombSpawnY = -600.0;
+		double m_bombSpawnInterval = 0.5;
+		double m_xOffset = 500.0;
+		double m_xBombInitOffset = 450.0;
+		Jam::Util::Task m_bombAttackTask();
 
 		// shockWave
 		void enterShockWave();
 		void updateShockWave(double deltaTime);
 		void exitShockWave();
 		std::shared_ptr<ShockWave> m_shockWave;
-		const double m_shockWaveDelay = 1.2;
-		Jam::Util::Task m_shockWaveTask();
+		const double m_shockWaveDelay = 2.0;
+		Jam::Util::Task m_shockWaveTask(Vec2 targetPos);
+		Vec2 m_leftPos = Vec2{ 850,-300 };
+		Vec2 m_rightPos = Vec2{ -360,-300 };;
 
 		const String toString(Boss1_3::AttackState state)
 		{

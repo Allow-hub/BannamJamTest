@@ -4,8 +4,9 @@
 
 namespace Jam::Domain::Enemy
 {
-	// 目の敵
-	// プレイヤーに近づき、射程距離に入ると、目から長いビームを出す
+	// ピエロ
+	// プレイヤーを見つけると近づき、一定距離まで接近すると爆弾を投げつける
+	// その後逃げる
 	class Clown : public EnemyBase
 	{
 	public:
@@ -24,7 +25,14 @@ namespace Jam::Domain::Enemy
 
 		void onAIEvent(EnemyAIEvent e) override;
 
+	protected:
+		void onAttackEnter()override;
+		void onAttackUpdate(double deltaTime)override;
+		void onAttackExit()override;
+
 	private:
-		double m_patrolTimer = 0.0;
+		Vec2 m_offset = Vec2{ 100, 0 };
+		Vec2 m_throwForce = Vec2{ 150, -300.0 };	
+		double m_explosionDelay = 2.0;
 	};
 }

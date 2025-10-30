@@ -66,6 +66,11 @@ namespace Jam::Domain::Enemy
 		const Vec2 myPos = getPosition();
 		const double directionX = (playerPos.x > myPos.x) ? 1.0 : -1.0;
 
+		if(directionX < 0)
+			m_isFaceLeft = true;
+		else
+			m_isFaceLeft = false;
+
 		const Vec2 pounceImpulse = {
 			directionX * pounceHorizonalImpulse,
 			-pounceVerticalImpulse
@@ -150,11 +155,49 @@ namespace Jam::Domain::Enemy
 
 	void Spider::onAIEvent(EnemyAIEvent e)
 	{
+		switch (e)
+		{
+		case EnemyAIEvent::PlayerFound:
+			changeAI(AIType::Chase);
+			break;
+
+		case EnemyAIEvent::PlayerLost:
+			changeAI(AIType::Patrol);
+			break;
+		case EnemyAIEvent::ReachedGoal:
+			changeAI(AIType::Attack);
+			break;
+
+		default:
+			break;
+		}
 	}
 
 	void Spider::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{
 		EnemyBase::onCollisionEnter(other);
+		switch (other->getLayer())
+		{
+		case Physics::PhysicsLayer::Player:
+			m_eventQueue.push(Events::PlayerDamagedEvent{
+				m_body->getID(),
+				m_playerId,
+				DamageInfo {
+				m_status.attackPower,
+				m_body->getPosition(),
+				(getPlayerPos() - m_body->getPosition()).normalized(),
+				true,
+				false
+				}
+				,0.0
+				,0.3
+				,15.0
+			});
+			m_body->setVelocity({ 0,0 });
+			break;
+		default:
+			break;
+		}
 	}
 
 	void Spider::onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)

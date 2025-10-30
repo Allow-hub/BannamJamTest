@@ -10,15 +10,20 @@ namespace Jam::Foundation
 		Stage1_3
 	};
 
+	struct GoalData
+	{
+		Vec2 position;
+		Vec2 size;
+	};
+
 	struct StageData
 	{
 		Vec2 respawnPosition;  // 落下後のリスタート位置
 		double fallLimitY;     // 落下判定Y位置
 		std::array<Vec2, 3> flagmentMemoryPos;
+		GoalData goalData;
 	};
 
-	//ロジックは持たない、他のクラスへの参照は持たない
-	//ステージをまたいで情報をやり取りする
 	class CoreManager
 	{
 	private:
@@ -53,46 +58,32 @@ namespace Jam::Foundation
 			switch (stage)
 			{
 			case StageName::Stage1_1:
-				return StageData{ Vec2(50, -5), 2000.0, {Vec2(200, -100),Vec2(800, -300),Vec2(1300, -250)} }; // respawn, fallLimitY
+				return StageData{ Vec2(50, -5), 2000.0,
+					{Vec2(2800, -250),Vec2(12700, -900),Vec2(15450, -750)},
+					GoalData{ Vec2(200, 0), Vec2(200, 200) } };
 			case StageName::Stage1_2:
-				return StageData{ Vec2(50, -5), 2000.0, {Vec2(200, -100),Vec2(800, -300),Vec2(1300, -250)} };
+				return StageData{ Vec2(50, -5), 2000.0,
+					{Vec2(4050, -200),Vec2(6350, -250),Vec2(9450, 1400)},
+					GoalData{ Vec2(200, 0), Vec2(200, 200) } };
 			case StageName::Stage1_3:
-				return StageData{ Vec2(50, -5), 550.0, {Vec2(-10000, -10000),Vec2(-10000, -10000),Vec2(-10000, -10000)} };
+				return StageData{ Vec2(50, -5), 550.0,
+					{ Vec2(-10000, -10000), Vec2(-10000, -10000), Vec2(-10000, -10000) },
+					GoalData{ Vec2(-10000, 0), Vec2(200, 200) } };
 			default:
-				return StageData{ Vec2(50, 0), 1000.0, {Vec2(200, -100),Vec2(800, -300),Vec2(1300, -250)} };
+				return StageData{ Vec2(50, 0), 1000.0,
+					{ Vec2(200, -100), Vec2(800, -300), Vec2(1300, -250) },
+					GoalData{ Vec2(200, 0), Vec2(200, 200) } };
 			}
 		}
 
+		static bool getClear() { return m_clear; }
+		static void setClear(bool b) { m_clear = b; }
 
-		static bool getClear()
-		{
-			return m_clear;
-		}
+		static bool getDied() { return m_isDied; }
+		static void setDied(bool b) { m_isDied = b; }
 
-		static void setClear(bool b)
-		{
-			m_clear = b;
-		}
-
-		static bool getDied()
-		{
-			return m_isDied;
-		}
-
-		static void setDied(bool b)
-		{
-			m_isDied = b;
-		}
-
-		static bool getPause()
-		{
-			return m_isPause;
-		}
-
-		static void setPause(bool b)
-		{
-			m_isPause = b;
-		}
+		static bool getPause() { return m_isPause; }
+		static void setPause(bool b) { m_isPause = b; }
 
 		static void reset()
 		{
@@ -102,15 +93,8 @@ namespace Jam::Foundation
 			m_flagmentMemory = 0;
 		}
 
-		static int getFlagment()
-		{
-			return m_flagmentMemory;
-		}
-
-		static int getMaxFlagment()
-		{
-			return m_maxFlagment;
-		}
+		static int getFlagment() { return m_flagmentMemory; }
+		static int getMaxFlagment() { return m_maxFlagment; }
 
 		static void addFlagment(int amount)
 		{
@@ -122,37 +106,15 @@ namespace Jam::Foundation
 			m_flagmentMemory = amount;
 		}
 
-		static void addTimer(double t)
-		{
-			m_timer += t;
-		}
+		static void addTimer(double t) { m_timer += t; }
+		static double getTimer() { return m_timer; }
 
-		static double getTimer()
-		{
-			return m_timer;
-		}
+		static void setCurrentStageData(const StageData& data) { m_currentStageData = data; }
+		static const StageData& getCurrentStageData() { return m_currentStageData; }
 
-		static void setCurrentStageData(const StageData& data)
-		{
-			m_currentStageData = data;
-		}
+		static void setRespawnPosition(const Vec2& pos) { m_currentStageData.respawnPosition = pos; }
+		static void setFallLimitY(double y) { m_currentStageData.fallLimitY = y; }
 
-		static const StageData& getCurrentStageData()
-		{
-			return m_currentStageData;
-		}
-
-		static void setRespawnPosition(const Vec2& pos)
-		{
-			m_currentStageData.respawnPosition = pos;
-		}
-
-		static void setFallLimitY(double y)
-		{
-			m_currentStageData.fallLimitY = y;
-		}
-
-		// シーン間共通情報（純粋データのみ）
 		struct StageInfo {
 			StageName stageName = StageName::Stage1_1;
 		} stageInfo;
@@ -162,7 +124,6 @@ namespace Jam::Foundation
 			double bgmVolume = 1.0;
 			double seVolume = 1.0;
 		} audioSetting;
-
 
 	private:
 		CoreManager() = default;

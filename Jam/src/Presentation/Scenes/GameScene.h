@@ -36,6 +36,9 @@
 #include "../../Infrastructure/IndependentObjectFactory.h"
 #include "../../UseCase/IndependentObjectService.h";
 #include "../../Presentation/IndependentObjectManager.h";
+#include "../../Domain/GoalArea.h"
+#include "TitleScene.h"
+#include "TransitionManager.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -255,6 +258,18 @@ namespace Jam::Presentation::Scenes
 				m_flagmentMemories.push_back(flagment);
 			}
 
+			if(core.stageInfo.stageName == Jam::Foundation::StageName::Stage1_3)
+			{
+				m_cameraManager->lockFocusOn({ 250,-500 }, 0.7);
+			}
+
+			// === Goal 初期化 ===
+			auto goalBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+				.getPhysicsFactory()->createRectSensor(core.getCurrentStageData().goalData.position,core.getCurrentStageData().goalData.size);
+			auto goal = std::make_shared<Jam::Domain::GoalArea>(goalBody, [this]() { this->nextScene(); });
+			goalBody->setCollisionListener(goal);
+			Jam::Infrastructure::IndependentObjectFactory::instance().registerObject(goal);
+
 			Jam::Util::GridRenderer::GridConfig config;
 			config.gridSize = 100.0;
 			config.fontSize = 16;
@@ -417,6 +432,18 @@ namespace Jam::Presentation::Scenes
 			Jam::Infrastructure::IndependentObjectFactory::instance().clearAllObjects();
 			resetScene();
 			changeScene(ToSceneString(SceneName::Result));
+		}
+
+		void drawFadeIn(double t) const override
+		{
+			draw();
+			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeIn(t);
+		}
+
+		void drawFadeOut(double t) const override
+		{
+			draw();
+			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeOut(t);
 		}
 
 	private:

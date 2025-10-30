@@ -43,7 +43,8 @@ namespace Jam::Domain::Physics
 		Wall,
 		OneWayPlatform,
 		Item,
-		ReflectableWeapon
+		ReflectableWeapon,
+		Goal,
 	};
 
 	inline String ToString(PhysicsLayer layer)

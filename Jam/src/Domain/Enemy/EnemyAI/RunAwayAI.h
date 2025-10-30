@@ -4,46 +4,49 @@
 
 namespace Jam::Domain::Enemy
 {
-	//==========================================================
-	// ■ RunAwayAI
-	// プレイヤーから一定時間 or 一定距離まで離れるAI。
-	// 追跡AI(ChaseAI)とは逆方向に移動し、時間または距離条件で終了する。
-	//==========================================================
 	struct RunAwayAI : IEnemyAI
 	{
-		// 逃げる持続時間
-		const Duration RunTime = SecondsF(7.5);
+		const Duration RunTime = SecondsF(6.5);
+		const Duration JumpInterval = SecondsF(1.5); // ジャンプ間隔
 
-		// タイマー（開始時に手動でstart()を呼ぶ）
 		Timer runTimer{ RunTime, StartImmediately::No };
+		Timer jumpTimer{ JumpInterval, StartImmediately::No };
 
 		void enter(EnemyBase& enemy) override
 		{
-			// タイマー計測開始
 			runTimer.start();
+			jumpTimer.start();
 
 			enemy.onChaseEnter();
 		}
 
 		void update(EnemyBase& enemy, double deltaTime) override
 		{
-			// プレイヤーとの相対位置を取得
 			auto& setting = enemy.getChaseSettings();
 			Vec2 enePos = enemy.getPosition();
 			Vec2 plPos = enemy.getPlayerPos();
 
-			// プレイヤーへの方向ベクトルを算出
 			Vec2 direction = plPos - enePos;
-
-			// 逃げる方向はプレイヤーとは逆方向
 			Vec2 velocity = direction.normalized();
 
-			// プレイヤーと反対方向へ力を加える（逃走挙動）
+			// プレイヤーの方向と反対を向く
+			if (direction.x < 0)
+				enemy.setFaceLeft(false);
+			else
+				enemy.setFaceLeft(true);
+			// プレイヤーと逆方向に移動
 			enemy.getPhysicsBody()->applyForce(
 				-velocity * enemy.getStatus().moveSpeed * setting.moveSpeedFactor
 			);
 
-			// 一定距離離れるか、逃走時間が終了したらAIイベントを送信
+			// 🔸 一定間隔でジャンプ
+			if (jumpTimer.reachedZero())
+			{
+				enemy.jump();                  // 敵のジャンプ処理を呼ぶ
+				jumpTimer.restart();           // タイマーをリセットして再スタート
+			}
+
+			// 一定距離または時間で逃走終了
 			if (direction.length() >= setting.loseRange * 2 || runTimer.reachedZero())
 			{
 				enemy.onAIEvent(EnemyAIEvent::PlayerLost);
@@ -55,6 +58,7 @@ namespace Jam::Domain::Enemy
 		void exit(EnemyBase& enemy) override
 		{
 			runTimer.reset();
+			jumpTimer.reset();
 
 			enemy.onChaseExit();
 		}

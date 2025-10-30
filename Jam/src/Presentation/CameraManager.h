@@ -22,6 +22,8 @@ namespace Jam::Presentation
 		double m_shakeDuration = 0.0;
 		double m_zoomDuration = 0.0;
 		double m_totalZoomDuration = 0.0;
+		bool m_isZoomLocked = false; // ズームをロックするフラグ
+		double m_lockedBaseZoom = 1.0; // ロック時の基準ズーム値
 
 		// Y座標の制限
 		double m_minY = -std::numeric_limits<double>::infinity();
@@ -67,9 +69,18 @@ namespace Jam::Presentation
 
 		void setZoom(double zoom, double zoomDuration)
 		{
-			m_targetZoom = Clamp(zoom, 0.01, 2.0);
+			// ロック中の場合、ロックされた基準ズームを基準として新しいズームを設定
+			if (m_isZoomLocked)
+			{
+				m_targetZoom = Clamp(zoom * m_lockedBaseZoom, 0.01, 2.0);
+			}
+			else
+			{
+				m_targetZoom = Clamp(zoom, 0.01, 2.0);
+			}
 			m_zoomDuration = zoomDuration;
 			m_totalZoomDuration = zoomDuration;
+			// ロックは維持（解除しない）
 		}
 
 		void focusOn(const Vec2& point, double duration, double zoom = 1.0)
@@ -77,7 +88,16 @@ namespace Jam::Presentation
 			m_mode = CameraMode::FocusPoint;
 			m_focusPoint = point;
 			m_modeDuration = duration;
-			m_targetZoom = zoom;
+			// ロック中の場合、ロックされた基準ズームを基準として新しいズームを設定
+			if (m_isZoomLocked)
+			{
+				m_targetZoom = zoom * m_lockedBaseZoom;
+			}
+			else
+			{
+				m_targetZoom = zoom;
+			}
+			// ロックは維持（解除しない）
 		}
 
 		void shake(double intensity, double duration)
@@ -90,12 +110,36 @@ namespace Jam::Presentation
 		{
 			m_mode = CameraMode::FollowPlayer;
 			m_modeDuration = 0.0;
+			m_isZoomLocked = false; // フォローモードに戻るときはロック解除
+		}
+
+		// 永続的なフォーカスモード（duration を無限にする）
+		void lockFocusOn(const Vec2& point, double zoom = 1.0)
+		{
+			m_mode = CameraMode::FocusPoint;
+			m_focusPoint = point;
+			m_modeDuration = std::numeric_limits<double>::infinity(); // 無限に継続
+			m_targetZoom = Clamp(zoom, 0.01, 2.0);
+			m_lockedBaseZoom = m_targetZoom; // 基準ズーム値を記録
+			m_isZoomLocked = true; // ズームをロック
+			// 即座にズームを適用
+			m_camera.setScale(m_targetZoom);
+			m_zoomDuration = 0.0;
+		}
+
+		// フォーカスポイントを更新（ロック中でも位置だけ変更可能）
+		void updateFocusPoint(const Vec2& point)
+		{
+			if (m_mode == CameraMode::FocusPoint)
+			{
+				m_focusPoint = point;
+			}
 		}
 
 		void update(double deltaTime)
 		{
 			// === モード更新 ===
-			if (m_modeDuration > 0.0)
+			if (m_modeDuration > 0.0 && m_modeDuration != std::numeric_limits<double>::infinity())
 			{
 				m_modeDuration -= deltaTime;
 				if (m_modeDuration <= 0.0)
@@ -135,19 +179,41 @@ namespace Jam::Presentation
 			}
 
 			// === ズーム補間 ===
-			double currentZoom = m_camera.getScale();
-			if (m_zoomDuration > 0.0)
+			if (!m_isZoomLocked) // ズームがロックされていない場合のみ更新
 			{
-				double t = 1.0 - (m_zoomDuration / m_totalZoomDuration);
-				t = Clamp(t, 0.0, 1.0);
-				double newZoom = Math::Lerp(currentZoom, m_targetZoom, t);
-				m_camera.setScale(newZoom);
-				m_zoomDuration -= deltaTime;
+				double currentZoom = m_camera.getScale();
+				if (m_zoomDuration > 0.0)
+				{
+					double t = 1.0 - (m_zoomDuration / m_totalZoomDuration);
+					t = Clamp(t, 0.0, 1.0);
+					double newZoom = Math::Lerp(currentZoom, m_targetZoom, t);
+					m_camera.setScale(newZoom);
+					m_zoomDuration -= deltaTime;
+				}
+				else
+				{
+					double newZoom = Math::Lerp(currentZoom, 1.0, 0.1);
+					m_camera.setScale(newZoom);
+				}
 			}
-			else
+			else // ズームがロックされている場合
 			{
-				double newZoom = Math::Lerp(currentZoom, 1.0, 0.1);
-				m_camera.setScale(newZoom);
+				double currentZoom = m_camera.getScale();
+				if (m_zoomDuration > 0.0)
+				{
+					// 一時的なズーム変更を補間
+					double t = 1.0 - (m_zoomDuration / m_totalZoomDuration);
+					t = Clamp(t, 0.0, 1.0);
+					double newZoom = Math::Lerp(currentZoom, m_targetZoom, t);
+					m_camera.setScale(newZoom);
+					m_zoomDuration -= deltaTime;
+				}
+				else
+				{
+					// ズーム変更が終わったら基準ズームに戻す
+					double newZoom = Math::Lerp(currentZoom, m_lockedBaseZoom, 0.1);
+					m_camera.setScale(newZoom);
+				}
 			}
 
 			// === シェイクを適用した位置に移動（Y座標も制限） ===

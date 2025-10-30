@@ -388,6 +388,7 @@ namespace Jam::Domain::Player
 
 		// フックの動きを停止
 		m_body->setVelocity({ 0, 0 });
+		enemy->setVelocity(Vec2::Zero());
 		m_body->setAngularVelocity(0);
 
 		// イベント送信（振動など）

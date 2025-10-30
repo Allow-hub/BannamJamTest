@@ -26,19 +26,21 @@ namespace Jam::Domain::Enemy
 	void EnemyBase::moveLeft()
 	{
 		if (!m_isAlive) return;
+		m_isFaceLeft = true;
 		m_body->applyForce({ -m_status.moveSpeed, 0 });
 	}
 
 	void EnemyBase::moveRight()
 	{
 		if (!m_isAlive) return;
+		m_isFaceLeft = false;
 		m_body->applyForce({ m_status.moveSpeed, 0 });
 	}
 
 	void EnemyBase::jump()
 	{
 		if (!m_isAlive) return;
-		m_body->applyForce({ 0, -m_status.jumpPower });
+		m_body->applyImpulse({ 0, -m_status.jumpPower });
 	}
 
 	void EnemyBase::takeDamage(const DamageInfo& info)
