@@ -90,13 +90,11 @@ namespace Jam::Domain::Enemy
 		void enterMissileAttack();
 		void updateMissileAttack(double deltaTime);
 		void exitMissileAttack();
+		Jam::Util::Task m_missileAttackTask();
 		
 		// ミサイル管理用
-		std::vector<std::shared_ptr<class Missile>> m_missiles;
-		int m_missileLaunchIndex;          // 次に発射するミサイルのインデックス
-		double m_missileLaunchInterval;    // ミサイル発射間隔
-		double m_missileTimer;             // ミサイル用タイマー
 		const int MISSILE_COUNT = 3;       // 1回の攻撃で生成するミサイル数
+		double m_missileSpawnInterval = 0.3; // ミサイル生成間隔
 
 		// SummonClown
 		void enterSummonClown();

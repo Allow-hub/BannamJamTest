@@ -30,9 +30,6 @@ namespace Jam::Domain::Enemy
 		, m_bombAttackDuration(4.5)
 		, m_shockWaveDuration(5.0)
 		, m_coreOffset(-70, 15)
-		, m_missileLaunchIndex(0)
-		, m_missileLaunchInterval(0.3)
-		, m_missileTimer(0.0)
 	{
 		m_enemyType = EnemyType::Boss1_3;
 		m_body->setGravityScale(2.0);
@@ -142,6 +139,7 @@ namespace Jam::Domain::Enemy
 				}
 			}
 
+			Print << U"[Boss1_3] 弱点露出開始";
 			currentBossState = BossState::Weak;
 			m_stateTimer = 0.0;
 			m_isReflectedMissileHit = false;
@@ -281,45 +279,68 @@ namespace Jam::Domain::Enemy
 #pragma region ミサイル攻撃
 	void Boss1_3::enterMissileAttack()
 	{
-		// ミサイル管理変数を初期化
-		m_missileLaunchIndex = 0;
-		m_missileTimer = 0.0;
-		
-		// 3発セットのミサイルを生成
-		m_missiles = Missile::createThreeMissileSet(
-			m_body->getPosition(),
-			m_status.colSize,
-			m_playerId,
-			m_body->getID(),
-			m_eventQueue,
-			m_status.attackPower,
-			50.0
-		);
+		// Print << U"Enter: Missile Attack";
+		m_missileAttackTask();
 	}
-
-	void Boss1_3::updateMissileAttack(double deltaTime)
+	
+	Jam::Util::Task Boss1_3::m_missileAttackTask()
 	{
-		m_missileTimer += deltaTime;
-		
-		// 0.5秒待機後、ミサイルを順次発射
-		const double launchStartTime = 0.5;
-		
-		if (m_missileTimer >= launchStartTime && m_missileLaunchIndex < MISSILE_COUNT)
+		for (int i = 0; i < MISSILE_COUNT; ++i)
 		{
-			double timeSinceStart = m_missileTimer - launchStartTime;
-			double targetTime = m_missileLaunchIndex * m_missileLaunchInterval;
+			// プレイヤー位置を取得
+			auto physicsFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getPhysicsFactory();
+			auto playerBody = physicsFactory->getBody(m_playerId);
+			if (!playerBody) co_return;
 			
-			if (timeSinceStart >= targetTime)
-			{
-				m_missileLaunchIndex++;
-			}
+			Vec2 bossPos = m_body->getPosition();
+			Vec2 playerPos = playerBody->getPosition();
+			
+			// 待機位置を計算(ボスの前方、少し上)
+			double waitY = bossPos.y - m_status.colSize.y / 2.0 + 50;
+			const double spacing = 120.0;
+			Vec2 waitPos = Vec2{ bossPos.x + (i - 1) * spacing, waitY };
+			
+			// ベジェ曲線の制御点を設定
+			Vec2 p0 = waitPos;
+			Vec2 p1 = waitPos + Vec2{ 0, -200 };
+			Vec2 p2 = playerPos + Vec2{ 0, -200 };
+			Vec2 p3 = playerPos;
+			
+			// 物理ボディを作成
+			auto missileBody = physicsFactory->createBody(
+				waitPos,
+				SizeF{ 100.0, 100.0 },
+				s3d::P2BodyType::Dynamic,
+				{ 0.0, 0.0, 1.0 },
+				Jam::Domain::Physics::PhysicsShape::Circle
+			);
+			
+			// Missileオブジェクトを作成
+			auto missile = std::make_shared<Missile>(
+				missileBody,
+				m_playerId,
+				m_body->getID(),
+				m_eventQueue,
+				p0, p1, p2, p3,
+				m_status.attackPower,
+				2.0,   // 飛行時間
+				50.0,  // 半径
+				500.0  // 反射後の速度
+			);
+			
+			missile->init();
+			
+			// Factoryに登録
+			Jam::Infrastructure::IndependentObjectFactory::instance().registerObject(missile);
+			
+			// 次のミサイルまで待機
+			co_await Jam::Util::WaitSeconds(m_missileSpawnInterval);
 		}
 	}
 
-	void Boss1_3::exitMissileAttack()
-	{
-		m_missiles.clear();
-	}
+	void Boss1_3::updateMissileAttack(double deltaTime){}
+
+	void Boss1_3::exitMissileAttack(){}
 #pragma endregion
 
 #pragma region ピエロ召喚
