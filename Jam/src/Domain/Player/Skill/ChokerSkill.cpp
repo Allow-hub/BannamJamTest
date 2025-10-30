@@ -31,6 +31,7 @@ namespace Jam::Domain::Player
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::PlayerWeapon);
 		m_body->setGravityScale(0);
 		m_body->setBullet(true);
+		m_body->setLayer(Jam::Domain::Physics::PhysicsLayer::Weapon);
 	}
 
 	void ChokerSkill::init()

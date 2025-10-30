@@ -34,27 +34,18 @@ namespace Jam::Domain::Enemy
 		, m_isReflected(false)
 		, m_reflectedDirection(Vec2::Zero())
 		, m_reflectedSpeed(reflectedSpeed)
-		, m_normalSpeed(0.0)
 		, m_hasHitBoss(false)
 	{
 		// PhysicsBodyの設定
 		m_body->setBodyType(Jam::Domain::Physics::PhysicsType::Dynamic);
 		m_body->setGravityScale(0.0); // ミサイルは重力の影響を受けない
-		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::EnemyWeapon);
-		m_body->setLayer(Jam::Domain::Physics::PhysicsLayer::Enemy);
-
-		// 通常速度を計算(ベジェ曲線の大まかな長さ / 飛行時間)
-		double approximateLength = (m_controlPoint1 - m_controlPoint0).length() +
-								   (m_controlPoint2 - m_controlPoint1).length() +
-								   (m_controlPoint3 - m_controlPoint2).length();
-		m_normalSpeed = approximateLength / m_flightDuration;
+		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::Team2);
+		m_body->setLayer(Jam::Domain::Physics::PhysicsLayer::ReflectableWeapon);
 	}
 
 	void Missile::init()
 	{
 		m_body->setCollisionListener(shared_from_this());
-		Print << U"[Missile] Created! Body Layer: " << Jam::Domain::Physics::ToString(m_body->getLayer());
-		Print << U"[Missile] Position: " << m_body->getPosition();
 	}
 
 	Missile::~Missile()
@@ -150,59 +141,47 @@ namespace Jam::Domain::Enemy
 	{
 		if (m_isReflected) return; // 二重反射防止
 
-		Print << U"[Missile] 🔄 Reflecting! Direction: " << direction;
 		m_isReflected = true;
 		m_reflectedDirection = direction.normalized();
-		
-		// 反射時のフィルター変更(プレイヤーの武器扱いに)
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::Team1);
-		m_body->setLayer(Jam::Domain::Physics::PhysicsLayer::ReflectableWeapon);
-		Print << U"[Missile] New Layer: " << Jam::Domain::Physics::ToString(m_body->getLayer());
+		// 反射後はLayerをWeaponに変更(ボス側で反射済みと判定するため)
+		m_body->setLayer(Jam::Domain::Physics::PhysicsLayer::Weapon);
 	}
 
 	void Missile::onCollisionEnter(std::shared_ptr<IPhysicsBody> other)
 	{
-		Print << U"[Missile] Collision detected! Other layer: " << Jam::Domain::Physics::ToString(other->getLayer());
-		Print << U"[Missile] IsReflected: " << m_isReflected;
-		
+
 		// チョーカーとの衝突(反射)
 		if (!m_isReflected && other->getLayer() == Jam::Domain::Physics::PhysicsLayer::Weapon)
 		{
-			Print << U"[Missile] ✅ Reflected by Choker!";
-			// プレイヤーからミサイルへの方向の逆向き = 反射方向
 			Vec2 reflectDir = (m_body->getPosition() - other->getPosition()).normalized();
 			reflect(reflectDir);
 			return;
 		}
 
-		// 反射後のボスとの衝突
+		// 反射後のボスとの衝突(弱点露出のみ、ダメージなし)
 		if (m_isReflected && !m_hasHitBoss && other->getID() == m_bossId)
 		{
-			Print << U"[Missile] ✅ Hit Boss after reflection!";
+			Console << U"[Missile] ✅ Hit Boss after reflection!";
 			m_hasHitBoss = true;
 			
-			// ボスにダメージを与える
-			m_eventQueue.push(Events::EnemyDamagedEvent{
-				m_body->getID(),
-				m_bossId,
-				DamageInfo{
-					m_damage,
-					m_body->getPosition(),
-					m_reflectedDirection,
-					false,
-					false
-				}
-			});
+			// ボス側のonCollisionEnterで弱点露出フラグが設定される
 
 			// ミサイル削除
 			m_isDead = true;
 			return;
 		}
 
-		// プレイヤーとの衝突(反射されていない場合)
+		// 反射前にボスに当たった場合(何もせず消滅)
+		if (!m_isReflected && other->getID() == m_bossId)
+		{
+			m_isDead = true;
+			return;
+		}
+
+		// プレイヤーとの衝突(反射されていない場合のみダメージ)
 		if (!m_isReflected && other->getLayer() == Jam::Domain::Physics::PhysicsLayer::Player)
 		{
-			Print << U"[Missile] ✅ Hit Player directly!";
 			m_eventQueue.push(Events::PlayerDamagedEvent{
 				m_body->getID(),
 				m_playerId,

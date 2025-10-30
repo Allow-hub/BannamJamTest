@@ -31,7 +31,6 @@ namespace Jam::Domain::Enemy
 		bool m_isReflected;            // 反射されたか
 		Vec2 m_reflectedDirection;     // 反射後の方向
 		double m_reflectedSpeed;       // 反射後の速度
-		double m_normalSpeed;          // 通常の速度
 
 		bool m_hasHitBoss;             // ボスに当たったか
 
