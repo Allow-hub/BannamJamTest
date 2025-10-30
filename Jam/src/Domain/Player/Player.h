@@ -85,6 +85,9 @@ namespace Jam::Domain::Player
 		void onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 		void onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 
+		using DamageCallback = std::function<void(void)>;
+		void SetOnDamagedCallback(DamageCallback callback);	//InGameUIに通知する用
+
 	private:
 		// 基本情報
 		PlayerStats m_stats;
@@ -114,6 +117,8 @@ namespace Jam::Domain::Player
 		void onDamaged(const DamageInfo& info);
 		void onDeath();
 		Jam::Util::Task respawn();
+
+		DamageCallback m_onDamaged;
 
 		// 内部処理
 		void updateState();

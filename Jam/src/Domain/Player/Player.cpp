@@ -181,6 +181,7 @@ namespace Jam::Domain::Player
 		if (m_isInvincible)return;
 
 		m_stats.hp -= info.amount;
+		if (m_onDamaged) m_onDamaged();
 
 		if (m_stats.hp <= 0)
 		{
@@ -192,6 +193,11 @@ namespace Jam::Domain::Player
 		{
 			onDamaged(info);//ダメージを受けた時の吹き飛ばし等
 		}
+	}
+
+	void Player::SetOnDamagedCallback(DamageCallback callback)
+	{
+		m_onDamaged = std::move(callback);
 	}
 
 	s3d::Vec2 Player::getPosition() const

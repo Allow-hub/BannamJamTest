@@ -12,10 +12,16 @@ namespace Jam::Presentation
 		s3d::Texture m_hpFront;
 		double lastHp = 0.0;
 
+		s3d::Timer damageFaceTimer{ 1.0s };
+		bool isDamaged = false;
+		int randomFace = 0;
+
 		// 顔アイコン
 		s3d::Texture m_faceNormal;
 		s3d::Texture m_faceWarning;
 		s3d::Texture m_faceDanger;
+		s3d::Texture m_faceDamage01;
+		s3d::Texture m_faceDamage02;
 
 		s3d::Vec2 m_position = { 300, 10 }; // HPバー描画位置
 		s3d::Vec2 m_barSize = { 400, 24 };
@@ -35,6 +41,17 @@ namespace Jam::Presentation
 			m_faceNormal = Texture(U"../Assets/UI/face_happy.png");
 			m_faceWarning = Texture(U"../Assets/UI/face_normal.png");
 			m_faceDanger = Texture(U"../Assets/UI/face_sad.png");
+
+			m_faceDamage01 = Texture(U"../Assets/UI/face_damage_01.png");
+			m_faceDamage02 = Texture(U"../Assets/UI/face_damage_02.png");
+
+			m_player->SetOnDamagedCallback
+			(
+				[this](void)
+				{
+						this->OnPlayerDamaged();
+				}
+			);
 		}
 
 		void update()
@@ -44,6 +61,12 @@ namespace Jam::Presentation
 			{
 				lastHp = currentHp;
 				// HP変化時エフェクトやサウンドなど追加可能
+			}
+
+			//ダメージ顔アイコンタイマー処理
+			if (damageFaceTimer.reachedZero())
+			{
+				isDamaged = false;
 			}
 		}
 
@@ -62,16 +85,31 @@ namespace Jam::Presentation
 				m_hpFront(0, 0, displayWidth, m_hpFront.height()).scaled(m_scale).draw(m_position);
 			}
 
-			// HP比率で顔アイコン切替
 			const s3d::Texture* faceTex = nullptr;
-			if (hpRatio > 0.6) {
-				faceTex = &m_faceNormal;
+			if(isDamaged)
+			{
+				// ダメージ顔アイコンアニメーション
+				if (randomFace)
+				{
+					faceTex = &m_faceDamage01;
+				}
+				else
+				{
+					faceTex = &m_faceDamage02;
+				}
 			}
-			else if (hpRatio > 0.3) {
-				faceTex = &m_faceWarning;
-			}
-			else {
-				faceTex = &m_faceDanger;
+			else
+			{
+				// HP比率で顔アイコン切替
+				if (hpRatio > 0.6) {
+					faceTex = &m_faceNormal;
+				}
+				else if (hpRatio > 0.3) {
+					faceTex = &m_faceWarning;
+				}
+				else {
+					faceTex = &m_faceDanger;
+				}
 			}
 
 			// 左上に描画
@@ -87,5 +125,13 @@ namespace Jam::Presentation
 		void setScale(double scale) { m_scale = scale; }
 		void setFacePosition(const s3d::Vec2& pos) { m_facePosition = pos; }
 		void setFaceSize(const s3d::Vec2& size) { m_faceSize = size; }
+
+		// ダメージ時の処理
+		void OnPlayerDamaged()
+		{
+			randomFace = s3d::Random(0, 1);
+			isDamaged = true;
+			damageFaceTimer.restart();
+		}
 	};
 }
