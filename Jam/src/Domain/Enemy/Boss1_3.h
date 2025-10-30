@@ -107,8 +107,10 @@ namespace Jam::Domain::Enemy
 		void updateShockWave(double deltaTime);
 		void exitShockWave();
 		std::shared_ptr<ShockWave> m_shockWave;
-		const double m_shockWaveDelay = 1.2;
-		Jam::Util::Task m_shockWaveTask();
+		const double m_shockWaveDelay = 2.0;
+		Jam::Util::Task m_shockWaveTask(Vec2 targetPos);
+		Vec2 m_leftPos = Vec2{ 800,-300 };
+		Vec2 m_rightPos = Vec2{ -330,-300 };;
 
 		const String toString(Boss1_3::AttackState state)
 		{
