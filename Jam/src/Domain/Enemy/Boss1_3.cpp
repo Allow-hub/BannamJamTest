@@ -237,10 +237,10 @@ namespace Jam::Domain::Enemy
 
 	void Boss1_3::updateWeakState(double deltaTime)
 	{
-		Print << U"弱点露出";
 		// 弱点露出中は何もしない
 		if (m_stateTimer >= m_weakStateDuration)
 		{
+			Print << U"[Boss1_3] 弱点露出が終了";
 			currentBossState = BossState::Normal;
 			m_stateTimer = 0.0;
 			m_attackCooldownTimer = 0.0;
@@ -274,12 +274,12 @@ namespace Jam::Domain::Enemy
 #pragma region ミサイル攻撃
 	void Boss1_3::enterMissileAttack()
 	{
-		Print << U"Enter: Missile Attack";
-		
+		// Print << U"Enter: Missile Attack";
+
 		// PhysicsFactoryを取得してプレイヤーとボスの位置を取得
 		auto physicsFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getPhysicsFactory();
 		auto playerBody = physicsFactory->getBody(m_playerId);
-		
+
 		if (!playerBody) return;
 
 		Vec2 bossPos = m_body->getPosition();
@@ -317,7 +317,7 @@ namespace Jam::Domain::Enemy
 
 	void Boss1_3::exitMissileAttack()
 	{
-		Print << U"Exit: Missile Attack";
+		// Print << U"Exit: Missile Attack";
 		// TODO: 終了処理
 	}
 #pragma endregion
@@ -417,7 +417,7 @@ namespace Jam::Domain::Enemy
 		auto physicsFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getPhysicsFactory();
 		//P2BodyTypeの指定は後で修正
 		auto bombBody = physicsFactory->createBody(pos, size,
-			s3d::P2BodyType::Dynamic, { 0.2, 0.0, 1.0 },Jam::Domain::Physics::PhysicsShape::Circle);
+			s3d::P2BodyType::Dynamic, { 0.2, 0.0, 1.0 }, Jam::Domain::Physics::PhysicsShape::Circle);
 		auto bomb = std::make_shared<Jam::Domain::Enemy::Bomb>(bombBody, m_playerId, m_eventQueue, m_status.attackPower, size.x * 1.5, m_explosionDelay, size);
 		bomb->init();
 		//bombBody->applyImpulse(Vec2{ Random(-200.0, 200.0), -600.0 }); // 手から放り投げるように
@@ -507,8 +507,13 @@ namespace Jam::Domain::Enemy
 				,15.0
 			});
 			break;
-		case Jam::Domain::Physics::PhysicsLayer::ReflectableWeapon:
-			m_isReflectedMissileHit = true;
+		case Jam::Domain::Physics::PhysicsLayer::Weapon:
+			// 反射されたミサイルがボスに当たった
+			if (currentBossState == BossState::Normal)
+			{
+				Print << U"弱点出る";
+				m_isReflectedMissileHit = true;
+			}
 			break;
 		}
 	}

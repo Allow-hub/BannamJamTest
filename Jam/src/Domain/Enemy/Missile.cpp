@@ -162,7 +162,6 @@ namespace Jam::Domain::Enemy
 		// 反射後のボスとの衝突(弱点露出のみ、ダメージなし)
 		if (m_isReflected && !m_hasHitBoss && other->getID() == m_bossId)
 		{
-			Console << U"[Missile] ✅ Hit Boss after reflection!";
 			m_hasHitBoss = true;
 			
 			// ボス側のonCollisionEnterで弱点露出フラグが設定される
