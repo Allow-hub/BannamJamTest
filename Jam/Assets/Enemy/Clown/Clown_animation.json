@@ -7,8 +7,7 @@
                 {
                     "path": "../Assets/Enemy/Clown/idle_0.png",
                     "duration": 1.5,
-                    "width": 170,
-                    "height": 250
+                    "scale": 0.43
                 }
             ]
         }

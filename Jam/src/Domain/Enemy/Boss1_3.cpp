@@ -52,6 +52,8 @@ namespace Jam::Domain::Enemy
 		m_weakBody->setPos(m_body->getPosition() + m_coreOffset);
 		m_weakBody->setGravityScale(0);
 
+		m_isFaceLeft = true;
+
 		//テスト用ReflectableWeaponの当たり判定を降らせて当てるだけ
 		//Vec2 testOffset = Vec2(m_body->getPosition().x, m_body->getPosition().y + 600);
 		//auto test = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()

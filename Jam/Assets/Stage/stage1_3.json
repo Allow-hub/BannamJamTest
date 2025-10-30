@@ -7,18 +7,42 @@
     "metadata": "識別用の任意文字列（スクリプトやイベントで使用）。"
 
   },
-  "objects": [
-    {
-      "rect": [ -600, 50, 1700, 3000 ],
-      "type": "solid",
-      "metadata": "初期地点",
-      "groundSide": "all"
-    },
-    {
-      "rect": [ -400, -500, 100, 50 ],
-      "type": "solid",
-      "groundSide": "All",
-      "metadata": "登り壁"
-    }
-  ]
+    "objects": [
+        {
+            "rect": [ -600, 50, 1700, 3000 ],
+            "type": "solid",
+            "metadata": "初期地点",
+            "groundSide": "all"
+        },
+        {
+            "rect": [ -1350, -250, 300, 50 ],
+            "type": "solid",
+            "groundSide": "All",
+            "metadata": "左下のぼり壁"
+        },
+        {
+            "rect": [ 1550, -250, 300, 50 ],
+            "type": "solid",
+            "groundSide": "All",
+            "metadata": "右下のぼり壁壁"
+        },
+        {
+            "rect": [ -800, -900, 150, 50 ],
+            "type": "solid",
+            "groundSide": "All",
+            "metadata": "左上のぼり壁"
+        },
+        {
+            "rect": [ 1100, -900, 150, 50 ],
+            "type": "solid",
+            "groundSide": "All",
+            "metadata": "右上のぼり壁壁"
+        },
+        {
+            "rect": [ -50, -3000, 500, 1750 ],
+            "type": "solid",
+            "groundSide": "All",
+            "metadata": "上壁"
+        }
+    ]
 }

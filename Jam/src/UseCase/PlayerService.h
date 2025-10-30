@@ -30,10 +30,8 @@ namespace Jam::UseCase
 		{
 			m_input.Update();
 			Domain::InputState inputState = m_input.GetState();
-
 			if (m_player->getIsRespawning())return;
 			if (!m_player->getCanControl())return;
-
 			if (inputState.settting)
 			{
 				auto& core = Jam::Foundation::CoreManager::Instance();
@@ -42,42 +40,49 @@ namespace Jam::UseCase
 			}
 
 			bool isRunning = false;
+			bool isWalking = false;
+			bool isJumping = false;
+
+			if (!m_player->getGrounded())
+				isJumping = true;
 
 			if (inputState.left)
 			{
 				m_player->moveLeft();
 				m_manager.setFacingLeft(true);
-				isRunning = true;
+				isWalking = true;
 			}
 			if (inputState.right)
 			{
 				m_player->moveRight();
 				m_manager.setFacingLeft(false);
-				isRunning = true;
+				isWalking = true;
 			}
 			if (inputState.dash)
+			{
 				m_player->startDash();
+				isRunning = true;
+			}
 			else
 				m_player->endDash();
-			if (inputState.jump)
+			if (inputState.jump){
 				m_player->jump();
-			if (inputState.skillPush) // Skill ボタンが押されていたら
+				isJumping = true;
+			}
+			if (inputState.skillPush)
 			{
 				m_player->skillPush();
 			}
-			if (inputState.skillReleased) // Skill ボタンが離れてたら
+			if (inputState.skillReleased)
 			{
 				m_player->skillReleased();
 			}
-			
-			// 下ボタンの状態を更新
+
 			m_player->setPressingDown(inputState.down);
 
-			// ---------------------------------
 			// マウスホイールでスキル切り替え
-			double wheelDelta = inputState.skillChange; // 1フレームのホイール差分
+			double wheelDelta = inputState.skillChange;
 			m_wheelAccumulator += wheelDelta;
-
 			while (m_wheelAccumulator >= wheelThreshold)
 			{
 				m_player->changeSkill(1);
@@ -88,9 +93,12 @@ namespace Jam::UseCase
 				m_player->changeSkill(-1);
 				m_wheelAccumulator += wheelThreshold;
 			}
-			// ---------------------------------
 
-			m_manager.SetRunning(isRunning);
+			// 🔹 アニメーション状態を更新
+			m_manager.setAnim(U"isWalking", isWalking);
+			m_manager.setAnim(U"isRunning", isRunning);
+			m_manager.setAnim(U"isJumping", isJumping);
+
 			m_player->update(deltaTime);
 		}
 

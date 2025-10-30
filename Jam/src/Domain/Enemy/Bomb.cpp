@@ -41,7 +41,7 @@ namespace Jam::Domain::Enemy
 			factory->removeBody(m_body->getID());
 			m_body.reset();
 		}
-		Jam::Infrastructure::IndependentObjectFactory::instance().removeObjectByPtr(this);
+		//Jam::Infrastructure::IndependentObjectFactory::instance().removeObjectByPtr(this);
 	}
 
 	void Bomb::update(double dt)

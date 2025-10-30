@@ -66,6 +66,7 @@ namespace Jam::Domain::Player
 		void setMaxHp(double h) { m_maxHp = h; }
 
 		double getHp() { return m_stats.hp; }
+		bool getGrounded() const { return m_isGrounded; }
 
 		void resetJumpState() {
 			m_isGrounded = true;

@@ -7,8 +7,7 @@
                 {
                     "path": "../Assets/Enemy/LittleDevil/idle_0.png",
                     "duration": 1.5,
-                    "width": 150,
-                    "height": 150
+                    "scale": 0.25
                 }
             ]
         }
