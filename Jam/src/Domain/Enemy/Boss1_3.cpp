@@ -37,8 +37,8 @@ namespace Jam::Domain::Enemy
 		m_attackPatterns = {
 			{AttackState::Missile, 0.0f},
 			{AttackState::SummonClown, 0.0f},
-			{AttackState::Bomb, 0.0f},
-			{AttackState::Shockwave,1.0f}
+			{AttackState::Bomb, 0.5f},
+			{AttackState::Shockwave,0.5f}
 		};
 
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::BossHidden);//チョーカーとの接触をなくす
@@ -71,7 +71,8 @@ namespace Jam::Domain::Enemy
 		if (!isAlive()) return;
 
 		m_stateTimer += deltaTime;
-		m_weakBody->setPos(m_body->getPosition() + m_coreOffset);
+		double dir = m_isFaceLeft ? -1.0 : 1.0;
+		m_weakBody->setPos(m_body->getPosition() + m_coreOffset * m_isFaceLeft);
 		switch (currentBossState)
 		{
 		case BossState::Appear:
@@ -91,7 +92,7 @@ namespace Jam::Domain::Enemy
 
 	void Boss1_3::draw() const
 	{
-		m_weakBody->drawFrame(2.0, Palette::Blue);
+		m_weakBody->drawFrame(5.0, Palette::Blue);
 
 		if (m_shockWave)
 		{
@@ -380,21 +381,28 @@ namespace Jam::Domain::Enemy
 	void Boss1_3::enterBombAttack()
 	{
 		Print << U"Enter: Bomb Attack";
+		m_bombAttackTask();
+	}
+	Jam::Util::Task Boss1_3::m_bombAttackTask()
+	{
+		for (unsigned int i = 0; i < m_bombsThrown; ++i)
+		{
+			auto dir = m_isFaceLeft ? -1.0 : 1.0;
+			auto offset = Vec2((m_xOffset * i * dir)+dir* m_xBombInitOffset, m_bombSpawnY);
+			auto pos = m_body->getPosition() + offset;
+			Vec2 size = { 140,140 };
+			// 物理ボディを設定
+			auto physicsFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getPhysicsFactory();
+			//P2BodyTypeの指定は後で修正
+			auto bombBody = physicsFactory->createBody(pos, size,
+				s3d::P2BodyType::Dynamic, { 0.2, 0.0, 1.0 }, Jam::Domain::Physics::PhysicsShape::Circle);
+			auto bomb = std::make_shared<Jam::Domain::Enemy::Bomb>(bombBody, m_playerId, m_eventQueue, m_status.attackPower, size.x * 1.5, m_explosionDelay, size);
+			bomb->init();
 
-		auto pos = m_body->getPosition() + Vec2{ -450, -50 }; // 手元から生成する位置
-		Vec2 size = { 120,120 };
-		// 物理ボディを設定
-		auto physicsFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getPhysicsFactory();
-		//P2BodyTypeの指定は後で修正
-		auto bombBody = physicsFactory->createBody(pos, size,
-			s3d::P2BodyType::Dynamic, { 0.2, 0.0, 1.0 },Jam::Domain::Physics::PhysicsShape::Circle);
-		auto bomb = std::make_shared<Jam::Domain::Enemy::Bomb>(bombBody, m_playerId, m_eventQueue, m_status.attackPower, size.x * 1.5, m_explosionDelay, size);
-		bomb->init();
-		//bombBody->applyImpulse(Vec2{ Random(-200.0, 200.0), -600.0 }); // 手から放り投げるように
-
-
-		// Factory に登録
-		Jam::Infrastructure::IndependentObjectFactory::instance().registerObject(bomb);
+			// Factory に登録
+			Jam::Infrastructure::IndependentObjectFactory::instance().registerObject(bomb);
+			co_await Jam::Util::WaitSeconds(m_bombSpawnInterval);
+		}
 	}
 
 	void Boss1_3::updateBombAttack(double deltaTime)

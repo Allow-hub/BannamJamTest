@@ -28,6 +28,7 @@ namespace Jam::Domain::Enemy
 		bool m_isHit = false;
 		Vec2 m_size;
 		Vec2 m_scaled = Vec2{ 0.0015 ,0.0015 };
+		double hitRatio = 0.6;//当たり判定を先に消す
 
 	public:
 		Bomb(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Physics::PhysicsBodyID playerId, Jam::Domain::Events::GameEventQueue& queue, double damage, double explosionRadius, double lifetime, Vec2 size);
