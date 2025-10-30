@@ -156,7 +156,7 @@ namespace Jam::Domain::Enemy
 				}
 			}
 
-			Print << U"[Boss1_3] 弱点露出開始";
+			// Print << U"[Boss1_3] 弱点露出開始";
 			currentBossState = BossState::Weak;
 			m_stateTimer = 0.0;
 			m_isReflectedMissileHit = false;
@@ -259,8 +259,6 @@ namespace Jam::Domain::Enemy
 
 	void Boss1_3::updateWeakState(double deltaTime)
 	{
-		//Print << U"弱点露出";
-
 		if (!m_weakEntered)
 		{
 			m_body->setFilter(Jam::Infrastructure::PhysicsFilter::WallOnly);
@@ -271,7 +269,7 @@ namespace Jam::Domain::Enemy
 		// 弱点露出中は何もしない
 		if (m_stateTimer >= m_weakStateDuration)
 		{
-			Print << U"[Boss1_3] 弱点露出が終了";
+			// Print << U"[Boss1_3] 弱点露出が終了";
 			currentBossState = BossState::Normal;
 			m_stateTimer = 0.0;
 			m_attackCooldownTimer = 0.0;
@@ -346,9 +344,9 @@ namespace Jam::Domain::Enemy
 				m_eventQueue,
 				p0, p1, p2, p3,
 				m_status.attackPower,
-				2.0,   // 飛行時間
-				50.0,  // 半径
-				500.0  // 反射後の速度
+				m_missileFlightDuration,
+				m_missileRadius,
+				m_missileReflectedSpeed
 			);
 			
 			missile->init();
@@ -592,7 +590,6 @@ namespace Jam::Domain::Enemy
 			// 反射されたミサイルがボスに当たった
 			if (currentBossState == BossState::Normal)
 			{
-				Print << U"弱点出る";
 				m_isReflectedMissileHit = true;
 			}
 			break;

@@ -89,6 +89,7 @@ namespace Jam::Domain::Enemy
 		bool m_hasAttackEntered;  // 攻撃のEnterが実行されたか
 
 		// 攻撃のライフサイクルメソッド
+		
 		// Missile
 		void enterMissileAttack();
 		void updateMissileAttack(double deltaTime);
@@ -96,8 +97,11 @@ namespace Jam::Domain::Enemy
 		Jam::Util::Task m_missileAttackTask();
 		
 		// ミサイル管理用
-		const int MISSILE_COUNT = 3;       // 1回の攻撃で生成するミサイル数
-		double m_missileSpawnInterval = 0.3; // ミサイル生成間隔
+		const int MISSILE_COUNT = 3;
+		double m_missileSpawnInterval = 0.3; // ミサイル生成間隔(秒)
+		double m_missileFlightDuration = 2.0; // ミサイル飛行時間(秒)
+		double m_missileRadius = 50.0;
+		double m_missileReflectedSpeed = 500.0; // 反射後の速度
 
 		// SummonClown
 		void enterSummonClown();

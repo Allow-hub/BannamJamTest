@@ -61,9 +61,5 @@ namespace Jam::Domain::Enemy
 		void onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 		void onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 		void onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
-
-		// 設定可能なパラメータ
-		void setReflectedSpeed(double speed) { m_reflectedSpeed = speed; }
-		double getReflectedSpeed() const { return m_reflectedSpeed; }
 	};
 }

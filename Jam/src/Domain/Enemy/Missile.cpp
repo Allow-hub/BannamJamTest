@@ -60,8 +60,6 @@ namespace Jam::Domain::Enemy
 			factory->removeBody(m_body->getID());
 			m_body.reset();
 		}
-		// 注意: removeObjectByPtr(this)は呼ばない
-		// デストラクタが呼ばれる時点で既にFactoryから削除されている
 	}
 
 	void Missile::update(double dt)
@@ -141,23 +139,23 @@ namespace Jam::Domain::Enemy
 		double uuu = uu * u;
 		double ttt = tt * t;
 
-		Vec2 point = uuu * m_controlPoint0;              // (1-t)^3 * P0
-		point += 3 * uu * t * m_controlPoint1;           // 3(1-t)^2 * t * P1
-		point += 3 * u * tt * m_controlPoint2;           // 3(1-t) * t^2 * P2
-		point += ttt * m_controlPoint3;                  // t^3 * P3
+		Vec2 point = uuu * m_controlPoint0;    
+		point += 3 * uu * t * m_controlPoint1; 
+		point += 3 * u * tt * m_controlPoint2; 
+		point += ttt * m_controlPoint3;        
 
 		return point;
 	}
 
 	void Missile::reflect(Vec2 direction)
 	{
-		if (m_isReflected) return; // 二重反射防止
+		if (m_isReflected) return;
 
 		m_isReflected = true;
 		m_reflectedDirection = direction.normalized();
-		// 反射後はPlayerWeaponフィルターに変更(敵にダメージエフェクトを与えるため)
+
+		// 反射後はTeam1フィルターに変更(プレイヤー側の攻撃として扱う)
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::Team1);
-		// 反射後はLayerをWeaponに変更(ボス側で反射済みと判定するため)
 		m_body->setLayer(Jam::Domain::Physics::PhysicsLayer::Weapon);
 	}
 
@@ -172,7 +170,7 @@ namespace Jam::Domain::Enemy
 			return;
 		}
 
-		// 反射後のボスとの衝突(弱点露出のみ、ダメージなし)
+		// 反射後のボスとの衝突
 		if (m_isReflected && !m_hasHitBoss && other->getID() == m_bossId)
 		{
 			m_hasHitBoss = true;
@@ -189,25 +187,11 @@ namespace Jam::Domain::Enemy
 			return;
 		}
 
-		// プレイヤーとの衝突(反射されていない場合のみダメージ)
+		// 反射前にプレイヤーに当たった場合(何もせず消滅)
 		if (!m_isReflected && other->getLayer() == Jam::Domain::Physics::PhysicsLayer::Player)
 		{
-			m_eventQueue.push(Events::PlayerDamagedEvent{
-				m_body->getID(),
-				m_playerId,
-				DamageInfo{
-					m_damage,
-					m_body->getPosition(),
-					(other->getPosition() - m_body->getPosition()).normalized(),
-					true,
-					false
-				},
-				0.0,
-				0.3,
-				15.0
-			});
-
 			m_isDead = true;
+			return;
 		}
 	}
 
