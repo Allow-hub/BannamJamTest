@@ -7,13 +7,14 @@
 namespace Jam::Domain::Enemy
 {
 	// 1_3のボス
-	class Boss1_3 : public EnemyBase
+	class Boss1_3 : public EnemyBase, public std::enable_shared_from_this<Boss1_3>
 	{
 	public:
 		explicit Boss1_3(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Physics::PhysicsBodyID playerId
 		, Jam::Domain::Events::GameEventQueue& eventQueue);
 		virtual ~Boss1_3() = default;
 
+		Jam::Util::Task init();
 		// 毎フレームの更新（AI挙動など）
 		void update(double deltaTime) override;
 		void draw() const override;
@@ -27,6 +28,8 @@ namespace Jam::Domain::Enemy
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_weakBody;//弱点箇所
 		Vec2 coreSize = Vec2{ 150,150 };
 		Vec2 m_coreOffset;
+		bool m_weakEntered = false;
+		bool m_normalEntered = false;
 
 		void updateAppearState(double deltaTime);
 		void updateNormalState(double deltaTime);

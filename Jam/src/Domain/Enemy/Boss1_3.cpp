@@ -6,6 +6,7 @@
 #include "../../Foundation/CoroutineUtil.h"
 #include <random>
 #include "Bomb.h"
+#include "../../UseCase/AttackProcessor.h"
 
 namespace Jam::Domain::Enemy
 {
@@ -37,8 +38,8 @@ namespace Jam::Domain::Enemy
 		m_attackPatterns = {
 			{AttackState::Missile, 0.0f},
 			{AttackState::SummonClown, 0.0f},
-			{AttackState::Bomb, 0.5f},
-			{AttackState::Shockwave,0.5f}
+			{AttackState::Bomb, 1.0f},
+			{AttackState::Shockwave,0.0f}
 		};
 
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::BossHidden);//チョーカーとの接触をなくす
@@ -55,12 +56,20 @@ namespace Jam::Domain::Enemy
 		m_isFaceLeft = true;
 
 		//テスト用ReflectableWeaponの当たり判定を降らせて当てるだけ
-		//Vec2 testOffset = Vec2(m_body->getPosition().x, m_body->getPosition().y + 600);
-		//auto test = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
-		//	.getPhysicsFactory()->createBody(testOffset, coreSize);
-		//test->setGravityScale(2.0);
-		//test->setFilter(Jam::Infrastructure::PhysicsFilter::Team1);
-		//test->setLayer(Jam::Domain::Physics::PhysicsLayer::ReflectableWeapon);
+		Vec2 testOffset = Vec2(m_body->getPosition().x, m_body->getPosition().y - 1500);
+		auto test = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+			.getPhysicsFactory()->createBody(testOffset, coreSize);
+		test->setGravityScale(2.0);
+		test->setFilter(Jam::Infrastructure::PhysicsFilter::Team1);
+		test->setLayer(Jam::Domain::Physics::PhysicsLayer::ReflectableWeapon);
+		init();
+	}
+
+	Jam::Util::Task Boss1_3::init()
+	{
+		co_await Jam::Util::WaitSeconds(0.1);
+		m_weakBody->setCollisionListener(shared_from_this());
+		Jam::UseCase::AttackProcessor::getInstance().registerDamageable(m_weakBody->getID(), shared_from_this());
 
 	}
 #pragma endregion
@@ -115,6 +124,14 @@ namespace Jam::Domain::Enemy
 
 	void Boss1_3::updateNormalState(double deltaTime)
 	{
+
+		if (!m_normalEntered)
+		{
+			m_body->setFilter(Jam::Infrastructure::PhysicsFilter::BossHidden);
+			m_weakBody->setFilter(Jam::Infrastructure::PhysicsFilter::Team2Death);
+			m_weakEntered = false;
+			m_normalEntered = true;
+		}
 		// 反射ミサイルが当たったかチェック
 		if (m_isReflectedMissileHit)
 		{
@@ -240,7 +257,15 @@ namespace Jam::Domain::Enemy
 
 	void Boss1_3::updateWeakState(double deltaTime)
 	{
-		Print << U"弱点露出";
+		//Print << U"弱点露出";
+
+		if (!m_weakEntered)
+		{
+			m_body->setFilter(Jam::Infrastructure::PhysicsFilter::WallOnly);
+			m_weakBody->setFilter(Jam::Infrastructure::PhysicsFilter::Team2);
+			m_normalEntered = false;
+			m_weakEntered = true;
+		}
 		// 弱点露出中は何もしない
 		if (m_stateTimer >= m_weakStateDuration)
 		{
@@ -380,9 +405,9 @@ namespace Jam::Domain::Enemy
 #pragma region 爆弾攻撃
 	void Boss1_3::enterBombAttack()
 	{
-		Print << U"Enter: Bomb Attack";
 		m_bombAttackTask();
 	}
+
 	Jam::Util::Task Boss1_3::m_bombAttackTask()
 	{
 		for (unsigned int i = 0; i < m_bombsThrown; ++i)
@@ -407,13 +432,10 @@ namespace Jam::Domain::Enemy
 
 	void Boss1_3::updateBombAttack(double deltaTime)
 	{
-		// TODO: 爆弾投擲処理
 	}
 
 	void Boss1_3::exitBombAttack()
 	{
-		Print << U"Exit: Bomb Attack";
-		// TODO: 投擲終了処理
 	}
 #pragma endregion
 
