@@ -306,13 +306,10 @@ namespace Jam::Domain::Enemy
 			Vec2 p2 = playerPos + Vec2{ 0, -200 };
 			Vec2 p3 = playerPos;
 			
-			// 物理ボディを作成
-			auto missileBody = physicsFactory->createBody(
+			// 物理ボディをセンサーとして作成（地面を貫通するように）
+			auto missileBody = physicsFactory->createCircleSensor(
 				waitPos,
-				SizeF{ 100.0, 100.0 },
-				s3d::P2BodyType::Dynamic,
-				{ 0.0, 0.0, 1.0 },
-				Jam::Domain::Physics::PhysicsShape::Circle
+				50.0  // 半径
 			);
 			
 			// Missileオブジェクトを作成
