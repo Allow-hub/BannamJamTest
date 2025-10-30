@@ -2,9 +2,14 @@
   "_comment": "Stage1のオブジェクトの配置",
   "_使い方": {
     "rect": "[x, y, width, height] 形式の配列で位置とサイズを指定します。",
-    "type": "当たり判定の種類を指定します。solid(壁・床), move(動く床)",
+    "type": "当たり判定の種類を指定します。solid(壁・床), move(動く床), oneway(すり抜け床), damage(ダメージ床), movingDamage(動くダメージ床)",
     "groundSide": "地上判定を付ける面を指定します。省略時は'up'(上面のみ)。all(全面), none(判定なし)なども指定可能。",
-    "metadata": "識別用の任意文字列(スクリプトやイベントで使用)。"
+    "metadata": "識別用の任意文字列(スクリプトやイベントで使用)。",
+    "damageAmount": "ダメージ床の場合、与えるダメージ量を指定します(省略時は10.0)。",
+    "movementType": "動く床の場合、移動タイプを指定します。horizontal(横), vertical(縦), circular(円)。",
+    "movementSpeed": "動く床の場合、移動速度(ピクセル/秒)を指定します。",
+    "movementDistance": "動く床の場合、移動距離または半径を指定します。",
+    "loopMovement": "動く床の場合、ループするかどうかを指定します(true/false)。"
   },
   "stageSettings": {
     "respawnPosition": [ 50, -5 ],

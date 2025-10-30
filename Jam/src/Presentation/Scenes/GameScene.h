@@ -50,6 +50,7 @@ namespace Jam::Presentation::Scenes
 		P2World m_world;
 		std::vector<std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody>> m_physicsBodies;
 		double m_accumulatedTime = 0.0;
+		double m_damageTimer = 0.0;  // ダメージ床用タイマー
 
 		// Player
 		std::shared_ptr<Domain::Player::Player> m_player;
@@ -336,6 +337,14 @@ namespace Jam::Presentation::Scenes
 				{
 					m_player->resetJumpState();
 				}
+				
+				// ダメージ床の判定
+				m_stageService->checkDamagePlatformCollision(
+					m_player->getPhysicsBody(),
+					m_player.get(),
+					Scene::DeltaTime(),
+					m_damageTimer
+				);
 			}
 
 			m_cameraService->update(Scene::DeltaTime());

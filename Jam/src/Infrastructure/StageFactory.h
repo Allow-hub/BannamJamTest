@@ -3,6 +3,8 @@
 #include "../Domain/Stage/NormalStage.h"
 #include "../Domain/Stage/MovingPlatformStage.h"
 #include "../Domain/Stage/OneWayPlatformStage.h"
+#include "../Domain/Stage/DamageStage.h"
+#include "../Domain/Stage/MovingDamagePlatformStage.h"
 #include "../Domain/Physics/IPhysicsBody.h"
 #include "StageLoader.h"
 #include "IPhysicsBodyFactory.h"

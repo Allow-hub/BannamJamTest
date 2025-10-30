@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include "../Domain/Stage/IStage.h"
+#include "../Domain/Stage/DamageStage.h"
+#include "../Domain/Stage/MovingDamagePlatformStage.h"
 #include "../Domain/Physics/IPhysicsBody.h"
+#include "../Domain/ITakeDamageable.h"
 #include "../Infrastructure/IPhysicsBodyFactory.h"
 #include "../Infrastructure/StageFactory.h"
 #include "../Infrastructure/Siv3DPhysicsBody.h"
@@ -133,6 +136,77 @@ namespace Jam::UseCase {
                 playerBody->setPos({ playerPos.x, platformTop - playerHeight / 2.0 });
                 playerBody->setVelocity({ playerVel.x, 0.0 });
                 return true;
+            }
+            
+            return false;
+        }
+        
+        /**
+         * ダメージ床との接触判定と処理
+         * @param playerBody プレイヤーの物理ボディ
+         * @param damageable ダメージを受けるオブジェクト
+         * @param deltaTime 前フレームからの経過時間
+         * @param damageInterval ダメージを受ける間隔（秒）
+         * @return ダメージを受けた場合true
+         */
+        bool checkDamagePlatformCollision(
+            std::shared_ptr<Domain::Physics::IPhysicsBody> playerBody,
+            Domain::ITakeDamageable* damageable,
+            double deltaTime,
+            double& damageTimer
+        ) {
+            if (!playerBody || !damageable) return false;
+            
+            // ダメージクールダウン中
+            constexpr double damageInterval = 0.5; // 0.5秒ごとにダメージ
+            if (damageTimer > 0.0) {
+                damageTimer -= deltaTime;
+                return false;
+            }
+            
+            auto playerPos = playerBody->getPosition();
+            auto playerRect = RectF(Arg::center = playerPos, 80, 100); // プレイヤーの当たり判定（仮）
+            
+            for (const auto& stage : m_stages) {
+                auto stageType = stage->getType();
+                if (stageType != Domain::Stage::StageType::DamagePlatform &&
+                    stageType != Domain::Stage::StageType::MovingDamagePlatform) {
+                    continue;
+                }
+                
+                auto stageRect = stage->getRenderRect();
+                
+                // 接触判定
+                if (playerRect.intersects(stageRect)) {
+                    double damageAmount = 10.0; // デフォルト値
+                    
+                    // ダメージ量を取得
+                    if (stageType == Domain::Stage::StageType::DamagePlatform) {
+                        auto damageStage = dynamic_cast<const Domain::Stage::DamageStage*>(stage.get());
+                        if (damageStage) {
+                            damageAmount = damageStage->getDamageAmount();
+                        }
+                    } else if (stageType == Domain::Stage::StageType::MovingDamagePlatform) {
+                        auto movingDamageStage = dynamic_cast<const Domain::Stage::MovingDamagePlatformStage*>(stage.get());
+                        if (movingDamageStage) {
+                            damageAmount = movingDamageStage->getDamageAmount();
+                        }
+                    }
+                    
+                    // ダメージを与える
+                    Domain::DamageInfo damageInfo;
+                    damageInfo.amount = damageAmount;
+                    damageInfo.position = playerPos;
+                    damageInfo.direction = Vec2(0, -1); // 上向き
+                    damageInfo.isCritical = false;
+                    
+                    damageable->takeDamage(damageInfo);
+                    
+                    // タイマーをリセット
+                    damageTimer = damageInterval;
+                    
+                    return true;
+                }
             }
             
             return false;

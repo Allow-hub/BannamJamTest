@@ -25,7 +25,7 @@ void Main()
 	//  CoreManager 初期化
 	// =====================
 	auto& core = Jam::Foundation::CoreManager::Instance();
-	core.stageInfo.stageName = Jam::Foundation::StageName::Stage1_1;  // デフォルトステージ
+	core.stageInfo.stageName = Jam::Foundation::StageName::Stage1_3;  // デフォルトステージ (ダメージ床テスト用)
 	core.reset();
 	core.audioSetting.masterVolume = 0.5;
 	core.audioSetting.bgmVolume = 0.1;
@@ -61,8 +61,8 @@ void Main()
 	manager.add<Jam::Presentation::Scenes::ResultScene>(
 		Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::Result));
 
-	// GameSceneから開始するように明示的に指定
-	manager.init(Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::Select));
+	// ダメージ床テストのため、Stage1_3から直接開始
+	manager.init(Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::InGame));
 
 	while (System::Update())
 	{

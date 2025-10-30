@@ -64,7 +64,8 @@ namespace Jam::Infrastructure {
         
         auto physicsLayer = getPhysicsLayerFromType(obj.type, obj.groundSide);
         
-        P2BodyType bodyType = (obj.type == Domain::Stage::StageType::MovingPlatform)
+        P2BodyType bodyType = (obj.type == Domain::Stage::StageType::MovingPlatform || 
+                               obj.type == Domain::Stage::StageType::MovingDamagePlatform)
             ? P2BodyType::Kinematic
             : P2BodyType::Static;
         
@@ -93,6 +94,12 @@ namespace Jam::Infrastructure {
                 
             case Domain::Stage::StageType::OneWayPlatform:
                 return std::make_unique<Domain::Stage::OneWayPlatformStage>(obj);
+                
+            case Domain::Stage::StageType::DamagePlatform:
+                return std::make_unique<Domain::Stage::DamageStage>(obj);
+                
+            case Domain::Stage::StageType::MovingDamagePlatform:
+                return std::make_unique<Domain::Stage::MovingDamagePlatformStage>(obj);
                 
             case Domain::Stage::StageType::Normal:
             default:

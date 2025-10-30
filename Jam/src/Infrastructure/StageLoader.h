@@ -34,7 +34,8 @@ namespace Jam::Infrastructure::Stage {
 			outMovingObjects.clear();
 
 			for (const auto& obj : allObjects) {
-				if (obj.type == Jam::Domain::Stage::StageType::MovingPlatform) {
+				if (obj.type == Jam::Domain::Stage::StageType::MovingPlatform ||
+					obj.type == Jam::Domain::Stage::StageType::MovingDamagePlatform) {
 					outMovingObjects.push_back(obj);
 				}
 				else {
@@ -112,7 +113,8 @@ namespace Jam::Infrastructure::Stage {
 				: Jam::Domain::Stage::GroundSide::Up;
 
 			// 動くプラットフォーム用のデータ解析
-			if (obj.type == Jam::Domain::Stage::StageType::MovingPlatform) {
+			if (obj.type == Jam::Domain::Stage::StageType::MovingPlatform ||
+				obj.type == Jam::Domain::Stage::StageType::MovingDamagePlatform) {
 				// 移動タイプの解析
 				if (objJson.hasElement(U"movementType")) {
 					obj.movementType = Jam::Domain::Stage::stringToMovementType(objJson[U"movementType"].getString());
@@ -134,6 +136,15 @@ namespace Jam::Infrastructure::Stage {
 				// ループ設定の解析
 				if (objJson.hasElement(U"loopMovement")) {
 					obj.loopMovement = objJson[U"loopMovement"].get<bool>();
+				}
+			}
+
+			// ダメージプラットフォーム用のデータ解析
+			if (obj.type == Jam::Domain::Stage::StageType::DamagePlatform ||
+				obj.type == Jam::Domain::Stage::StageType::MovingDamagePlatform) {
+				// ダメージ量の解析
+				if (objJson.hasElement(U"damageAmount")) {
+					obj.damageAmount = objJson[U"damageAmount"].get<double>();
 				}
 			}
 
