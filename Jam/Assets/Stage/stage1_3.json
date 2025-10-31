@@ -18,15 +18,19 @@
             "rect": [ -300, -50, 200, 50 ],
             "type": "damage",
             "groundSide": "up",
-            "metadata": "テスト用ダメージ床1",
+            "metadata": "テスト用ダメージ床1(静的)",
             "damageAmount": 5.0
         },
         {
             "rect": [ 150, -50, 200, 50 ],
-            "type": "damage",
+            "type": "movingDamage",
             "groundSide": "up",
-            "metadata": "テスト用ダメージ床2",
-            "damageAmount": 10.0
+            "metadata": "テスト用ダメージ床2(動く)",
+            "damageAmount": 10.0,
+            "movementType": "horizontal",
+            "movementSpeed": 50.0,
+            "movementDistance": 300.0,
+            "loopMovement": true
         },
         {
             "rect": [ -1350, -250, 300, 50 ],
