@@ -418,4 +418,122 @@ namespace Jam::UseCase
 			return (normalizedTime < 1.0);
 		}
 	};
+
+	// 破壊エフェクト（バリア破壊）
+	struct GlassShatterEffect : IEffect
+	{
+		struct Shard
+		{
+			Vec2 position;
+			Vec2 velocity;
+			double rotation;
+			double rotationSpeed;
+			double size;
+			ColorF color;
+		};
+
+		Vec2 m_center;
+		Vec2 m_impactDir;
+		Array<Shard> m_shards;
+		double m_duration;
+		double m_gravity;
+		ColorF m_glassColor;
+
+		GlassShatterEffect(const GlassShatterEffectEvent& event)
+			: m_center(event.position)
+			, m_impactDir(event.impactDirection.normalized())
+			, m_duration(event.duration)
+			, m_gravity(500.0)
+			, m_glassColor(event.glassColor)
+		{
+			// 破片を生成
+			for (int32 i = 0; i < event.shardCount; ++i)
+			{
+				// 衝撃方向を中心に扇状に飛散
+				const double spreadAngle = Random(-60.0, 60.0) * 1_deg;
+				const double baseAngle = Math::Atan2(m_impactDir.y, m_impactDir.x);
+				const double shardAngle = baseAngle + spreadAngle;
+				
+				const Vec2 direction = Vec2{
+					Math::Cos(shardAngle),
+					Math::Sin(shardAngle)
+				};
+				
+				// 破片の初期位置（バリア表面から）
+				const double distFromCenter = event.barrierRadius * Random(0.8, 1.0);
+				const Vec2 startPos = m_center + direction * distFromCenter;
+				
+				// 速度（衝撃方向に強く飛ぶ）
+				const double speedVariation = Random(0.7, 1.3);
+				const Vec2 velocity = direction * event.shardSpeed * speedVariation;
+				
+				// 色のバリエーション
+				ColorF shardColor = m_glassColor;
+				shardColor.r += Random(-0.1, 0.1);
+				shardColor.g += Random(-0.1, 0.1);
+				shardColor.b += Random(-0.1, 0.1);
+				shardColor.a = m_glassColor.a;
+				
+				m_shards << Shard{
+					.position = startPos,
+					.velocity = velocity,
+					.rotation = Random(0.0, Math::TwoPi),
+					.rotationSpeed = Random(-720.0, 720.0) * 1_deg,
+					.size = Random(8.0, 20.0),
+					.color = shardColor
+				};
+			}
+		}
+
+		bool update(double t) override
+		{
+			const double normalizedTime = t / m_duration;
+			const Vec2 gravityVec = Vec2{ 0, m_gravity };
+			
+			// フェーズ1: 初期衝撃（0.0 - 0.2）
+			if (normalizedTime < 0.2)
+			{
+				const double phase1 = normalizedTime / 0.2;
+				
+				// 衝撃波リング
+				const double ringRadius = 150.0 * phase1;
+				const double ringAlpha = (1.0 - phase1) * 0.8;
+				Circle{ m_center, ringRadius }
+					.drawFrame(3.0, ColorF{ m_glassColor, ringAlpha });
+				
+				// フラッシュ
+				const double flashAlpha = (1.0 - phase1) * 0.5;
+				Circle{ m_center, 100.0 }
+					.draw(ColorF{ 1.0, 1.0, 1.0, flashAlpha });
+			}
+			
+			// 破片描画
+			for (auto& shard : m_shards)
+			{
+				// 物理演算
+				const Vec2 pos = shard.position + shard.velocity * t + 0.5 * gravityVec * t * t;
+				const double rotation = shard.rotation + shard.rotationSpeed * t;
+				
+				// フェードアウト
+				const double alpha = m_glassColor.a * (1.0 - normalizedTime * 0.7);
+				
+				// 破片の形状（四角形を回転）
+				const double size = shard.size * (1.0 - normalizedTime * 0.3);
+				const RectF shardRect{ Arg::center = pos, size, size };
+				
+				// 輪郭と塗りつぶし
+				shardRect.rotated(rotation).draw(ColorF{ shard.color, alpha * 0.6 });
+				shardRect.rotated(rotation).drawFrame(1.5, ColorF{ 1.0, 1.0, 1.0, alpha });
+				
+				// キラキラ感
+				if (Random(1.0) < 0.1)
+				{
+					Circle{ pos, Random(2.0, 4.0) }
+						.draw(ColorF{ 1.0, 1.0, 1.0, alpha });
+				}
+			}
+			
+			return (normalizedTime < 1.0);
+		}
+	};
 }
