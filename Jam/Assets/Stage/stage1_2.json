@@ -674,6 +674,16 @@
       "movementDistance": 1450,
       "loopMovement": true,
       "metadata": "移動床06"
+    },
+    {
+      "rect": [ 10900, 1500, 300, 100 ],
+      "type": "move",
+      "groundSide": "All",
+      "movementType": "horizontal",
+      "movementSpeed": 100.0,
+      "movementDistance": 550.0,
+      "loopMovement": true,
+      "metadata": "移動床05"
     }
 
   ]
