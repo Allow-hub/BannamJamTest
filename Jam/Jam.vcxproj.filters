@@ -164,7 +164,7 @@
     <Image Include="App\Assets\Enemy\GothicLolitaDoll\idle_1.png" />
     <Image Include="App\Assets\Player\Skill\Bomb\Bomb.png" />
     <Image Include="App\Assets\Stage\White_Test.png" />
-    <Image Include="App\Assets\Story\background_stage1_1.png" />
+    <Image Include="App\Assets\Story\background_stage1_1_clear.png" />
     <Image Include="App\Assets\Story\Portrait\Player\player_normal.png" />
     <Image Include="App\Assets\Story\Portrait\Player\player_smiling.png" />
     <Image Include="App\Assets\Story\Portrait\Player\player_surprised.png" />
@@ -295,6 +295,12 @@
     <Image Include="App\Assets\UI\frameDamage_00.png" />
     <Image Include="App\Assets\UI\frameDamage_01.png" />
     <Image Include="App\Assets\UI\frameNoDamage.png" />
+    <Image Include="App\Assets\Story\Portrait\Player\player_conversation" />
+    <Image Include="App\Assets\Story\Portrait\Player\player_conversation.png" />
+    <Image Include="App\Assets\Story\Portrait\Riska\riska_normal.png" />
+    <Image Include="App\Assets\Story\Portrait\Riska\riska_smiling.png" />
+    <Image Include="App\Assets\Story\Portrait\Riska\riska_surprised.png" />
+    <Image Include="App\Assets\Story\Portrait\Riska\riska_suspicious.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />

@@ -104,7 +104,7 @@ namespace Jam::Presentation::Scenes
 			bool ok = storyManager.init(
 				basePath + stageName + storySuffix + U".csv",
 				portraits,
-				basePath + U"background_" + stageName + U".png"
+				basePath + U"background_" + stageName + storySuffix + U".png"
 			);
 
 			if (!ok)
