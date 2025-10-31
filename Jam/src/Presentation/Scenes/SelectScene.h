@@ -53,7 +53,17 @@ namespace Jam::Presentation::Scenes
 			case State::StageSelect:
 				updateStageSelect();
 				break;
+			}
 
+			// ポーズ処理
+			if (KeyEscape.down())
+			{
+				Jam::Foundation::CoreManager::Instance().setPause(!Jam::Foundation::CoreManager::Instance().getPause());
+			}
+			if (Jam::Foundation::CoreManager::Instance().getPause())
+			{
+				Jam::Presentation::SettingManager::Instance().update();
+				return;
 			}
 		}
 
@@ -69,6 +79,11 @@ namespace Jam::Presentation::Scenes
 				m_stageBackgroundTexture.resized(Scene::Size()).draw(0, 0);
 				drawStageSelect();
 				break;
+			}
+			if (Jam::Foundation::CoreManager::Instance().getPause())
+			{
+				Jam::Presentation::SettingManager::Instance().draw();
+				return;
 			}
 		}
 

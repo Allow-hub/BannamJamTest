@@ -49,6 +49,15 @@ namespace Jam::Presentation::Scenes
 			{
 				handleSkip();
 			}
+			if(KeyEscape.down())
+			{
+				Jam::Foundation::CoreManager::Instance().setPause(!Jam::Foundation::CoreManager::Instance().getPause());
+			}	
+			if (Jam::Foundation::CoreManager::Instance().getPause())
+			{
+				Jam::Presentation::SettingManager::Instance().update();
+				return;
+			}
 		}
 
 		// 描画処理
@@ -56,6 +65,11 @@ namespace Jam::Presentation::Scenes
 		{
 			storyManager.draw();
 			drawSkipButton();
+			if (Jam::Foundation::CoreManager::Instance().getPause())
+			{
+				Jam::Presentation::SettingManager::Instance().draw();
+				return;
+			}
 		}
 
 		void drawFadeIn(double t) const override

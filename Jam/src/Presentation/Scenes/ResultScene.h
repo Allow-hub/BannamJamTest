@@ -167,6 +167,15 @@ namespace Jam::Presentation::Scenes
 			else
 				m_nextStageBarWidth = std::max(m_nextStageBarWidth - Scene::DeltaTime() * speed, 0.0);
 
+			if (KeyEscape.down())
+			{
+				Jam::Foundation::CoreManager::Instance().setPause(!Jam::Foundation::CoreManager::Instance().getPause());
+			}
+			if (Jam::Foundation::CoreManager::Instance().getPause())
+			{
+				Jam::Presentation::SettingManager::Instance().update();
+				return;
+			}
 		}
 
 		// 描画処理 
@@ -317,6 +326,12 @@ namespace Jam::Presentation::Scenes
 			// NEXT STAGE ボタン
 			m_buttonFont(U"NEXT STAGE").drawAt(m_nextStageButton.center() + shadowOffset, shadowColor);
 			m_buttonFont(U"NEXT STAGE").drawAt(m_nextStageButton.center(), Palette::White);
+
+			if (Jam::Foundation::CoreManager::Instance().getPause())
+			{
+				Jam::Presentation::SettingManager::Instance().draw();
+				return;
+			}
 		}
 
 		void drawFadeIn(double t) const override
