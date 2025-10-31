@@ -61,7 +61,7 @@ namespace Jam::Presentation::Scenes
 			m_titleFont = Font(100, Typeface::Heavy);
 			m_statLabelFont = Font(30, Typeface::Bold);
 
-			m_statValueFont = Font(130, U"../Assets/Font/PixelMplus12-Bold.ttf");
+			m_statValueFont = Font(130, U"Assets/Font/PixelMplus12-Bold.ttf");
 			if (not m_statValueFont)
 			{
 				Print(U"Error: StatValueFont 'PixelMplus12-Bold.ttf' not found. Using default.");
@@ -69,7 +69,7 @@ namespace Jam::Presentation::Scenes
 			}
 
 			const int32 mainFontSize = static_cast<int32>(Scene::Height() * 0.07);
-			m_buttonFont = Font(mainFontSize, U"../Assets/Font/PixelMplus12-Bold.ttf");
+			m_buttonFont = Font(mainFontSize, U"Assets/Font/PixelMplus12-Bold.ttf");
 			//フォールバック処理を追加
 			if (not m_buttonFont)
 			{
@@ -90,7 +90,7 @@ namespace Jam::Presentation::Scenes
 
 
 			// === テクスチャ読み込み ===
-			const FilePath assetRoot = FileSystem::InitialDirectory() + U"../Assets/Result/";
+			const FilePath assetRoot = FileSystem::InitialDirectory() + U"Assets/Result/";
 
 			m_background = Texture(assetRoot + U"GAME_OVER_screen.png");
 			m_chatBg = Texture(assetRoot + U"CLEAR_backscreen.png");
@@ -167,6 +167,15 @@ namespace Jam::Presentation::Scenes
 			else
 				m_nextStageBarWidth = std::max(m_nextStageBarWidth - Scene::DeltaTime() * speed, 0.0);
 
+			if (KeyEscape.down())
+			{
+				Jam::Foundation::CoreManager::Instance().setPause(!Jam::Foundation::CoreManager::Instance().getPause());
+			}
+			if (Jam::Foundation::CoreManager::Instance().getPause())
+			{
+				Jam::Presentation::SettingManager::Instance().update();
+				return;
+			}
 		}
 
 		// 描画処理 
@@ -317,6 +326,12 @@ namespace Jam::Presentation::Scenes
 			// NEXT STAGE ボタン
 			m_buttonFont(U"NEXT STAGE").drawAt(m_nextStageButton.center() + shadowOffset, shadowColor);
 			m_buttonFont(U"NEXT STAGE").drawAt(m_nextStageButton.center(), Palette::White);
+
+			if (Jam::Foundation::CoreManager::Instance().getPause())
+			{
+				Jam::Presentation::SettingManager::Instance().draw();
+				return;
+			}
 		}
 
 		void drawFadeIn(double t) const override

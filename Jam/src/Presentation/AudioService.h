@@ -27,7 +27,7 @@ namespace Jam::Presentation
 
 		void init()
 		{
-			String samePath = U"../Assets/Sounds/";
+			String samePath = U"Assets/Sounds/";
 			load(Sound::SE_Jump, samePath + U"se_jump.mp3");
 			load(Sound::SE_Choker, samePath + U"se_choker.mp3");
 			load(Sound::SE_GetFlagment, samePath + U"se_getFlagment.mp3");

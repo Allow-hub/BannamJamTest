@@ -24,7 +24,7 @@ namespace Jam::Infrastructure
 			m_state.skillPush = MouseR.down();
 			m_state.skillReleased = MouseR.up();
 			m_state.skillChange = Mouse::Wheel();
-			m_state.settting = KeyEnter.down();
+			m_state.settting = KeyEscape.down();
 		}
 
 		Jam::Domain::InputState GetState() const override

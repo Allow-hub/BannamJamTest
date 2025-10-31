@@ -92,7 +92,7 @@ namespace Jam::Domain::Enemy
 				0.88,
 				0.5,
 				10
-			});
+		});
 		Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
 			.getPhysicsFactory()->removeBody(m_body->getID());
 		m_isAlive = false;

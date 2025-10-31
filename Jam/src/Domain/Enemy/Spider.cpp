@@ -51,7 +51,7 @@ namespace Jam::Domain::Enemy
 	{
 		if (m_attackCooldownTimer > 0.0)
 		{
-			Print << U"Spider: Attack canceled (Cooldown)";
+			//Print << U"Spider: Attack canceled (Cooldown)";
 			// 攻撃がキャンセルされたフラグを立てる
 			// (m_attackCanceled は .h で定義されている前提)
 			m_attackCanceled = true;
@@ -60,7 +60,7 @@ namespace Jam::Domain::Enemy
 		}
 
 
-		Print << U"Spider: Pounce!";
+		//Print << U"Spider: Pounce!";
 
 		const Vec2 playerPos = getPlayerPos();
 		const Vec2 myPos = getPosition();
@@ -89,7 +89,7 @@ namespace Jam::Domain::Enemy
 		{
 			if (m_attackCooldownTimer <= 0.0)
 			{
-				Print << U"Spider: Cooldown (canceled) complete. Returning to patrol.";
+				//Print << U"Spider: Cooldown (canceled) complete. Returning to patrol.";
 				m_attackCanceled = false;
 
 				// 念のため、Patrolに戻る前に重力を通常に戻す
@@ -104,7 +104,7 @@ namespace Jam::Domain::Enemy
 		// (m_isLanding フラグがまだ立っておらず、m_isGrounded が true になった瞬間に一度だけ実行)
 		if (!m_isLanding && m_isGrounded)
 		{
-			Print << U"Spider: Landed. Starting pin timer.";
+			//Print << U"Spider: Landed. Starting pin timer.";
 
 			// 「着地して待機中」フラグを立てる
 			// (この後の if (m_isLanding) ブロックが即座に実行される)
@@ -133,7 +133,7 @@ namespace Jam::Domain::Enemy
 			// 4. 待機時間 (loadingWaitTime) を超えたか？
 			if (m_landedTimer >= loadingWaitTime)
 			{
-				Print << U"Spider: Wait complete. Returning to patrol.";
+				//Print << U"Spider: Wait complete. Returning to patrol.";
 
 				m_isLanding = false;
 				m_attackCooldownTimer = ATTACK_COOLDOWN_TIME;

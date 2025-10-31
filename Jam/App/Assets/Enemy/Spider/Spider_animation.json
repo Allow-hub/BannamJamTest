@@ -5,7 +5,7 @@
             "loop": true,
             "frames": [
                 {
-                    "path": "../Assets/Enemy/Eye/idle_0.png",
+                    "path": "Assets/Enemy/Spider/idle_0.png",
                     "duration": 1.5,
                     "scale": 0.5
                 }

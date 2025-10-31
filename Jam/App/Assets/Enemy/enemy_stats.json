@@ -85,7 +85,7 @@
   },
   "Boss1_3": {
     "hp": 300,
-    "attackPower": 10.5,
+    "attackPower": 150.0,
     "moveSpeed": 1000.0,
     "jumpPower": 5.0,
     "colX": 500.0,

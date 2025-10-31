@@ -1,4 +1,4 @@
-#include "Missile.h"
+﻿#include "Missile.h"
 #include "../../Infrastructure/FactoryServiceLocator.h"
 #include "../../Infrastructure/IPhysicsBodyFactory.h"
 #include "../../Infrastructure/PhysicsFilterManager.h"
@@ -45,7 +45,7 @@ namespace Jam::Domain::Enemy
 		m_body->setLayer(Jam::Domain::Physics::PhysicsLayer::ReflectableWeapon);
 		
 		// ミサイルテクスチャの読み込み
-		m_missileTex = Texture(U"../Assets/Item/Missile.png");
+		m_missileTex = Texture(U"Assets/Item/Missile.png");
 	}
 
 	void Missile::init()

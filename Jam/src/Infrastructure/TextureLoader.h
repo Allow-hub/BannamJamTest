@@ -91,7 +91,7 @@ namespace Jam::Infrastructure {
     }
 
     FilePath TextureLoader::getDefaultTexturePath(Jam::Domain::Stage::StageType type) {
-        const FilePath basePath = U"../Assets/Stage/";
+        const FilePath basePath = U"Assets/Stage/";
         
         switch (type) {
         case Jam::Domain::Stage::StageType::Normal:
@@ -160,7 +160,7 @@ namespace Jam::Infrastructure {
     }
 
     FilePath TextureLoader::getDefaultBackgroundTexturePath(const String& textureName) {
-        const FilePath basePath = U"../Assets/Stage/BG/";
+        const FilePath basePath = U"Assets/Stage/BG/";
         
         if (textureName == U"BG") {
             return basePath + U"BG.png";

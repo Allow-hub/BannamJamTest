@@ -5,147 +5,147 @@
             "loop": true,
             "frames": [
                 {
-                    "path": "../Assets/Player/Idle/idle_01.png",
+                    "path": "Assets/Player/Idle/idle_01.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_02.png",
+                    "path": "Assets/Player/Idle/idle_02.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_03.png",
+                    "path": "Assets/Player/Idle/idle_03.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_04.png",
+                    "path": "Assets/Player/Idle/idle_04.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_05.png",
+                    "path": "Assets/Player/Idle/idle_05.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_06.png",
+                    "path": "Assets/Player/Idle/idle_06.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_07.png",
+                    "path": "Assets/Player/Idle/idle_07.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_08.png",
+                    "path": "Assets/Player/Idle/idle_08.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_09.png",
+                    "path": "Assets/Player/Idle/idle_09.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_10.png",
+                    "path": "Assets/Player/Idle/idle_10.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_11.png",
+                    "path": "Assets/Player/Idle/idle_11.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_12.png",
+                    "path": "Assets/Player/Idle/idle_12.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_13.png",
+                    "path": "Assets/Player/Idle/idle_13.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_14.png",
+                    "path": "Assets/Player/Idle/idle_14.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_15.png",
+                    "path": "Assets/Player/Idle/idle_15.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_16.png",
+                    "path": "Assets/Player/Idle/idle_16.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_17.png",
+                    "path": "Assets/Player/Idle/idle_17.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_18.png",
+                    "path": "Assets/Player/Idle/idle_18.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_19.png",
+                    "path": "Assets/Player/Idle/idle_19.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_20.png",
+                    "path": "Assets/Player/Idle/idle_20.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_21.png",
+                    "path": "Assets/Player/Idle/idle_21.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_22.png",
+                    "path": "Assets/Player/Idle/idle_22.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_23.png",
+                    "path": "Assets/Player/Idle/idle_23.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_24.png",
+                    "path": "Assets/Player/Idle/idle_24.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_25.png",
+                    "path": "Assets/Player/Idle/idle_25.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_26.png",
+                    "path": "Assets/Player/Idle/idle_26.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_27.png",
+                    "path": "Assets/Player/Idle/idle_27.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_28.png",
+                    "path": "Assets/Player/Idle/idle_28.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Idle/idle_29.png",
+                    "path": "Assets/Player/Idle/idle_29.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 }
@@ -156,152 +156,152 @@
             "loop": true,
             "frames": [
                 {
-                    "path": "../Assets/Player/Walk/walk_00.png",
+                    "path": "Assets/Player/Walk/walk_00.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_01.png",
+                    "path": "Assets/Player/Walk/walk_01.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_02.png",
+                    "path": "Assets/Player/Walk/walk_02.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_03.png",
+                    "path": "Assets/Player/Walk/walk_03.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_04.png",
+                    "path": "Assets/Player/Walk/walk_04.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_05.png",
+                    "path": "Assets/Player/Walk/walk_05.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_06.png",
+                    "path": "Assets/Player/Walk/walk_06.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_07.png",
+                    "path": "Assets/Player/Walk/walk_07.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_08.png",
+                    "path": "Assets/Player/Walk/walk_08.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_09.png",
+                    "path": "Assets/Player/Walk/walk_09.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_10.png",
+                    "path": "Assets/Player/Walk/walk_10.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_11.png",
+                    "path": "Assets/Player/Walk/walk_11.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_12.png",
+                    "path": "Assets/Player/Walk/walk_12.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_13.png",
+                    "path": "Assets/Player/Walk/walk_13.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_14.png",
+                    "path": "Assets/Player/Walk/walk_14.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_15.png",
+                    "path": "Assets/Player/Walk/walk_15.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_16.png",
+                    "path": "Assets/Player/Walk/walk_16.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_17.png",
+                    "path": "Assets/Player/Walk/walk_17.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_18.png",
+                    "path": "Assets/Player/Walk/walk_18.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_19.png",
+                    "path": "Assets/Player/Walk/walk_19.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_20.png",
+                    "path": "Assets/Player/Walk/walk_20.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_21.png",
+                    "path": "Assets/Player/Walk/walk_21.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_22.png",
+                    "path": "Assets/Player/Walk/walk_22.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_23.png",
+                    "path": "Assets/Player/Walk/walk_23.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_24.png",
+                    "path": "Assets/Player/Walk/walk_24.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_25.png",
+                    "path": "Assets/Player/Walk/walk_25.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_26.png",
+                    "path": "Assets/Player/Walk/walk_26.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_27.png",
+                    "path": "Assets/Player/Walk/walk_27.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_28.png",
+                    "path": "Assets/Player/Walk/walk_28.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_29.png",
+                    "path": "Assets/Player/Walk/walk_29.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 }
@@ -312,152 +312,152 @@
             "loop": true,
             "frames": [
                 {
-                    "path": "../Assets/Player/Walk/walk_00.png",
+                    "path": "Assets/Player/Walk/walk_00.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_01.png",
+                    "path": "Assets/Player/Walk/walk_01.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_02.png",
+                    "path": "Assets/Player/Walk/walk_02.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_03.png",
+                    "path": "Assets/Player/Walk/walk_03.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_04.png",
+                    "path": "Assets/Player/Walk/walk_04.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_05.png",
+                    "path": "Assets/Player/Walk/walk_05.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_06.png",
+                    "path": "Assets/Player/Walk/walk_06.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_07.png",
+                    "path": "Assets/Player/Walk/walk_07.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_08.png",
+                    "path": "Assets/Player/Walk/walk_08.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_09.png",
+                    "path": "Assets/Player/Walk/walk_09.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_10.png",
+                    "path": "Assets/Player/Walk/walk_10.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_11.png",
+                    "path": "Assets/Player/Walk/walk_11.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_12.png",
+                    "path": "Assets/Player/Walk/walk_12.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_13.png",
+                    "path": "Assets/Player/Walk/walk_13.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_14.png",
+                    "path": "Assets/Player/Walk/walk_14.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_15.png",
+                    "path": "Assets/Player/Walk/walk_15.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_16.png",
+                    "path": "Assets/Player/Walk/walk_16.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_17.png",
+                    "path": "Assets/Player/Walk/walk_17.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_18.png",
+                    "path": "Assets/Player/Walk/walk_18.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_19.png",
+                    "path": "Assets/Player/Walk/walk_19.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_20.png",
+                    "path": "Assets/Player/Walk/walk_20.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_21.png",
+                    "path": "Assets/Player/Walk/walk_21.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_22.png",
+                    "path": "Assets/Player/Walk/walk_22.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_23.png",
+                    "path": "Assets/Player/Walk/walk_23.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_24.png",
+                    "path": "Assets/Player/Walk/walk_24.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_25.png",
+                    "path": "Assets/Player/Walk/walk_25.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_26.png",
+                    "path": "Assets/Player/Walk/walk_26.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_27.png",
+                    "path": "Assets/Player/Walk/walk_27.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_28.png",
+                    "path": "Assets/Player/Walk/walk_28.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Walk/walk_29.png",
+                    "path": "Assets/Player/Walk/walk_29.png",
                     "duration": 0.0222222222,
                     "scale": 0.04
                 }
@@ -468,152 +468,152 @@
             "loop": false,
             "frames": [
                 {
-                    "path": "../Assets/Player/Jump/jump_00.png",
+                    "path": "Assets/Player/Jump/jump_00.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_01.png",
+                    "path": "Assets/Player/Jump/jump_01.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_02.png",
+                    "path": "Assets/Player/Jump/jump_02.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_03.png",
+                    "path": "Assets/Player/Jump/jump_03.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_04.png",
+                    "path": "Assets/Player/Jump/jump_04.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_05.png",
+                    "path": "Assets/Player/Jump/jump_05.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_06.png",
+                    "path": "Assets/Player/Jump/jump_06.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_07.png",
+                    "path": "Assets/Player/Jump/jump_07.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_08.png",
+                    "path": "Assets/Player/Jump/jump_08.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_09.png",
+                    "path": "Assets/Player/Jump/jump_09.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_10.png",
+                    "path": "Assets/Player/Jump/jump_10.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_11.png",
+                    "path": "Assets/Player/Jump/jump_11.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_12.png",
+                    "path": "Assets/Player/Jump/jump_12.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_13.png",
+                    "path": "Assets/Player/Jump/jump_13.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_14.png",
+                    "path": "Assets/Player/Jump/jump_14.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_15.png",
+                    "path": "Assets/Player/Jump/jump_15.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_16.png",
+                    "path": "Assets/Player/Jump/jump_16.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_17.png",
+                    "path": "Assets/Player/Jump/jump_17.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_18.png",
+                    "path": "Assets/Player/Jump/jump_18.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_19.png",
+                    "path": "Assets/Player/Jump/jump_19.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_20.png",
+                    "path": "Assets/Player/Jump/jump_20.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_21.png",
+                    "path": "Assets/Player/Jump/jump_21.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_22.png",
+                    "path": "Assets/Player/Jump/jump_22.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_23.png",
+                    "path": "Assets/Player/Jump/jump_23.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_24.png",
+                    "path": "Assets/Player/Jump/jump_24.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_25.png",
+                    "path": "Assets/Player/Jump/jump_25.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_26.png",
+                    "path": "Assets/Player/Jump/jump_26.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_27.png",
+                    "path": "Assets/Player/Jump/jump_27.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_28.png",
+                    "path": "Assets/Player/Jump/jump_28.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 },
                 {
-                    "path": "../Assets/Player/Jump/jump_29.png",
+                    "path": "Assets/Player/Jump/jump_29.png",
                     "duration": 0.03333333333,
                     "scale": 0.04
                 }

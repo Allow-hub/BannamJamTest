@@ -19,7 +19,7 @@ namespace Jam::UseCase
 		Domain::Events::GameEventQueue& m_gameEventQueue;
 		CameraEventQueue& m_cameraEventQueue;
 		EffectEventQueue& m_effectEventQueue;
-		std::function<void()> m_onPlayerDeath;
+		std::function<void()> m_onNextScene;
 		Jam::Presentation::EnemyManager* m_enemyManager = nullptr;
 
 	public:
@@ -27,12 +27,12 @@ namespace Jam::UseCase
 			Domain::Events::GameEventQueue& gameEventQueue,
 			CameraEventQueue& cameraEventQueue,
 			EffectEventQueue& effectEventQueue,
-			std::function<void()> onPlayerDeath,
+			std::function<void()> onNextScene,
 			Jam::Presentation::EnemyManager* enemyManager)
 			: m_gameEventQueue(gameEventQueue)
 			, m_cameraEventQueue(cameraEventQueue)
 			, m_effectEventQueue(effectEventQueue)
-			, m_onPlayerDeath(onPlayerDeath)
+			, m_onNextScene(onNextScene)
 			, m_enemyManager(enemyManager)
 		{
 		}
@@ -127,7 +127,9 @@ namespace Jam::UseCase
 			{
 				// ボス撃破時は派手な演出
 				m_cameraEventQueue.push(CameraShakeEvent{ e.intensity, e.duration });
-				//m_cameraEventQueue.push(CameraFocusEvent{ e.position, 3.0, 0.9 });
+				Jam::Foundation::CoreManager::Instance().setClear(true);
+				Jam::Foundation::CoreManager::Instance().addFlagment(3);
+				if (m_onNextScene) m_onNextScene();
 			}
 			else
 			{
@@ -185,7 +187,7 @@ namespace Jam::UseCase
 		Jam::Util::Task playerDeath()
 		{
 			co_await Jam::Util::WaitSeconds(2.0);
-			if (m_onPlayerDeath) m_onPlayerDeath();
+			if (m_onNextScene) m_onNextScene();
 		}
 
 		void handleBossAppeared(const Domain::Events::BossAppearedEvent& e)
