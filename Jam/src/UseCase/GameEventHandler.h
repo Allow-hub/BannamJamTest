@@ -6,6 +6,9 @@
 #include "EffectEvents.h"
 #include "../Foundation/CoroutineUtil.h"
 #include "../Presentation/EnemyManager.h"
+#include "../Domain/Enemy/Missile.h"
+#include "../Infrastructure/IndependentObjectFactory.h"
+#include "../Infrastructure/FactoryServiceLocator.h"
 
 namespace Jam::UseCase
 {

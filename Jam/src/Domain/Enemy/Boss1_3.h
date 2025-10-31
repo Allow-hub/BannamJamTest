@@ -7,13 +7,14 @@
 namespace Jam::Domain::Enemy
 {
 	// 1_3のボス
-	class Boss1_3 : public EnemyBase
+	class Boss1_3 : public EnemyBase, public std::enable_shared_from_this<Boss1_3>
 	{
 	public:
 		explicit Boss1_3(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Physics::PhysicsBodyID playerId
 		, Jam::Domain::Events::GameEventQueue& eventQueue);
 		virtual ~Boss1_3() = default;
 
+		Jam::Util::Task init();
 		// 毎フレームの更新（AI挙動など）
 		void update(double deltaTime) override;
 		void draw() const override;
@@ -27,6 +28,8 @@ namespace Jam::Domain::Enemy
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_weakBody;//弱点箇所
 		Vec2 coreSize = Vec2{ 150,150 };
 		Vec2 m_coreOffset;
+		bool m_weakEntered = false;
+		bool m_normalEntered = false;
 
 		void updateAppearState(double deltaTime);
 		void updateNormalState(double deltaTime);
@@ -86,10 +89,20 @@ namespace Jam::Domain::Enemy
 		bool m_hasAttackEntered;  // 攻撃のEnterが実行されたか
 
 		// 攻撃のライフサイクルメソッド
+		
 		// Missile
 		void enterMissileAttack();
 		void updateMissileAttack(double deltaTime);
 		void exitMissileAttack();
+		Jam::Util::Task m_missileAttackTask();
+		
+		// ミサイル管理用
+		const int MISSILE_COUNT = 3;
+		double m_missileSpawnInterval = 0.3; // ミサイル生成間隔(秒)
+		double m_missileFlightDuration = 3.5; // ミサイル飛行時間(秒)
+		double m_missileRadius = 80.0;
+		double m_missileReflectedSpeed = 500.0; // 反射後の速度
+		double m_missileScale = 3.5; // ミサイルの描画スケール係数
 
 		// SummonClown
 		void enterSummonClown();

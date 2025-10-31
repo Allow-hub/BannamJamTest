@@ -31,6 +31,7 @@ namespace Jam::Domain::Player
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::PlayerWeapon);
 		m_body->setGravityScale(0);
 		m_body->setBullet(true);
+		m_body->setLayer(Jam::Domain::Physics::PhysicsLayer::Weapon);
 	}
 
 	void ChokerSkill::init()
@@ -228,7 +229,7 @@ namespace Jam::Domain::Player
 						double distance = (enemyPos - playerPos).length();
 
 						// 壁などでプレイヤーが近づけなかった場合（距離が一定以上残っている）
-						const double reachThreshold = 110; // 判定閾値
+						const double reachThreshold = 160; // 判定閾値
 						if (distance > reachThreshold)
 						{
 							finishEnemySequence(); // 何も起こさず終了
