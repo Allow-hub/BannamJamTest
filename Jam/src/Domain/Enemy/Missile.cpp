@@ -189,9 +189,25 @@ namespace Jam::Domain::Enemy
 			return;
 		}
 
-		// 反射前にプレイヤーに当たった場合(何もせず消滅)
+		// 反射前にプレイヤーに当たった場合
 		if (!m_isReflected && other->getLayer() == Jam::Domain::Physics::PhysicsLayer::Player)
 		{
+			// プレイヤーにダメージイベントを発行
+			m_eventQueue.push(Events::PlayerDamagedEvent{
+				m_body->getID(),
+				m_playerId,
+				DamageInfo{
+					m_damage,
+					m_body->getPosition(),
+					(other->getPosition() - m_body->getPosition()).normalized(), // ノックバック方向
+					false,  // クリティカルではない
+					false   // 貫通しない
+				},
+				0.0,   // ヒットストップ時間
+				0.3,   // 無敵時間
+				15.0   // ノックバック力
+			});
+			
 			m_isDead = true;
 			return;
 		}

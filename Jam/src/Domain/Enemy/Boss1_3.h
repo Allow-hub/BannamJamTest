@@ -99,7 +99,7 @@ namespace Jam::Domain::Enemy
 		// ミサイル管理用
 		const int MISSILE_COUNT = 3;
 		double m_missileSpawnInterval = 0.3; // ミサイル生成間隔(秒)
-		double m_missileFlightDuration = 3.5; // ミサイル飛行時間(秒)
+		double m_missileFlightDuration = 5.0; // ミサイル飛行時間(秒)
 		double m_missileRadius = 80.0;
 		double m_missileReflectedSpeed = 500.0; // 反射後の速度
 		double m_missileScale = 3.5; // ミサイルの描画スケール係数
