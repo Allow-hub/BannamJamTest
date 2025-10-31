@@ -136,6 +136,12 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\Users\YutoImata\Downloads\Missile.png" />
+    <Image Include="App\Assets\Story\Portrait\Player\player_conversation" />
+    <Image Include="App\Assets\Story\Portrait\Player\player_conversation.png" />
+    <Image Include="App\Assets\Story\Portrait\Riska\riska_normal.png" />
+    <Image Include="App\Assets\Story\Portrait\Riska\riska_smiling.png" />
+    <Image Include="App\Assets\Story\Portrait\Riska\riska_surprised.png" />
+    <Image Include="App\Assets\Story\Portrait\Riska\riska_suspicious.png" />
     <Image Include="App\engine\texture\box-shadow\128.png" />
     <Image Include="App\engine\texture\box-shadow\16.png" />
     <Image Include="App\engine\texture\box-shadow\256.png" />
@@ -277,7 +283,7 @@
     <Image Include="App\Assets\setting_back.png" />
     <Image Include="App\Assets\setting_backMain.png" />
     <Image Include="App\Assets\Stage\White_Test.png" />
-    <Image Include="App\Assets\Story\background_stage1_1.png" />
+    <Image Include="App\Assets\Story\background_stage1_1_clear.png" />
     <Image Include="App\Assets\Story\Portrait\Player\player_normal.png" />
     <Image Include="App\Assets\Story\Portrait\Player\player_smiling.png" />
     <Image Include="App\Assets\Story\Portrait\Player\player_surprised.png" />

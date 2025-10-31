@@ -20,7 +20,7 @@ void Main()
 	Window::SetFullscreen(true);
 #endif
 
-	System::SetTerminationTriggers(UserAction::CloseButtonClicked);
+	//System::SetTerminationTriggers(UserAction::CloseButtonClicked);
 	// =====================
 	//  CoreManager 初期化
 	// =====================
