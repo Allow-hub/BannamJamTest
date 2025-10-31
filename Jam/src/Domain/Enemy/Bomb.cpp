@@ -41,7 +41,7 @@ namespace Jam::Domain::Enemy
 			factory->removeBody(m_body->getID());
 			m_body.reset();
 		}
-		Jam::Infrastructure::IndependentObjectFactory::instance().removeObjectByPtr(this);
+		//Jam::Infrastructure::IndependentObjectFactory::instance().removeObjectByPtr(this);
 	}
 
 	void Bomb::update(double dt)
@@ -56,12 +56,24 @@ namespace Jam::Domain::Enemy
 		if (m_isExploding)
 		{
 			m_explodeTimer += dt;
+
+			// 一定時間後に当たり判定を削除
+			const double hitDuration = m_explodeDuration * hitRatio;
+			if (m_explodeBody && m_explodeTimer >= hitDuration)
+			{
+				auto factory = FactoryServiceLocator::instance().getPhysicsFactory();
+				factory->removeBody(m_explodeBody->getID());
+				m_explodeBody.reset();
+			}
+
+			// 爆発全体が終わったら削除
 			if (m_explodeTimer >= m_explodeDuration)
 			{
 				m_isDead = true;
 			}
 		}
 	}
+
 
 	void Bomb::draw() const
 	{

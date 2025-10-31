@@ -4,12 +4,11 @@
             "name": "Idle",
             "loop": true,
             "frames": [
-              {
-                "path": "../Assets/Enemy/Ribbon/idle_0.png",
-                "duration": 1.5,
-                "width": 170,
-                "height": 230
-              }
+                {
+                    "path": "../Assets/Enemy/Ribbon/idle_0.png",
+                    "duration": 1.5,
+                    "scale": 0.25
+                }
             ]
         }
     ]

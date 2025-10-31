@@ -26,12 +26,14 @@ namespace Jam::Domain::Enemy
 	void EnemyBase::moveLeft()
 	{
 		if (!m_isAlive) return;
+		m_isFaceLeft = true;
 		m_body->applyForce({ -m_status.moveSpeed, 0 });
 	}
 
 	void EnemyBase::moveRight()
 	{
 		if (!m_isAlive) return;
+		m_isFaceLeft = false;
 		m_body->applyForce({ m_status.moveSpeed, 0 });
 	}
 

@@ -3,63 +3,46 @@
   "_使い方": {
     "説明": "当たり判定オブジェクトを簡略記法で定義します。",
     "rect": "[x, y, width, height] 形式の配列で位置とサイズを指定します。",
-    "type": "当たり判定の種類を指定します。solid(壁・床), move(動く床), oneway(すり抜け床), damage(ダメージ床), movingDamage(動くダメージ床)",
-    "metadata": "識別用の任意文字列(スクリプトやイベントで使用)。",
-    "damageAmount": "ダメージ床の場合、与えるダメージ量を指定します(省略時は10.0)。",
-    "movementType": "動く床の場合、移動タイプを指定します。horizontal(横), vertical(縦), circular(円)。",
-    "movementSpeed": "動く床の場合、移動速度(ピクセル/秒)を指定します。",
-    "movementDistance": "動く床の場合、移動距離または半径を指定します。",
-    "loopMovement": "動く床の場合、ループするかどうかを指定します(true/false)。"
+    "type": "当たり判定の種類を指定します。solid(壁), platform(上から乗れる床), breakable(破壊可能), hazard(ダメージ), trigger(イベント)など。",
+    "metadata": "識別用の任意文字列（スクリプトやイベントで使用）。"
 
   },
-  "objects": [
-    {
-      "rect": [ -600, 50, 1700, 3000 ],
-      "type": "solid",
-      "metadata": "初期地点",
-      "groundSide": "all"
-    },
-    {
-      "rect": [ -400, -500, 100, 50 ],
-      "type": "solid",
-      "groundSide": "All",
-      "metadata": "登り壁"
-    },
-    {
-      "rect": [ 200, -200, 300, 50 ],
-      "type": "damage",
-      "damageAmount": 15.0,
-      "metadata": "ダメージ床テスト01"
-    },
-    {
-      "rect": [ 600, -200, 300, 50 ],
-      "type": "movingDamage",
-      "damageAmount": 20.0,
-      "movementType": "horizontal",
-      "movementSpeed": 80.0,
-      "movementDistance": 400.0,
-      "loopMovement": true,
-      "metadata": "動くダメージ床テスト01"
-    },
-    {
-      "rect": [ 200, 0, 100, 100 ],
-      "type": "movingDamage",
-      "damageAmount": 25.0,
-      "movementType": "vertical",
-      "movementSpeed": 100.0,
-      "movementDistance": 300.0,
-      "loopMovement": true,
-      "metadata": "縦移動ダメージ床テスト01"
-    },
-    {
-      "rect": [ 800, -100, 80, 80 ],
-      "type": "movingDamage",
-      "damageAmount": 30.0,
-      "movementType": "circular",
-      "movementSpeed": 60.0,
-      "movementDistance": 150.0,
-      "loopMovement": true,
-      "metadata": "円運動ダメージ床テスト01"
-    }
-  ]
+    "objects": [
+        {
+            "rect": [ -600, 50, 1700, 3000 ],
+            "type": "solid",
+            "metadata": "初期地点",
+            "groundSide": "all"
+        },
+        {
+            "rect": [ -1350, -250, 300, 50 ],
+            "type": "solid",
+            "groundSide": "All",
+            "metadata": "左下のぼり壁"
+        },
+        {
+            "rect": [ 1550, -250, 300, 50 ],
+            "type": "solid",
+            "groundSide": "All",
+            "metadata": "右下のぼり壁壁"
+        },
+        {
+            "rect": [ -800, -900, 150, 50 ],
+            "type": "solid",
+            "groundSide": "All",
+            "metadata": "左上のぼり壁"
+        },
+        {
+            "rect": [ 1100, -900, 150, 50 ],
+            "type": "solid",
+            "groundSide": "All",
+            "metadata": "右上のぼり壁壁"
+        },
+        {
+            "rect": [ -50, -3000, 500, 1750 ],
+            "type": "solid",
+            "groundSide": "All",
+            "metadata": "上壁"
+        }
+    ]
 }

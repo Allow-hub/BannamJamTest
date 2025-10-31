@@ -259,6 +259,11 @@ namespace Jam::Presentation::Scenes
 				m_flagmentMemories.push_back(flagment);
 			}
 
+			if(core.stageInfo.stageName == Jam::Foundation::StageName::Stage1_3)
+			{
+				m_cameraManager->lockFocusOn({ 250,-500 }, 0.7);
+			}
+
 			// === Goal 初期化 ===
 			auto goalBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
 				.getPhysicsFactory()->createRectSensor(core.getCurrentStageData().goalData.position,core.getCurrentStageData().goalData.size);

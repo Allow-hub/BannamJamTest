@@ -1,144 +1,36 @@
-﻿  Main.cpp
-  StageFactory.cpp
-C:\Siv3D\BananaJam\Jam\src\Domain\Stage\NormalStage.h(21,28): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Infrastructure/StageFactory.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Domain\Stage\MovingPlatformStage.h(62,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Infrastructure/StageFactory.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Domain\Stage\MovingPlatformStage.h(79,36): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Infrastructure/StageFactory.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Domain\Stage\MovingPlatformStage.h(96,36): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Infrastructure/StageFactory.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Domain\Stage\OneWayPlatformStage.h(18,28): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Infrastructure/StageFactory.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Domain\Stage\DamageStage.h(21,28): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Infrastructure/StageFactory.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Domain\Stage\MovingDamagePlatformStage.h(71,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Infrastructure/StageFactory.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Domain\Stage\MovingDamagePlatformStage.h(88,36): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Infrastructure/StageFactory.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Domain\Stage\MovingDamagePlatformStage.h(105,36): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Infrastructure/StageFactory.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Presentation\Scenes\TransitionManager.h(40,15): warning C4244: '初期化中': 'Arithmetic' から 's3d::int32' への変換です。データが失われる可能性があります。
-C:\Siv3D\BananaJam\Jam\src\Presentation\Scenes\TransitionManager.h(40,15): warning C4244:         with
-C:\Siv3D\BananaJam\Jam\src\Presentation\Scenes\TransitionManager.h(40,15): warning C4244:         [
-C:\Siv3D\BananaJam\Jam\src\Presentation\Scenes\TransitionManager.h(40,15): warning C4244:             Arithmetic=double
-C:\Siv3D\BananaJam\Jam\src\Presentation\Scenes\TransitionManager.h(40,15): warning C4244:         ]
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Presentation\Scenes\TransitionManager.h(39,14): warning C4189: 'i': ローカル変数が初期化されましたが、参照されていません
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Presentation\Scenes\TransitionManager.h(55,33): warning C4244: '引数': 'double' から 's3d::Rect::value_type' への変換です。データが失われる可能性があります。
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Presentation\Scenes\TransitionManager.h(61,25): warning C4244: '引数': 'double' から 's3d::Rect::value_type' への変換です。データが失われる可能性があります。
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\UseCase\AttackProcessor.h(48,18): warning C4100: 'attackerBodyId': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Infrastructure\Siv3DPhysicsBody.h(142,47): warning C4100: 'platformTopY': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Infrastructure\Siv3DPhysicsBody.h(142,31): warning C4100: 'enabled': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Domain\Stage\DamageStage.h(21,28): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Domain\Stage\MovingDamagePlatformStage.h(71,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Domain\Stage\MovingDamagePlatformStage.h(88,36): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Domain\Stage\MovingDamagePlatformStage.h(105,36): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Domain\Stage\NormalStage.h(21,28): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Domain\Stage\MovingPlatformStage.h(62,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Domain\Stage\MovingPlatformStage.h(79,36): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Domain\Stage\MovingPlatformStage.h(96,36): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Domain\Stage\OneWayPlatformStage.h(18,28): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\UseCase\StageService.h(227,31): warning C4189: 'p2body': ローカル変数が初期化されましたが、参照されていません
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
+﻿  Missile.cpp
 C:\Siv3D\BananaJam\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  (ソース ファイル '/src/Domain/Enemy/Missile.cpp' をコンパイルしています)
   
 C:\Siv3D\BananaJam\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  (ソース ファイル '/src/Domain/Enemy/Missile.cpp' をコンパイルしています)
   
-C:\Siv3D\BananaJam\Jam\src\Domain\Enemy\EnemyBase.h(95,39): warning C4100: 'e': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
+C:\Siv3D\BananaJam\Jam\src\Domain\Enemy\EnemyBase.h(97,39): warning C4100: 'e': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Enemy/Missile.cpp' をコンパイルしています)
   
-C:\Siv3D\BananaJam\Jam\src\Domain\Enemy\EnemyBase.h(102,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
+C:\Siv3D\BananaJam\Jam\src\Domain\Enemy\EnemyBase.h(104,38): warning C4100: 'deltaTime': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Enemy/Missile.cpp' をコンパイルしています)
   
-C:\Siv3D\BananaJam\Jam\src\Domain\Enemy\EnemyBase.h(106,37): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
+C:\Siv3D\BananaJam\Jam\src\Domain\Enemy\EnemyBase.h(108,37): warning C4100: 'deltaTime': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Enemy/Missile.cpp' をコンパイルしています)
   
-C:\Siv3D\BananaJam\Jam\src\Domain\Enemy\EnemyBase.h(110,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
+C:\Siv3D\BananaJam\Jam\src\Domain\Enemy\EnemyBase.h(112,38): warning C4100: 'deltaTime': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Enemy/Missile.cpp' をコンパイルしています)
   
-C:\Siv3D\BananaJam\Jam\src\Domain\Enemy\EnemyBase.h(121,44): warning C4100: 'info': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
+C:\Siv3D\BananaJam\Jam\src\Domain\Enemy\EnemyBase.h(123,44): warning C4100: 'info': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Enemy/Missile.cpp' をコンパイルしています)
   
-C:\Siv3D\BananaJam\Jam\src\Infrastructure\Background\BackgroundLoader.h(97,33): warning C4101: 'e': ローカル変数は 1 度も使われていません。
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
+C:\Siv3D\BananaJam\Jam\src\Domain\Enemy\Missile.cpp(214,62): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Enemy/Missile.cpp' をコンパイルしています)
   
-C:\Siv3D\BananaJam\Jam\src\Presentation\SettingManager.h(187,22): warning C4834: [[nodiscard]] 属性を持つ関数の戻り値を破棄しています
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Domain\FlagmentMemory.h(74,76): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Domain\FlagmentMemory.h(75,76): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Presentation\Scenes\GameScene.h(37,10): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Presentation\Scenes\GameScene.h(38,10): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Domain\GoalArea.h(23,22): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Domain\GoalArea.h(50,76): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Domain\GoalArea.h(51,76): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
-  
-C:\Siv3D\BananaJam\Jam\src\Presentation\StoryManager.h(30,62): warning C4100: 'portraitSize': 参照されないパラメーター
-  (ソース ファイル '/Main.cpp' をコンパイルしています)
+C:\Siv3D\BananaJam\Jam\src\Domain\Enemy\Missile.cpp(215,62): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/src/Domain/Enemy/Missile.cpp' をコンパイルしています)
   
      ライブラリ C:\Siv3D\BananaJam\Jam\Intermediate\Jam\Release\Jam.lib とオブジェクト C:\Siv3D\BananaJam\Jam\Intermediate\Jam\Release\Jam.exp を作成中
   コード生成しています。
+  Previous IPDB not found, fall back to full compilation.
 C:\Siv3D\BananaJam\Jam\src\Infrastructure\EnemyLoader.h(135): warning C4715: 'Jam::Infrastructure::EnemyLoader::loadEnemyForStageFromJSON': 値を返さないコントロール パスがあります。
-  431 of 12021 functions ( 3.6%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    211 functions had inline decision re-evaluated but remain unchanged
+  All 12001 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   コード生成が終了しました。
   Jam.vcxproj -> C:\Siv3D\BananaJam\Jam\Intermediate\Jam\Release\Jam.exe
   C:\Siv3D\BananaJam\Jam\Intermediate\Jam\Release\Jam.exe
