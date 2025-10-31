@@ -78,7 +78,7 @@ namespace Jam::Presentation::Background {
 		size_t getObjectCount() const { return m_backgroundObjects.size(); }
 
 	private:
-		// 背景インスタンスを生成（初期化時に複数の背景を横に配置）
+		// 背景インスタンスを生成
 		void generateBackgroundInstances() {
 			m_backgroundInstances.clear();
 			
@@ -90,21 +90,33 @@ namespace Jam::Presentation::Background {
 				const Size originalSize = texture->size();
 				const double originalAspectRatio = static_cast<double>(originalSize.x) / originalSize.y;
 				
-				// 高さに基づいてアスペクト比を保持した幅を計算（整数化）
+				// 高さに基づいてアスペクト比を保持した幅を計算
 				const double bgHeight = bgObj.rect.h;
 				const double calculatedWidth = bgHeight * originalAspectRatio;
 				const int32 bgWidth = static_cast<int32>(Math::Round(calculatedWidth));
 				
-				// 画面幅を考慮して必要な背景数を計算（十分な余裕を持たせる）
-				const double screenWidth = Scene::Width();
-				const int instanceCount = static_cast<int>(Math::Ceil((screenWidth * 5) / bgWidth)) + 5;
+				// JSONでwidthが0の場合は自動計算、それ以外は指定された範囲を使用
+				double coverageWidth;
+				double startX;
 				
-				// インスタンスを横に並べて生成（各画像をOVERLAPピクセル重ねる）
+				if (bgObj.rect.w == 0) {
+					// 自動計算: leftExtension/rightExtensionを使用
+					coverageWidth = bgObj.leftExtension + bgObj.rightExtension;
+					startX = bgObj.rect.x - bgObj.leftExtension;
+				} else {
+					// 明示的に指定された範囲を使用
+					coverageWidth = bgObj.rect.w;
+					startX = bgObj.rect.x;
+				}
+				
+				// 必要なインスタンス数を計算
+				const int instanceCount = static_cast<int>(Math::Ceil(coverageWidth / (bgWidth - OVERLAP_OFFSET))) + 2;
+				
+				// インスタンスを横に並べて生成
 				for (int i = 0; i < instanceCount; ++i) {
 					BackgroundInstance instance;
-					// 各画像の開始位置 = 基準X + (画像幅 - オーバーラップ) * インデックス
 					const double xOffset = (bgWidth - OVERLAP_OFFSET) * i;
-					instance.basePosition = Vec2(bgObj.rect.x + xOffset, bgObj.rect.y);
+					instance.basePosition = Vec2(startX + xOffset, bgObj.rect.y);
 					instance.rect = RectF(instance.basePosition, Size(bgWidth, static_cast<int32>(bgHeight)));
 					instance.textureName = bgObj.textureName;
 					instance.opacity = bgObj.opacity;

@@ -36,7 +36,7 @@ namespace Jam::UseCase
 			}
 
 			// デバッグ操作	
-			if (KeyQ.pressed()) m_cameraManager.setZoom(0.2,10.0);
+			if (KeyQ.pressed()) m_cameraManager.setZoom(0.01,10.0);
 			if (KeyE.pressed()) m_cameraManager.setZoom(1.2,1.0);
 
 			m_cameraManager.update(deltaTime);

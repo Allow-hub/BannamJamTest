@@ -21,6 +21,8 @@ namespace Jam::Domain::Background {
         String textureName;             // テクスチャ名
         String metadata;                // 識別用ID
         double opacity = 1.0;           // 透明度
+        double leftExtension = 3000.0;  // 左側への拡張距離（デフォルト3000px）
+        double rightExtension = 17000.0;// 右側への拡張距離（デフォルト17000px）
         
         // デフォルトコンストラクタ
         BackgroundObject() 
