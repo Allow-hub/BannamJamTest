@@ -65,7 +65,7 @@ namespace Jam::Presentation
 			(
 				[this](void)
 				{
-						this->OnPlayerDamaged();
+					this->OnPlayerDamaged();
 				}
 			);
 		}

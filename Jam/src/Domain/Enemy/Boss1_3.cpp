@@ -37,10 +37,10 @@ namespace Jam::Domain::Enemy
 
 		// 攻撃パターンの確率設定
 		m_attackPatterns = {
-			{AttackState::Missile, 1.0f},
-			{AttackState::SummonClown, 0.0f},
-			{AttackState::Bomb, 0.0f},
-			{AttackState::Shockwave,0.0f}
+			{AttackState::Missile, 0.3f},
+			{AttackState::SummonClown, 0.1f},
+			{AttackState::Bomb, 0.3f},
+			{AttackState::Shockwave,0.3f}
 		};
 
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::BossHidden);//チョーカーとの接触をなくす
@@ -57,12 +57,12 @@ namespace Jam::Domain::Enemy
 		m_isFaceLeft = true;
 
 		//テスト用ReflectableWeaponの当たり判定を降らせて当てるだけ
-		Vec2 testOffset = Vec2(m_body->getPosition().x, m_body->getPosition().y - 1500);
-		auto test = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
-			.getPhysicsFactory()->createBody(testOffset, coreSize);
-		test->setGravityScale(2.0);
-		test->setFilter(Jam::Infrastructure::PhysicsFilter::Team1);
-		test->setLayer(Jam::Domain::Physics::PhysicsLayer::ReflectableWeapon);
+		//Vec2 testOffset = Vec2(m_body->getPosition().x, m_body->getPosition().y - 1500);
+		//auto test = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+		//	.getPhysicsFactory()->createBody(testOffset, coreSize);
+		//test->setGravityScale(2.0);
+		//test->setFilter(Jam::Infrastructure::PhysicsFilter::Team1);
+		//test->setLayer(Jam::Domain::Physics::PhysicsLayer::ReflectableWeapon);
 		init();
 	}
 
@@ -303,7 +303,6 @@ namespace Jam::Domain::Enemy
 #pragma region ミサイル攻撃
 	void Boss1_3::enterMissileAttack()
 	{
-		// Print << U"Enter: Missile Attack";
 		m_missileAttackTask();
 	}
 	
@@ -368,8 +367,6 @@ namespace Jam::Domain::Enemy
 #pragma region ピエロ召喚
 	void Boss1_3::enterSummonClown()
 	{
-		// Print << U"Enter: Summon Clown";
-
 		// ServiceLocator経由でFactoryを取得
 		auto physicsFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getPhysicsFactory();
 		auto enemyFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getEnemyFactory();
@@ -439,13 +436,10 @@ namespace Jam::Domain::Enemy
 
 	void Boss1_3::updateSummonClown(double deltaTime)
 	{
-		// TODO: 召喚中の処理
 	}
 
 	void Boss1_3::exitSummonClown()
 	{
-		// Print << U"Exit: Summon Clown";
-		// TODO: 召喚終了処理
 	}
 #pragma endregion
 
@@ -561,6 +555,19 @@ namespace Jam::Domain::Enemy
 	{
 		m_shockWave.reset();
 	}
+
+	void Boss1_3::onDestroy(const DamageInfo& info)
+	{
+		m_eventQueue.push(Events::EnemyDefeatedEvent{
+				m_body->getPosition(),
+				true,
+				m_enemyType,
+				0.88,
+				0.5,
+				10
+		});
+		EnemyBase::onDestroy(info);
+	}
 #pragma endregion
 
 #pragma region 衝突処理
@@ -571,6 +578,10 @@ namespace Jam::Domain::Enemy
 		switch (other->getLayer())
 		{
 		case Jam::Domain::Physics::PhysicsLayer::Player:
+			if (currentBossState == BossState::Weak) {
+				currentBossState = BossState::Normal;
+			}
+			// プレイヤーにダメージを与える
 			if (currentBossState != BossState::Normal)return;//Normal以外はダメージ判定を出さない
 			m_eventQueue.push(Events::PlayerDamagedEvent{
 				m_body->getID(),

@@ -35,6 +35,8 @@ namespace Jam::Domain::Enemy
 		void updateNormalState(double deltaTime);
 		void updateWeakState(double deltaTime);
 
+		void onDestroy(const DamageInfo& info) override;
+
 		enum class BossState
 		{
 			Appear,//登場
