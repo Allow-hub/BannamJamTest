@@ -168,9 +168,6 @@ namespace Jam::UseCase {
                 case Jam::Domain::Physics::PhysicsLayer::Wall:
                     // color = ColorF(1.0, 0.0, 0.0, 0.5);  // 赤 = Wall
                     break;
-                case Jam::Domain::Physics::PhysicsLayer::Enemy:
-                    // color = ColorF(1.0, 1.0, 0.0, 0.5);  // 黄 = Enemy
-                    break;
                 case Jam::Domain::Physics::PhysicsLayer::OneWayPlatform:
                     // color = ColorF(0.0, 0.5, 1.0, 0.5);  // 青 = すり抜け床
                     break;
@@ -180,8 +177,8 @@ namespace Jam::UseCase {
                 }
                 
                 // P2Bodyの図形を描画
-                //p2body.draw(color);
-                //p2body.drawFrame(2, ColorF(color, 1.0));
+                p2body.draw(color);
+                p2body.drawFrame(2, ColorF(color, 1.0));
             }
         }
     };
