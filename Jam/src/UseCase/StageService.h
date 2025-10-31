@@ -28,13 +28,17 @@ namespace Jam::UseCase {
          * ステージの初期化
          * @param filename ステージファイル名
          * @param bodyFactory 物理ボディファクトリー
+         * @param eventQueue イベントキュー（ダメージ床用）
+         * @param playerId プレイヤーID（ダメージ床用）
          * @return 初期化成功したか
          */
         bool initialize(
             const String& filename,
-            std::shared_ptr<Infrastructure::Locator::IPhysicsBodyFactory> bodyFactory
+            std::shared_ptr<Infrastructure::Locator::IPhysicsBodyFactory> bodyFactory,
+            Domain::Events::GameEventQueue& eventQueue,
+            Domain::Physics::PhysicsBodyID playerId
         ) {
-            auto result = Infrastructure::StageFactory::createStagesFromFile(filename, bodyFactory);
+            auto result = Infrastructure::StageFactory::createStagesFromFile(filename, bodyFactory, eventQueue, playerId);
             m_stages = std::move(result.stages);
             m_physicsBodies = std::move(result.physicsBodies);
             m_bodyIndices = std::move(result.bodyIndices);
@@ -141,14 +145,9 @@ namespace Jam::UseCase {
             return false;
         }
         
-        /**
-         * ダメージ床との接触判定と処理
-         * @param playerBody プレイヤーの物理ボディ
-         * @param damageable ダメージを受けるオブジェクト
-         * @param deltaTime 前フレームからの経過時間
-         * @param damageInterval ダメージを受ける間隔（秒）
-         * @return ダメージを受けた場合true
-         */
+        // 【廃止】ダメージ床との接触判定と処理
+        // 物理エンジンのICollisionListenerで自動的に処理されるため不要
+        /*
         bool checkDamagePlatformCollision(
             std::shared_ptr<Domain::Physics::IPhysicsBody> playerBody,
             Domain::ITakeDamageable* damageable,
@@ -211,6 +210,7 @@ namespace Jam::UseCase {
             
             return false;
         }
+        */
         
         /**
          * 物理レイヤー可視化のデバッグ描画

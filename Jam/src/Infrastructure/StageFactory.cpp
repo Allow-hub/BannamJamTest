@@ -4,7 +4,9 @@ namespace Jam::Infrastructure {
     
     StageCreationResult StageFactory::createStagesFromFile(
         const String& filename,
-        std::shared_ptr<Locator::IPhysicsBodyFactory> bodyFactory
+        std::shared_ptr<Locator::IPhysicsBodyFactory> bodyFactory,
+        Domain::Events::GameEventQueue& eventQueue,
+        Domain::Physics::PhysicsBodyID playerId
     ) {
         StageCreationResult result;
         
@@ -21,7 +23,7 @@ namespace Jam::Infrastructure {
             
             if (!createdObjects.isEmpty()) {
                 std::shared_ptr<Domain::Physics::IPhysicsBody> body;
-                auto stage = createStage(createdObjects[0], bodyFactory, body);
+                auto stage = createStage(createdObjects[0], bodyFactory, body, eventQueue, playerId);
                 
                 if (stage && body) {
                     size_t bodyIndex = result.physicsBodies.size();
@@ -33,7 +35,7 @@ namespace Jam::Infrastructure {
                     
                     for (size_t i = 1; i < createdObjects.size(); ++i) {
                         std::shared_ptr<Domain::Physics::IPhysicsBody> additionalBody;
-                        createStage(createdObjects[i], bodyFactory, additionalBody);
+                        createStage(createdObjects[i], bodyFactory, additionalBody, eventQueue, playerId);
                         if (additionalBody) {
                             size_t additionalBodyIndex = result.physicsBodies.size();
                             result.physicsBodies.push_back(additionalBody);
@@ -56,7 +58,9 @@ namespace Jam::Infrastructure {
     std::unique_ptr<Domain::Stage::IStage> StageFactory::createStage(
         const Domain::Stage::StageObject& obj,
         std::shared_ptr<Locator::IPhysicsBodyFactory> bodyFactory,
-        std::shared_ptr<Domain::Physics::IPhysicsBody>& outBody
+        std::shared_ptr<Domain::Physics::IPhysicsBody>& outBody,
+        Domain::Events::GameEventQueue& eventQueue,
+        Domain::Physics::PhysicsBodyID playerId
     ) {
         if (!bodyFactory) {
             return nullptr;
@@ -96,10 +100,18 @@ namespace Jam::Infrastructure {
                 return std::make_unique<Domain::Stage::OneWayPlatformStage>(obj);
                 
             case Domain::Stage::StageType::DamagePlatform:
-                return std::make_unique<Domain::Stage::DamageStage>(obj);
+            {
+                auto damageStage = std::make_unique<Domain::Stage::DamageStage>(obj, outBody, eventQueue, playerId);
+                damageStage->init();  // unique_ptrのまま、生ポインタでinit()を呼ぶ
+                return damageStage;
+            }
                 
             case Domain::Stage::StageType::MovingDamagePlatform:
-                return std::make_unique<Domain::Stage::MovingDamagePlatformStage>(obj);
+            {
+                auto movingDamageStage = std::make_unique<Domain::Stage::MovingDamagePlatformStage>(obj, outBody, eventQueue, playerId);
+                movingDamageStage->init();  // unique_ptrのまま、生ポインタでinit()を呼ぶ
+                return movingDamageStage;
+            }
                 
             case Domain::Stage::StageType::Normal:
             default:
