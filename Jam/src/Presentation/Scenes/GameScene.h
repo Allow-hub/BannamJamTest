@@ -235,9 +235,9 @@ namespace Jam::Presentation::Scenes
 			// 背景テクスチャの事前読み込み
 			Jam::Infrastructure::TextureLoader::preloadBackgroundTextures();
 
-			// JSONから背景データを読み込み
+			// JSONから背景データを読み込み（ステージ名を渡す）
 			Array<Jam::Domain::Background::BackgroundObject> backgroundObjects;
-			if (Jam::Infrastructure::Background::BackgroundLoader::loadBackgroundFromFile(U"background.json", backgroundObjects)) {
+			if (Jam::Infrastructure::Background::BackgroundLoader::loadBackgroundFromFile(U"background.json", core.stageInfo.stageName, backgroundObjects)) {
 				m_backgroundRenderer->setBackgroundObjects(backgroundObjects);
 			}
 			else {

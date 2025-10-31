@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
 #include "../../Domain/Stage/BackgroundTypes.h"
+#include "../../Foundation/CoreManager.h"
 
 /**
  * 背景データの読み込みクラス
@@ -11,7 +12,29 @@ namespace Jam::Infrastructure::Background {
 	class BackgroundLoader {
 	public:
 		// JSONファイルから背景データを読み込み
-		static bool loadBackgroundFromFile(const String& fileName, Array<Jam::Domain::Background::BackgroundObject>& outObjects) {
+		static bool loadBackgroundFromFile(const String& fileName, Jam::Foundation::StageName stageName, Array<Jam::Domain::Background::BackgroundObject>& outObjects) {
+			// StageName enumを文字列に変換
+			String stageNameStr;
+			switch (stageName) {
+			case Jam::Foundation::StageName::Stage1_1:
+				stageNameStr = U"Stage1_1";
+				break;
+			case Jam::Foundation::StageName::Stage1_2:
+				stageNameStr = U"Stage1_2";
+				break;
+			case Jam::Foundation::StageName::Stage1_3:
+				stageNameStr = U"Stage1_3";
+				break;
+			default:
+				stageNameStr = U"Stage1_3";
+				break;
+			}
+			
+			return loadBackgroundFromFile(fileName, stageNameStr, outObjects);
+		}
+		
+		// JSONファイルから背景データを読み込み（文字列版）
+		static bool loadBackgroundFromFile(const String& fileName, const String& stageName, Array<Jam::Domain::Background::BackgroundObject>& outObjects) {
 
 			String actualFilePath;
 			Array<String> possiblePaths = {
@@ -41,12 +64,18 @@ namespace Jam::Infrastructure::Background {
 
 			outObjects.clear();
 
-			// "backgrounds"配列から背景オブジェクトを読み込み
-			if (!json.hasElement(U"backgrounds")) {
+			// ステージ名で背景配列を取得
+			if (!json.hasElement(stageName)) {
+				Console << U"[BackgroundLoader] Stage '{}' not found in JSON"_fmt(stageName);
+				return false;
+			}
+
+			const auto& stageJson = json[stageName];
+			if (!stageJson.hasElement(U"backgrounds")) {
 				return true; // 空でも成功とする
 			}
 
-			const auto& backgroundsArray = json[U"backgrounds"];
+			const auto& backgroundsArray = stageJson[U"backgrounds"];
 			if (!backgroundsArray.isArray()) {
 				return false;
 			}
@@ -116,6 +145,14 @@ namespace Jam::Infrastructure::Background {
 			// 透明度（オプション）
 			if (json.hasElement(U"opacity")) {
 				outObj.opacity = json[U"opacity"].get<double>();
+			}
+			
+			// 拡張距離（オプション）
+			if (json.hasElement(U"leftExtension")) {
+				outObj.leftExtension = json[U"leftExtension"].get<double>();
+			}
+			if (json.hasElement(U"rightExtension")) {
+				outObj.rightExtension = json[U"rightExtension"].get<double>();
 			}
             
 			return true;
