@@ -34,6 +34,7 @@ namespace Jam::Presentation
 			load(Sound::SE_Damage, samePath + U"se_damage.mp3");
 			load(Sound::SE_Explosion, samePath + U"se_explosion.mp3");
 			load(Sound::BGM_Title, samePath + U"bgm_title.mp3");
+			load(Sound::BGM_Game, samePath + U"bgm_ingame.mp3");
 		}
 
 		void load(Sound sound, const s3d::FilePathView& path, bool streaming = false)
