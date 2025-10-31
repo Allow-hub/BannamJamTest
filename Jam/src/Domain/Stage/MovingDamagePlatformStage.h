@@ -3,7 +3,6 @@
 #include "../Physics/ICollisionListener.h"
 #include "../Physics/IPhysicsBody.h"
 #include "../Events/GameEvents.h"
-#include "../ITakeDamageable.h"
 #include <memory>
 
 namespace Jam::Domain::Stage {
@@ -26,9 +25,11 @@ namespace Jam::Domain::Stage {
         double m_damageAmount;         // 与えるダメージ量
         
         std::shared_ptr<Physics::IPhysicsBody> m_body;  // メイン物理ボディ
-        std::vector<std::shared_ptr<Physics::IPhysicsBody>> m_additionalBodies;  // 追加の物理ボディ
         Events::GameEventQueue& m_eventQueue;  // イベントキュー
         Physics::PhysicsBodyID m_playerId;  // プレイヤーID
+        
+        // 自身へのshared_ptr（ライフタイム管理用）
+        std::shared_ptr<MovingDamagePlatformStage> m_selfPtr;
         
         // ダメージ間隔管理
         double m_damageInterval = 0.5;  // ダメージを与える間隔（秒）
@@ -57,18 +58,18 @@ namespace Jam::Domain::Stage {
         // 初期化メソッド（shared_ptr管理下になった後に呼ぶ）
         void init() {
             if (m_body) {
-                // thisポインタを直接渡す（ICollisionListenerとして）
-                m_body->setCollisionListener(std::shared_ptr<Physics::ICollisionListener>(
-                    std::shared_ptr<void>(), this));
+                // カスタムデリーター：何もしない（unique_ptrがライフタイムを管理）
+                m_selfPtr = std::shared_ptr<MovingDamagePlatformStage>(this, [](MovingDamagePlatformStage*){});
+                auto listener = std::dynamic_pointer_cast<Physics::ICollisionListener>(m_selfPtr);
+                m_body->setCollisionListener(listener);
             }
         }
         
         // 追加の物理ボディを登録（groundSide展開時に使用）
         void addAdditionalBody(std::shared_ptr<Physics::IPhysicsBody> body) {
-            if (body) {
-                m_additionalBodies.push_back(body);
-                body->setCollisionListener(std::shared_ptr<Physics::ICollisionListener>(
-                    std::shared_ptr<void>(), this));
+            if (body && m_selfPtr) {
+                auto listener = std::dynamic_pointer_cast<Physics::ICollisionListener>(m_selfPtr);
+                body->setCollisionListener(listener);
             }
         }
         
@@ -98,10 +99,6 @@ namespace Jam::Domain::Stage {
         
         Vec2 getCurrentCenter() const override {
             return m_baseCenter + m_currentOffset;
-        }
-        
-        double getDamageAmount() const {
-            return m_damageAmount;
         }
         
         // ICollisionListener実装

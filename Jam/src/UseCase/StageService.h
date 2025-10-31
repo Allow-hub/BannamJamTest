@@ -145,73 +145,6 @@ namespace Jam::UseCase {
             return false;
         }
         
-        // 【廃止】ダメージ床との接触判定と処理
-        // 物理エンジンのICollisionListenerで自動的に処理されるため不要
-        /*
-        bool checkDamagePlatformCollision(
-            std::shared_ptr<Domain::Physics::IPhysicsBody> playerBody,
-            Domain::ITakeDamageable* damageable,
-            double deltaTime,
-            double& damageTimer
-        ) {
-            if (!playerBody || !damageable) return false;
-            
-            // ダメージクールダウン中
-            constexpr double damageInterval = 0.5; // 0.5秒ごとにダメージ
-            if (damageTimer > 0.0) {
-                damageTimer -= deltaTime;
-                return false;
-            }
-            
-            auto playerPos = playerBody->getPosition();
-            auto playerRect = RectF(Arg::center = playerPos, 80, 100); // プレイヤーの当たり判定（仮）
-            
-            for (const auto& stage : m_stages) {
-                auto stageType = stage->getType();
-                if (stageType != Domain::Stage::StageType::DamagePlatform &&
-                    stageType != Domain::Stage::StageType::MovingDamagePlatform) {
-                    continue;
-                }
-                
-                auto stageRect = stage->getRenderRect();
-                
-                // 接触判定
-                if (playerRect.intersects(stageRect)) {
-                    double damageAmount = 10.0; // デフォルト値
-                    
-                    // ダメージ量を取得
-                    if (stageType == Domain::Stage::StageType::DamagePlatform) {
-                        auto damageStage = dynamic_cast<const Domain::Stage::DamageStage*>(stage.get());
-                        if (damageStage) {
-                            damageAmount = damageStage->getDamageAmount();
-                        }
-                    } else if (stageType == Domain::Stage::StageType::MovingDamagePlatform) {
-                        auto movingDamageStage = dynamic_cast<const Domain::Stage::MovingDamagePlatformStage*>(stage.get());
-                        if (movingDamageStage) {
-                            damageAmount = movingDamageStage->getDamageAmount();
-                        }
-                    }
-                    
-                    // ダメージを与える
-                    Domain::DamageInfo damageInfo;
-                    damageInfo.amount = damageAmount;
-                    damageInfo.position = playerPos;
-                    damageInfo.direction = Vec2(0, -1); // 上向き
-                    damageInfo.isCritical = false;
-                    
-                    damageable->takeDamage(damageInfo);
-                    
-                    // タイマーをリセット
-                    damageTimer = damageInterval;
-                    
-                    return true;
-                }
-            }
-            
-            return false;
-        }
-        */
-        
         /**
          * 物理レイヤー可視化のデバッグ描画
          */
@@ -233,16 +166,16 @@ namespace Jam::UseCase {
                     color = ColorF(0.0, 1.0, 0.0, 0.1);  // 緑 = Ground
                     break;
                 case Jam::Domain::Physics::PhysicsLayer::Wall:
-                    color = ColorF(1.0, 0.0, 0.0, 0.5);  // 赤 = Wall
+                    // color = ColorF(1.0, 0.0, 0.0, 0.5);  // 赤 = Wall
                     break;
                 case Jam::Domain::Physics::PhysicsLayer::Enemy:
-                    color = ColorF(1.0, 1.0, 0.0, 0.5);  // 黄 = Enemy
+                    // color = ColorF(1.0, 1.0, 0.0, 0.5);  // 黄 = Enemy
                     break;
                 case Jam::Domain::Physics::PhysicsLayer::OneWayPlatform:
-                    color = ColorF(0.0, 0.5, 1.0, 0.5);  // 青 = すり抜け床
+                    // color = ColorF(0.0, 0.5, 1.0, 0.5);  // 青 = すり抜け床
                     break;
                 default:
-                    color = ColorF(0.5, 0.5, 0.5, 0.5);  // 灰 = その他
+                    // color = ColorF(0.5, 0.5, 0.5, 0.5);  // 灰 = その他
                     break;
                 }
                 

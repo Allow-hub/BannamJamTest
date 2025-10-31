@@ -33,10 +33,25 @@ namespace Jam::Infrastructure {
                     Vec2 offset = createdObjects[0].rect.center() - baseCenter;
                     result.bodyOffsets.push_back(offset);
                     
+                    // 追加の物理ボディを処理（groundSide展開時）
                     for (size_t i = 1; i < createdObjects.size(); ++i) {
                         std::shared_ptr<Domain::Physics::IPhysicsBody> additionalBody;
                         createStage(createdObjects[i], bodyFactory, additionalBody, eventQueue, playerId);
                         if (additionalBody) {
+                            // ダメージ床の場合、追加ボディをステージインスタンスに登録
+                            if (obj.type == Domain::Stage::StageType::DamagePlatform) {
+                                auto damageStage = dynamic_cast<Domain::Stage::DamageStage*>(stage.get());
+                                if (damageStage) {
+                                    damageStage->addAdditionalBody(additionalBody);
+                                }
+                            }
+                            else if (obj.type == Domain::Stage::StageType::MovingDamagePlatform) {
+                                auto movingDamageStage = dynamic_cast<Domain::Stage::MovingDamagePlatformStage*>(stage.get());
+                                if (movingDamageStage) {
+                                    movingDamageStage->addAdditionalBody(additionalBody);
+                                }
+                            }
+                            
                             size_t additionalBodyIndex = result.physicsBodies.size();
                             result.physicsBodies.push_back(additionalBody);
                             bodyIndicesForThisStage.push_back(additionalBodyIndex);
