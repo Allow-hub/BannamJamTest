@@ -18,7 +18,8 @@ namespace Jam::Domain::Enemy
 					 double damage,
 					 double flightDuration,
 					 double radius,
-					 double reflectedSpeed)
+					 double reflectedSpeed,
+					 double scale)
 		: m_body(body)
 		, m_playerId(playerId)
 		, m_bossId(bossId)
@@ -30,6 +31,7 @@ namespace Jam::Domain::Enemy
 		, m_damage(damage)
 		, m_flightDuration(flightDuration)
 		, m_radius(radius)
+		, m_scale(scale)
 		, m_timer(0.0)
 		, m_isReflected(false)
 		, m_reflectedDirection(Vec2::Zero())
@@ -122,7 +124,7 @@ namespace Jam::Domain::Enemy
 		double angle = Math::Atan2(direction.y, direction.x) + Math::Pi;
 		
 		// 画像のスケールを調整
-		double scale = (m_radius * 2.5) / m_missileTex.width();
+		double scale = (m_radius * m_scale) / m_missileTex.width();
 		
 		// 画像を回転して描画
 		m_missileTex.scaled(scale)

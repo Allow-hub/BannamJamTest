@@ -29,6 +29,7 @@ namespace Jam::Domain::Enemy
 		double m_flightDuration;      // 飛行時間(秒)
 		double m_timer;                // 経過時間
 		double m_radius;               // ミサイルの半径
+		double m_scale;                // 描画スケール係数
 		bool m_isReflected;            // 反射されたか
 		Vec2 m_reflectedDirection;     // 反射後の方向
 		double m_reflectedSpeed;       // 反射後の速度
@@ -44,7 +45,8 @@ namespace Jam::Domain::Enemy
 				double damage = 10.0,
 				double flightDuration = 3.0,
 				double radius = 15.0,
-				double reflectedSpeed = 500.0);
+				double reflectedSpeed = 500.0,
+				double scale = 3.5);
 		~Missile();
 
 		void init();

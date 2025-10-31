@@ -346,7 +346,8 @@ namespace Jam::Domain::Enemy
 				m_status.attackPower,
 				m_missileFlightDuration,
 				m_missileRadius,
-				m_missileReflectedSpeed
+				m_missileReflectedSpeed,
+				m_missileScale
 			);
 			
 			missile->init();
