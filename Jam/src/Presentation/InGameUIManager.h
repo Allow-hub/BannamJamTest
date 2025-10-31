@@ -45,21 +45,21 @@ namespace Jam::Presentation
 		InGameUIManager(const std::shared_ptr<Jam::Domain::Player::Player>& player)
 			: m_player(player)
 		{
-			m_hpBack = Texture(U"../Assets/UI/hp_back.png");
-			m_hpFront = Texture(U"../Assets/UI/hp_front.png");
+			m_hpBack = Texture(U"Assets/UI/hp_back.png");
+			m_hpFront = Texture(U"Assets/UI/hp_front.png");
 
-			m_faceNormal = Texture(U"../Assets/UI/face_happy.png");
-			m_faceWarning = Texture(U"../Assets/UI/face_normal.png");
-			m_faceDanger = Texture(U"../Assets/UI/face_sad.png");
+			m_faceNormal = Texture(U"Assets/UI/face_happy.png");
+			m_faceWarning = Texture(U"Assets/UI/face_normal.png");
+			m_faceDanger = Texture(U"Assets/UI/face_sad.png");
 
-			m_backgroundNoDamge = Texture(U"../Assets/UI/frameNoDamage.png");
-			m_backgroundDamage_00 = Texture(U"../Assets/UI/frameDamage_00.png");
-			m_backgroundDamage_01 = Texture(U"../Assets/UI/frameDamage_01.png");
+			m_backgroundNoDamge = Texture(U"Assets/UI/frameNoDamage.png");
+			m_backgroundDamage_00 = Texture(U"Assets/UI/frameDamage_00.png");
+			m_backgroundDamage_01 = Texture(U"Assets/UI/frameDamage_01.png");
 
-			m_fragmentMemory_00 = Texture(U"../Assets/UI/fragment_00.png");
-			m_fragmentMemory_01 = Texture(U"../Assets/UI/fragment_01.png");
-			m_fragmentMemory_02 = Texture(U"../Assets/UI/fragment_02.png");
-			m_fragmentMemory_03 = Texture(U"../Assets/UI/fragment_03.png");
+			m_fragmentMemory_00 = Texture(U"Assets/UI/fragment_00.png");
+			m_fragmentMemory_01 = Texture(U"Assets/UI/fragment_01.png");
+			m_fragmentMemory_02 = Texture(U"Assets/UI/fragment_02.png");
+			m_fragmentMemory_03 = Texture(U"Assets/UI/fragment_03.png");
 
 			m_player->setOnDamagedCallback
 			(

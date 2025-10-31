@@ -26,7 +26,7 @@ namespace Jam::Domain::Enemy
 		// テクスチャ複数枚を読み込む
 		for (int i = 0; i < 5; ++i)
 		{
-			m_textures.emplace_back(Texture(U"../Assets/Enemy/Boss1_3/Shockwave/shockwave_0" + Format(i) + U".png"));
+			m_textures.emplace_back(Texture(U"Assets/Enemy/Boss1_3/Shockwave/shockwave_0" + Format(i) + U".png"));
 		}
 	}
 

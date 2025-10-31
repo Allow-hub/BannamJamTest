@@ -77,7 +77,7 @@ namespace Jam::Presentation
 		StoryManager()
 		{
 			const int32 mainFontSize = static_cast<int32>(Scene::Height() * 0.05);
-			font = Font(mainFontSize, U"../Assets/Font/PixelMplus12-Bold.ttf", FontStyle::Italic);
+			font = Font(mainFontSize, U"Assets/Font/PixelMplus12-Bold.ttf", FontStyle::Italic);
 		}
 
 		bool init(const FilePath& csvPath,

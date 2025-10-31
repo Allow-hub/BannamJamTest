@@ -19,7 +19,7 @@ namespace Jam::Presentation
             : m_player(player)
         {
 			// JSON からクリップをロード
-			Jam::Presentation::AnimatorLoader::LoadAnimatorFromJSON(anim, U"../Assets/Player/player_animation.json");
+			Jam::Presentation::AnimatorLoader::LoadAnimatorFromJSON(anim, U"Assets/Player/player_animation.json");
 			// 条件を設定
 			anim.SetDefaultClip(U"Idle");
 			anim.AddCondition({ { {U"isWalking", true} }, U"Walk", 1 });

@@ -35,11 +35,11 @@ namespace Jam::Presentation::Scenes
 			FontAsset::Register(U"SelectStageFont", 30, Typeface::Regular);
 
 			// 画像の読み込み
-			m_worldBackgroundTexture = s3d::Texture{ U"../Assets/Select/serect-AREA_back-screen.png" };
-			m_stageBackgroundTexture = s3d::Texture{ U"../Assets/Select/serect-stage_back-screen.png" };
-			m_worldButtonTexture = s3d::Texture{ U"../Assets/Select/serect-area_stage01.png" };
-			m_stageButtonTexture = s3d::Texture{ U"../Assets/Select/stage-serect_stage1-1.png" };
-			m_backButtonTexture = s3d::Texture{ U"../Assets/Select/stage-serect_BACK.png" };
+			m_worldBackgroundTexture = s3d::Texture{ U"Assets/Select/serect-AREA_back-screen.png" };
+			m_stageBackgroundTexture = s3d::Texture{ U"Assets/Select/serect-stage_back-screen.png" };
+			m_worldButtonTexture = s3d::Texture{ U"Assets/Select/serect-area_stage01.png" };
+			m_stageButtonTexture = s3d::Texture{ U"Assets/Select/stage-serect_stage1-1.png" };
+			m_backButtonTexture = s3d::Texture{ U"Assets/Select/stage-serect_BACK.png" };
 			Jam::Foundation::CoreManager::Instance().setClear(false);
 		}
 

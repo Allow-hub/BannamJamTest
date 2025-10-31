@@ -424,7 +424,7 @@ namespace Jam::Domain::Enemy
 				// EnemySpawnedイベントを発行
 				m_eventQueue.push(Events::EnemySpawnedEvent{
 					clownEnemy,
-					U"../Assets/Enemy/Clown/Clown_animation.json"  // 今後別の敵のアニメーションのパスを指定する場合は、EnemyTypeから適切なパスを返すヘルパー関数を作成すること
+					U"Assets/Enemy/Clown/Clown_animation.json"  // 今後別の敵のアニメーションのパスを指定する場合は、EnemyTypeから適切なパスを返すヘルパー関数を作成すること
 				});
 			}
 			else

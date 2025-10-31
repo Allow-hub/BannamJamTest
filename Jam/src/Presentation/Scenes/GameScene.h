@@ -94,7 +94,7 @@ namespace Jam::Presentation::Scenes
 		{
 			Jam::Presentation::AudioService::get().play(Jam::Presentation::AudioService::Sound::BGM_Game, true);
 			//デバッグ用
-			Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_3; // CoreManagerのenumに追加が必要
+			Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_1; // CoreManagerのenumに追加が必要
 
 			auto& core = Jam::Foundation::CoreManager::Instance();
 			core.reset();
@@ -124,7 +124,7 @@ namespace Jam::Presentation::Scenes
 			m_effectManager = std::make_unique<Jam::Presentation::EffectManager>(*m_effectEventQueue);
 
 			// === Player 初期化 ===
-			auto stats = Jam::Infrastructure::Physics::LoadFromJSON(U"../Assets/Player/player_stats.json");
+			auto stats = Jam::Infrastructure::Physics::LoadFromJSON(U"Assets/Player/player_stats.json");
 
 			auto playerBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
 				.getPhysicsFactory()
@@ -196,7 +196,7 @@ namespace Jam::Presentation::Scenes
 			// 敵ステータスをJSONからロード
 			std::unordered_map<Jam::Domain::EnemyType, Jam::Domain::Enemy::EnemyStatus> enemyStatusTable;
 			if (Jam::Infrastructure::EnemyLoader::LoadEnemyStatusFromJSON(
-				U"../Assets/Enemy/enemy_stats.json",
+				U"Assets/Enemy/enemy_stats.json",
 				enemyStatusTable))
 			{
 				m_enemyFactory->setStatusTable(enemyStatusTable);
@@ -220,7 +220,7 @@ namespace Jam::Presentation::Scenes
 
 			// ステージ用敵配置 JSON をロードして敵を生成
 			if (!Jam::Infrastructure::EnemyLoader::loadEnemyForStageFromJSON(
-				U"../Assets/Enemy/enemy_" + stageName + U".json",
+				U"Assets/Enemy/enemy_" + stageName + U".json",
 				m_enemyFactory,
 				m_enemyManager,
 				playerBodyId, *m_gameEventQueue))
@@ -284,7 +284,7 @@ namespace Jam::Presentation::Scenes
 			config.fontSize = 16;
 			Jam::Util::GridRenderer::instance().setConfig(config);
 			// 元画像を読み込む
-			Image originalImage(U"../Assets/Cursor/cursor_yellow.png");
+			Image originalImage(U"Assets/Cursor/cursor_yellow.png");
 			originalImage = originalImage.scaled(64, 64);
 			// カーソル登録
 			Jam::Infrastructure::CursorUtil::instance().registerCustomCursor(

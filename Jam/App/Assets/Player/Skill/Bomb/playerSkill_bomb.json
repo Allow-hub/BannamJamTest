@@ -5,7 +5,7 @@
       "loop": true,
       "frames": [
         {
-          "path": "../Assets/Player/Skill/Bomb/Bomb.png",
+          "path": "Assets/Player/Skill/Bomb/Bomb.png",
           "duration": 1.5,
           "width": 500,
           "height": 500
@@ -17,7 +17,7 @@
       "loop": true,
       "frames": [
         {
-          "path": "../Assets/Player/Skill/Bomb/Bomb.png",
+          "path": "Assets/Player/Skill/Bomb/Bomb.png",
           "duration": 1,
           "width": 500,
           "height": 500

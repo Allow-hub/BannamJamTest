@@ -128,7 +128,7 @@ namespace Jam::Infrastructure
 	
 
 				enemyBody->setCollisionListener(enemy);
-				int enemyId = enemyManager->AddEnemy(enemy, U"../Assets/Enemy/" + typeStr + U"/" + typeStr + U"_animation.json");
+				int enemyId = enemyManager->AddEnemy(enemy, U"Assets/Enemy/" + typeStr + U"/" + typeStr + U"_animation.json");
 				enemyManager->getAnimator(enemyId).AddCondition({ { {U"isRunning", false} }, U"Idle", 0 });
 				enemyManager->getAnimator(enemyId).SetBool(U"isRunning", false);
 			}

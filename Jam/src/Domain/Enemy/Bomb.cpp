@@ -24,7 +24,7 @@ namespace Jam::Domain::Enemy
 		m_body->setGravityScale(1.5);
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::EnemyWeapon);
 		m_body->setLayer(Jam::Domain::Physics::PhysicsLayer::Enemy);
-		bombTex = Texture(U"../Assets/Item/bomb.png");
+		bombTex = Texture(U"Assets/Item/bomb.png");
 	}
 
 	void Bomb::init()

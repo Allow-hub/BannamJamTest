@@ -76,7 +76,7 @@ namespace Jam::Presentation::Scenes
 		{
 			auto& core = Jam::Foundation::CoreManager::Instance();
 			String stageName = Jam::Foundation::CoreManager::stageNameToString(core.stageInfo.stageName);
-			String basePath = U"../Assets/Story/";
+			String basePath = U"Assets/Story/";
 
 			// 立ち絵マップ作成
 			HashTable<Speaker, HashTable<Jam::Domain::Portrait, FilePath>> portraits;
