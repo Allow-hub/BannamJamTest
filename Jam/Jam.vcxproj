@@ -283,11 +283,16 @@
     <Image Include="Assets\Story\Portrait\Player\player_surprised.png" />
     <Image Include="Assets\Story\Portrait\Player\player_suspicious.png" />
     <Image Include="Assets\Title\Press.png" />
-    <Image Include="Assets\UI\face_damage_01.png" />
-    <Image Include="Assets\UI\face_damage_02.png" />
     <Image Include="Assets\UI\face_happy.png" />
     <Image Include="Assets\UI\face_normal.png" />
     <Image Include="Assets\UI\face_sad.png" />
+    <Image Include="Assets\UI\fragment_00.png" />
+    <Image Include="Assets\UI\fragment_01.png" />
+    <Image Include="Assets\UI\fragment_02.png" />
+    <Image Include="Assets\UI\fragment_03.png" />
+    <Image Include="Assets\UI\frameDamage_00.png" />
+    <Image Include="Assets\UI\frameDamage_01.png" />
+    <Image Include="Assets\UI\frameNoDamage.png" />
     <Image Include="Assets\UI\hp_back.png" />
     <Image Include="Assets\UI\hp_front.png" />
   </ItemGroup>

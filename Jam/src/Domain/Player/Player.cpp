@@ -195,7 +195,7 @@ namespace Jam::Domain::Player
 		}
 	}
 
-	void Player::SetOnDamagedCallback(DamageCallback callback)
+	void Player::setOnDamagedCallback(DamageCallback callback)
 	{
 		m_onDamaged = std::move(callback);
 	}

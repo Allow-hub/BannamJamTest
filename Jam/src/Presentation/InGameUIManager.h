@@ -16,20 +16,30 @@ namespace Jam::Presentation
 		bool isDamaged = false;
 		int randomFace = 0;
 
-		// 顔アイコン
+		// 左上記憶のかけらアイコン
+		s3d::Texture m_fragmentMemory_00;// 0個
+		s3d::Texture m_fragmentMemory_01;// 1個
+		s3d::Texture m_fragmentMemory_02;// 2個
+		s3d::Texture m_fragmentMemory_03;// 3個
+
+		// 左上ミニキャラ顔
 		s3d::Texture m_faceNormal;
 		s3d::Texture m_faceWarning;
 		s3d::Texture m_faceDanger;
-		s3d::Texture m_faceDamage01;
-		s3d::Texture m_faceDamage02;
 
-		s3d::Vec2 m_position = { 300, 10 }; // HPバー描画位置
-		s3d::Vec2 m_barSize = { 400, 24 };
-		double m_scale = 0.5;
+		// backgroundと左下ダメージキャラ
+		s3d::Texture m_backgroundNoDamge;//ダメージを受けてないとき
+		s3d::Texture m_backgroundDamage_00;//ダメージを受けたときの差分１
+		s3d::Texture m_backgroundDamage_01;//ダメージを受けたときの差分２
+
+		s3d::Vec2 m_position = { -10, 10 }; // HPバー描画位置
+		double m_scale = 1.0;
 
 		// 顔アイコン描画位置
 		s3d::Vec2 m_facePosition = { 10, 10 };
 		s3d::Vec2 m_faceSize = { 510, 510 }; // 顔アイコンサイズ
+
+		s3d::Vec2 m_fragmentPosition = { 24, 148 }; // m_facePositionからの相対座標
 
 	public:
 		InGameUIManager(const std::shared_ptr<Jam::Domain::Player::Player>& player)
@@ -42,10 +52,16 @@ namespace Jam::Presentation
 			m_faceWarning = Texture(U"../Assets/UI/face_normal.png");
 			m_faceDanger = Texture(U"../Assets/UI/face_sad.png");
 
-			m_faceDamage01 = Texture(U"../Assets/UI/face_damage_01.png");
-			m_faceDamage02 = Texture(U"../Assets/UI/face_damage_02.png");
+			m_backgroundNoDamge = Texture(U"../Assets/UI/frameNoDamage.png");
+			m_backgroundDamage_00 = Texture(U"../Assets/UI/frameDamage_00.png");
+			m_backgroundDamage_01 = Texture(U"../Assets/UI/frameDamage_01.png");
 
-			m_player->SetOnDamagedCallback
+			m_fragmentMemory_00 = Texture(U"../Assets/UI/fragment_00.png");
+			m_fragmentMemory_01 = Texture(U"../Assets/UI/fragment_01.png");
+			m_fragmentMemory_02 = Texture(U"../Assets/UI/fragment_02.png");
+			m_fragmentMemory_03 = Texture(U"../Assets/UI/fragment_03.png");
+
+			m_player->setOnDamagedCallback
 			(
 				[this](void)
 				{
@@ -72,9 +88,23 @@ namespace Jam::Presentation
 
 		void draw() const
 		{
-			const s3d::Vec2 drawSize = m_barSize * m_scale;
+			const double w = Scene::Width();
+			const double h = Scene::Height();
+			const s3d::Texture* background = nullptr;// 現在の左下アイコンテクスチャと背景
 
-			// 背景を描画
+			if (isDamaged)
+			{
+				// ダメージ顔アイコン
+				if (randomFace)
+					background = &m_backgroundDamage_00;
+				else
+					background = &m_backgroundDamage_01;
+			}
+			else
+				background = &m_backgroundNoDamge;//普通の顔
+			background->resized(w, h).draw();// 背景と顔差分はくっついてる描画
+
+			// HP背景を描画
 			m_hpBack.scaled(m_scale).draw(m_position);
 
 			double hpRatio = s3d::Clamp(m_player->getHp() / m_player->getMaxHp(), 0.0, 1.0);
@@ -85,46 +115,46 @@ namespace Jam::Presentation
 				m_hpFront(0, 0, displayWidth, m_hpFront.height()).scaled(m_scale).draw(m_position);
 			}
 
-			const s3d::Texture* faceTex = nullptr;
-			if(isDamaged)
-			{
-				// ダメージ顔アイコンアニメーション
-				if (randomFace)
-				{
-					faceTex = &m_faceDamage01;
-				}
-				else
-				{
-					faceTex = &m_faceDamage02;
-				}
-			}
+
+			const s3d::Texture* faceTex = nullptr;// 現在の左下アイコンテクスチャ
+			const s3d::Texture* fragmentMemoryTex = nullptr;// 現在の左上記憶のかけらの数テクスチャ
+
+
+			// HP比率で顔アイコン切替
+			if (hpRatio > 0.6)
+				faceTex = &m_faceNormal;
+			else if (hpRatio > 0.3)
+				faceTex = &m_faceWarning;
 			else
-			{
-				// HP比率で顔アイコン切替
-				if (hpRatio > 0.6) {
-					faceTex = &m_faceNormal;
-				}
-				else if (hpRatio > 0.3) {
-					faceTex = &m_faceWarning;
-				}
-				else {
-					faceTex = &m_faceDanger;
-				}
-			}
+				faceTex = &m_faceDanger;
 
 			// 左上に描画
 			if (faceTex)
-			{
 				faceTex->scaled(m_faceSize / faceTex->size()).draw(m_facePosition);
+
+			// 記憶のかけらアイコン切替
+			switch (Jam::Foundation::CoreManager::Instance().getFlagment())
+			{
+				case 0:
+					fragmentMemoryTex = &m_fragmentMemory_00;
+					break;
+				case 1:
+					fragmentMemoryTex = &m_fragmentMemory_01;
+					break;
+				case 2:
+					fragmentMemoryTex = &m_fragmentMemory_02;
+					break;
+				case 3:
+					fragmentMemoryTex = &m_fragmentMemory_03;
+					break;
+			default:
+				fragmentMemoryTex = &m_fragmentMemory_03;
+				break;
 			}
+			if (fragmentMemoryTex)
+				fragmentMemoryTex->scaled(m_scale).draw(m_position + m_fragmentPosition);
 		}
 
-		// 描画位置変更可能
-		void setPosition(const s3d::Vec2& pos) { m_position = pos; }
-		void setBarSize(const s3d::Vec2& size) { m_barSize = size; }
-		void setScale(double scale) { m_scale = scale; }
-		void setFacePosition(const s3d::Vec2& pos) { m_facePosition = pos; }
-		void setFaceSize(const s3d::Vec2& size) { m_faceSize = size; }
 
 		// ダメージ時の処理
 		void OnPlayerDamaged()
