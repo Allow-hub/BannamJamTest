@@ -40,6 +40,10 @@ namespace Jam::Domain::Stage {
 		{
 		}
 
+		/**
+		 * 初期化メソッド
+		 * コンストラクタ後、ステージがunique_ptrで管理された後に呼び出す必要がある
+		 */
 		void init() {
 			if (!m_body) {
 				return;
@@ -57,24 +61,6 @@ namespace Jam::Domain::Stage {
 
 			// 物理ボディに衝突リスナーを設定
 			m_body->setCollisionListener(listener);
-		}
-
-		/**
-		 * 追加の物理ボディに衝突リスナーを登録
-		 * groundSide展開時（上面/下面/左面/右面の追加ボディ）に使用
-		 *
-		 * @param body 追加する物理ボディ
-		 */
-		void addAdditionalBody(std::shared_ptr<Physics::IPhysicsBody> body) {
-			if (!body || !m_selfPtr) {
-				return;
-			}
-
-			// 自身をICollisionListenerとしてキャスト
-			auto listener = std::dynamic_pointer_cast<Physics::ICollisionListener>(m_selfPtr);
-
-			// 追加ボディにも同じリスナーを設定
-			body->setCollisionListener(listener);
 		}
 
 		void update(double deltaTime) override {

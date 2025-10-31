@@ -15,7 +15,6 @@ namespace Jam::Domain::Stage {
                                     , public Physics::ICollisionListener {
     private:
         RectF m_baseRect;              // 基準矩形
-        Vec2 m_baseCenter;             // 基準中心位置
         Vec2 m_currentOffset;          // 現在のオフセット
         MovementType m_movementType;   // 移動タイプ
         double m_movementSpeed;        // 移動速度(ピクセル/秒)
@@ -41,7 +40,6 @@ namespace Jam::Domain::Stage {
                                  Events::GameEventQueue& eventQueue,
                                  Physics::PhysicsBodyID playerId)
             : m_baseRect(obj.rect)
-            , m_baseCenter(obj.rect.center())
             , m_currentOffset(0, 0)
             , m_movementType(obj.movementType)
             , m_movementSpeed(obj.movementSpeed)
@@ -55,22 +53,27 @@ namespace Jam::Domain::Stage {
         {
         }
         
-        // 初期化メソッド（shared_ptr管理下になった後に呼ぶ）
+        /**
+         * 初期化メソッド
+         * コンストラクタ後、ステージがunique_ptrで管理された後に呼び出す必要がある
+         */
         void init() {
-            if (m_body) {
-                // カスタムデリーター：何もしない（unique_ptrがライフタイムを管理）
-                m_selfPtr = std::shared_ptr<MovingDamagePlatformStage>(this, [](MovingDamagePlatformStage*){});
-                auto listener = std::dynamic_pointer_cast<Physics::ICollisionListener>(m_selfPtr);
-                m_body->setCollisionListener(listener);
+            if (!m_body) {
+                return;
             }
-        }
-        
-        // 追加の物理ボディを登録（groundSide展開時に使用）
-        void addAdditionalBody(std::shared_ptr<Physics::IPhysicsBody> body) {
-            if (body && m_selfPtr) {
-                auto listener = std::dynamic_pointer_cast<Physics::ICollisionListener>(m_selfPtr);
-                body->setCollisionListener(listener);
-            }
+            
+            // 自身へのshared_ptrを作成（ライフタイム管理はunique_ptrが行う）
+            // カスタムデリーター: 削除時に何もしない（unique_ptrが破棄を担当）
+            auto noOpDeleter = [](MovingDamagePlatformStage*) {
+                // 何もしない: unique_ptrがオブジェクトの破棄を担当する
+            };
+            m_selfPtr = std::shared_ptr<MovingDamagePlatformStage>(this, noOpDeleter);
+            
+            // ICollisionListenerとしてキャスト
+            auto listener = std::dynamic_pointer_cast<Physics::ICollisionListener>(m_selfPtr);
+            
+            // 物理ボディに衝突リスナーを設定
+            m_body->setCollisionListener(listener);
         }
         
         void update(double deltaTime) override {
@@ -98,7 +101,7 @@ namespace Jam::Domain::Stage {
         }
         
         Vec2 getCurrentCenter() const override {
-            return m_baseCenter + m_currentOffset;
+            return m_baseRect.center() + m_currentOffset;
         }
         
         // ICollisionListener実装
@@ -111,7 +114,7 @@ namespace Jam::Domain::Stage {
         }
         
         void onCollisionExit(std::shared_ptr<Physics::IPhysicsBody> other) override {
-            // 何もしない
+            // 衝突終了時は何もしない
         }
         
     private:

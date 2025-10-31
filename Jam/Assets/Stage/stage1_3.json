@@ -1,4 +1,4 @@
-{
+﻿{
   "_comment": "当たり判定専用ステージ定義",
   "_使い方": {
     "説明": "当たり判定オブジェクトを簡略記法で定義します。",
@@ -15,16 +15,15 @@
             "groundSide": "all"
         },
         {
-            "rect": [ -300, -50, 200, 50 ],
+            "rect": [ -300, -300, 200, 50 ],
             "type": "damage",
-            "groundSide": "up",
-            "metadata": "テスト用ダメージ床1(静的)",
-            "damageAmount": 5.0
+            "groundSide": "All",
+            "metadata": "テスト用ダメージ床1(動かない)",
+            "damageAmount": 50.0
         },
         {
             "rect": [ 150, -50, 200, 50 ],
             "type": "movingDamage",
-            "groundSide": "up",
             "metadata": "テスト用ダメージ床2(動く)",
             "damageAmount": 10.0,
             "movementType": "horizontal",
