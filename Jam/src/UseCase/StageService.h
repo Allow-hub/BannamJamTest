@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include "../Domain/Stage/IStage.h"
+#include "../Domain/Stage/DamageStage.h"
+#include "../Domain/Stage/MovingDamagePlatformStage.h"
 #include "../Domain/Physics/IPhysicsBody.h"
+#include "../Domain/ITakeDamageable.h"
 #include "../Infrastructure/IPhysicsBodyFactory.h"
 #include "../Infrastructure/StageFactory.h"
 #include "../Infrastructure/Siv3DPhysicsBody.h"
@@ -25,13 +28,17 @@ namespace Jam::UseCase {
          * ステージの初期化
          * @param filename ステージファイル名
          * @param bodyFactory 物理ボディファクトリー
+         * @param eventQueue イベントキュー（ダメージ床用）
+         * @param playerId プレイヤーID（ダメージ床用）
          * @return 初期化成功したか
          */
         bool initialize(
             const String& filename,
-            std::shared_ptr<Infrastructure::Locator::IPhysicsBodyFactory> bodyFactory
+            std::shared_ptr<Infrastructure::Locator::IPhysicsBodyFactory> bodyFactory,
+            Domain::Events::GameEventQueue& eventQueue,
+            Domain::Physics::PhysicsBodyID playerId
         ) {
-            auto result = Infrastructure::StageFactory::createStagesFromFile(filename, bodyFactory);
+            auto result = Infrastructure::StageFactory::createStagesFromFile(filename, bodyFactory, eventQueue, playerId);
             m_stages = std::move(result.stages);
             m_physicsBodies = std::move(result.physicsBodies);
             m_bodyIndices = std::move(result.bodyIndices);
@@ -159,22 +166,19 @@ namespace Jam::UseCase {
                     color = ColorF(0.0, 1.0, 0.0, 0.1);  // 緑 = Ground
                     break;
                 case Jam::Domain::Physics::PhysicsLayer::Wall:
-                    color = ColorF(1.0, 0.0, 0.0, 0.5);  // 赤 = Wall
-                    break;
-                case Jam::Domain::Physics::PhysicsLayer::Enemy:
-                    color = ColorF(1.0, 1.0, 0.0, 0.5);  // 黄 = Enemy
+                    // color = ColorF(1.0, 0.0, 0.0, 0.5);  // 赤 = Wall
                     break;
                 case Jam::Domain::Physics::PhysicsLayer::OneWayPlatform:
-                    color = ColorF(0.0, 0.5, 1.0, 0.5);  // 青 = すり抜け床
+                    // color = ColorF(0.0, 0.5, 1.0, 0.5);  // 青 = すり抜け床
                     break;
                 default:
-                    color = ColorF(0.5, 0.5, 0.5, 0.5);  // 灰 = その他
+                    // color = ColorF(0.5, 0.5, 0.5, 0.5);  // 灰 = その他
                     break;
                 }
                 
                 // P2Bodyの図形を描画
-                //p2body.draw(color);
-                //p2body.drawFrame(2, ColorF(color, 1.0));
+                p2body.draw(color);
+                p2body.drawFrame(2, ColorF(color, 1.0));
             }
         }
     };

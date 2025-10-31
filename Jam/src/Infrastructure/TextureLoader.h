@@ -66,6 +66,8 @@ namespace Jam::Infrastructure {
 			Jam::Domain::Stage::StageType::Normal,
             Jam::Domain::Stage::StageType::MovingPlatform,
             Jam::Domain::Stage::StageType::OneWayPlatform,
+            Jam::Domain::Stage::StageType::DamagePlatform,
+            Jam::Domain::Stage::StageType::MovingDamagePlatform,
         };
         
         for (auto type : stageTypes) {
@@ -98,6 +100,10 @@ namespace Jam::Infrastructure {
             return basePath + U"moving_platform.png";
         case Jam::Domain::Stage::StageType::OneWayPlatform:
             return basePath + U"White_Test.png";
+        case Jam::Domain::Stage::StageType::DamagePlatform:
+            return basePath + U"damage_Stage.jpg";
+        case Jam::Domain::Stage::StageType::MovingDamagePlatform:
+            return basePath + U"damage_Stage.jpg";
         default:
             return basePath + U"White_Test.png";
         }

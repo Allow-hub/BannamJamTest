@@ -481,6 +481,7 @@
     <None Include="Assets\Story\stage1_1_clear.csv" />
     <None Include="Assets\Story\stage1_1_start.csv" />
     <None Include="Assets\Story\stage1_2_start.csv" />
+    <None Include="src\Domain\Stage\Imata_Task.md" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="App\example\shot.mp3" />
@@ -540,8 +541,12 @@
     <ClInclude Include="src\Domain\Player\Skill\IPlayerSkill.h" />
     <ClInclude Include="src\Domain\Player\Player.h" />
     <ClInclude Include="src\Domain\Stage\BackgroundTypes.h" />
+    <ClInclude Include="src\Domain\Stage\DamageStage.h" />
     <ClInclude Include="src\Domain\Stage\IStage.h" />
+    <ClInclude Include="src\Domain\Stage\MovingDamagePlatformStage.h" />
+    <ClInclude Include="src\Domain\Stage\MovingPlatformStage.h" />
     <ClInclude Include="src\Domain\Stage\NormalStage.h" />
+    <ClInclude Include="src\Domain\Stage\OneWayPlatformStage.h" />
     <ClInclude Include="src\Domain\Stage\StageTypes.h" />
     <ClInclude Include="src\Domain\StoryData.h" />
     <ClInclude Include="src\Foundation\CoreManager.h" />

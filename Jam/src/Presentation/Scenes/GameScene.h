@@ -163,7 +163,16 @@ namespace Jam::Presentation::Scenes
 				.getPhysicsFactory();
 
 			// ステージ名からJSONファイル名を生成
-			m_stageService->initialize(stageName + U".json", bodyFactory);
+			// イベントキューとプレイヤーIDを渡す（ダメージ床用）
+			m_stageService->initialize(stageName + U".json", bodyFactory, *m_gameEventQueue, playerBody->getID());
+
+			// ステージの物理ボディをGameSceneの物理ボディリストに追加（衝突検出用）
+			for (const auto& stageBody : m_stageService->getPhysicsBodies()) {
+				auto siv3dBody = std::dynamic_pointer_cast<Infrastructure::Physics::Siv3DPhysicsBody>(stageBody);
+				if (siv3dBody) {
+					m_physicsBodies.push_back(siv3dBody);
+				}
+			}
 
 			m_stageManager = std::make_unique<Jam::Presentation::Stage::StageManager>();
 			m_stageManager->setService(m_stageService);
@@ -341,6 +350,7 @@ namespace Jam::Presentation::Scenes
 				{
 					m_player->resetJumpState();
 				}
+				
 			}
 
 			m_cameraService->update(Scene::DeltaTime());
@@ -471,6 +481,17 @@ namespace Jam::Presentation::Scenes
 					{
 						a->notifyCollisionEnter(b);
 						b->notifyCollisionEnter(a);
+					}
+				}
+				else
+				{
+					// Stay = 前フレームから継続している接触
+					auto a = findBodyByID(pair.a);
+					auto b = findBodyByID(pair.b);
+					if (a && b)
+					{
+						a->notifyCollisionStay(b);
+						b->notifyCollisionStay(a);
 					}
 				}
 			}

@@ -3,7 +3,10 @@
 #include "../Domain/Stage/NormalStage.h"
 #include "../Domain/Stage/MovingPlatformStage.h"
 #include "../Domain/Stage/OneWayPlatformStage.h"
+#include "../Domain/Stage/DamageStage.h"
+#include "../Domain/Stage/MovingDamagePlatformStage.h"
 #include "../Domain/Physics/IPhysicsBody.h"
+#include "../Domain/Events/GameEvents.h"
 #include "StageLoader.h"
 #include "IPhysicsBodyFactory.h"
 #include "PhysicsFilterManager.h"
@@ -34,11 +37,15 @@ namespace Jam::Infrastructure {
          * JSONファイルから全ステージを生成
          * @param filename ステージファイル名
          * @param bodyFactory 物理ボディファクトリー
+         * @param eventQueue イベントキュー（ダメージ床用）
+         * @param playerId プレイヤーID（ダメージ床用）
          * @return 生成されたステージと物理ボディ
          */
         static StageCreationResult createStagesFromFile(
             const String& filename,
-            std::shared_ptr<Locator::IPhysicsBodyFactory> bodyFactory
+            std::shared_ptr<Locator::IPhysicsBodyFactory> bodyFactory,
+            Domain::Events::GameEventQueue& eventQueue,
+            Domain::Physics::PhysicsBodyID playerId
         );
         
     private:
@@ -47,12 +54,16 @@ namespace Jam::Infrastructure {
          * @param obj ステージオブジェクトデータ
          * @param bodyFactory 物理ボディファクトリー
          * @param outBody 生成された物理ボディ（出力）
+         * @param eventQueue イベントキュー（ダメージ床用）
+         * @param playerId プレイヤーID（ダメージ床用）
          * @return 生成されたステージ
          */
         static std::unique_ptr<Domain::Stage::IStage> createStage(
             const Domain::Stage::StageObject& obj,
             std::shared_ptr<Locator::IPhysicsBodyFactory> bodyFactory,
-            std::shared_ptr<Domain::Physics::IPhysicsBody>& outBody
+            std::shared_ptr<Domain::Physics::IPhysicsBody>& outBody,
+            Domain::Events::GameEventQueue& eventQueue,
+            Domain::Physics::PhysicsBodyID playerId
         );
         
         /**
