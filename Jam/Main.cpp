@@ -20,7 +20,7 @@ void Main()
 	Window::SetFullscreen(true);
 #endif
 
-
+	//System::SetTerminationTriggers(UserAction::CloseButtonClicked);
 	// =====================
 	//  CoreManager 初期化
 	// =====================
@@ -61,7 +61,8 @@ void Main()
 	manager.add<Jam::Presentation::Scenes::ResultScene>(
 		Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::Result));
 
-	manager.init(Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::Select));
+	// GameSceneから開始するように明示的に指定
+	manager.init(Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::InGame));
 
 	while (System::Update())
 	{

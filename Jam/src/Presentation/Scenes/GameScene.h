@@ -92,7 +92,7 @@ namespace Jam::Presentation::Scenes
 			m_world({ 0, 980 }),//引数は重力
 			m_inputManager()
 		{
-			Jam::Presentation::AudioService::get().play(Jam::Presentation::AudioService::Sound::BGM_Title, true);
+			Jam::Presentation::AudioService::get().play(Jam::Presentation::AudioService::Sound::BGM_Game, true);
 			//デバッグ用
 			Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_3; // CoreManagerのenumに追加が必要
 
