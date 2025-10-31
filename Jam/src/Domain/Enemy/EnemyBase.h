@@ -47,6 +47,8 @@ namespace Jam::Domain::Enemy
 		virtual void jump();
 
 		bool isAlive() const override { return m_isAlive; }
+		bool isFaceLeft() const { return m_isFaceLeft; }
+		void setFaceLeft(bool left) { m_isFaceLeft = left; }
 		void takeDamage(const DamageInfo& info)override;
 		double getCurrentHp() const override { return m_status.hp; }
 		// =========================
@@ -122,6 +124,7 @@ namespace Jam::Domain::Enemy
 		virtual Jam::Util::Task onDeath(const DamageInfo& info);
 		virtual void onDestroy(const DamageInfo& info);
 		bool m_isGrounded;
+		bool m_isFaceLeft = false;
 		// =========================
 		// メンバ変数
 		// =========================

@@ -66,6 +66,11 @@ namespace Jam::Domain::Enemy
 		const Vec2 myPos = getPosition();
 		const double directionX = (playerPos.x > myPos.x) ? 1.0 : -1.0;
 
+		if(directionX < 0)
+			m_isFaceLeft = true;
+		else
+			m_isFaceLeft = false;
+
 		const Vec2 pounceImpulse = {
 			directionX * pounceHorizonalImpulse,
 			-pounceVerticalImpulse

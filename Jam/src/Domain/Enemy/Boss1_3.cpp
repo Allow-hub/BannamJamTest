@@ -1,4 +1,5 @@
 ﻿#include "Boss1_3.h"
+#include "Missile.h"
 #include "../../Infrastructure/FactoryServiceLocator.h"
 #include "../../Infrastructure/IPhysicsBodyFactory.h"
 #include "../../Infrastructure/PhysicsFilterManager.h"
@@ -6,6 +7,7 @@
 #include "../../Foundation/CoroutineUtil.h"
 #include <random>
 #include "Bomb.h"
+#include "../../UseCase/AttackProcessor.h"
 
 namespace Jam::Domain::Enemy
 {
@@ -35,9 +37,9 @@ namespace Jam::Domain::Enemy
 
 		// 攻撃パターンの確率設定
 		m_attackPatterns = {
-			{AttackState::Missile, 0.0f},
+			{AttackState::Missile, 1.0f},
 			{AttackState::SummonClown, 0.0f},
-			{AttackState::Bomb, 1.0f},
+			{AttackState::Bomb, 0.0f},
 			{AttackState::Shockwave,0.0f}
 		};
 
@@ -52,13 +54,23 @@ namespace Jam::Domain::Enemy
 		m_weakBody->setPos(m_body->getPosition() + m_coreOffset);
 		m_weakBody->setGravityScale(0);
 
+		m_isFaceLeft = true;
+
 		//テスト用ReflectableWeaponの当たり判定を降らせて当てるだけ
-		//Vec2 testOffset = Vec2(m_body->getPosition().x, m_body->getPosition().y + 600);
-		//auto test = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
-		//	.getPhysicsFactory()->createBody(testOffset, coreSize);
-		//test->setGravityScale(2.0);
-		//test->setFilter(Jam::Infrastructure::PhysicsFilter::Team1);
-		//test->setLayer(Jam::Domain::Physics::PhysicsLayer::ReflectableWeapon);
+		Vec2 testOffset = Vec2(m_body->getPosition().x, m_body->getPosition().y - 1500);
+		auto test = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+			.getPhysicsFactory()->createBody(testOffset, coreSize);
+		test->setGravityScale(2.0);
+		test->setFilter(Jam::Infrastructure::PhysicsFilter::Team1);
+		test->setLayer(Jam::Domain::Physics::PhysicsLayer::ReflectableWeapon);
+		init();
+	}
+
+	Jam::Util::Task Boss1_3::init()
+	{
+		co_await Jam::Util::WaitSeconds(0.1);
+		m_weakBody->setCollisionListener(shared_from_this());
+		Jam::UseCase::AttackProcessor::getInstance().registerDamageable(m_weakBody->getID(), shared_from_this());
 
 	}
 #pragma endregion
@@ -69,7 +81,8 @@ namespace Jam::Domain::Enemy
 		if (!isAlive()) return;
 
 		m_stateTimer += deltaTime;
-		m_weakBody->setPos(m_body->getPosition() + m_coreOffset);
+		double dir = m_isFaceLeft ? -1.0 : 1.0;
+		m_weakBody->setPos(m_body->getPosition() + m_coreOffset * m_isFaceLeft);
 		switch (currentBossState)
 		{
 		case BossState::Appear:
@@ -89,7 +102,7 @@ namespace Jam::Domain::Enemy
 
 	void Boss1_3::draw() const
 	{
-		m_weakBody->drawFrame(2.0, Palette::Blue);
+		m_weakBody->drawFrame(5.0, Palette::Blue);
 
 		if (m_shockWave)
 		{
@@ -112,6 +125,14 @@ namespace Jam::Domain::Enemy
 
 	void Boss1_3::updateNormalState(double deltaTime)
 	{
+
+		if (!m_normalEntered)
+		{
+			m_body->setFilter(Jam::Infrastructure::PhysicsFilter::BossHidden);
+			m_weakBody->setFilter(Jam::Infrastructure::PhysicsFilter::Team2Death);
+			m_weakEntered = false;
+			m_normalEntered = true;
+		}
 		// 反射ミサイルが当たったかチェック
 		if (m_isReflectedMissileHit)
 		{
@@ -135,6 +156,7 @@ namespace Jam::Domain::Enemy
 				}
 			}
 
+			// Print << U"[Boss1_3] 弱点露出開始";
 			currentBossState = BossState::Weak;
 			m_stateTimer = 0.0;
 			m_isReflectedMissileHit = false;
@@ -237,10 +259,17 @@ namespace Jam::Domain::Enemy
 
 	void Boss1_3::updateWeakState(double deltaTime)
 	{
-		Print << U"弱点露出";
+		if (!m_weakEntered)
+		{
+			m_body->setFilter(Jam::Infrastructure::PhysicsFilter::WallOnly);
+			m_weakBody->setFilter(Jam::Infrastructure::PhysicsFilter::Team2);
+			m_normalEntered = false;
+			m_weakEntered = true;
+		}
 		// 弱点露出中は何もしない
 		if (m_stateTimer >= m_weakStateDuration)
 		{
+			// Print << U"[Boss1_3] 弱点露出が終了";
 			currentBossState = BossState::Normal;
 			m_stateTimer = 0.0;
 			m_attackCooldownTimer = 0.0;
@@ -274,20 +303,66 @@ namespace Jam::Domain::Enemy
 #pragma region ミサイル攻撃
 	void Boss1_3::enterMissileAttack()
 	{
-		Print << U"Enter: Missile Attack";
-		// TODO: 初期化処理
+		// Print << U"Enter: Missile Attack";
+		m_missileAttackTask();
+	}
+	
+	Jam::Util::Task Boss1_3::m_missileAttackTask()
+	{
+		for (int i = 0; i < MISSILE_COUNT; ++i)
+		{
+			// プレイヤー位置を取得
+			auto physicsFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getPhysicsFactory();
+			auto playerBody = physicsFactory->getBody(m_playerId);
+			if (!playerBody) co_return;
+			
+			Vec2 bossPos = m_body->getPosition();
+			Vec2 playerPos = playerBody->getPosition();
+			
+			// 待機位置を計算(ボスの前方、少し上)
+			double waitY = bossPos.y - m_status.colSize.y / 2.0 + 50;
+			const double spacing = 120.0;
+			Vec2 waitPos = Vec2{ bossPos.x + (i - 1) * spacing, waitY };
+			
+			// ベジェ曲線の制御点を設定
+			Vec2 p0 = waitPos;
+			Vec2 p1 = waitPos + Vec2{ 0, -200 };
+			Vec2 p2 = playerPos + Vec2{ 0, -200 };
+			Vec2 p3 = playerPos;
+			
+			// 物理ボディをセンサーとして作成（地面を貫通するように）
+			auto missileBody = physicsFactory->createCircleSensor(
+				waitPos,
+				50.0  // 半径
+			);
+			
+			// Missileオブジェクトを作成
+			auto missile = std::make_shared<Missile>(
+				missileBody,
+				m_playerId,
+				m_body->getID(),
+				m_eventQueue,
+				p0, p1, p2, p3,
+				m_status.attackPower,
+				m_missileFlightDuration,
+				m_missileRadius,
+				m_missileReflectedSpeed,
+				m_missileScale
+			);
+			
+			missile->init();
+			
+			// Factoryに登録
+			Jam::Infrastructure::IndependentObjectFactory::instance().registerObject(missile);
+			
+			// 次のミサイルまで待機
+			co_await Jam::Util::WaitSeconds(m_missileSpawnInterval);
+		}
 	}
 
-	void Boss1_3::updateMissileAttack(double deltaTime)
-	{
-		// TODO: ミサイル発射処理
-	}
+	void Boss1_3::updateMissileAttack(double deltaTime){}
 
-	void Boss1_3::exitMissileAttack()
-	{
-		Print << U"Exit: Missile Attack";
-		// TODO: 終了処理
-	}
+	void Boss1_3::exitMissileAttack(){}
 #pragma endregion
 
 #pragma region ピエロ召喚
@@ -377,58 +452,96 @@ namespace Jam::Domain::Enemy
 #pragma region 爆弾攻撃
 	void Boss1_3::enterBombAttack()
 	{
-		Print << U"Enter: Bomb Attack";
+		m_bombAttackTask();
+	}
 
-		auto pos = m_body->getPosition() + Vec2{ -450, -50 }; // 手元から生成する位置
-		Vec2 size = { 120,120 };
-		// 物理ボディを設定
-		auto physicsFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getPhysicsFactory();
-		//P2BodyTypeの指定は後で修正
-		auto bombBody = physicsFactory->createBody(pos, size,
-			s3d::P2BodyType::Dynamic, { 0.2, 0.0, 1.0 },Jam::Domain::Physics::PhysicsShape::Circle);
-		auto bomb = std::make_shared<Jam::Domain::Enemy::Bomb>(bombBody, m_playerId, m_eventQueue, m_status.attackPower, size.x * 1.5, m_explosionDelay, size);
-		bomb->init();
-		//bombBody->applyImpulse(Vec2{ Random(-200.0, 200.0), -600.0 }); // 手から放り投げるように
+	Jam::Util::Task Boss1_3::m_bombAttackTask()
+	{
+		for (unsigned int i = 0; i < m_bombsThrown; ++i)
+		{
+			auto dir = m_isFaceLeft ? -1.0 : 1.0;
+			auto offset = Vec2((m_xOffset * i * dir)+dir* m_xBombInitOffset, m_bombSpawnY);
+			auto pos = m_body->getPosition() + offset;
+			Vec2 size = { 140,140 };
+			// 物理ボディを設定
+			auto physicsFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getPhysicsFactory();
+			//P2BodyTypeの指定は後で修正
+			auto bombBody = physicsFactory->createBody(pos, size,
+				s3d::P2BodyType::Dynamic, { 0.2, 0.0, 1.0 }, Jam::Domain::Physics::PhysicsShape::Circle);
+			auto bomb = std::make_shared<Jam::Domain::Enemy::Bomb>(bombBody, m_playerId, m_eventQueue, m_status.attackPower, size.x * 1.5, m_explosionDelay, size);
+			bomb->init();
 
-
-		// Factory に登録
-		Jam::Infrastructure::IndependentObjectFactory::instance().registerObject(bomb);
+			// Factory に登録
+			Jam::Infrastructure::IndependentObjectFactory::instance().registerObject(bomb);
+			co_await Jam::Util::WaitSeconds(m_bombSpawnInterval);
+		}
 	}
 
 	void Boss1_3::updateBombAttack(double deltaTime)
 	{
-		// TODO: 爆弾投擲処理
 	}
 
 	void Boss1_3::exitBombAttack()
 	{
-		Print << U"Exit: Bomb Attack";
-		// TODO: 投擲終了処理
 	}
 #pragma endregion
 
 #pragma region 衝撃波攻撃
 	void Boss1_3::enterShockWave()
 	{
-		Print << U"Enter: ShockWave";
-		m_body->applyImpulse(Vec2::Up() * m_shockJumpForce);
-		m_shockWaveTask();
+		// 現在の位置を取得
+		Vec2 currentPos = m_body->getPosition();
+
+		// 移動先を決定
+		Vec2 targetPos;
+		if ((currentPos - m_leftPos).length() < (currentPos - m_rightPos).length())
+		{
+			targetPos = m_rightPos;
+		}
+		else
+		{
+			targetPos = m_leftPos;
+		}
+
+		// 放物線ジャンプ処理（Y上方向に強めの力 + X方向に向けた力）
+		Vec2 jumpDir = (targetPos - currentPos).normalized();
+		double horizontalForce = jumpDir.x * m_shockJumpForce * 1.1; // 横方向
+		double verticalForce = -m_shockJumpForce * 1.6;              // 上方向
+
+		m_body->applyImpulse(Vec2(horizontalForce, verticalForce));
+
+		// 衝撃波タスクを開始（ジャンプ後、一定時間経過で地面にShockWave発生）
+		m_shockWaveTask(targetPos);
 	}
 
-	Jam::Util::Task Boss1_3::m_shockWaveTask()
+
+	Jam::Util::Task Boss1_3::m_shockWaveTask(Vec2 targetPos)
 	{
+		// ジャンプ中の待機
 		co_await Jam::Util::WaitSeconds(m_shockWaveDelay);
-		auto pos = Vec2{ m_body->getPosition().x,m_body->getPosition().y + m_status.colSize.y / 2 };
-		// 衝撃波生成処理
+
+		// --- 着地処理 ---
+		// 速度をゼロにして位置を固定
+		m_body->setVelocity(Vec2{ 0, 0 });
+		m_body->setPos(targetPos);
+
+		// 向きを反転
+		m_isFaceLeft = !m_isFaceLeft;
+
+		// 衝撃波の中心は、ジャンプ先（targetPos）の足元
+		Vec2 shockPos = Vec2{ targetPos.x, targetPos.y + (m_status.colSize.y / 2.0) };
+
 		m_shockWave = std::make_shared<ShockWave>(
-			pos,
-			m_shockWaveDuration, // 継続時間
-			Vec2{ 100,150 },                // 開始半径
-			Vec2{ 4000,150 },               // 終了半径
+			shockPos,
+			m_shockWaveDuration,
+			Vec2{ 100, 150 },
+			Vec2{ 4000, 150 },
 			m_playerId,
 			m_eventQueue
 		);
 	}
+
+
 
 	void Boss1_3::updateShockWave(double deltaTime)
 	{
@@ -446,7 +559,6 @@ namespace Jam::Domain::Enemy
 
 	void Boss1_3::exitShockWave()
 	{
-		Print << U"Exit: ShockWave";
 		m_shockWave.reset();
 	}
 #pragma endregion
@@ -475,8 +587,12 @@ namespace Jam::Domain::Enemy
 				,15.0
 			});
 			break;
-		case Jam::Domain::Physics::PhysicsLayer::ReflectableWeapon:
-			m_isReflectedMissileHit = true;
+		case Jam::Domain::Physics::PhysicsLayer::Weapon:
+			// 反射されたミサイルがボスに当たった
+			if (currentBossState == BossState::Normal)
+			{
+				m_isReflectedMissileHit = true;
+			}
 			break;
 		}
 	}

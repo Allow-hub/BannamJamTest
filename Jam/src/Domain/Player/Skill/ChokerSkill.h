@@ -43,6 +43,9 @@ namespace Jam::Domain::Player
 		const double m_releaseImpulse = 300.0;
 		const double m_hookedMoveSpeed = 3.0;
 
+		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_ground;
+		Vec2 m_groundAnchorOffset = Vec2::Zero(); // 接地点とPhysicsBodyの相対位置
+
 		double m_enemyHitFreezeTimer = 0.0;
 		const double m_enemyHitFreezeDuration = 0.1; // 停止時間（秒）
 		bool m_isInEnemyHitFreeze = false;

@@ -17,6 +17,7 @@
     <ClCompile Include="src\Domain\Enemy\Boss1_3.cpp" />
     <ClCompile Include="src\Domain\Enemy\ShockWave.cpp" />
     <ClCompile Include="src\Domain\Enemy\Bomb.cpp" />
+    <ClCompile Include="src\Domain\Enemy\Missile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
@@ -103,6 +104,7 @@
     <ClInclude Include="src\Infrastructure\IndependentObjectFactory.h" />
     <ClInclude Include="src\UseCase\IndependentObjectService.h" />
     <ClInclude Include="src\Presentation\IndependentObjectManager.h" />
+    <ClInclude Include="src\Domain\Enemy\Missile.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />
@@ -219,6 +221,8 @@
     <Image Include="Assets\Player\Idle\idle_28.png" />
     <Image Include="Assets\Player\Idle\idle_29.png" />
     <Image Include="Assets\Item\bomb.png" />
+    <Image Include="Assets\Enemy\Clown\idle_1.png" />
+    <Image Include="..\..\..\Users\YutoImata\Downloads\Missile.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />

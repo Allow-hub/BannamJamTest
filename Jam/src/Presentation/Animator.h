@@ -10,7 +10,7 @@ namespace Jam::Presentation
 	struct FrameData {
 		Texture texture;   // このフレームで表示する画像
 		double duration;   // 表示時間（秒）
-		SizeF size = { 64, 113 };
+		double scale = 1.0;
 	};
 
 	// --- アニメーションクリップ ---
@@ -29,6 +29,7 @@ namespace Jam::Presentation
 	// --- アニメーター ---
 	class Animator {
 	private:
+		String defaultClip = U"Idle";
 		// クリップの名前と実際のデータ
 		std::unordered_map<String, AnimationClip> clips;
 
@@ -47,39 +48,37 @@ namespace Jam::Presentation
 
 		// 現在のBoolパラメータに応じてクリップを切り替える
 		void UpdateCurrentClip() {
-			std::optional<BoolCondition> selected;   // 選択された条件
-			int maxPriority = std::numeric_limits<int>::min(); // 最大優先度
+			std::optional<BoolCondition> selected;
+			int maxPriority = std::numeric_limits<int>::min();
 
-			// 条件リストを全てチェック
 			for (auto& cond : conditionList) {
 				bool match = true;
-
-				// 条件のBoolが全て一致するか確認
 				for (auto& [param, value] : cond.conditions) {
 					if (boolParams[param] != value) {
 						match = false;
 						break;
 					}
 				}
-
-				// 条件が一致かつ優先度が高ければ選択
 				if (match && cond.priority > maxPriority) {
 					selected = cond;
 					maxPriority = cond.priority;
 				}
 			}
 
-			// 選択された条件に応じてクリップを切り替える
-			if (selected) {
-				if (currentClip != selected->clipName) {
-					currentClip = selected->clipName;
-					currentFrame = 0;    // フレームを最初に戻す
-					frameTimer = 0.0;    // タイマーもリセット
-				}
+			// 🔹 条件が一致しない場合はデフォルトクリップを使用
+			String targetClip = selected ? selected->clipName : defaultClip;
+
+			if (currentClip != targetClip) {
+				currentClip = targetClip;
+				currentFrame = 0;
+				frameTimer = 0.0;
 			}
 		}
 
 	public:
+		void SetDefaultClip(const String& name) {
+			defaultClip = name;
+		}
 		// クリップを登録
 		void AddClip(const String& name, const AnimationClip& clip) {
 			clips[name] = clip;
@@ -138,10 +137,12 @@ namespace Jam::Presentation
 			const auto& frame = clips.at(currentClip).frames[currentFrame];
 			if (!frame.texture) return;
 
+			const auto scaled = frame.texture.scaled(frame.scale);
+
 			if (m_facingLeft)
-				frame.texture.resized(frame.size).mirrored().drawAt(pos);
+				scaled.mirrored().drawAt(pos);
 			else
-				frame.texture.resized(frame.size).drawAt(pos);
+				scaled.drawAt(pos);
 		}
 
 		void debug() {

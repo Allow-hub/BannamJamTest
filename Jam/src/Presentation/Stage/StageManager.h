@@ -42,20 +42,26 @@ namespace Jam::Presentation::Stage {
         /**
          * 個別のステージを描画
          */
-        void drawStage(const Domain::Stage::IStage* stage) const {
-            if (!stage) return;
-            
-            const RectF rect = stage->getRenderRect();
-            const auto type = stage->getType();
-            
-            // 位置を整数ピクセルに丸めて境界線の問題を軽減
-            const Vec2 roundedPos = rect.pos.asPoint();
-            const Size roundedSize = rect.size.asPoint();
-            
-            Texture texture = Infrastructure::TextureLoader::getStageTexture(type);
-            if (texture) {
-                texture.resized(roundedSize).draw(roundedPos);
-            }
-        }
+		void drawStage(const Domain::Stage::IStage* stage) const {
+			if (!stage) return;
+
+			const RectF rect = stage->getRenderRect();
+			const auto type = stage->getType();
+
+			const Vec2 roundedPos = rect.pos.asPoint();
+			const Size roundedSize = rect.size.asPoint();
+
+			Texture texture = Infrastructure::TextureLoader::getStageTexture(type);
+			if (!texture) return;
+
+			//  テクスチャアドレスモードをスコープ内だけ Repeat にする
+			const ScopedRenderStates2D sampler{ SamplerState::RepeatLinear };
+
+			//  ステージ範囲に合わせてタイル状に敷き詰め
+			texture.mapped(roundedSize).draw(roundedPos);
+
+			//  スコープを抜けると自動で Clamp に戻る
+		}
+
     };
 }

@@ -59,13 +59,12 @@ namespace Jam::Presentation
 						duration = frameJson[U"duration"].get<double>();
 					}
 					frame.duration = duration;
-					SizeF size = { 64, 113 };
-					if (frameJson[U"width"].getType() == JSONValueType::Number && frameJson[U"height"].getType() == JSONValueType::Number)
+					double scale = 1.0;
+					if (frameJson[U"scale"].getType() == JSONValueType::Number)
 					{
-						size.x = frameJson[U"width"].get<double>();
-						size.y = frameJson[U"height"].get<double>();
+						scale = frameJson[U"scale"].get<double>();
 					}
-					frame.size = size;
+					frame.scale = scale;
 					// 画像をロード
 					frame.texture = Texture(path);
 					if (!frame.texture)
