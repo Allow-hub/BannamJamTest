@@ -157,29 +157,7 @@ namespace Jam::Infrastructure {
 			wallObj.groundSide = GroundSide::None;
 			result.push_back(wallObj);
 
-			// 上面
-			StageObject topGround = obj;
-			topGround.groundSide = GroundSide::Up;
-			topGround.rect = RectF(
-				obj.rect.x,
-				obj.rect.y,
-				obj.rect.w,
-				groundThickness
-			);
-			result.push_back(topGround);
-
-			// 下面
-			StageObject bottomGround = obj;
-			bottomGround.groundSide = GroundSide::Down;
-			bottomGround.rect = RectF(
-				obj.rect.x,
-				obj.rect.y + obj.rect.h - groundThickness,
-				obj.rect.w,
-				groundThickness
-			);
-			result.push_back(bottomGround);
-
-			// 左面
+			// 左面（全高さ）
 			StageObject leftGround = obj;
 			leftGround.groundSide = GroundSide::Left;
 			leftGround.rect = RectF(
@@ -190,7 +168,7 @@ namespace Jam::Infrastructure {
 			);
 			result.push_back(leftGround);
 
-			// 右面
+			// 右面（全高さ）
 			StageObject rightGround = obj;
 			rightGround.groundSide = GroundSide::Right;
 			rightGround.rect = RectF(
@@ -200,6 +178,28 @@ namespace Jam::Infrastructure {
 				obj.rect.h
 			);
 			result.push_back(rightGround);
+
+			// 上面（左右のgroundThicknessを除く）
+			StageObject topGround = obj;
+			topGround.groundSide = GroundSide::Up;
+			topGround.rect = RectF(
+				obj.rect.x + groundThickness,
+				obj.rect.y,
+				obj.rect.w - groundThickness * 2,
+				groundThickness
+			);
+			result.push_back(topGround);
+
+			// 下面（左右のgroundThicknessを除く）
+			StageObject bottomGround = obj;
+			bottomGround.groundSide = GroundSide::Down;
+			bottomGround.rect = RectF(
+				obj.rect.x + groundThickness,
+				obj.rect.y + obj.rect.h - groundThickness,
+				obj.rect.w - groundThickness * 2,
+				groundThickness
+			);
+			result.push_back(bottomGround);
 
 			return result;
 		}
