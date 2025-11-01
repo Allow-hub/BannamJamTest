@@ -46,6 +46,8 @@ namespace Jam::Domain::Player
 		void controlCooldown(double cooldown);
 		Jam::Util::Task controlCooldownProcess(double cooldown);
 
+		bool getIsChokering()const { return m_isChokering; }
+
 		// 攻撃・スキル
 		void skillPush();
 		void skillReleased();
@@ -101,6 +103,7 @@ namespace Jam::Domain::Player
 		bool m_isGrounded = false;
 		bool m_facingRight = true;
 		bool m_isDashing = false;
+		bool m_isChokering = false;
 		bool m_isPressingDown = false;
 		double dashMagnification = 2.0;
 		double m_fallLimitY = 0;

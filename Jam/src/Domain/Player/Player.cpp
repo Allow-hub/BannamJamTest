@@ -47,8 +47,14 @@ namespace Jam::Domain::Player
 		// 全スキルを更新（アクティブ/非アクティブ問わず、必要なものだけ）
 		for (auto& skill : m_skills)
 		{
-			if (skill->needUpdate())
+			if (skill->needUpdate()) {
+				m_isChokering = true;
 				skill->update(deltaTime);
+			}
+			else
+			{
+				m_isChokering = false;
+			}
 		}
 
 		if (getPosition().y >= m_fallLimitY)
@@ -62,7 +68,7 @@ namespace Jam::Domain::Player
 		// 全スキルを描画
 		for (const auto& skill : m_skills)
 		{
-			if (skill->needUpdate())
+			if (skill->needUpdate()) 
 				skill->draw();
 		}
 	}
