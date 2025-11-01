@@ -339,6 +339,8 @@
     <Image Include="App\Assets\Story\background_stage1_3_clear.png" />
     <Image Include="App\Assets\Story\background_stage1_3_start.png" />
     <Image Include="App\Assets\Stage\Goal.png" />
+    <Image Include="App\Assets\Title\logo.png" />
+    <Image Include="App\Assets\Title\background.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />

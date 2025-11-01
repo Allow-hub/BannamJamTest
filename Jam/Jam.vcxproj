@@ -178,6 +178,8 @@
     <Image Include="App\Assets\Story\Portrait\Riska\riska_smiling.png" />
     <Image Include="App\Assets\Story\Portrait\Riska\riska_surprised.png" />
     <Image Include="App\Assets\Story\Portrait\Riska\riska_suspicious.png" />
+    <Image Include="App\Assets\Title\background.png" />
+    <Image Include="App\Assets\Title\logo.png" />
     <Image Include="App\Assets\UI\background.png" />
     <Image Include="App\Assets\UI\face_hand.png" />
     <Image Include="App\engine\texture\box-shadow\128.png" />

@@ -29,11 +29,18 @@ namespace Jam::Presentation::Scenes
 	}
 	class TitleScene : public App::Scene
 	{
+	private:
+		Texture backgroundTexture;
+		Texture logoTexture;
+
 	public:
 		// コンストラクタ
 		TitleScene(const InitData& init)
 			: IScene{ init }
 		{
+			backgroundTexture = Texture(U"Assets/Title/background.png");
+			logoTexture = Texture(U"Assets/Title/logo.png");
+
 			Jam::Presentation::AudioService::get().play(Jam::Presentation::AudioService::Sound::BGM_Title, true);
 		}
 		// 更新処理
@@ -46,7 +53,7 @@ namespace Jam::Presentation::Scenes
 			{
 				if (input.down())
 				{
-					Print << U"Key pressed!";
+					changeScene(ToSceneString(SceneName::Select), 1.0);
 					break;
 				}
 			}
@@ -55,7 +62,11 @@ namespace Jam::Presentation::Scenes
 		// 描画処理
 		void draw() const override
 		{
+			const double w = Scene::Width();
+			const double h = Scene::Height();
 
+			backgroundTexture.scaled(w / backgroundTexture.width()).draw(0, 0);
+			logoTexture.scaled(w / logoTexture.width()*0.5).draw(0, h / 2.3);
 		}
 
 		void drawFadeIn(double t) const override
