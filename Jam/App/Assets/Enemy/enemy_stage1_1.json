@@ -274,11 +274,11 @@
         "patrol": {
           "patrolPoints": [
             {
-              "x": 300,
+              "x": 7900,
               "y": -200
             },
             {
-              "x": -300,
+              "x": 7300,
               "y": -200
             }
           ],
@@ -572,7 +572,7 @@
     "type": "Spider",
     "position": {
       "x": 13600,
-      "y": -400
+      "y": -200
     },
     "extra": {
       "ai": {
@@ -666,37 +666,6 @@
     "position": {
       "x": 15600,
       "y": 800
-    },
-    "extra": {
-      "ai": {
-        "patrol": {
-          "patrolPoints": [
-            {
-              "x": 300,
-              "y": -200
-            },
-            {
-              "x": -300,
-              "y": -200
-            }
-          ],
-          "loop": true,
-          "waitTime": 1.0,
-          "foundDistance": 700.0
-        },
-        "chase": {
-          "attackRange": 600.0,
-          "loseRange": 700.0,
-          "moveSpeedFactor": 1.2
-        }
-      }
-    }
-  },
-  {
-    "type": "Clown",
-    "position": {
-      "x": 15600,
-      "y": 1200
     },
     "extra": {
       "ai": {

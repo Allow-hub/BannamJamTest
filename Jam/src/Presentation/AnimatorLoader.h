@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
 #include "Animator.h"
+#include "TextureManager.h"
 
 namespace Jam::Presentation
 {
@@ -9,29 +10,25 @@ namespace Jam::Presentation
 	public:
 		// JSON から Animator にクリップを登録
 		// JSON ファイルから Animator のクリップをロードする
-		static	bool LoadAnimatorFromJSON(Animator& animator, const String& jsonPath)
+		static bool LoadAnimatorFromJSON(Animator& animator, const String& jsonPath)
 		{
 			const JSON json = JSON::Load(jsonPath);
-
 			if (not json)
 			{
 				Console << U"Failed to load JSON: " << jsonPath;
 				return false;
 			}
-
 			if (json.getType() != JSONValueType::Object)
 			{
 				Console << U"JSON is not an object: " << jsonPath;
 				return false;
 			}
-
 			const auto& clipsArray = json[U"clips"];
 			if (clipsArray.getType() != JSONValueType::Array)
 			{
 				Console << U"Missing 'clips' array in JSON";
 				return false;
 			}
-
 			for (auto&& [index, clipJson] : clipsArray)
 			{
 				AnimationClip clip;
@@ -41,14 +38,12 @@ namespace Jam::Presentation
 					clip.loop = clipJson[U"loop"].get<bool>();
 				}
 				const String clipName = clipJson[U"name"].getString();
-
 				const auto& framesArray = clipJson[U"frames"];
 				if (framesArray.getType() != JSONValueType::Array)
 				{
 					Console << U"Clip " << clipName << U" missing frames array";
 					continue;
 				}
-
 				for (auto&& [fIndex, frameJson] : framesArray)
 				{
 					FrameData frame;
@@ -65,21 +60,19 @@ namespace Jam::Presentation
 						scale = frameJson[U"scale"].get<double>();
 					}
 					frame.scale = scale;
-					// 画像をロード
-					frame.texture = Texture(path);
+
+					//  新: キャッシュから取得（初回のみ実際に読み込む）
+					frame.texture = TextureManager::Load(path);
+
 					if (!frame.texture)
 					{
 						Console << U"Failed to load texture: " << path;
 					}
-
 					clip.frames.push_back(frame);
 				}
-
 				animator.AddClip(clipName, clip);
 			}
-
 			return true;
 		}
 	};
 }
-
