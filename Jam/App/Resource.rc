@@ -1,11 +1,11 @@
-# include <Siv3D/Windows/Resource.hpp>
+﻿# include <Siv3D/Windows/Resource.hpp>
 
 //////////////////////////////////////////////////////
 //
 //	Siv3D Engine Resources (DO NOT REMOVE)
 //
 //////////////////////////////////////////////////////
-DefineResource(100, ICON, icon.ico)
+DefineResource(100, ICON, GameIcon.ico)
 
 //
 //	Shaders
