@@ -16,6 +16,7 @@ namespace Jam::Presentation::Scenes
 		bool m_isClear;
 		int m_flagmentAmount;
 		int m_maxFlagment;
+		int m_defeatedCount;
 		unsigned int m_time;
 
 		// --- フォント ---
@@ -62,6 +63,7 @@ namespace Jam::Presentation::Scenes
 			m_isClear = core.getClear();
 			m_flagmentAmount = core.getFlagment();
 			m_maxFlagment = core.getMaxFlagment();
+			m_defeatedCount = core.getDefeatedEnemyCount();
 			m_time = static_cast<unsigned int>(core.getTimer());
 
 			// --- フォントの読み込み (すべて相対化) ---
@@ -297,7 +299,6 @@ namespace Jam::Presentation::Scenes
 			currentY += blockSpacing;
 
 			// KILL RACIO
-			const int killRacio_demo = 0;
 			if (m_titleKill) m_titleKill.draw(leftStatX, currentY + labelYOffset);
 			{
 				const Vec2 drawPos = Vec2(leftStatX + statNumberOffsetX, currentY + labelYOffset + numberVerticalAdjustment + m_titleKill.height());
@@ -305,7 +306,7 @@ namespace Jam::Presentation::Scenes
 				const Transformer2D jam_scaler(jam_matrix);
 
 				// 描画するテキストと領域を先に取得 (空だったブロックを修正)
-				const auto textToDraw = m_statValueFont(Pad(killRacio_demo, { 3, U'0' }));
+				const auto textToDraw = m_statValueFont(Pad(m_defeatedCount, { 3, U'0' }));
 				const auto textRegion = textToDraw.region(Vec2(0, 0)); // スケール前の領域
 
 				textToDraw.draw(Vec2(0, 0), m_statColor); // Transformer2Dが(0,0)をdrawPosに移動させる
