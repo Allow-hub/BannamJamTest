@@ -25,10 +25,12 @@ namespace Jam::Presentation
 			anim.AddCondition({ { {U"isWalking", true} }, U"Walk", 1 });
 			anim.AddCondition({ { {U"isRunning", true} }, U"Run", 2 });
 			anim.AddCondition({ { {U"isJumping", true} }, U"Jump", 3 });
+			anim.AddCondition({ { {U"isChokerThrow", true} }, U"Choker_Throw", 4 });
 
 			anim.SetBool(U"isRunning", false);
 			anim.SetBool(U"isJumping", false);
-        }
+			anim.SetBool(U"isChokerThrows", false);
+		}
 
 		void setAnim(String name,bool b)
 		{
