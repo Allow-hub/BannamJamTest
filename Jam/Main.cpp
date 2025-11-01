@@ -63,7 +63,7 @@ void Main()
 		Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::Result));
 
 	// GameSceneから開始するように明示的に指定
-	manager.init(Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::InGame));
+	manager.init(Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::Title));
 
 	while (System::Update())
 	{
