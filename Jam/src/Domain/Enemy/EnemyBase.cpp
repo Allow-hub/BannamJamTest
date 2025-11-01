@@ -6,7 +6,7 @@
 #include "../../Infrastructure/IPhysicsBodyFactory.h"
 #include "../../Infrastructure/PhysicsFilterManager.h"
 #include "../Events/GameEvents.h"
-
+#include "../../Foundation/CoreManager.h"
 
 namespace Jam::Domain::Enemy
 {
@@ -93,6 +93,7 @@ namespace Jam::Domain::Enemy
 				0.5,
 				10
 		});
+		Jam::Foundation::CoreManager::Instance().addDefeatedEnemy();	
 		Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
 			.getPhysicsFactory()->removeBody(m_body->getID());
 		m_isAlive = false;

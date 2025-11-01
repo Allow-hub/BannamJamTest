@@ -35,6 +35,7 @@ namespace Jam::Foundation
 		inline static StageData m_currentStageData;
 		inline static bool m_isDied = false;
 		inline static bool m_isPause = false;
+		inline static int m_defeatedEnemyCount = 0; // 敵撃破数を保持
 
 	public:
 		static CoreManager& Instance()
@@ -117,6 +118,7 @@ namespace Jam::Foundation
 			setNextStagePressed(false);
 			m_timer = 0.0;
 			m_flagmentMemory = 0;
+			m_defeatedEnemyCount = 0;
 		}
 
 		static int getFlagment() { return m_flagmentMemory; }
@@ -129,8 +131,12 @@ namespace Jam::Foundation
 				m_flagmentMemory = m_maxFlagment;
 				return;
 			}
-			m_flagmentMemory = amount;
+			m_flagmentMemory += amount;
 		}
+		// 敵撃破数を1増やす（または指定数増やす）
+		static void addDefeatedEnemy(int count = 1) { m_defeatedEnemyCount += count; }
+		// 敵撃破数を取得
+		static int getDefeatedEnemyCount() { return m_defeatedEnemyCount; }
 
 		static void addTimer(double t) { m_timer += t; }
 		static double getTimer() { return m_timer; }
