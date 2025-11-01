@@ -4,6 +4,7 @@
 #include "../StoryManager.h"
 #include "../../Foundation/CoreManager.h"
 #include "TransitionManager.h"
+#include "../../Presentation/ResourceManager.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -88,6 +89,10 @@ namespace Jam::Presentation::Scenes
 		// ストーリー初期化
 		void initStory()
 		{
+			ResourceManager::initPlayerWalk();
+			ResourceManager::loadGroup(ResourceGroup::PlayerWalk);
+
+
 			auto& core = Jam::Foundation::CoreManager::Instance();
 			String stageName = Jam::Foundation::CoreManager::stageNameToString(core.stageInfo.stageName);
 			String basePath = U"Assets/Story/";

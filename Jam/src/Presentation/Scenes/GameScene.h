@@ -273,11 +273,11 @@ namespace Jam::Presentation::Scenes
 			}
 
 			// === Goal 初期化 ===
-			/*auto goalBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+			auto goalBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
 				.getPhysicsFactory()->createRectSensor(core.getCurrentStageData().goalData.position,core.getCurrentStageData().goalData.size);
 			auto goal = std::make_shared<Jam::Domain::GoalArea>(goalBody, [this]() { this->nextScene(); });
 			goalBody->setCollisionListener(goal);
-			Jam::Infrastructure::IndependentObjectFactory::instance().registerObject(goal);*/
+			Jam::Infrastructure::IndependentObjectFactory::instance().registerObject(goal);
 
 			Jam::Util::GridRenderer::GridConfig config;
 			config.gridSize = 100.0;
@@ -407,7 +407,8 @@ namespace Jam::Presentation::Scenes
 				}
 
 				// プレイヤーの描画
-				m_playerManager->draw();				// === 前景背景描画 (プレイヤーより手前) ===
+				m_playerManager->draw();
+				// === 前景背景描画 (プレイヤーより手前) ===
 				if (m_backgroundRenderer && m_backgroundRenderer->isLoaded()) {
 					m_backgroundRenderer->drawLayer(Jam::Domain::Background::ParallaxLayer::Front, cameraOffset);
 				}
