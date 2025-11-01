@@ -267,7 +267,7 @@ namespace Jam::Domain::Player
 		auto& core = Jam::Foundation::CoreManager::Instance();
 		core.setClear(false);
 		m_eventQueue.push(Events::PlayerDeathEvent{ 1.2, 0.2, 10000 });
-		Print << U"Player Died";
+		//Print << U"Player Died";
 	}
 
 	void Player::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)

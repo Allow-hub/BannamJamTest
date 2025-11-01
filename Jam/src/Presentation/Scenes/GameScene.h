@@ -407,8 +407,7 @@ namespace Jam::Presentation::Scenes
 				}
 
 				// プレイヤーの描画
-				m_playerManager->draw();
-				// === 前景背景描画 (プレイヤーより手前) ===
+				m_playerManager->draw();				// === 前景背景描画 (プレイヤーより手前) ===
 				if (m_backgroundRenderer && m_backgroundRenderer->isLoaded()) {
 					m_backgroundRenderer->drawLayer(Jam::Domain::Background::ParallaxLayer::Front, cameraOffset);
 				}
