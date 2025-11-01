@@ -42,6 +42,7 @@ namespace Jam::UseCase
 			bool isRunning = false;
 			bool isWalking = false;
 			bool isJumping = false;
+			bool isChokerThrow = false;
 
 			if (!m_player->getGrounded())
 				isJumping = true;
@@ -78,6 +79,8 @@ namespace Jam::UseCase
 				m_player->skillReleased();
 			}
 
+			isChokerThrow = m_player->getIsChokering() ? true : false;
+
 			m_player->setPressingDown(inputState.down);
 
 			// マウスホイールでスキル切り替え
@@ -98,6 +101,7 @@ namespace Jam::UseCase
 			m_manager.setAnim(U"isWalking", isWalking);
 			m_manager.setAnim(U"isRunning", isRunning);
 			m_manager.setAnim(U"isJumping", isJumping);
+			m_manager.setAnim(U"isChokerThrow", isChokerThrow);
 
 			m_player->update(deltaTime);
 		}

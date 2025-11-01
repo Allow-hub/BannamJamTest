@@ -39,7 +39,7 @@ namespace Jam::Domain
 
 			double scaleX = Math::Cos(m_angle);
 			double absScale = Math::Abs(scaleX);
-			const double baseSize = 80;
+			const double baseSize = 150;
 
 			m_texture
 				.resized(baseSize)

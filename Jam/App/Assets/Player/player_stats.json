@@ -3,7 +3,7 @@
     "hp": 400,
     "power": 100,
     "moveSpeed": 6500.0,
-    "jumpPower": 800.0
+    "jumpPower": 1000.0
   },
     "physics": {
         "friction": 0.9,

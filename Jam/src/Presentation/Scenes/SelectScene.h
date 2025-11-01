@@ -21,8 +21,14 @@ namespace Jam::Presentation::Scenes
 
 		s3d::Texture m_worldBackgroundTexture;
 		s3d::Texture m_stageBackgroundTexture;
-		s3d::Texture m_worldButtonTexture;
-		s3d::Texture m_stageButtonTexture;
+		s3d::Texture m_worldButtonTexture_01;
+		s3d::Texture m_worldButtonTexture_02;
+		s3d::Texture m_worldButtonTexture_03;
+
+		s3d::Texture m_stageButtonTexture_01;
+		s3d::Texture m_stageButtonTexture_02;
+		s3d::Texture m_stageButtonTexture_03;
+
 		s3d::Texture m_backButtonTexture;
 
 	public:
@@ -37,8 +43,13 @@ namespace Jam::Presentation::Scenes
 			// 画像の読み込み
 			m_worldBackgroundTexture = s3d::Texture{ U"Assets/Select/serect-AREA_back-screen.png" };
 			m_stageBackgroundTexture = s3d::Texture{ U"Assets/Select/serect-stage_back-screen.png" };
-			m_worldButtonTexture = s3d::Texture{ U"Assets/Select/serect-area_stage01.png" };
-			m_stageButtonTexture = s3d::Texture{ U"Assets/Select/stage-serect_stage1-1.png" };
+			m_worldButtonTexture_01 = s3d::Texture{ U"Assets/Select/area_01.png" };
+			m_worldButtonTexture_02 = s3d::Texture{ U"Assets/Select/area_02.png" };
+			m_worldButtonTexture_03 = s3d::Texture{ U"Assets/Select/area_03.png" };
+			m_stageButtonTexture_01 = s3d::Texture{ U"Assets/Select/stage1_1.png" };
+			m_stageButtonTexture_02 = s3d::Texture{ U"Assets/Select/stage1_2.png" };
+			m_stageButtonTexture_03 = s3d::Texture{ U"Assets/Select/stage1_3.png" };
+
 			m_backButtonTexture = s3d::Texture{ U"Assets/Select/stage-serect_BACK.png" };
 			Jam::Foundation::CoreManager::Instance().setClear(false);
 		}
@@ -106,71 +117,63 @@ namespace Jam::Presentation::Scenes
 		void updateWorldSelect()
 		{
 			// --- 画面サイズに基づいた相対的な値 ---
-			// 基準解像度 (1920 x 1080)
 			const double baseWidth = 1920.0;
 			const double baseHeight = 1080.0;
 
 			const double buttonWidth = Scene::Width() * (400.0 / baseWidth);
 			const double buttonHeight = Scene::Height() * (150.0 / baseHeight);
-			const double buttonSpacing = Scene::Height() * (200.0 / baseHeight); // 縦のスペーシング
-			const double startX = Scene::Width() - (Scene::Width() * (490.0 / baseWidth)); // 右端からのオフセット
-			const double startY = Scene::Height() * (200.0 / baseHeight); // 上端からのオフセット
+			const double buttonSpacing = Scene::Height() * (200.0 / baseHeight);
+			const double startX = Scene::Width() - (Scene::Width() * (490.0 / baseWidth));
+			const double startY = Scene::Height() * (200.0 / baseHeight);
 
-			// World 1 ボタン
-			const RectF world1Button{ startX, startY + (buttonHeight + buttonSpacing) * 0, buttonWidth, buttonHeight };
-			if (world1Button.leftClicked())
+			// --- Area01（上） ---
+			const RectF area01{ startX, startY + (buttonHeight + buttonSpacing) * 0, buttonWidth, buttonHeight };
+			if (area01.leftClicked())
 			{
-				Print << U"World 1 Selected";
 				m_selectedWorld = 1;
 				m_state = State::StageSelect;
 			}
 
-			// World 2 ボタン
-			const RectF world2Button{ startX, startY + (buttonHeight + buttonSpacing) * 1, buttonWidth, buttonHeight };
-			if (world2Button.leftClicked())
+			// --- Area02（中） ---
+			const RectF area02{ startX, startY + (buttonHeight + buttonSpacing) * 1, buttonWidth, buttonHeight };
+			if (area02.leftClicked())
 			{
-				Print << U"World 2 Selected";
-				m_selectedWorld = 2;
-				m_state = State::StageSelect;
+				//m_selectedWorld = 2;
+				//m_state = State::StageSelect;
 			}
 
-			// World 3 ボタン
-			const RectF world3Button{ startX, startY + (buttonHeight + buttonSpacing) * 2, buttonWidth, buttonHeight };
-			if (world3Button.leftClicked())
+			// --- Area03（下） ---
+			const RectF area03{ startX, startY + (buttonHeight + buttonSpacing) * 2, buttonWidth, buttonHeight };
+			if (area03.leftClicked())
 			{
-				Print << U"World 3 Selected";
-				m_selectedWorld = 3;
-				m_state = State::StageSelect;
+				//m_selectedWorld = 3;
+				//m_state = State::StageSelect;
 			}
 		}
+
 
 		// --- ワールド選択の描画 ---
 		void drawWorldSelect() const
 		{
-			// --- 画面サイズに基づいた相対的な値 ---
-			// 基準解像度 (1920 x 1080)
 			const double baseWidth = 1920.0;
 			const double baseHeight = 1080.0;
 
 			const double buttonWidth = Scene::Width() * (400.0 / baseWidth);
 			const double buttonHeight = Scene::Height() * (150.0 / baseHeight);
-			const double buttonSpacing = Scene::Height() * (200.0 / baseHeight); // 縦のスペーシング
-			const double startX = Scene::Width() - (Scene::Width() * (490.0 / baseWidth)); // 右端からのオフセット
-			const double startY = Scene::Height() * (200.0 / baseHeight); // 上端からのオフセット
-			// --- ここまで ---
+			const double buttonSpacing = Scene::Height() * (200.0 / baseHeight);
+			const double startX = Scene::Width() - (Scene::Width() * (490.0 / baseWidth));
+			const double startY = Scene::Height() * (200.0 / baseHeight);
 
-			// World 1 ボタン
-			const RectF world1Button{ startX, startY + (buttonHeight + buttonSpacing) * 0, buttonWidth, buttonHeight };
-			drawButton(world1Button, U"", world1Button.mouseOver(), m_worldButtonTexture);
+			// --- 上から順に 01 → 02 → 03 ---
+			const RectF area01{ startX, startY + (buttonHeight + buttonSpacing) * 0, buttonWidth, buttonHeight };
+			const RectF area02{ startX, startY + (buttonHeight + buttonSpacing) * 1, buttonWidth, buttonHeight };
+			const RectF area03{ startX, startY + (buttonHeight + buttonSpacing) * 2, buttonWidth, buttonHeight };
 
-			// World 2 ボタン
-			const RectF world2Button{ startX, startY + (buttonHeight + buttonSpacing) * 1, buttonWidth, buttonHeight };
-			drawButton(world2Button, U"", world2Button.mouseOver(), m_worldButtonTexture);
-
-			// World 3 ボタン
-			const RectF world3Button{ startX, startY + (buttonHeight + buttonSpacing) * 2, buttonWidth, buttonHeight };
-			drawButton(world3Button, U"", world3Button.mouseOver(), m_worldButtonTexture);
+			drawButton(area01, U"", area01.mouseOver(), m_worldButtonTexture_01);
+			drawButton(area02, U"", area02.mouseOver(), m_worldButtonTexture_02);
+			drawButton(area03, U"", area03.mouseOver(), m_worldButtonTexture_03);
 		}
+
 
 		// --- ステージ選択のロジック ---
 		void updateStageSelect()
@@ -183,7 +186,6 @@ namespace Jam::Presentation::Scenes
 			const RectF backButton{ 0, 0, Scene::Width() * (250.0 / baseWidth), Scene::Height() * (80.0 / baseHeight) };
 			if (backButton.leftClicked())
 			{
-				Print << U"Back to World Select";
 				m_state = State::WorldSelect;
 			}
 
@@ -203,7 +205,6 @@ namespace Jam::Presentation::Scenes
 				if (stage1_1_Button.leftClicked())
 				{
 					Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_1;
-					Print << U"Stage 1-1 Selected. CoreManager set.";
 					changeScene(ToSceneString(SceneName::Story), 1.0s);
 				}
 
@@ -211,7 +212,6 @@ namespace Jam::Presentation::Scenes
 				if (stage1_2_Button.leftClicked())
 				{
 					Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_2;
-					Print << U"Stage 1-2 Selected. CoreManager set.";
 					changeScene(ToSceneString(SceneName::Story), 1.0s);
 				}
 
@@ -252,13 +252,13 @@ namespace Jam::Presentation::Scenes
 			if (m_selectedWorld == 1)
 			{
 				const RectF stage1_1_Button{ startX, startY + (buttonHeight + buttonSpacing) * 0, buttonWidth, buttonHeight };
-				drawButton(stage1_1_Button, U"", stage1_1_Button.mouseOver(), m_stageButtonTexture, U"SelectStageFont");
+				drawButton(stage1_1_Button, U"", stage1_1_Button.mouseOver(), m_stageButtonTexture_01, U"SelectStageFont");
 
 				const RectF stage1_2_Button{ startX, startY + (buttonHeight + buttonSpacing) * 1, buttonWidth, buttonHeight };
-				drawButton(stage1_2_Button, U"", stage1_2_Button.mouseOver(), m_stageButtonTexture, U"SelectStageFont");
+				drawButton(stage1_2_Button, U"", stage1_2_Button.mouseOver(), m_stageButtonTexture_02, U"SelectStageFont");
 
 				const RectF stage1_3_Button{ startX, startY + (buttonHeight + buttonSpacing) * 2, buttonWidth, buttonHeight };
-				drawButton(stage1_3_Button, U"", stage1_3_Button.mouseOver(), m_stageButtonTexture, U"SelectStageFont");
+				drawButton(stage1_3_Button, U"", stage1_3_Button.mouseOver(), m_stageButtonTexture_03, U"SelectStageFont");
 			}
 			else if (m_selectedWorld == 2)
 			{
