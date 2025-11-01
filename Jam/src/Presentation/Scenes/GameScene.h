@@ -292,7 +292,7 @@ namespace Jam::Presentation::Scenes
 				originalImage,
 				Point{ originalImage.width() / 2, originalImage.height() / 2 } // hotSpotは中央
 			);
-			BloomManager::getInstance().setIntensities(0.03, 0.06, 0.1, 0.3);
+			BloomManager::getInstance().setIntensities(0.26, 0.12, 0.22, 0.15);
 			BloomManager::getInstance().setVignette(0.3, 0.5);
 		}
 
@@ -382,7 +382,7 @@ namespace Jam::Presentation::Scenes
 					Jam::Presentation::SettingManager::Instance().draw();
 					return;
 				}
-				//const auto t = Jam::Presentation::BloomManager::getInstance().getRenderTarget();
+				const auto t = Jam::Presentation::BloomManager::getInstance().getRenderTarget();
 				const auto transformer = m_cameraManager->createTransformer();
 				const Vec2 cameraOffset = m_cameraManager->getCameraOffset();
 
@@ -430,9 +430,10 @@ namespace Jam::Presentation::Scenes
 				}
 				//Jam::Util::GridRenderer::instance().draw();
 			}
+
+			BloomManager::getInstance().draw();
 			m_inGameUIManager->draw();
 
-			//BloomManager::getInstance().draw();
 			//フェードのDraw
 			Jam::Presentation::FadeManager::instance().draw();
 		}

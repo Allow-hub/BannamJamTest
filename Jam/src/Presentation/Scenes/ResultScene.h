@@ -128,7 +128,10 @@ namespace Jam::Presentation::Scenes
 			if (m_mapButton.leftClicked())
 			{
 				Jam::Foundation::CoreManager::Instance().setNextStagePressed(false);
-				changeScene(ToSceneString(SceneName::Story));
+				if (m_isClear)
+					changeScene(ToSceneString(SceneName::Story));
+				else
+					changeScene(ToSceneString(SceneName::Select));
 			}
 
 			// 3. NEXT STAGE ボタン

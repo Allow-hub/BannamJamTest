@@ -301,6 +301,7 @@
     <Image Include="App\Assets\Story\Portrait\Riska\riska_smiling.png" />
     <Image Include="App\Assets\Story\Portrait\Riska\riska_surprised.png" />
     <Image Include="App\Assets\Story\Portrait\Riska\riska_suspicious.png" />
+    <Image Include="App\Assets\UI\face_hand.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />
