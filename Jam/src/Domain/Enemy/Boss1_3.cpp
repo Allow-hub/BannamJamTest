@@ -37,10 +37,10 @@ namespace Jam::Domain::Enemy
 
 		// 攻撃パターンの確率設定
 		m_attackPatterns = {
-			{AttackState::Missile,1.0f},
+			{AttackState::Missile,0.5f},
 			{AttackState::SummonClown, 0.0f},
 			{AttackState::Bomb, 0.0f},
-			{AttackState::Shockwave,0.0f}
+			{AttackState::Shockwave,0.5f}
 		};
 
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::BossHidden);//チョーカーとの接触をなくす
@@ -166,10 +166,9 @@ namespace Jam::Domain::Enemy
 
 			// バリア破壊イベントを発行
 			Vec2 bossPos = m_body->getPosition();
-			Vec2 impactDir = Vec2::Down(); // デフォルトは下向き（ボスの正面）
 			m_eventQueue.push(Events::BarrierShatteredEvent{
 				bossPos,
-				impactDir,
+				m_lastMissileDirection,  // ミサイルが当たった方向
 				150.0  // バリアの半径
 			});
 
@@ -335,8 +334,8 @@ namespace Jam::Domain::Enemy
 			
 			// ベジェ曲線の制御点を設定
 			Vec2 p0 = waitPos;
-			Vec2 p1 = waitPos + Vec2{ 0, -200 };
-			Vec2 p2 = playerPos + Vec2{ 0, -200 };
+			Vec2 p1 = waitPos + Vec2{ 0, -400 };
+			Vec2 p2 = playerPos + Vec2{ 0, -400 };
 			Vec2 p3 = playerPos;
 			
 			// 物理ボディをセンサーとして作成（地面を貫通するように）
@@ -612,6 +611,8 @@ namespace Jam::Domain::Enemy
 			if (currentBossState == BossState::Normal)
 			{
 				m_isReflectedMissileHit = true;
+				// ミサイルの衝突方向を記録（ボスから見た相対方向）
+				m_lastMissileDirection = (other->getPosition() - m_body->getPosition()).normalized();
 			}
 			break;
 		}

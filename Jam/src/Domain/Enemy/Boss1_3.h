@@ -72,6 +72,7 @@ namespace Jam::Domain::Enemy
 		double m_weakStateDuration = 5.0;    // Weak状態の持続時間
 		double m_appearDuration = 3.0;       // Appear状態の持続時間
 		bool m_isReflectedMissileHit = false;  // 反射ミサイルが当たったか
+		Vec2 m_lastMissileDirection = Vec2::Down();  // 最後に当たったミサイルの方向
 
 		// 攻撃クールダウン用
 		double m_attackCooldownTimer;      // 攻撃クールダウンタイマー
@@ -101,9 +102,9 @@ namespace Jam::Domain::Enemy
 		// ミサイル管理用
 		const int MISSILE_COUNT = 3;
 		double m_missileSpawnInterval = 0.3; // ミサイル生成間隔(秒)
-		double m_missileFlightDuration = 5.0; // ミサイル飛行時間(秒)
+		double m_missileFlightDuration = 2.0; // ミサイル飛行時間(秒) - 短いほど速い
 		double m_missileRadius = 80.0;
-		double m_missileReflectedSpeed = 500.0; // 反射後の速度
+		double m_missileReflectedSpeed = 1500.0; // 反射後の速度
 		double m_missileScale = 3.5; // ミサイルの描画スケール係数
 
 		// SummonClown

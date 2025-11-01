@@ -459,9 +459,15 @@ namespace Jam::UseCase
 					Math::Sin(shardAngle)
 				};
 				
-				// 破片の初期位置（バリア表面から）
+				// 衝突方向に基づいて横方向にオフセット（左から当たったら左から出る）
+				const double sideOffset = 120.0 * 1_deg;
+				const double startAngle = baseAngle + sideOffset; // 横方向
+				const Vec2 startDirection = Vec2{
+					Math::Cos(startAngle),
+					Math::Sin(startAngle)
+				};
 				const double distFromCenter = event.barrierRadius * Random(0.8, 1.0);
-				const Vec2 startPos = m_center + direction * distFromCenter;
+				const Vec2 startPos = m_center + startDirection * distFromCenter;
 				
 				// 速度（衝撃方向に強く飛ぶ）
 				const double speedVariation = Random(0.7, 1.3);
