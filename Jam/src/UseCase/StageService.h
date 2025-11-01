@@ -22,6 +22,8 @@ namespace Jam::UseCase {
         Array<Array<size_t>> m_bodyIndices;
         // 各物理ボディの基準位置からのオフセット
         Array<Vec2> m_bodyOffsets;
+        // 各物理ボディのGroundSide情報（デバッグ描画用）
+        Array<Domain::Stage::GroundSide> m_bodyGroundSides;
         
     public:
         /**
@@ -43,6 +45,7 @@ namespace Jam::UseCase {
             m_physicsBodies = std::move(result.physicsBodies);
             m_bodyIndices = std::move(result.bodyIndices);
             m_bodyOffsets = std::move(result.bodyOffsets);
+            m_bodyGroundSides = std::move(result.bodyGroundSides);
             
             return !m_stages.isEmpty();
         }
@@ -149,7 +152,8 @@ namespace Jam::UseCase {
          * 物理レイヤー可視化のデバッグ描画
          */
         void drawPhysicsLayerDebug() const {
-            for (const auto& body : m_physicsBodies) {
+            for (size_t bodyIdx = 0; bodyIdx < m_physicsBodies.size(); ++bodyIdx) {
+                const auto& body = m_physicsBodies[bodyIdx];
                 if (!body) continue;
                 
                 // Siv3DPhysicsBodyにキャスト
@@ -161,10 +165,23 @@ namespace Jam::UseCase {
                 
                 // レイヤーごとに色分け
                 ColorF color;
+                bool shouldDraw = false;
+                
                 switch (layer) {
                 case Jam::Domain::Physics::PhysicsLayer::Ground:
-                    color = ColorF(0.0, 1.0, 0.0, 0.1);  // 緑 = Ground
+                {
+                    // GroundSide情報を使って色分け
+                    if (bodyIdx < m_bodyGroundSides.size()) {
+                        const auto groundSide = m_bodyGroundSides[bodyIdx];
+                        
+                        // 上面・下面ともに緑色で描画
+                        if (groundSide == Domain::Stage::GroundSide::Up || groundSide == Domain::Stage::GroundSide::Down) {
+                            color = ColorF(0.0, 1.0, 0.0, 0.1);  // 緑 = チョーカー可能（上面・下面）
+                            shouldDraw = true;
+                        }
+                    }
                     break;
+                }
                 case Jam::Domain::Physics::PhysicsLayer::Wall:
                     // color = ColorF(1.0, 0.0, 0.0, 0.5);  // 赤 = Wall
                     break;
@@ -176,9 +193,11 @@ namespace Jam::UseCase {
                     break;
                 }
                 
-                // P2Bodyの図形を描画
-                //p2body.draw(color);
-                p2body.drawFrame(2, ColorF(color, 1.0));
+                // 描画が必要な場合のみP2Bodyの図形を描画
+                if (shouldDraw) {
+                    //p2body.draw(color);
+                    p2body.drawFrame(2, ColorF(color, 1.0));
+                }
             }
         }
     };

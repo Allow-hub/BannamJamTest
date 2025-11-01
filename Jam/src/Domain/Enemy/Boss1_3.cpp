@@ -8,6 +8,7 @@
 #include <random>
 #include "Bomb.h"
 #include "../../UseCase/AttackProcessor.h"
+#include "../../Presentation/AudioService.h"
 
 namespace Jam::Domain::Enemy
 {
@@ -37,10 +38,10 @@ namespace Jam::Domain::Enemy
 
 		// 攻撃パターンの確率設定
 		m_attackPatterns = {
-			{AttackState::Missile,0.5f},
-			{AttackState::SummonClown, 0.0f},
-			{AttackState::Bomb, 0.0f},
-			{AttackState::Shockwave,0.5f}
+			{AttackState::Missile,0.3f},
+			{AttackState::SummonClown, 0.1f},
+			{AttackState::Bomb, 0.3f},
+			{AttackState::Shockwave,0.3f}
 		};
 
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::BossHidden);//チョーカーとの接触をなくす
@@ -56,13 +57,6 @@ namespace Jam::Domain::Enemy
 
 		m_isFaceLeft = true;
 
-		//テスト用ReflectableWeaponの当たり判定を降らせて当てるだけ
-		//Vec2 testOffset = Vec2(m_body->getPosition().x, m_body->getPosition().y - 1500);
-		//auto test = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
-		//	.getPhysicsFactory()->createBody(testOffset, coreSize);
-		//test->setGravityScale(2.0);
-		//test->setFilter(Jam::Infrastructure::PhysicsFilter::Team1);
-		//test->setLayer(Jam::Domain::Physics::PhysicsLayer::ReflectableWeapon);
 		init();
 	}
 
@@ -566,6 +560,12 @@ namespace Jam::Domain::Enemy
 
 	void Boss1_3::onDestroy(const DamageInfo& info)
 	{
+		// ボス撃破時の音を再生
+		Jam::Presentation::AudioService::get().playOneShot(
+			Jam::Presentation::AudioService::Sound::SE_BossDown,
+			1.0
+		);
+
 		m_eventQueue.push(Events::EnemyDefeatedEvent{
 				m_body->getPosition(),
 				true,

@@ -5,6 +5,7 @@
 #include "../../Foundation/CoreManager.h"
 #include "../../Presentation/SettingManager.h"
 #include "TransitionManager.h"
+#include "../AudioService.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -152,12 +153,14 @@ namespace Jam::Presentation::Scenes
 			// 1. RETRY ボタン
 			if (m_retryButton.leftClicked())
 			{
+				AudioService::get().playOneShot(AudioService::Sound::SE_Button, AudioService::VOLUME_BUTTON);
 				changeScene(ToSceneString(SceneName::InGame));
 			}
 
 			// 2. MAP ボタン
 			if (m_mapButton.leftClicked())
 			{
+				AudioService::get().playOneShot(AudioService::Sound::SE_Button, AudioService::VOLUME_BUTTON);
 				Jam::Foundation::CoreManager::Instance().setNextStagePressed(false);
 				if (m_isClear)
 					changeScene(ToSceneString(SceneName::Story));
@@ -168,6 +171,7 @@ namespace Jam::Presentation::Scenes
 			// 3. NEXT STAGE ボタン
 			if (m_nextStageButton.leftClicked())
 			{
+				AudioService::get().playOneShot(AudioService::Sound::SE_Button, AudioService::VOLUME_BUTTON);
 				if (m_isClear)
 				{
 					Jam::Foundation::CoreManager::Instance().setNextStagePressed(true);

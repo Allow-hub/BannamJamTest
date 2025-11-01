@@ -25,6 +25,8 @@ namespace Jam::Infrastructure {
         Array<Array<size_t>> bodyIndices;
         // 各物理ボディの基準位置からのオフセット
         Array<Vec2> bodyOffsets;
+        // 各物理ボディのGroundSide情報（デバッグ描画用）
+        Array<Domain::Stage::GroundSide> bodyGroundSides;
     };
     
     /**

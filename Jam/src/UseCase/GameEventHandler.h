@@ -6,6 +6,7 @@
 #include "EffectEvents.h"
 #include "../Foundation/CoroutineUtil.h"
 #include "../Presentation/EnemyManager.h"
+#include "../Presentation/AudioService.h"
 #include "../Domain/Enemy/Missile.h"
 #include "../Infrastructure/IndependentObjectFactory.h"
 #include "../Infrastructure/FactoryServiceLocator.h"
@@ -231,6 +232,12 @@ namespace Jam::UseCase
 
 		void handleBarrierShattered(const Domain::Events::BarrierShatteredEvent& e)
 		{
+			// バリア破壊時のSEを再生
+			Jam::Presentation::AudioService::get().playOneShot(
+				Jam::Presentation::AudioService::Sound::SE_BarrierBreak,
+				1.0
+			);
+
 			// ガラス破壊エフェクトを発行
 			m_effectEventQueue.push(GlassShatterEffectEvent{
 				e.position,
