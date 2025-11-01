@@ -545,7 +545,12 @@
     <None Include="src\Domain\Stage\Imata_Task.md" />
   </ItemGroup>
   <ItemGroup>
+    <Media Include="App\Assets\Sounds\se_attack.mp3" />
+    <Media Include="App\Assets\Sounds\se_barrier.mp3" />
+    <Media Include="App\Assets\Sounds\se_button.mp3" />
     <Media Include="App\Assets\Sounds\se_chokerThrow.mp3" />
+    <Media Include="App\Assets\Sounds\se_fallDamage.mp3" />
+    <Media Include="App\Assets\Sounds\se_goal.mp3" />
     <Media Include="App\example\shot.mp3" />
     <Media Include="App\example\test.mp3" />
     <Media Include="App\example\video\river.mp4" />

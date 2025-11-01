@@ -20,13 +20,16 @@ Jam::Presentation::AudioService::get().playOneShot(
 
 | ステータス | 用途 | ファイル名 |
 |:---:|:---|:---|
-| 🔍 | ゴールしたとき | `se_goal.mp3` |
-| 🔍 | ボタンを押したとき | `se_button.mp3` |
+| ✅ | ゴールしたとき | `se_goal.mp3` |
+| ✅ | ボタンを押したとき | `se_button.mp3` |
 | ✅ | チョーカーを出したとき | - |
-| 🔍 | 敵にチョーカーが当たったとき | `se_attack.mp3` |
-| 🔍 | ボスにミサイルを当てたとき（バリア破壊） | `se_barrier.mp3` |
+| ✅ | 敵にチョーカーが当たったとき | `se_attack.mp3` |
+| ✅ | ボスにミサイルを当てたとき（バリア破壊） | `se_barrier.mp3` |
 | ✅ | かけらを取得したとき | - |
-| 🔍 | 落下したとき | `se_fallDamage.mp3` |
+| ✅ | 落下したとき | `se_fallDamage.mp3` |
+
+#### 追加で必要なSE
+- ボスを撃破したときのSE
 
 #### できたら実装したい
 

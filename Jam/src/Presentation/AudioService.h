@@ -7,6 +7,9 @@ namespace Jam::Presentation
 	class AudioService
 	{
 	public:
+		// 音量の定数定義
+		static constexpr double VOLUME_BUTTON =10.0;
+
 		enum class Sound
 		{
 			SE_Jump,
@@ -15,6 +18,11 @@ namespace Jam::Presentation
 			SE_GetFlagment,
 			SE_Damage,
 			SE_Explosion,
+			SE_Goal,
+			SE_Button,
+			SE_EnemyHit,
+			SE_BarrierBreak,
+			SE_FallDamage,
 			BGM_Title,
 			BGM_Game,
 		};
@@ -33,6 +41,11 @@ namespace Jam::Presentation
 			load(Sound::SE_GetFlagment, samePath + U"se_getFlagment.mp3");
 			load(Sound::SE_Damage, samePath + U"se_damage.mp3");
 			load(Sound::SE_Explosion, samePath + U"se_explosion.mp3");
+			load(Sound::SE_Goal, samePath + U"se_goal.mp3");
+			load(Sound::SE_Button, samePath + U"se_button.mp3");
+			load(Sound::SE_EnemyHit, samePath + U"se_attack.mp3");
+			load(Sound::SE_BarrierBreak, samePath + U"se_barrier.mp3");
+			load(Sound::SE_FallDamage, samePath + U"se_fallDamage.mp3");
 			load(Sound::BGM_Title, samePath + U"bgm_title.mp3");
 			load(Sound::BGM_Game, samePath + U"bgm_ingame.mp3");
 		}

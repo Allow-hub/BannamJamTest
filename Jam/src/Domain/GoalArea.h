@@ -42,6 +42,11 @@ namespace Jam::Domain
 			{
 			case Jam::Domain::Physics::PhysicsLayer::Player:
 				if (m_collected) return;
+				// ゴール時のSEを再生
+				Jam::Presentation::AudioService::get().playOneShot(
+					Jam::Presentation::AudioService::Sound::SE_Goal,
+					1.0
+				);
 				//クリアフラグを立てる
 				Jam::Foundation::CoreManager::Instance().setClear(true);
 				if (m_onClear) m_onClear();

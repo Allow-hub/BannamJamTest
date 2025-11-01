@@ -106,7 +106,7 @@ namespace Jam::Domain::Player
 	{
 		if (m_isGrounded || m_jumpCount < maxJumpCount)
 		{
-			Jam::Presentation::AudioService::get().playOneShot(Jam::Presentation::AudioService::Sound::SE_Jump, 0.5);
+			Jam::Presentation::AudioService::get().playOneShot(Jam::Presentation::AudioService::Sound::SE_Jump, 1.0);
 			double jumpPower = m_stats.jumpPower;
 
 			// 2回目のジャンプならジャンプ力を強化
@@ -132,6 +132,13 @@ namespace Jam::Domain::Player
 		if (m_currentSkill)
 			m_currentSkill->onDeactivate();
 		const Vec2 respawnPos = core.getStageData(core.stageInfo.stageName).respawnPosition;
+		
+		// 落下ダメージSEを再生
+		Jam::Presentation::AudioService::get().playOneShot(
+			Jam::Presentation::AudioService::Sound::SE_FallDamage,
+			0.6
+		);
+		
 		m_eventQueue.push(Events::PlayerFallOutEvent{ 1.2, 0.4, 100 ,m_body->getPosition() });
 		co_await Jam::Util::WaitSeconds(1.0);
 

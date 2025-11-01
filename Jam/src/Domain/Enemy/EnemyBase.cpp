@@ -7,6 +7,7 @@
 #include "../../Infrastructure/PhysicsFilterManager.h"
 #include "../Events/GameEvents.h"
 #include "../../Foundation/CoreManager.h"
+#include "../../Presentation/AudioService.h"
 
 namespace Jam::Domain::Enemy
 {
@@ -46,6 +47,12 @@ namespace Jam::Domain::Enemy
 	void EnemyBase::takeDamage(const DamageInfo& info)
 	{
 		if (!m_isAlive) return;
+
+		// 敵にダメージを与えた時のSEを再生
+		Jam::Presentation::AudioService::get().playOneShot(
+			Jam::Presentation::AudioService::Sound::SE_EnemyHit,
+			1.0
+		);
 
 		m_status.hp -= info.amount;
 		if (m_status.hp <= 0)
