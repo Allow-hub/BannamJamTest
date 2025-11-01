@@ -118,6 +118,7 @@ namespace Jam::Presentation
 						else if (b.label == U"BACK THE SELECT")
 						{
 							changeScene(U"Select");
+							Jam::Foundation::CoreManager::Instance().setPause(false);
 						}
 						else if (b.label == U"END")
 						{
