@@ -27,9 +27,6 @@ namespace Jam::Presentation::Scenes
 
 		// --- テクスチャ ---
 		Texture m_background;
-		// Texture m_chatBg; // (削除)
-		// Texture m_iconRisuka; // (削除)
-		// Texture m_iconYumemi; // (削除)
 		Texture m_titleMemory;
 		Texture m_titleTime;
 		Texture m_titleKill;
