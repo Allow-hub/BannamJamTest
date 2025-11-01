@@ -177,7 +177,7 @@ namespace Jam::UseCase {
                 }
                 
                 // P2Bodyの図形を描画
-                p2body.draw(color);
+                //p2body.draw(color);
                 p2body.drawFrame(2, ColorF(color, 1.0));
             }
         }

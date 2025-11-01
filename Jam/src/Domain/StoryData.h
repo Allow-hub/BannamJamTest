@@ -87,7 +87,7 @@ namespace Jam::Domain
 		{
 			switch (speaker)
 			{
-			case Speaker::Player: return U"地雷ちゃん";
+			case Speaker::Player: return U"YUMEMIちゃん";
 			case Speaker::Owner:  return U"小島 シンイチ";
 			case Speaker::Riska:  return U"リスカちゃん";
 			default:              return U"？？？";

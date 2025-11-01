@@ -26,6 +26,7 @@ namespace Jam::Presentation
 		s3d::Texture m_faceNormal;
 		s3d::Texture m_faceWarning;
 		s3d::Texture m_faceDanger;
+		s3d::Texture m_hand;
 
 		// backgroundと左下ダメージキャラ
 		s3d::Texture m_backgroundNoDamge;//ダメージを受けてないとき
@@ -36,8 +37,8 @@ namespace Jam::Presentation
 		double m_scale = 1.0;
 
 		// 顔アイコン描画位置
-		s3d::Vec2 m_facePosition = { 10, 10 };
-		s3d::Vec2 m_faceSize = { 510, 510 }; // 顔アイコンサイズ
+		s3d::Vec2 m_facePosition = { 70, 230 };
+		s3d::Vec2 m_faceSize = { 180, 190 }; // 顔アイコンサイズ
 
 		s3d::Vec2 m_fragmentPosition = { 24, 148 }; // m_facePositionからの相対座標
 
@@ -51,6 +52,7 @@ namespace Jam::Presentation
 			m_faceNormal = Texture(U"Assets/UI/face_happy.png");
 			m_faceWarning = Texture(U"Assets/UI/face_normal.png");
 			m_faceDanger = Texture(U"Assets/UI/face_sad.png");
+			m_hand = Texture(U"Assets/UI/face_hand.png");
 
 			m_backgroundNoDamge = Texture(U"Assets/UI/frameNoDamage.png");
 			m_backgroundDamage_00 = Texture(U"Assets/UI/frameDamage_00.png");
@@ -119,7 +121,6 @@ namespace Jam::Presentation
 			const s3d::Texture* faceTex = nullptr;// 現在の左下アイコンテクスチャ
 			const s3d::Texture* fragmentMemoryTex = nullptr;// 現在の左上記憶のかけらの数テクスチャ
 
-
 			// HP比率で顔アイコン切替
 			if (hpRatio > 0.6)
 				faceTex = &m_faceNormal;
@@ -153,6 +154,8 @@ namespace Jam::Presentation
 			}
 			if (fragmentMemoryTex)
 				fragmentMemoryTex->scaled(m_scale).draw(m_position + m_fragmentPosition);
+
+			m_hand.scaled(m_faceSize / faceTex->size()).draw(m_facePosition);
 		}
 
 
