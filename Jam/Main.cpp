@@ -19,6 +19,7 @@ void Main()
 #else
 	Window::SetFullscreen(true);
 #endif
+	Window::SetTitle(U"シン層シン理 地雷ちゃん");
 
 	//System::SetTerminationTriggers(UserAction::CloseButtonClicked);
 	// =====================
