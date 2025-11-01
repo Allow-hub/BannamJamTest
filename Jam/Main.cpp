@@ -21,7 +21,7 @@ void Main()
 #endif
 	Window::SetTitle(U"シン層シン理 地雷ちゃん");
 
-	//System::SetTerminationTriggers(UserAction::CloseButtonClicked);
+	System::SetTerminationTriggers(UserAction::CloseButtonClicked);
 	// =====================
 	//  CoreManager 初期化
 	// =====================

@@ -60,7 +60,7 @@ namespace Jam::Presentation
 				//Animationはイベントを送る形をとるが敵のアイテム系はそれぞれが描画
 				enemy->draw();//単体オブジェクトは他に描画を任せたが移植が住んでない→Eyeのビーム
 				auto body = enemy->getPhysicsBody();
-				body->drawFrame(2.0, Palette::Red);
+				//body->drawFrame(2.0, Palette::Red);
 				if (!body)
 				{
 					continue;
