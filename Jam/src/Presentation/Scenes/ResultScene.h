@@ -98,9 +98,6 @@ namespace Jam::Presentation::Scenes
 			const FilePath assetRoot = FileSystem::InitialDirectory() + U"Assets/Result/";
 
 			m_background = Texture(assetRoot + U"GAME_OVER_screen.png");
-			// m_chatBg = Texture(assetRoot + U"CLEAR_backscreen.png"); // (削除)
-			// m_iconRisuka = Texture(assetRoot + U"ICON-RISUKA.png"); // (削除)
-			// m_iconYumemi = Texture(assetRoot + U"ICON-YUMEMI.png"); // (削除)
 			m_titleGameOver = Texture(assetRoot + U"Result_Game_Over.png");
 			m_titleClear = Texture(assetRoot + U"Result_Crear.png");
 			m_titleMemory = Texture(assetRoot + U"result_title-MEMORY.png");
@@ -134,9 +131,6 @@ namespace Jam::Presentation::Scenes
 
 			// === フォールバック ===
 			if (not m_background) { m_background = Texture(U"example/city.png"); }
-			// if (not m_chatBg) { m_chatBg = Texture(U"example/white_rect.png"); } // (削除)
-			// if (not m_iconRisuka) { m_iconRisuka = Texture(U"example/siv3d-kun.png"); } // (削除)
-			// if (not m_iconYumemi) { m_iconYumemi = Texture(U"example/siv3d-kun.png"); } // (削除)
 			if (not m_titleGameOver) { Print(U"Error: Result_Game_Over.png not found!"); }
 			if (not m_titleClear) { Print(U"Error: Result_Crear.png not found!"); }
 			if (not m_titleMemory) { Print(U"Error: result_title-MEMORY.png not found!"); }
