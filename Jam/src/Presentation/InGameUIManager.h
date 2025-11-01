@@ -131,7 +131,7 @@ namespace Jam::Presentation
 
 			// 左上に描画
 			if (faceTex)
-				faceTex->scaled(m_faceSize / faceTex->size()).draw(m_facePosition);
+				drawShadowedTexture(*faceTex, m_facePosition, m_faceSize);
 
 			// 記憶のかけらアイコン切替
 			switch (Jam::Foundation::CoreManager::Instance().getFlagment())
@@ -155,7 +155,27 @@ namespace Jam::Presentation
 			if (fragmentMemoryTex)
 				fragmentMemoryTex->scaled(m_scale).draw(m_position + m_fragmentPosition);
 
-			m_hand.scaled(m_faceSize / faceTex->size()).draw(m_facePosition);
+			drawShadowedTexture(m_hand, m_facePosition, m_faceSize);
+		}
+
+		void drawShadowedTexture(const Texture& tex, const Vec2& pos, const Vec2& size) const
+		{
+			// 影のオフセット
+			const Vec2 offset = { 1.0, 1.0 };
+
+			// 影の色（透明度高め）
+			const ColorF shadowColor{ 0.0, 0.0, 0.0, 0.4 };
+
+			// 拡大して何回か描いてぼかしっぽく
+			for (int i = 0; i < 3; ++i)
+			{
+				double scale = 1.0 + i * 0.02;
+				tex.scaled(size / tex.size() * scale)
+					.draw(pos + offset, shadowColor);
+			}
+
+			// 本体を最後に描く
+			tex.scaled(size / tex.size()).draw(pos);
 		}
 
 

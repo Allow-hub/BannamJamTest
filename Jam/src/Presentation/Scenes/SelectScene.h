@@ -90,24 +90,14 @@ namespace Jam::Presentation::Scenes
 		// シーンがフェードインする（現れる）ときの描画
 		void drawFadeIn(double t) const override
 		{
-			// 1. シーンを通常通り描画
 			draw();
-
-			// 2. トランジション（フェードイン）を上から描画
-			//    t が 0.0 -> 1.0 になるにつれて、RectSlideが画面外に消えていく
-			//    (TransitionManagerはグローバル名前空間と仮定)
 			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeIn(t);
 		}
 
 		// シーンがフェードアウトする（消える）ときの描画
 		void drawFadeOut(double t) const override
 		{
-			// 1. シーンを通常通り描画
 			draw();
-
-			// 2. トランジション（フェードアウト）を上から描画
-			//    t が 0.0 -> 1.0 になるにつれて、RectSlideが画面を覆っていく
-			//    (TransitionManagerはグローバル名前空間と仮定)
 			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeOut(t);
 		}
 
@@ -115,11 +105,16 @@ namespace Jam::Presentation::Scenes
 		// --- ワールド選択のロジック ---
 		void updateWorldSelect()
 		{
-			const double buttonWidth = 400;
-			const double buttonHeight = 150;
-			const double buttonSpacing = 200;
-			const double startX = Scene::Width() - 490;
-			const double startY = 200;
+			// --- 画面サイズに基づいた相対的な値 ---
+			// 基準解像度 (1920 x 1080)
+			const double baseWidth = 1920.0;
+			const double baseHeight = 1080.0;
+
+			const double buttonWidth = Scene::Width() * (400.0 / baseWidth);
+			const double buttonHeight = Scene::Height() * (150.0 / baseHeight);
+			const double buttonSpacing = Scene::Height() * (200.0 / baseHeight); // 縦のスペーシング
+			const double startX = Scene::Width() - (Scene::Width() * (490.0 / baseWidth)); // 右端からのオフセット
+			const double startY = Scene::Height() * (200.0 / baseHeight); // 上端からのオフセット
 
 			// World 1 ボタン
 			const RectF world1Button{ startX, startY + (buttonHeight + buttonSpacing) * 0, buttonWidth, buttonHeight };
@@ -152,11 +147,17 @@ namespace Jam::Presentation::Scenes
 		// --- ワールド選択の描画 ---
 		void drawWorldSelect() const
 		{
-			const double buttonWidth = 400;
-			const double buttonHeight = 150;
-			const double buttonSpacing = 200;
-			const double startX = Scene::Width() - 490;
-			const double startY = 200;
+			// --- 画面サイズに基づいた相対的な値 ---
+			// 基準解像度 (1920 x 1080)
+			const double baseWidth = 1920.0;
+			const double baseHeight = 1080.0;
+
+			const double buttonWidth = Scene::Width() * (400.0 / baseWidth);
+			const double buttonHeight = Scene::Height() * (150.0 / baseHeight);
+			const double buttonSpacing = Scene::Height() * (200.0 / baseHeight); // 縦のスペーシング
+			const double startX = Scene::Width() - (Scene::Width() * (490.0 / baseWidth)); // 右端からのオフセット
+			const double startY = Scene::Height() * (200.0 / baseHeight); // 上端からのオフセット
+			// --- ここまで ---
 
 			// World 1 ボタン
 			const RectF world1Button{ startX, startY + (buttonHeight + buttonSpacing) * 0, buttonWidth, buttonHeight };
@@ -174,19 +175,26 @@ namespace Jam::Presentation::Scenes
 		// --- ステージ選択のロジック ---
 		void updateStageSelect()
 		{
+			// --- 基準解像度 (1920 x 1080) ---
+			const double baseWidth = 1920.0;
+			const double baseHeight = 1080.0;
+
 			// 「戻る」ボタンのクリック判定
-			const RectF backButton{ 0, 0, 300, 100 };
+			const RectF backButton{ 0, 0, Scene::Width() * (250.0 / baseWidth), Scene::Height() * (80.0 / baseHeight) };
 			if (backButton.leftClicked())
 			{
 				Print << U"Back to World Select";
 				m_state = State::WorldSelect;
 			}
+
 			// 画面右側に縦に並べる
-			const double buttonWidth = 400;
-			const double buttonHeight = 150;
-			const double buttonSpacing = 200;
-			const double startX = Scene::Width() - 490;
-			const double startY = 200;
+			// --- 画面サイズに基づいた相対的な値 ---
+			const double buttonWidth = Scene::Width() * (400.0 / baseWidth);
+			const double buttonHeight = Scene::Height() * (150.0 / baseHeight);
+			const double buttonSpacing = Scene::Height() * (200.0 / baseHeight);
+			const double startX = Scene::Width() - (Scene::Width() * (490.0 / baseWidth));
+			const double startY = Scene::Height() * (200.0 / baseHeight);
+			// --- ここまで ---
 
 			// 選択中のワールドに応じて処理を分岐
 			if (m_selectedWorld == 1)
@@ -196,7 +204,6 @@ namespace Jam::Presentation::Scenes
 				{
 					Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_1;
 					Print << U"Stage 1-1 Selected. CoreManager set.";
-					// (変更) 1.0秒のトランジション時間を指定
 					changeScene(ToSceneString(SceneName::Story), 1.0s);
 				}
 
@@ -205,42 +212,41 @@ namespace Jam::Presentation::Scenes
 				{
 					Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_2;
 					Print << U"Stage 1-2 Selected. CoreManager set.";
-
-					// (変更) 1.0秒のトランジション時間を指定
 					changeScene(ToSceneString(SceneName::Story), 1.0s);
 				}
 
 				const RectF stage1_3_Button{ startX, startY + (buttonHeight + buttonSpacing) * 2, buttonWidth, buttonHeight };
 				if (stage1_3_Button.leftClicked())
 				{
-					Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_3; // CoreManagerのenumに追加が必要
-					//Print << U"Stage 1-3 Selected. (Not Implemented)";
-
-					// (仮に変更) もし実装するならここにも同様に追加
-					// ::TransitionManager::Instance().rec.init(30);
-					 changeScene(ToSceneString(SceneName::Story), 1.0s);
+					Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_3;
+					changeScene(ToSceneString(SceneName::Story), 1.0s);
 				}
 			}
 			else if (m_selectedWorld == 2)
 			{
 				// (ここにWorld 2のステージボタンのロジックを同様に記述)
-				// (ステージ遷移時には同様に TransitionManager::Instance().rec.init(30); と changeScene(..., 1.0s); を呼び出す)
 			}
 		}
 
 		// --- ステージ選択の描画 ---
 		void drawStageSelect() const
 		{
+			// --- 基準解像度 (1920 x 1080) ---
+			const double baseWidth = 1920.0;
+			const double baseHeight = 1080.0;
 
 			// 「戻る」ボタンの描画
-			const RectF backButton{ 0, 0, 250, 80 };
+			// 元のピクセル値: const RectF backButton{ 0, 0, 250, 80 };
+			const RectF backButton{ 0, 0, Scene::Width() * (250.0 / baseWidth), Scene::Height() * (80.0 / baseHeight) };
 			drawButton(backButton, U"", backButton.mouseOver(), m_backButtonTexture);
 
-			const double buttonWidth = 400;
-			const double buttonHeight = 150;
-			const double buttonSpacing = 200;
-			const double startX = Scene::Width() - 490;
-			const double startY = 200;
+			// --- 画面サイズに基づいた相対的な値 ---
+			const double buttonWidth = Scene::Width() * (400.0 / baseWidth);
+			const double buttonHeight = Scene::Height() * (150.0 / baseHeight);
+			const double buttonSpacing = Scene::Height() * (200.0 / baseHeight);
+			const double startX = Scene::Width() - (Scene::Width() * (490.0 / baseWidth));
+			const double startY = Scene::Height() * (200.0 / baseHeight);
+			
 
 			// 選択中のワールドに応じてボタンを描画
 			if (m_selectedWorld == 1)
