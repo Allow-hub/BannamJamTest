@@ -59,6 +59,11 @@ namespace Jam::Presentation::Scenes
 					break;
 				}
 			}
+
+			if(MouseL.down()||MouseR.down())
+			{
+				changeScene(ToSceneString(SceneName::Select), 1.0);
+			}
 		}
 
 		// 描画処理

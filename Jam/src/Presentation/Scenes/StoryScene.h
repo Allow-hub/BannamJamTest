@@ -98,7 +98,7 @@ namespace Jam::Presentation::Scenes
 
 			// ストーリーの開始ファイルを判定
 			String storySuffix = core.getClear() ? U"_clear" : U"_start";
-			Print << basePath + stageName + storySuffix + U".csv";
+			//Print << basePath + stageName + storySuffix + U".csv";
 
 			// StoryManager初期化
 			bool ok = storyManager.init(

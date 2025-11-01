@@ -166,7 +166,17 @@
     <Image Include="App\Assets\Player\ChokerThrow\choker_throw_27.png" />
     <Image Include="App\Assets\Player\ChokerThrow\choker_throw_28.png" />
     <Image Include="App\Assets\Player\ChokerThrow\choker_throw_29.png" />
+    <Image Include="App\Assets\Select\area_01.png" />
+    <Image Include="App\Assets\Select\area_02.png" />
+    <Image Include="App\Assets\Select\area_03.png" />
     <Image Include="App\Assets\Select\select_area.png" />
+    <Image Include="App\Assets\Select\serect-AREA_back-screen.png" />
+    <Image Include="App\Assets\Select\serect-area_BACK.png" />
+    <Image Include="App\Assets\Select\serect-stage_back-screen.png" />
+    <Image Include="App\Assets\Select\stage-serect_BACK.png" />
+    <Image Include="App\Assets\Select\stage1_1.png" />
+    <Image Include="App\Assets\Select\stage1_2.png" />
+    <Image Include="App\Assets\Select\stage1_3.png" />
     <Image Include="App\Assets\Stage\Goal.png" />
     <Image Include="App\Assets\Story\background_stage1_1_start.png" />
     <Image Include="App\Assets\Story\background_stage1_2_clear.png" />
@@ -535,12 +545,12 @@
     <None Include="src\Domain\Stage\Imata_Task.md" />
   </ItemGroup>
   <ItemGroup>
+    <Media Include="App\Assets\Sounds\se_chokerThrow.mp3" />
     <Media Include="App\example\shot.mp3" />
     <Media Include="App\example\test.mp3" />
     <Media Include="App\example\video\river.mp4" />
     <Media Include="App\Assets\Sounds\bgm_ingame.mp3" />
     <Media Include="App\Assets\Sounds\bgm_title.mp3" />
-    <Media Include="App\Assets\Sounds\se_choker.mp3" />
     <Media Include="App\Assets\Sounds\se_damage.mp3" />
     <Media Include="App\Assets\Sounds\se_explosion.mp3" />
     <Media Include="App\Assets\Sounds\se_getFlagment.mp3" />

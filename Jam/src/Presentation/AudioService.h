@@ -29,7 +29,7 @@ namespace Jam::Presentation
 		{
 			String samePath = U"Assets/Sounds/";
 			load(Sound::SE_Jump, samePath + U"se_jump.mp3");
-			load(Sound::SE_Choker, samePath + U"se_choker.mp3");
+			load(Sound::SE_Choker, samePath + U"se_chokerThrow.mp3");
 			load(Sound::SE_GetFlagment, samePath + U"se_getFlagment.mp3");
 			load(Sound::SE_Damage, samePath + U"se_damage.mp3");
 			load(Sound::SE_Explosion, samePath + U"se_explosion.mp3");
