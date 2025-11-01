@@ -13,11 +13,15 @@ namespace Jam::Domain
 		bool m_collected = false;
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_body;
 		std::function<void()> m_onClear;
+		Texture m_texture;
+		double m_scale = 0.3;
+		Vec2 m_offset = Vec2(100, 100);
 
 	public:
 		GoalArea(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, std::function<void()> onClear)
 			: m_body(body), m_onClear(onClear)
 		{
+			m_texture = Texture(U"Assets/Stage/goal.png");
 		}
 
 		void update(double deltaTime)override
@@ -26,7 +30,10 @@ namespace Jam::Domain
 
 		void draw() const override
 		{
-			m_body->drawFrame(2.0, m_collected ? Palette::Black : Palette::Yellow);
+			m_texture.scaled(m_scale).draw(m_body->getPosition() - m_offset);
+
+			// （デバッグ用）
+			//m_body->drawFrame(2.0, Palette::Yellow);
 		}
 
 		void onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override

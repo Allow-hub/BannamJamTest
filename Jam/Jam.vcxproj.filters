@@ -334,6 +334,11 @@
     <Image Include="App\Assets\UI\background.png" />
     <Image Include="App\Assets\Story\background_stage1_1_start.png" />
     <Image Include="App\Assets\Item\Missile.png" />
+    <Image Include="App\Assets\Story\background_stage1_2_clear.png" />
+    <Image Include="App\Assets\Story\background_stage1_2_start.png" />
+    <Image Include="App\Assets\Story\background_stage1_3_clear.png" />
+    <Image Include="App\Assets\Story\background_stage1_3_start.png" />
+    <Image Include="App\Assets\Stage\Goal.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />
