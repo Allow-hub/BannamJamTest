@@ -32,6 +32,7 @@ namespace Jam::Presentation::Scenes
 	private:
 		Texture backgroundTexture;
 		Texture logoTexture;
+		Texture companyLogoTexture;
 
 	public:
 		// コンストラクタ
@@ -40,6 +41,7 @@ namespace Jam::Presentation::Scenes
 		{
 			backgroundTexture = Texture(U"Assets/Title/background.png");
 			logoTexture = Texture(U"Assets/Title/logo.png");
+			companyLogoTexture = Texture(U"Assets/Title/companyLogo.png");
 
 			Jam::Presentation::AudioService::get().play(Jam::Presentation::AudioService::Sound::BGM_Title, true);
 		}
@@ -67,6 +69,7 @@ namespace Jam::Presentation::Scenes
 
 			backgroundTexture.scaled(w / backgroundTexture.width()).draw(0, 0);
 			logoTexture.scaled(w / logoTexture.width()*0.5).draw(0, h / 2.3);
+			companyLogoTexture.scaled(w / companyLogoTexture.width() * 0.2).draw(w / 1.3, h/1.08);
 		}
 
 		void drawFadeIn(double t) const override
