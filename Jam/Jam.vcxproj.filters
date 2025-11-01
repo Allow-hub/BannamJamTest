@@ -226,7 +226,6 @@
     <Image Include="App\Assets\Player\Idle\idle_29.png" />
     <Image Include="App\Assets\Item\bomb.png" />
     <Image Include="Assets\Enemy\Clown\idle_1.png" />
-    <Image Include="..\..\..\Users\YutoImata\Downloads\Missile.png" />
     <Image Include="App\Assets\Enemy\Ribbon\idle_0.png" />
     <Image Include="App\Assets\Player\Jump\jump_00.png" />
     <Image Include="App\Assets\Player\Jump\jump_01.png" />
@@ -302,6 +301,39 @@
     <Image Include="App\Assets\Story\Portrait\Riska\riska_surprised.png" />
     <Image Include="App\Assets\Story\Portrait\Riska\riska_suspicious.png" />
     <Image Include="App\Assets\UI\face_hand.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_00.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_01.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_02.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_03.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_04.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_05.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_06.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_07.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_08.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_09.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_10.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_11.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_12.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_13.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_14.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_15.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_16.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_17.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_18.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_19.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_20.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_21.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_22.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_23.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_24.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_25.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_26.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_27.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_28.png" />
+    <Image Include="App\Assets\Player\ChokerThrow\choker_throw_29.png" />
+    <Image Include="App\Assets\UI\background.png" />
+    <Image Include="App\Assets\Story\background_stage1_1_start.png" />
+    <Image Include="App\Assets\Item\Missile.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />
@@ -486,6 +518,9 @@
     <None Include="App\Assets\Story\stage1_1_start.csv" />
     <None Include="App\Assets\Story\stage1_2_start.csv" />
     <None Include="src\Domain\Stage\Imata_Task.md" />
+    <None Include="App\Assets\Story\stage1_2_clear.csv" />
+    <None Include="App\Assets\Story\stage1_3_clear.csv" />
+    <None Include="App\Assets\Story\stage1_3_start.csv" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="App\dll\soundtouch\COPYING.TXT" />

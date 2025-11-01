@@ -37,8 +37,8 @@ namespace Jam::Presentation
 		double m_scale = 1.0;
 
 		// 顔アイコン描画位置
-		s3d::Vec2 m_facePosition = { 70, 230 };
-		s3d::Vec2 m_faceSize = { 180, 190 }; // 顔アイコンサイズ
+		s3d::Vec2 m_facePosition = { 20, 230 };
+		s3d::Vec2 m_faceSize = { 260, 200 }; // 顔アイコンサイズ
 
 		s3d::Vec2 m_fragmentPosition = { 24, 148 }; // m_facePositionからの相対座標
 

@@ -135,7 +135,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\Users\YutoImata\Downloads\Missile.png" />
+    <Image Include="App\Assets\Item\Missile.png" />
     <Image Include="App\Assets\Player\ChokerThrow\choker_throw_00.png" />
     <Image Include="App\Assets\Player\ChokerThrow\choker_throw_01.png" />
     <Image Include="App\Assets\Player\ChokerThrow\choker_throw_02.png" />
@@ -166,12 +166,14 @@
     <Image Include="App\Assets\Player\ChokerThrow\choker_throw_27.png" />
     <Image Include="App\Assets\Player\ChokerThrow\choker_throw_28.png" />
     <Image Include="App\Assets\Player\ChokerThrow\choker_throw_29.png" />
+    <Image Include="App\Assets\Story\background_stage1_1_start.png" />
     <Image Include="App\Assets\Story\Portrait\Player\player_conversation" />
     <Image Include="App\Assets\Story\Portrait\Player\player_conversation.png" />
     <Image Include="App\Assets\Story\Portrait\Riska\riska_normal.png" />
     <Image Include="App\Assets\Story\Portrait\Riska\riska_smiling.png" />
     <Image Include="App\Assets\Story\Portrait\Riska\riska_surprised.png" />
     <Image Include="App\Assets\Story\Portrait\Riska\riska_suspicious.png" />
+    <Image Include="App\Assets\UI\background.png" />
     <Image Include="App\Assets\UI\face_hand.png" />
     <Image Include="App\engine\texture\box-shadow\128.png" />
     <Image Include="App\engine\texture\box-shadow\16.png" />
@@ -370,6 +372,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
+    <None Include="App\Assets\Story\stage1_2_clear.csv" />
+    <None Include="App\Assets\Story\stage1_3_clear.csv" />
+    <None Include="App\Assets\Story\stage1_3_start.csv" />
     <None Include="App\dll\soundtouch\SoundTouch_x64.dll" />
     <None Include="App\engine\font\fontawesome\fontawesome-brands.otf.zstdcmp" />
     <None Include="App\engine\font\fontawesome\fontawesome-solid.otf.zstdcmp" />
