@@ -23,6 +23,7 @@ namespace Jam::Presentation
 			SE_EnemyHit,
 			SE_BarrierBreak,
 			SE_FallDamage,
+			SE_BossDown,
 			BGM_Title,
 			BGM_Game,
 		};
@@ -46,6 +47,7 @@ namespace Jam::Presentation
 			load(Sound::SE_EnemyHit, samePath + U"se_attack.mp3");
 			load(Sound::SE_BarrierBreak, samePath + U"se_barrier.mp3");
 			load(Sound::SE_FallDamage, samePath + U"se_fallDamage.mp3");
+			load(Sound::SE_BossDown, samePath + U"se_bossDown.mp3");
 			load(Sound::BGM_Title, samePath + U"bgm_title.mp3");
 			load(Sound::BGM_Game, samePath + U"bgm_ingame.mp3");
 		}

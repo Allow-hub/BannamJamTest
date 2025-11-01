@@ -547,6 +547,7 @@
   <ItemGroup>
     <Media Include="App\Assets\Sounds\se_attack.mp3" />
     <Media Include="App\Assets\Sounds\se_barrier.mp3" />
+    <Media Include="App\Assets\Sounds\se_bossDown.mp3" />
     <Media Include="App\Assets\Sounds\se_button.mp3" />
     <Media Include="App\Assets\Sounds\se_chokerThrow.mp3" />
     <Media Include="App\Assets\Sounds\se_fallDamage.mp3" />
