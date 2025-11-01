@@ -37,10 +37,10 @@ namespace Jam::Domain::Enemy
 
 		// 攻撃パターンの確率設定
 		m_attackPatterns = {
-			{AttackState::Missile,0.5f},
-			{AttackState::SummonClown, 0.0f},
-			{AttackState::Bomb, 0.0f},
-			{AttackState::Shockwave,0.5f}
+			{AttackState::Missile,0.3f},
+			{AttackState::SummonClown, 0.1f},
+			{AttackState::Bomb, 0.3f},
+			{AttackState::Shockwave,0.3f}
 		};
 
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::BossHidden);//チョーカーとの接触をなくす
