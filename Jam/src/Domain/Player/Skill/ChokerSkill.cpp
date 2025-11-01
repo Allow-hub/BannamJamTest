@@ -31,6 +31,7 @@ namespace Jam::Domain::Player
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::PlayerWeapon);
 		m_body->setGravityScale(0);
 		m_body->setBullet(true);
+		m_body->setLayer(Jam::Domain::Physics::PhysicsLayer::Weapon);
 	}
 
 	void ChokerSkill::init()
@@ -176,6 +177,12 @@ namespace Jam::Domain::Player
 			{
 			case HookState::HookedGround:
 			{
+				if (m_ground)
+				{
+					// 床の現在位置に相対オフセットを加えた位置にフックを配置
+					Vec2 groundPos = m_ground->getPosition();
+					m_body->setPos(groundPos + m_groundAnchorOffset);
+				}
 				double currentMax = m_joint->getMaxLength();
 				double newMax = currentMax * 0.992;
 				double minLimit = 50.0;
@@ -228,7 +235,7 @@ namespace Jam::Domain::Player
 						double distance = (enemyPos - playerPos).length();
 
 						// 壁などでプレイヤーが近づけなかった場合（距離が一定以上残っている）
-						const double reachThreshold = 110; // 判定閾値
+						const double reachThreshold = 160; // 判定閾値
 						if (distance > reachThreshold)
 						{
 							finishEnemySequence(); // 何も起こさず終了
@@ -292,10 +299,14 @@ namespace Jam::Domain::Player
 		switch (other->getLayer())
 		{
 		case PhysicsLayer::Ground:
+			m_ground = other;
 			hitGround();
 			break;
 		case PhysicsLayer::Enemy:
 			hitEnemy(other);
+			break;
+		case PhysicsLayer::Wall:
+			m_body->setVelocity({ 0, 0 });
 			break;
 		}
 	}
@@ -310,7 +321,8 @@ namespace Jam::Domain::Player
 		{
 			m_hookState = HookState::HookedGround;
 			m_eventQueue.push(Events::PlayerChokerSkillEvent{ 0.8, 0.7 });
-			m_body->setVelocity({ 0, 0 });
+			m_body->setVelocity(Vec2::Zero());
+			m_body->setAngularVelocity(0);
 			m_body->setBodyType(PhysicsType::Static);
 			m_isFlying = false;
 
@@ -341,7 +353,13 @@ namespace Jam::Domain::Player
 				Vec2 diff = hookPos - playerPos;
 				if (diff.isZero()) diff = Vec2{ 0, -1 };
 				m_lastDir = diff.normalized().rotated(-8_deg);
-
+				// 動く床のPhysicsBodyの中心位置を取得
+				if (m_ground)
+				{
+					Vec2 groundPos = m_ground->getPosition();
+					// 接地点と床の中心との相対位置を計算して保存
+					m_groundAnchorOffset = hookPos - groundPos;
+				}
 				m_isJointCreated = true;
 			}
 			else

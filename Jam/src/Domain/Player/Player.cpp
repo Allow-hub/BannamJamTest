@@ -181,6 +181,7 @@ namespace Jam::Domain::Player
 		if (m_isInvincible)return;
 
 		m_stats.hp -= info.amount;
+		if (m_onDamaged) m_onDamaged();
 
 		if (m_stats.hp <= 0)
 		{
@@ -192,6 +193,11 @@ namespace Jam::Domain::Player
 		{
 			onDamaged(info);//ダメージを受けた時の吹き飛ばし等
 		}
+	}
+
+	void Player::setOnDamagedCallback(DamageCallback callback)
+	{
+		m_onDamaged = std::move(callback);
 	}
 
 	s3d::Vec2 Player::getPosition() const
@@ -248,6 +254,7 @@ namespace Jam::Domain::Player
 		auto& core = Jam::Foundation::CoreManager::Instance();
 		core.setClear(false);
 		m_eventQueue.push(Events::PlayerDeathEvent{ 1.2, 0.2, 10000 });
+		Print << U"Player Died";
 	}
 
 	void Player::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)

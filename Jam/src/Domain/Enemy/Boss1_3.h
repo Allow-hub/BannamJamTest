@@ -7,13 +7,14 @@
 namespace Jam::Domain::Enemy
 {
 	// 1_3のボス
-	class Boss1_3 : public EnemyBase
+	class Boss1_3 : public EnemyBase, public std::enable_shared_from_this<Boss1_3>
 	{
 	public:
 		explicit Boss1_3(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Physics::PhysicsBodyID playerId
 		, Jam::Domain::Events::GameEventQueue& eventQueue);
 		virtual ~Boss1_3() = default;
 
+		Jam::Util::Task init();
 		// 毎フレームの更新（AI挙動など）
 		void update(double deltaTime) override;
 		void draw() const override;
@@ -25,12 +26,16 @@ namespace Jam::Domain::Enemy
 
 	private:
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_weakBody;//弱点箇所
-		Vec2 coreSize = Vec2{ 100,100 };
+		Vec2 coreSize = Vec2{ 150,150 };
 		Vec2 m_coreOffset;
+		bool m_weakEntered = false;
+		bool m_normalEntered = false;
 
 		void updateAppearState(double deltaTime);
 		void updateNormalState(double deltaTime);
 		void updateWeakState(double deltaTime);
+
+		void onDestroy(const DamageInfo& info) override;
 
 		enum class BossState
 		{
@@ -67,6 +72,7 @@ namespace Jam::Domain::Enemy
 		double m_weakStateDuration = 5.0;    // Weak状態の持続時間
 		double m_appearDuration = 3.0;       // Appear状態の持続時間
 		bool m_isReflectedMissileHit = false;  // 反射ミサイルが当たったか
+		Vec2 m_lastMissileDirection = Vec2::Down();  // 最後に当たったミサイルの方向
 
 		// 攻撃クールダウン用
 		double m_attackCooldownTimer;      // 攻撃クールダウンタイマー
@@ -86,10 +92,20 @@ namespace Jam::Domain::Enemy
 		bool m_hasAttackEntered;  // 攻撃のEnterが実行されたか
 
 		// 攻撃のライフサイクルメソッド
+		
 		// Missile
 		void enterMissileAttack();
 		void updateMissileAttack(double deltaTime);
 		void exitMissileAttack();
+		Jam::Util::Task m_missileAttackTask();
+		
+		// ミサイル管理用
+		const int MISSILE_COUNT = 3;
+		double m_missileSpawnInterval = 0.3; // ミサイル生成間隔(秒)
+		double m_missileFlightDuration = 2.0; // ミサイル飛行時間(秒) - 短いほど速い
+		double m_missileRadius = 80.0;
+		double m_missileReflectedSpeed = 1500.0; // 反射後の速度
+		double m_missileScale = 3.5; // ミサイルの描画スケール係数
 
 		// SummonClown
 		void enterSummonClown();
@@ -101,14 +117,22 @@ namespace Jam::Domain::Enemy
 		void updateBombAttack(double deltaTime);
 		void exitBombAttack();
 		double m_explosionDelay = 3.0;
+		unsigned int m_bombsThrown = 3;//一回で投げる爆弾の数
+		double m_bombSpawnY = -600.0;
+		double m_bombSpawnInterval = 0.5;
+		double m_xOffset = 500.0;
+		double m_xBombInitOffset = 450.0;
+		Jam::Util::Task m_bombAttackTask();
 
 		// shockWave
 		void enterShockWave();
 		void updateShockWave(double deltaTime);
 		void exitShockWave();
 		std::shared_ptr<ShockWave> m_shockWave;
-		const double m_shockWaveDelay = 1.2;
-		Jam::Util::Task m_shockWaveTask();
+		const double m_shockWaveDelay = 2.0;
+		Jam::Util::Task m_shockWaveTask(Vec2 targetPos);
+		Vec2 m_leftPos = Vec2{ 850,-300 };
+		Vec2 m_rightPos = Vec2{ -360,-300 };;
 
 		const String toString(Boss1_3::AttackState state)
 		{

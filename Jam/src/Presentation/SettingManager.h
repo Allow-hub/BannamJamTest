@@ -78,10 +78,10 @@ namespace Jam::Presentation
 
 		void init()
 		{
-			m_backgroundTexture = Texture{ U"../Assets/setting_backMain.png" };
-			m_backgroundMaskTexture = Texture{ U"../Assets/setting_back.png" };
+			m_backgroundTexture = Texture{ U"Assets/setting_backMain.png" };
+			m_backgroundMaskTexture = Texture{ U"Assets/setting_back.png" };
 			const int32 mainFontSize = static_cast<int32>(Scene::Height() * 0.07);
-			font = Font(mainFontSize, U"../Assets/Font/PixelMplus12-Bold.ttf", FontStyle::Bold);
+			font = Font(mainFontSize, U"Assets/Font/PixelMplus12-Bold.ttf", FontStyle::Bold);
 			const double maxUnderline = font(U"BACK THE SELECT").region().w - 100.0;
 
 			buttons.clear();
@@ -89,6 +89,7 @@ namespace Jam::Presentation
 			buttons.emplace_back(U"RETRY", Vec2(70, 220), 60, maxUnderline);
 			buttons.emplace_back(U"EXIT", Vec2(70, 320), 60, maxUnderline);
 			buttons.emplace_back(U"BACK THE SELECT", Vec2(70, 420), 60, maxUnderline);
+			buttons.emplace_back(U"END", Vec2(70, 520), 60, maxUnderline);
 		}
 
 		void update()
@@ -117,6 +118,10 @@ namespace Jam::Presentation
 						else if (b.label == U"BACK THE SELECT")
 						{
 							changeScene(U"Select");
+						}
+						else if (b.label == U"END")
+						{
+							System::Exit(); // Siv3Dのアプリを終了
 						}
 					}
 				}

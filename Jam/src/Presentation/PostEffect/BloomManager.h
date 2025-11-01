@@ -196,10 +196,10 @@ namespace Jam::Presentation
 			}
 
 			// Vignetteエフェクトを適用
-			if (applyVignette)
+	/*		if (applyVignette)
 			{
 				drawVignetteEffect();
-			}
+			}*/
 
 			// 次のフレームのためにクリア
 			layers[0].blur.clear(clearColor);

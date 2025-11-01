@@ -6,6 +6,9 @@
 #include "EffectEvents.h"
 #include "../Foundation/CoroutineUtil.h"
 #include "../Presentation/EnemyManager.h"
+#include "../Domain/Enemy/Missile.h"
+#include "../Infrastructure/IndependentObjectFactory.h"
+#include "../Infrastructure/FactoryServiceLocator.h"
 
 namespace Jam::UseCase
 {
@@ -16,7 +19,7 @@ namespace Jam::UseCase
 		Domain::Events::GameEventQueue& m_gameEventQueue;
 		CameraEventQueue& m_cameraEventQueue;
 		EffectEventQueue& m_effectEventQueue;
-		std::function<void()> m_onPlayerDeath;
+		std::function<void()> m_onNextScene;
 		Jam::Presentation::EnemyManager* m_enemyManager = nullptr;
 
 	public:
@@ -24,12 +27,12 @@ namespace Jam::UseCase
 			Domain::Events::GameEventQueue& gameEventQueue,
 			CameraEventQueue& cameraEventQueue,
 			EffectEventQueue& effectEventQueue,
-			std::function<void()> onPlayerDeath,
+			std::function<void()> onNextScene,
 			Jam::Presentation::EnemyManager* enemyManager)
 			: m_gameEventQueue(gameEventQueue)
 			, m_cameraEventQueue(cameraEventQueue)
 			, m_effectEventQueue(effectEventQueue)
-			, m_onPlayerDeath(onPlayerDeath)
+			, m_onNextScene(onNextScene)
 			, m_enemyManager(enemyManager)
 		{
 		}
@@ -87,6 +90,10 @@ namespace Jam::UseCase
 					{
 						handleExplosion(e);
 					}
+					else if constexpr (std::is_same_v<T, Domain::Events::BarrierShatteredEvent>)
+					{
+						handleBarrierShattered(e);
+					}
 					}, event);
 			}
 		}
@@ -124,7 +131,9 @@ namespace Jam::UseCase
 			{
 				// ボス撃破時は派手な演出
 				m_cameraEventQueue.push(CameraShakeEvent{ e.intensity, e.duration });
-				//m_cameraEventQueue.push(CameraFocusEvent{ e.position, 3.0, 0.9 });
+				Jam::Foundation::CoreManager::Instance().setClear(true);
+				Jam::Foundation::CoreManager::Instance().addFlagment(3);
+				if (m_onNextScene) m_onNextScene();
 			}
 			else
 			{
@@ -182,7 +191,7 @@ namespace Jam::UseCase
 		Jam::Util::Task playerDeath()
 		{
 			co_await Jam::Util::WaitSeconds(2.0);
-			if (m_onPlayerDeath) m_onPlayerDeath();
+			if (m_onNextScene) m_onNextScene();
 		}
 
 		void handleBossAppeared(const Domain::Events::BossAppearedEvent& e)
@@ -212,10 +221,34 @@ namespace Jam::UseCase
 				m_enemyManager->getAnimator(id).SetBool(U"isRunning", false);
 			}
 		}
+		
 		void handleExplosion(const Domain::Events::ExplosionEvent& e)
 		{
 			m_effectEventQueue.push(ExplosionEffectEvent{
 				e.position,e.color,e.radius,e.duration,e.particleCount
+			});
+		}
+
+		void handleBarrierShattered(const Domain::Events::BarrierShatteredEvent& e)
+		{
+			// ガラス破壊エフェクトを発行
+			m_effectEventQueue.push(GlassShatterEffectEvent{
+				e.position,
+				e.impactDirection,
+				ColorF{0.5, 0.8, 1.0, 0.7}, // 青みがかった透明なガラス色
+				25,                          // 破片数
+				400.0,                       // 破片の飛散速度
+				1.5,                         // エフェクト持続時間
+				e.barrierRadius              // バリアの半径
+			});
+
+			// 衝撃波リングエフェクトを追加
+			m_effectEventQueue.push(RingEffectEvent{
+				e.position,
+				ColorF{0.7, 0.9, 1.0, 0.8}, // 明るい青
+				200.0,                       // 最大半径
+				0.5,                         // 持続時間
+				8.0                          // リングの太さ
 			});
 		}
 	};

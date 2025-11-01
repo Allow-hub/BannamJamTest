@@ -1,0 +1,551 @@
+[
+  {
+    "type": "LittleDevil",
+    "position": {
+      "x": 4750,
+      "y": 50
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 4750,
+              "y": 50
+            },
+            {
+              "x": 4750,
+              "y": 50
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
+        }
+      }
+    }
+  },
+  {
+    "type": "LittleDevil",
+    "position": {
+      "x": 900,
+      "y": -300
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 900,
+              "y": -300
+            },
+            {
+              "x": 900,
+              "y": -300
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
+        }
+      }
+    }
+  },
+  {
+    "type": "Eye",
+    "position": {
+      "x": 2400,
+      "y": -600
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 2400,
+              "y": -600
+            },
+            {
+              "x": 2400,
+              "y": -600
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
+        },
+        "chase": {
+          "attackRange": 600.0,
+          "loseRange": 700.0,
+          "moveSpeedFactor": 1.2
+        }
+      }
+    }
+  },
+  {
+    "type": "LittleDevil",
+    "position": {
+      "x": 2600,
+      "y": 750
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 2600,
+              "y": 750
+            },
+            {
+              "x": 2600,
+              "y": 750
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
+        }
+      }
+    }
+  },
+  {
+    "type": "Clown",
+    "position": {
+      "x": 4000,
+      "y": 600
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 4000,
+              "y": 600
+            },
+            {
+              "x": 4000,
+              "y": 600
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
+        },
+        "chase": {
+          "attackRange": 600.0,
+          "loseRange": 700.0,
+          "moveSpeedFactor": 1.2
+        }
+      }
+    }
+  },
+  {
+    "type": "Eye",
+    "position": {
+      "x": 3450,
+      "y": -800
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 3450,
+              "y": -800
+            },
+            {
+              "x": -3450,
+              "y": -800
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
+        },
+        "chase": {
+          "attackRange": 600.0,
+          "loseRange": 700.0,
+          "moveSpeedFactor": 1.2
+        }
+      }
+    }
+  },
+  {
+    "type": "LittleDevil",
+    "position": {
+      "x": 3800,
+      "y": 300
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 3800,
+              "y": 300
+            },
+            {
+              "x": 3800,
+              "y": 300
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
+        }
+      }
+    }
+  },
+  {
+    "type": "LittleDevil",
+    "position": {
+      "x": 4700,
+      "y": 200
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 4700,
+              "y": 200
+            },
+            {
+              "x": 4700,
+              "y": 200
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
+        }
+      }
+    }
+  },
+  {
+    "type": "Eye",
+    "position": {
+      "x": 5900,
+      "y": -300
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 5900,
+              "y": -300
+            },
+            {
+              "x": 5500,
+              "y": -300
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
+        },
+        "chase": {
+          "attackRange": 600.0,
+          "loseRange": 700.0,
+          "moveSpeedFactor": 1.2
+        }
+      }
+    }
+  },
+  {
+    "type": "LittleDevil",
+    "position": {
+      "x": 5500,
+      "y": -400
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 5500,
+              "y": -400
+            },
+            {
+              "x": 5500,
+              "y": -400
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
+        }
+      }
+    }
+  },
+  {
+    "type": "LittleDevil",
+    "position": {
+      "x": 5300,
+      "y": 1000
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 5300,
+              "y": 1000
+            },
+            {
+              "x": 5300,
+              "y": 1000
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
+        }
+      }
+    }
+  },
+  {
+    "type": "Ribbon",
+    "position": {
+      "x": 6400,
+      "y": -1500
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 6400,
+              "y": -1500
+            },
+            {
+              "x": -6400,
+              "y": -1500
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
+        },
+        "chase": {
+          "attackRange": 600.0,
+          "loseRange": 700.0,
+          "moveSpeedFactor": 1.2
+        }
+      }
+    }
+  },
+  {
+    "type": "Eye",
+    "position": {
+      "x": 8000,
+      "y": -200
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 8000,
+              "y": -200
+            },
+            {
+              "x": 8000,
+              "y": -200
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
+        },
+        "chase": {
+          "attackRange": 600.0,
+          "loseRange": 700.0,
+          "moveSpeedFactor": 1.2
+        }
+      }
+    }
+  },
+  {
+    "type": "Eye",
+    "position": {
+      "x": 8300,
+      "y": 400
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 8300,
+              "y": 400
+            },
+            {
+              "x": 8300,
+              "y": 400
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
+        },
+        "chase": {
+          "attackRange": 600.0,
+          "loseRange": 700.0,
+          "moveSpeedFactor": 1.2
+        }
+      }
+    }
+  },
+  {
+    "type": "Eye",
+    "position": {
+      "x": 10600,
+      "y": 300
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 10600,
+              "y": 300
+            },
+            {
+              "x": 10600,
+              "y": 300
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
+        },
+        "chase": {
+          "attackRange": 600.0,
+          "loseRange": 700.0,
+          "moveSpeedFactor": 1.2
+        }
+      }
+    }
+  },
+  {
+    "type": "LittleDevil",
+    "position": {
+      "x": 11800,
+      "y": 300
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 11800,
+              "y": 300
+            },
+            {
+              "x": 11800,
+              "y": 300
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
+        }
+      }
+    }
+  },
+  {
+    "type": "Clown",
+    "position": {
+      "x": 10250,
+      "y": -800
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 10250,
+              "y": -800
+            },
+            {
+              "x": 10250,
+              "y": -800
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
+        },
+        "chase": {
+          "attackRange": 600.0,
+          "loseRange": 700.0,
+          "moveSpeedFactor": 1.2
+        }
+      }
+    }
+  },
+  {
+    "type": "Clown",
+    "position": {
+      "x": 11700,
+      "y": -1500
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 11700,
+              "y": -1500
+            },
+            {
+              "x": 11700,
+              "y": -1500
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
+        },
+        "chase": {
+          "attackRange": 600.0,
+          "loseRange": 700.0,
+          "moveSpeedFactor": 1.2
+        }
+      }
+    }
+  },
+  {
+    "type": "Clown",
+    "position": {
+      "x": 11400,
+      "y": -50
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 11400,
+              "y": -50
+            },
+            {
+              "x": 11400,
+              "y": -50
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
+        },
+        "chase": {
+          "attackRange": 600.0,
+          "loseRange": 700.0,
+          "moveSpeedFactor": 1.2
+        }
+      }
+    }
+  }
+]

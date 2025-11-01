@@ -59,6 +59,10 @@ namespace Jam::Presentation
 							m_effect.add<ExplosionEffect>(explosion);
 						});
 					}
+					else if constexpr (std::is_same_v<T, GlassShatterEffectEvent>)
+					{
+						m_effect.add<GlassShatterEffect>(e);
+					}
 				}, event);
 			}
 		}

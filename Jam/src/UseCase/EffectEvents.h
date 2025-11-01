@@ -83,6 +83,18 @@ namespace Jam::UseCase
 		bool showExplosion = true;     // 最後に爆発を表示するか
 	};
 
+	// 破壊エフェクトイベント（バリア破壊）
+	struct GlassShatterEffectEvent
+	{
+		Vec2 position;                // 破壊位置
+		Vec2 impactDirection;         // 衝撃方向（正規化済み）
+		ColorF glassColor = ColorF{0.5, 0.8, 1.0, 0.7};  // 水色透明
+		int32 shardCount = 20;        // 破片数
+		double shardSpeed = 300.0;    // 破片の飛散速度
+		double duration = 1.0;        // 持続時間
+		double barrierRadius = 150.0; // バリアの半径
+	};
+
 	using EffectEvent = std::variant<
 		StarEffectEvent,
 		ExplosionEffectEvent,
@@ -90,7 +102,8 @@ namespace Jam::UseCase
 		HitEffectEvent,
 		TextEffectEvent,
 		RingEffectEvent,
-		FallDeathEffectEvent
+		FallDeathEffectEvent,
+		GlassShatterEffectEvent
 	>;
 
 	//エフェクトのキュー

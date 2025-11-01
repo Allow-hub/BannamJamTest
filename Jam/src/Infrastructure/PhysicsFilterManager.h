@@ -17,7 +17,8 @@ namespace Jam::Infrastructure
 		Item,
 		PlayerWeapon,     // プレイヤーの武器
 		EnemyWeapon,      // 敵の武器
-		BossHidden
+		BossHidden,
+		WallOnly
 	};
 
 	// === 基本的な層ビット定義 ===
@@ -91,6 +92,11 @@ namespace Jam::Infrastructure
 	.maskBits = WallBit | Team1Bit
 	};
 
+	// 壁にだけ当たる
+	constexpr P2Filter WallOnlyFilter{
+		.categoryBits = Team2Bit,
+		.maskBits = WallBit         // 壁にしか当たらない
+	};
 	// === Enum から Filter を取得するユーティリティ ===
 	inline constexpr const P2Filter& GetFilter(PhysicsFilter layer)
 	{
@@ -106,6 +112,7 @@ namespace Jam::Infrastructure
 		case PhysicsFilter::PlayerWeapon:  return PlayerWeaponFilter;
 		case PhysicsFilter::EnemyWeapon:   return EnemyWeaponFilter;
 		case PhysicsFilter::BossHidden:   return BossHiddenFilter;
+		case PhysicsFilter::WallOnly:   return WallOnlyFilter;
 		default:                           return WallFilter;
 		}
 	}

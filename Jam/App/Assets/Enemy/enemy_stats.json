@@ -1,0 +1,100 @@
+{
+  "LittleDevil": {
+    "hp": 100,
+    "attackPower": 50.5,
+    "moveSpeed": 2000.0,
+    "jumpPower": 5.0,
+    "colX": 60.0,
+    "colY": 100.0,
+    "physicsMaterial": {
+      "density": 10.0,
+      "friction": 0.4,
+      "restitution": 0.0,
+      "restitutionThreshold": 100.0
+    }
+  },
+  "Ribbon": {
+    "hp": 200,
+    "attackPower": 10.5,
+    "moveSpeed": 5000.0,
+    "jumpPower": 5.0,
+    "colX": 80.0,
+    "colY": 110.0,
+    "physicsMaterial": {
+      "density": 5.0,
+      "friction": 0.4,
+      "restitution": 0.0,
+      "restitutionThreshold": 100.0
+    }
+  },
+  "GothicLolitaDoll": {
+    "hp": 100,
+    "attackPower": 10.5,
+    "moveSpeed": 2000.0,
+    "jumpPower": 5.0,
+    "colX": 60.0,
+    "colY": 100.0,
+    "physicsMaterial": {
+      "density": 10.0,
+      "friction": 0.4,
+      "restitution": 0.0,
+      "restitutionThreshold": 100.0
+    }
+  },
+  "Eye": {
+    "hp": 100,
+    "attackPower": 10.5,
+    "moveSpeed": 10000.0,
+    "jumpPower": 5.0,
+    "colX": 90.0,
+    "colY": 100.0,
+    "physicsMaterial": {
+      "density": 10.0,
+      "friction": 0.4,
+      "restitution": 0.0,
+      "restitutionThreshold": 100.0
+    }
+  },
+  "Spider": {
+    "hp": 100,
+    "attackPower": 10.5,
+    "moveSpeed": 4000.0,
+    "jumpPower": 5.0,
+    "colX": 150.0,
+    "colY": 150.0,
+    "physicsMaterial": {
+      "density": 5.0,
+      "friction": 0.4,
+      "restitution": 0.0,
+      "restitutionThreshold": 100.0
+    }
+  },
+  "Clown": {
+    "hp": 100,
+    "attackPower": 10.5,
+    "moveSpeed": 2500.0,
+    "jumpPower": 1300.0,
+    "colX": 130.0,
+    "colY": 190.0,
+    "physicsMaterial": {
+      "density": 1.0,
+      "friction": 0.4,
+      "restitution": 0.0,
+      "restitutionThreshold": 100.0
+    }
+  },
+  "Boss1_3": {
+    "hp": 300,
+    "attackPower": 150.0,
+    "moveSpeed": 1000.0,
+    "jumpPower": 5.0,
+    "colX": 500.0,
+    "colY": 700.0,
+    "physicsMaterial": {
+      "density": 10.0,
+      "friction": 0.4,
+      "restitution": 0.0,
+      "restitutionThreshold": 100.0
+    }
+  }
+}

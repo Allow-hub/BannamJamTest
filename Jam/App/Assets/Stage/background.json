@@ -1,0 +1,78 @@
+﻿{
+  "_comment": "パララックス背景定義",
+  "_使い方": {
+    "説明": "パララックス効果付きの背景オブジェクトを定義します。",
+    "textureName": "テクスチャ名（TextureLoaderで読み込み済みのもの）",
+    "layer": "パララックスレイヤー。Back(遠景), Middle(中景), Front(近景)のいずれか",
+    "rect": "[x, y, width, height] 形式の配列で位置とサイズを指定",
+    "opacity": "透明度（0.0～1.0）",
+    "leftExtension": "左側への拡張距離（widthが0の場合のみ有効）",
+    "rightExtension": "右側への拡張距離（widthが0の場合のみ有効）"
+  },
+  "Stage1_1": {
+    "backgrounds": [
+      {
+        "textureName": "BG_back",
+        "layer": "Back",
+        "rect": [-1000, -1500, 0, 2500],
+        "opacity": 1.0,
+        "leftExtension": 1000,
+        "rightExtension": 24000,
+        "_説明": "上段の背景"
+      },
+      {
+        "textureName": "BG_back",
+        "layer": "Back",
+        "rect": [-1000, 800, 0, 2500],
+        "opacity": 1.0,
+        "leftExtension": 1000,
+        "rightExtension": 24000,
+        "_説明": "下段の背景"
+      }
+    ]
+  },
+  "Stage1_2": {
+    "backgrounds": [
+      {
+        "textureName": "BG_back",
+        "layer": "Back",
+        "rect": [-1000, -1500, 0, 2500],
+        "opacity": 1.0,
+        "leftExtension": 1000,
+        "rightExtension": 23000,
+        "_説明": "上段の背景"
+      },
+      {
+        "textureName": "BG_back",
+        "layer": "Back",
+        "rect": [-1000, 800, 0, 2500],
+        "opacity": 1.0,
+        "leftExtension": 1000,
+        "rightExtension": 23000,
+        "_説明": "下段の背景"
+      }
+    ]
+  },
+  "Stage1_3": {
+    "backgrounds": [
+      {
+        "textureName": "BG_back",
+        "layer": "Back",
+        "rect": [-1000, -1500, 0, 2500],
+        "opacity": 1.0,
+        "leftExtension": 2000,
+        "rightExtension": 3000,
+        "_説明": "上段の背景（Bossステージ）"
+      },
+      {
+        "textureName": "BG_back",
+        "layer": "Back",
+        "rect": [-1000, 800, 0, 2500],
+        "opacity": 1.0,
+        "leftExtension": 2000,
+        "rightExtension": 3000,
+        "_説明": "下段の背景（Bossステージ）"
+      }
+    ]
+  }
+}

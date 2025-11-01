@@ -26,7 +26,7 @@ namespace Jam::Domain::Enemy
 		// テクスチャ複数枚を読み込む
 		for (int i = 0; i < 5; ++i)
 		{
-			m_textures.emplace_back(Texture(U"../Assets/Enemy/Boss1_3/Shockwave/shockwave_0" + Format(i) + U".png"));
+			m_textures.emplace_back(Texture(U"Assets/Enemy/Boss1_3/Shockwave/shockwave_0" + Format(i) + U".png"));
 		}
 	}
 
@@ -41,7 +41,7 @@ namespace Jam::Domain::Enemy
 			return;
 		}
 
-		double t = m_timer / (m_duration * 0.5);
+		double t = m_timer / (m_duration * 0.35);
 		Vec2 currentRect = Math::Lerp(m_startRect, m_endRect, t);
 
 		if (m_timer - m_lastRegenTime >= 0.1)
@@ -71,9 +71,10 @@ namespace Jam::Domain::Enemy
 	void ShockWave::draw() const
 	{
 		if (!m_body) return;
+		//m_body->drawFrame(5.0, ColorF(0.0, 1.0, 0.0, 0.9)); // デバッグ用に当たり判定を表示
 
 		// 伸びる速度倍率
-		constexpr double growthSpeed = 7.0; // 小さいほどゆっくり、大きいほど早く
+		constexpr double growthSpeed = 4.0; // 小さいほどゆっくり、大きいほど早く
 
 		// 進行率
 		double t = (m_timer / m_duration) * growthSpeed;

@@ -92,7 +92,7 @@ namespace Jam::Presentation::Scenes
 			m_world({ 0, 980 }),//引数は重力
 			m_inputManager()
 		{
-			Jam::Presentation::AudioService::get().play(Jam::Presentation::AudioService::Sound::BGM_Title, true);
+			Jam::Presentation::AudioService::get().play(Jam::Presentation::AudioService::Sound::BGM_Game, true);
 			//デバッグ用
 			Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_3; // CoreManagerのenumに追加が必要
 
@@ -124,7 +124,7 @@ namespace Jam::Presentation::Scenes
 			m_effectManager = std::make_unique<Jam::Presentation::EffectManager>(*m_effectEventQueue);
 
 			// === Player 初期化 ===
-			auto stats = Jam::Infrastructure::Physics::LoadFromJSON(U"../Assets/Player/player_stats.json");
+			auto stats = Jam::Infrastructure::Physics::LoadFromJSON(U"Assets/Player/player_stats.json");
 
 			auto playerBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
 				.getPhysicsFactory()
@@ -163,7 +163,16 @@ namespace Jam::Presentation::Scenes
 				.getPhysicsFactory();
 
 			// ステージ名からJSONファイル名を生成
-			m_stageService->initialize(stageName + U".json", bodyFactory);
+			// イベントキューとプレイヤーIDを渡す（ダメージ床用）
+			m_stageService->initialize(stageName + U".json", bodyFactory, *m_gameEventQueue, playerBody->getID());
+
+			// ステージの物理ボディをGameSceneの物理ボディリストに追加（衝突検出用）
+			for (const auto& stageBody : m_stageService->getPhysicsBodies()) {
+				auto siv3dBody = std::dynamic_pointer_cast<Infrastructure::Physics::Siv3DPhysicsBody>(stageBody);
+				if (siv3dBody) {
+					m_physicsBodies.push_back(siv3dBody);
+				}
+			}
 
 			m_stageManager = std::make_unique<Jam::Presentation::Stage::StageManager>();
 			m_stageManager->setService(m_stageService);
@@ -187,7 +196,7 @@ namespace Jam::Presentation::Scenes
 			// 敵ステータスをJSONからロード
 			std::unordered_map<Jam::Domain::EnemyType, Jam::Domain::Enemy::EnemyStatus> enemyStatusTable;
 			if (Jam::Infrastructure::EnemyLoader::LoadEnemyStatusFromJSON(
-				U"../Assets/Enemy/enemy_stats.json",
+				U"Assets/Enemy/enemy_stats.json",
 				enemyStatusTable))
 			{
 				m_enemyFactory->setStatusTable(enemyStatusTable);
@@ -211,7 +220,7 @@ namespace Jam::Presentation::Scenes
 
 			// ステージ用敵配置 JSON をロードして敵を生成
 			if (!Jam::Infrastructure::EnemyLoader::loadEnemyForStageFromJSON(
-				U"../Assets/Enemy/enemy_" + stageName + U".json",
+				U"Assets/Enemy/enemy_" + stageName + U".json",
 				m_enemyFactory,
 				m_enemyManager,
 				playerBodyId, *m_gameEventQueue))
@@ -226,9 +235,9 @@ namespace Jam::Presentation::Scenes
 			// 背景テクスチャの事前読み込み
 			Jam::Infrastructure::TextureLoader::preloadBackgroundTextures();
 
-			// JSONから背景データを読み込み
+			// JSONから背景データを読み込み（ステージ名を渡す）
 			Array<Jam::Domain::Background::BackgroundObject> backgroundObjects;
-			if (Jam::Infrastructure::Background::BackgroundLoader::loadBackgroundFromFile(U"background.json", backgroundObjects)) {
+			if (Jam::Infrastructure::Background::BackgroundLoader::loadBackgroundFromFile(U"background.json", core.stageInfo.stageName, backgroundObjects)) {
 				m_backgroundRenderer->setBackgroundObjects(backgroundObjects);
 			}
 			else {
@@ -258,6 +267,11 @@ namespace Jam::Presentation::Scenes
 				m_flagmentMemories.push_back(flagment);
 			}
 
+			if(core.stageInfo.stageName == Jam::Foundation::StageName::Stage1_3)
+			{
+				m_cameraManager->lockFocusOn({ 250,-500 }, 0.7);
+			}
+
 			// === Goal 初期化 ===
 			auto goalBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
 				.getPhysicsFactory()->createRectSensor(core.getCurrentStageData().goalData.position,core.getCurrentStageData().goalData.size);
@@ -270,7 +284,7 @@ namespace Jam::Presentation::Scenes
 			config.fontSize = 16;
 			Jam::Util::GridRenderer::instance().setConfig(config);
 			// 元画像を読み込む
-			Image originalImage(U"../Assets/Cursor/cursor_yellow.png");
+			Image originalImage(U"Assets/Cursor/cursor_yellow.png");
 			originalImage = originalImage.scaled(64, 64);
 			// カーソル登録
 			Jam::Infrastructure::CursorUtil::instance().registerCustomCursor(
@@ -278,7 +292,7 @@ namespace Jam::Presentation::Scenes
 				originalImage,
 				Point{ originalImage.width() / 2, originalImage.height() / 2 } // hotSpotは中央
 			);
-			BloomManager::getInstance().setIntensities(0.03, 0.06, 0.1, 0.3);
+			BloomManager::getInstance().setIntensities(0.26, 0.12, 0.22, 0.15);
 			BloomManager::getInstance().setVignette(0.3, 0.5);
 		}
 
@@ -336,6 +350,7 @@ namespace Jam::Presentation::Scenes
 				{
 					m_player->resetJumpState();
 				}
+				
 			}
 
 			m_cameraService->update(Scene::DeltaTime());
@@ -367,7 +382,7 @@ namespace Jam::Presentation::Scenes
 					Jam::Presentation::SettingManager::Instance().draw();
 					return;
 				}
-				//const auto t = Jam::Presentation::BloomManager::getInstance().getRenderTarget();
+				const auto t = Jam::Presentation::BloomManager::getInstance().getRenderTarget();
 				const auto transformer = m_cameraManager->createTransformer();
 				const Vec2 cameraOffset = m_cameraManager->getCameraOffset();
 
@@ -415,9 +430,10 @@ namespace Jam::Presentation::Scenes
 				}
 				//Jam::Util::GridRenderer::instance().draw();
 			}
+
+			BloomManager::getInstance().draw();
 			m_inGameUIManager->draw();
 
-			//BloomManager::getInstance().draw();
 			//フェードのDraw
 			Jam::Presentation::FadeManager::instance().draw();
 		}
@@ -466,6 +482,17 @@ namespace Jam::Presentation::Scenes
 					{
 						a->notifyCollisionEnter(b);
 						b->notifyCollisionEnter(a);
+					}
+				}
+				else
+				{
+					// Stay = 前フレームから継続している接触
+					auto a = findBodyByID(pair.a);
+					auto b = findBodyByID(pair.b);
+					if (a && b)
+					{
+						a->notifyCollisionStay(b);
+						b->notifyCollisionStay(a);
 					}
 				}
 			}

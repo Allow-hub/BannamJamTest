@@ -26,6 +26,11 @@ namespace Jam::Domain::Enemy
 			Vec2 direction = plPos - enePos;
 			Vec2 velocity = direction.normalized();
 
+			if(direction.x < 0)
+				enemy.setFaceLeft(true);
+			else
+				enemy.setFaceLeft(false);
+
 			enemy.getPhysicsBody()->applyForce(velocity * enemy.getStatus().moveSpeed * setting.moveSpeedFactor);
 
 			if (direction.length() <= setting.attackRange)

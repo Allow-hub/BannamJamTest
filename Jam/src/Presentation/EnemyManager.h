@@ -21,19 +21,14 @@ namespace Jam::Presentation
 			{
 				//Print << U"[EnemyManager] ⚠ Failed to load animator for enemy ID " << id;
 			}
-			else
-			{
-				//Print << U"[EnemyManager] ✅ Animator loaded for enemy ID " << id;
-			}
 			m_animators[id] = animator;
 
-			// 🔹 Enemy → Animator イベント接続
+			// :small_blue_diamond: Enemy → Animator イベント接続
 			enemy->setOnAnimationChange([this, id](const s3d::String& animName) {
 				auto it = m_animators.find(id);
 				if (it != m_animators.end())
 				{
 					it->second.SetBoolExclusive(animName);
-					//Print << U"[EnemyManager] ▶ Enemy " << id << U" animation changed to: " << animName;
 				}
 			});
 			return id;
@@ -54,16 +49,16 @@ namespace Jam::Presentation
 			}
 		}
 
-		void draw() const
+		void draw()
 		{
-
 			for (auto& [id, enemy] : m_enemies)
 			{
 				if (!enemy->isAlive())
 				{
 					continue;
 				}
-				enemy->draw();//Animationはイベントを送る形をとるが敵のアイテム系はそれぞれが描画
+				//Animationはイベントを送る形をとるが敵のアイテム系はそれぞれが描画
+				enemy->draw();//単体オブジェクトは他に描画を任せたが移植が住んでない→Eyeのビーム
 				auto body = enemy->getPhysicsBody();
 				body->drawFrame(2.0, Palette::Red);
 				if (!body)
@@ -76,6 +71,7 @@ namespace Jam::Presentation
 				auto it = m_animators.find(id);
 				if (it != m_animators.end())
 				{
+					it->second.SetFacingLeft(enemy->isFaceLeft());
 					it->second.Draw(pos);
 				}
 				else

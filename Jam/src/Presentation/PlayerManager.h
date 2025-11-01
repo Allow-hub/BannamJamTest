@@ -19,17 +19,20 @@ namespace Jam::Presentation
             : m_player(player)
         {
 			// JSON からクリップをロード
-			Jam::Presentation::AnimatorLoader::LoadAnimatorFromJSON(anim, U"../Assets/Player/player_animation.json");
+			Jam::Presentation::AnimatorLoader::LoadAnimatorFromJSON(anim, U"Assets/Player/player_animation.json");
 			// 条件を設定
-			anim.AddCondition({ { {U"isRunning", true} }, U"Run", 1 });
-			anim.AddCondition({ { {U"isRunning", false} }, U"Idle", 0 });
-			anim.SetBool(U"isRunning", false);
+			anim.SetDefaultClip(U"Idle");
+			anim.AddCondition({ { {U"isWalking", true} }, U"Walk", 1 });
+			anim.AddCondition({ { {U"isRunning", true} }, U"Run", 2 });
+			anim.AddCondition({ { {U"isJumping", true} }, U"Jump", 3 });
 
+			anim.SetBool(U"isRunning", false);
+			anim.SetBool(U"isJumping", false);
         }
 
-		void SetRunning(bool running)
+		void setAnim(String name,bool b)
 		{
-			anim.SetBool(U"isRunning", running);
+			anim.SetBool(name, b);
 		}
 
 		void update()

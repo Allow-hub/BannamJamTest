@@ -66,6 +66,8 @@ namespace Jam::Infrastructure {
 			Jam::Domain::Stage::StageType::Normal,
             Jam::Domain::Stage::StageType::MovingPlatform,
             Jam::Domain::Stage::StageType::OneWayPlatform,
+            Jam::Domain::Stage::StageType::DamagePlatform,
+            Jam::Domain::Stage::StageType::MovingDamagePlatform,
         };
         
         for (auto type : stageTypes) {
@@ -89,7 +91,7 @@ namespace Jam::Infrastructure {
     }
 
     FilePath TextureLoader::getDefaultTexturePath(Jam::Domain::Stage::StageType type) {
-        const FilePath basePath = U"../Assets/Stage/";
+        const FilePath basePath = U"Assets/Stage/";
         
         switch (type) {
         case Jam::Domain::Stage::StageType::Normal:
@@ -98,6 +100,10 @@ namespace Jam::Infrastructure {
             return basePath + U"moving_platform.png";
         case Jam::Domain::Stage::StageType::OneWayPlatform:
             return basePath + U"White_Test.png";
+        case Jam::Domain::Stage::StageType::DamagePlatform:
+            return basePath + U"damage_Stage.jpg";
+        case Jam::Domain::Stage::StageType::MovingDamagePlatform:
+            return basePath + U"damage_Stage.jpg";
         default:
             return basePath + U"White_Test.png";
         }
@@ -154,7 +160,7 @@ namespace Jam::Infrastructure {
     }
 
     FilePath TextureLoader::getDefaultBackgroundTexturePath(const String& textureName) {
-        const FilePath basePath = U"../Assets/Stage/BG/";
+        const FilePath basePath = U"Assets/Stage/BG/";
         
         if (textureName == U"BG") {
             return basePath + U"BG.png";

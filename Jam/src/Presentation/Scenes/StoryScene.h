@@ -49,6 +49,15 @@ namespace Jam::Presentation::Scenes
 			{
 				handleSkip();
 			}
+			if(KeyEscape.down())
+			{
+				Jam::Foundation::CoreManager::Instance().setPause(!Jam::Foundation::CoreManager::Instance().getPause());
+			}	
+			if (Jam::Foundation::CoreManager::Instance().getPause())
+			{
+				Jam::Presentation::SettingManager::Instance().update();
+				return;
+			}
 		}
 
 		// 描画処理
@@ -56,6 +65,11 @@ namespace Jam::Presentation::Scenes
 		{
 			storyManager.draw();
 			drawSkipButton();
+			if (Jam::Foundation::CoreManager::Instance().getPause())
+			{
+				Jam::Presentation::SettingManager::Instance().draw();
+				return;
+			}
 		}
 
 		void drawFadeIn(double t) const override
@@ -76,7 +90,7 @@ namespace Jam::Presentation::Scenes
 		{
 			auto& core = Jam::Foundation::CoreManager::Instance();
 			String stageName = Jam::Foundation::CoreManager::stageNameToString(core.stageInfo.stageName);
-			String basePath = U"../Assets/Story/";
+			String basePath = U"Assets/Story/";
 
 			// 立ち絵マップ作成
 			HashTable<Speaker, HashTable<Jam::Domain::Portrait, FilePath>> portraits;
@@ -90,7 +104,7 @@ namespace Jam::Presentation::Scenes
 			bool ok = storyManager.init(
 				basePath + stageName + storySuffix + U".csv",
 				portraits,
-				basePath + U"background_" + stageName + U".png"
+				basePath + U"background_" + stageName + storySuffix + U".png"
 			);
 
 			if (!ok)

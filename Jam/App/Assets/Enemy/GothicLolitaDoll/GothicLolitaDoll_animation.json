@@ -1,0 +1,20 @@
+{
+    "clips": [
+        {
+            "name": "Idle",
+            "loop": true,
+            "frames": [
+                {
+                    "path": "Assets/Enemy/GothicLolitaDoll/idle_0.png",
+                    "duration": 1.5,
+                    "scale": 1.0
+                },
+                {
+                    "path": "Assets/Enemy/GothicLolitaDoll/idle_1.png",
+                    "duration": 0.5,
+                    "scale": 1.0
+                }
+            ]
+        }
+    ]
+}

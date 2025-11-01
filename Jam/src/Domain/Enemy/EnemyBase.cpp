@@ -26,12 +26,14 @@ namespace Jam::Domain::Enemy
 	void EnemyBase::moveLeft()
 	{
 		if (!m_isAlive) return;
+		m_isFaceLeft = true;
 		m_body->applyForce({ -m_status.moveSpeed, 0 });
 	}
 
 	void EnemyBase::moveRight()
 	{
 		if (!m_isAlive) return;
+		m_isFaceLeft = false;
 		m_body->applyForce({ m_status.moveSpeed, 0 });
 	}
 
@@ -90,7 +92,7 @@ namespace Jam::Domain::Enemy
 				0.88,
 				0.5,
 				10
-			});
+		});
 		Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
 			.getPhysicsFactory()->removeBody(m_body->getID());
 		m_isAlive = false;
