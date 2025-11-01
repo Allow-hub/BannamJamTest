@@ -141,10 +141,10 @@ namespace Jam::Domain::Enemy
 		double uuu = uu * u;
 		double ttt = tt * t;
 
-		Vec2 point = uuu * m_controlPoint0;    
-		point += 3 * uu * t * m_controlPoint1; 
-		point += 3 * u * tt * m_controlPoint2; 
-		point += ttt * m_controlPoint3;        
+		Vec2 point = uuu * m_controlPoint0;
+		point += 3 * uu * t * m_controlPoint1;
+		point += 3 * u * tt * m_controlPoint2;
+		point += ttt * m_controlPoint3;
 
 		return point;
 	}
@@ -177,7 +177,6 @@ namespace Jam::Domain::Enemy
 		{
 			m_hasHitBoss = true;
 			
-			// ミサイル削除
 			m_isDead = true;
 			return;
 		}

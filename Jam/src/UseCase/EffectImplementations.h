@@ -479,7 +479,7 @@ namespace Jam::UseCase
 					.velocity = velocity,
 					.rotation = Random(0.0, Math::TwoPi),
 					.rotationSpeed = Random(-720.0, 720.0) * 1_deg,
-					.size = Random(8.0, 20.0),
+					.size = Random(20.0, 40.0),
 					.color = shardColor
 				};
 			}

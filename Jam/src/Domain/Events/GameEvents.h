@@ -98,6 +98,13 @@ namespace Jam::Domain::Events
 		int32 particleCount = 20;
 	};
 
+	struct BarrierShatteredEvent
+	{
+		Vec2 position;              // バリアの中心位置
+		Vec2 impactDirection;       // ミサイルの衝突方向
+		double barrierRadius = 150.0; // バリアの半径
+	};
+
 	using GameEvent = std::variant<
 		EnemyDamagedEvent,
 		EnemyDefeatedEvent,
@@ -109,7 +116,8 @@ namespace Jam::Domain::Events
 		BossAppearedEvent,
 		ItemCollectedEvent,
 		EnemySpawnedEvent,
-		ExplosionEvent
+		ExplosionEvent,
+		BarrierShatteredEvent
 	>;
 
 

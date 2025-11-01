@@ -37,10 +37,10 @@ namespace Jam::Domain::Enemy
 
 		// 攻撃パターンの確率設定
 		m_attackPatterns = {
-			{AttackState::Missile, 0.3f},
-			{AttackState::SummonClown, 0.1f},
-			{AttackState::Bomb, 0.3f},
-			{AttackState::Shockwave,0.3f}
+			{AttackState::Missile,1.0f},
+			{AttackState::SummonClown, 0.0f},
+			{AttackState::Bomb, 0.0f},
+			{AttackState::Shockwave,0.0f}
 		};
 
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::BossHidden);//チョーカーとの接触をなくす
@@ -163,6 +163,16 @@ namespace Jam::Domain::Enemy
 			m_isAttacking = false;
 			m_hasAttackEntered = false;
 			m_attackCooldownTimer = 0.0;
+
+			// バリア破壊イベントを発行
+			Vec2 bossPos = m_body->getPosition();
+			Vec2 impactDir = Vec2::Down(); // デフォルトは下向き（ボスの正面）
+			m_eventQueue.push(Events::BarrierShatteredEvent{
+				bossPos,
+				impactDir,
+				150.0  // バリアの半径
+			});
+
 			return;
 		}
 
@@ -335,27 +345,26 @@ namespace Jam::Domain::Enemy
 				50.0  // 半径
 			);
 			
-			// Missileオブジェクトを作成
-			auto missile = std::make_shared<Missile>(
-				missileBody,
-				m_playerId,
-				m_body->getID(),
-				m_eventQueue,
-				p0, p1, p2, p3,
-				m_status.attackPower,
-				m_missileFlightDuration,
-				m_missileRadius,
-				m_missileReflectedSpeed,
-				m_missileScale
-			);
-			
-			missile->init();
-			
-			// Factoryに登録
-			Jam::Infrastructure::IndependentObjectFactory::instance().registerObject(missile);
-			
-			// 次のミサイルまで待機
-			co_await Jam::Util::WaitSeconds(m_missileSpawnInterval);
+		// Missileオブジェクトを作成
+		auto missile = std::make_shared<Missile>(
+			missileBody,
+			m_playerId,
+			m_body->getID(),
+			m_eventQueue,
+			p0, p1, p2, p3,
+			m_status.attackPower,
+			m_missileFlightDuration,
+			m_missileRadius,
+			m_missileReflectedSpeed,
+			m_missileScale
+		);
+		missile->init();
+		
+		// Factoryに登録
+		Jam::Infrastructure::IndependentObjectFactory::instance().registerObject(missile);
+		
+		// 次のミサイルまで待機
+		co_await Jam::Util::WaitSeconds(m_missileSpawnInterval);
 		}
 	}
 

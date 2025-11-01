@@ -90,6 +90,10 @@ namespace Jam::UseCase
 					{
 						handleExplosion(e);
 					}
+					else if constexpr (std::is_same_v<T, Domain::Events::BarrierShatteredEvent>)
+					{
+						handleBarrierShattered(e);
+					}
 					}, event);
 			}
 		}
@@ -217,10 +221,34 @@ namespace Jam::UseCase
 				m_enemyManager->getAnimator(id).SetBool(U"isRunning", false);
 			}
 		}
+		
 		void handleExplosion(const Domain::Events::ExplosionEvent& e)
 		{
 			m_effectEventQueue.push(ExplosionEffectEvent{
 				e.position,e.color,e.radius,e.duration,e.particleCount
+			});
+		}
+
+		void handleBarrierShattered(const Domain::Events::BarrierShatteredEvent& e)
+		{
+			// ガラス破壊エフェクトを発行
+			m_effectEventQueue.push(GlassShatterEffectEvent{
+				e.position,
+				e.impactDirection,
+				ColorF{0.5, 0.8, 1.0, 0.7}, // 青みがかった透明なガラス色
+				25,                          // 破片数
+				400.0,                       // 破片の飛散速度
+				1.5,                         // エフェクト持続時間
+				e.barrierRadius              // バリアの半径
+			});
+
+			// 衝撃波リングエフェクトを追加
+			m_effectEventQueue.push(RingEffectEvent{
+				e.position,
+				ColorF{0.7, 0.9, 1.0, 0.8}, // 明るい青
+				200.0,                       // 最大半径
+				0.5,                         // 持続時間
+				8.0                          // リングの太さ
 			});
 		}
 	};

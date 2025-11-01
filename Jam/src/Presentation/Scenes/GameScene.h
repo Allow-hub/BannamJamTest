@@ -94,7 +94,7 @@ namespace Jam::Presentation::Scenes
 		{
 			Jam::Presentation::AudioService::get().play(Jam::Presentation::AudioService::Sound::BGM_Game, true);
 			//デバッグ用
-			Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_1; // CoreManagerのenumに追加が必要
+			Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_3; // CoreManagerのenumに追加が必要
 
 			auto& core = Jam::Foundation::CoreManager::Instance();
 			core.reset();
