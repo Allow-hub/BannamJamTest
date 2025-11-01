@@ -166,6 +166,7 @@
     <Image Include="App\Assets\Player\ChokerThrow\choker_throw_27.png" />
     <Image Include="App\Assets\Player\ChokerThrow\choker_throw_28.png" />
     <Image Include="App\Assets\Player\ChokerThrow\choker_throw_29.png" />
+    <Image Include="App\Assets\Select\select_area.png" />
     <Image Include="App\Assets\Stage\Goal.png" />
     <Image Include="App\Assets\Story\background_stage1_1_start.png" />
     <Image Include="App\Assets\Story\background_stage1_2_clear.png" />
@@ -545,6 +546,7 @@
     <Media Include="App\Assets\Sounds\se_jump.mp3" />
   </ItemGroup>
   <ItemGroup>
+    <Font Include="App\Assets\Font\Corporate-Logo-Bold-ver3.otf" />
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />
     <Font Include="App\example\font\RocknRoll\RocknRollOne-Regular.ttf" />
     <Font Include="App\Assets\Font\PixelMplus12-Bold.ttf" />

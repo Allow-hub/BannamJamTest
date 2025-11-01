@@ -77,7 +77,7 @@ namespace Jam::Presentation
 		StoryManager()
 		{
 			const int32 mainFontSize = static_cast<int32>(Scene::Height() * 0.05);
-			font = Font(mainFontSize, U"Assets/Font/PixelMplus12-Bold.ttf", FontStyle::Italic);
+			font = Font(mainFontSize, U"Assets/Font/Corporate-Logo-Bold-ver3.otf", FontStyle::Bold);
 		}
 
 		bool init(const FilePath& csvPath,
@@ -213,13 +213,12 @@ namespace Jam::Presentation
 			const auto& scene = scenes[currentSceneIndex];
 
 			// 背景
-			if (backgroundTexture) backgroundTexture.resized(Scene::Size()).draw();
+			if (backgroundTexture) backgroundTexture.resized(Scene::Size().x, Scene::Size().y).draw();
 			else Scene::Rect().draw(ColorF(0.8, 0.9, 1.0));
 
-			const Vec2 portraitSize = { 0.6,0.6 };
 			const Speaker currentSpeaker = getCurrentSpeaker();
 
-			// 立ち絵
+			// === 立ち絵 ===
 			for (const auto& line : scene.lines)
 			{
 				Speaker sp = EnumConverter::toSpeaker(line.speaker);
@@ -228,17 +227,24 @@ namespace Jam::Presentation
 					const auto& portraits = portraitTextures.at(sp);
 					if (portraits.contains(line.portrait))
 					{
-						// しゃべっている人かどうかで色を変える
 						const ColorF color = (sp == currentSpeaker)
 							? activeSpeakerColor
 							: inactiveSpeakerColor;
 
-						portraits.at(line.portrait)
-							.scaled(portraitSize)
-							.drawAt(getPositionForLocation(line.location, portraitSize), color);
+						const Texture& tex = portraits.at(line.portrait);
+
+						// 画面の高さに対して相対的にスケーリング（例: 高さの60%）
+						const double scale = (Scene::Height() * 1.0) / tex.height();
+
+						// 描画位置を計算
+						const Vec2 position = getPositionForLocation(line.location, tex.size() * scale);
+
+						tex.scaled(scale)
+							.drawAt(position, color);
 					}
 				}
 			}
+
 
 			// テキストボックス
 			const RectF box = getTextBox();
