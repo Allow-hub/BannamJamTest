@@ -27,7 +27,7 @@ namespace Jam::Presentation
 		ColorF inactiveSpeakerColor = ColorF(0.5);  // しゃべっていない人の色
 
 		// === 位置・サイズ関連 ===
-		Vec2 getPositionForLocation(Location location, const Size& portraitSize) const
+		Vec2 getPositionForLocation(Location location, const Vec2& portraitSize) const
 		{
 			const double w = Scene::Width();
 			const double h = Scene::Height();
@@ -216,7 +216,7 @@ namespace Jam::Presentation
 			if (backgroundTexture) backgroundTexture.resized(Scene::Size()).draw();
 			else Scene::Rect().draw(ColorF(0.8, 0.9, 1.0));
 
-			const Size portraitSize = getPortraitSize();
+			const Vec2 portraitSize = { 0.6,0.6 };
 			const Speaker currentSpeaker = getCurrentSpeaker();
 
 			// 立ち絵
@@ -234,7 +234,7 @@ namespace Jam::Presentation
 							: inactiveSpeakerColor;
 
 						portraits.at(line.portrait)
-							.resized(portraitSize)
+							.scaled(portraitSize)
 							.drawAt(getPositionForLocation(line.location, portraitSize), color);
 					}
 				}
@@ -254,12 +254,30 @@ namespace Jam::Presentation
 			}
 
 			// 1文字ずつ送りテキスト
-			font(currentVisibleText).draw(box.x + 20, box.y + 90, ColorF(1.0));
+			font(wrapText(currentVisibleText, 31)).draw(box.x + 20, box.y + 90, ColorF(1.0));
 
 			// 進行表示
 			font(U"Progress: {}/{}"_fmt(currentSceneIndex + 1, scenes.size()))
 				.draw(Arg::bottomRight = Vec2(Scene::Width() - 20, Scene::Height() - 20), ColorF(1.0));
 		}
+
+		String wrapText(const String& text, size_t maxCharsPerLine)const
+		{
+			String wrapped;
+			size_t count = 0;
+			for (auto ch : text)
+			{
+				wrapped << ch;
+				++count;
+				if (count >= maxCharsPerLine && ch != U'\n')
+				{
+					wrapped << U'\n';
+					count = 0;
+				}
+			}
+			return wrapped;
+		}
+
 
 		// === スキップ制御 ===
 		void skip(bool enable)
