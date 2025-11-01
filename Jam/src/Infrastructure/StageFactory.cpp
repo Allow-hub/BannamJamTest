@@ -32,6 +32,7 @@ namespace Jam::Infrastructure {
                     
                     Vec2 offset = createdObjects[0].rect.center() - baseCenter;
                     result.bodyOffsets.push_back(offset);
+                    result.bodyGroundSides.push_back(createdObjects[0].groundSide);
                     
                     // 追加の物理ボディを処理（groundSide展開時）
                     // ※ダメージ床にはgroundSideがないため、このループは通常のステージのみ
@@ -45,6 +46,7 @@ namespace Jam::Infrastructure {
                             
                             Vec2 additionalOffset = createdObjects[i].rect.center() - baseCenter;
                             result.bodyOffsets.push_back(additionalOffset);
+                            result.bodyGroundSides.push_back(createdObjects[i].groundSide);
                         }
                     }
                     
