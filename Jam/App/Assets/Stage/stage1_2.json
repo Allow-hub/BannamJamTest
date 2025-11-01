@@ -73,7 +73,7 @@
     },
     {
       "rect": [ 2250, 900, 250, 950 ],
-      "type": "solid",
+      "type": "damage",
       "metadata": "ダメージ床"
     },
     {
@@ -201,7 +201,7 @@
     },
     {
       "rect": [ 4550, 150, 1350, 50 ],
-      "type": "solid",
+      "type": "damage",
       "metadata": "ダメージ床02"
     },
     {
@@ -211,17 +211,17 @@
     },
     {
       "rect": [ 4850, 800, 1550, 50 ],
-      "type": "solid",
+      "type": "damage",
       "metadata": "ダメージ床03"
     },
     {
       "rect": [ 4150, 1350, 1550, 3000 ],
-      "type": "solid",
+      "type": "damage",
       "metadata": "ダメージ床04"
     },
     {
       "rect": [ 6000, 1500, 550, 900 ],
-      "type": "solid",
+      "type": "damage",
       "metadata": "ダメージ床終わりの床"
     },
     {
@@ -397,7 +397,7 @@
     },
     {
       "rect": [ 9800, 50, 2400, 315 ],
-      "type": "solid",
+      "type": "damage",
       "metadata": "ダメージ床05"
     },
     {
@@ -408,7 +408,7 @@
     },
     {
       "rect": [ 10800, 835, 1300, 65 ],
-      "type": "solid",
+      "type": "damage",
       "metadata": "ダメージ床06"
     },
     {
