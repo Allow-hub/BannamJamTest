@@ -260,7 +260,7 @@ namespace Jam::Presentation
 			}
 
 			// 1文字ずつ送りテキスト
-			font(wrapText(currentVisibleText, 31)).draw(box.x + 20, box.y + 90, ColorF(1.0));
+			font(wrapText(currentVisibleText, 35)).draw(box.x + 20, box.y + 110, ColorF(1.0));
 
 			// 進行表示
 			font(U"Progress: {}/{}"_fmt(currentSceneIndex + 1, scenes.size()))

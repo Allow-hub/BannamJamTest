@@ -110,6 +110,8 @@
     <ClInclude Include="src\Domain\Stage\MovingDamagePlatformStage.h" />
     <ClInclude Include="src\Domain\Stage\MovingPlatformStage.h" />
     <ClInclude Include="src\Domain\Stage\OneWayPlatformStage.h" />
+    <ClInclude Include="src\Presentation\ResourceManager.h" />
+    <ClInclude Include="src\Presentation\TextureManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />
@@ -133,6 +135,12 @@
     <Media Include="App\Assets\Sounds\se_explosion.mp3" />
     <Media Include="App\Assets\Sounds\bgm_ingame.mp3" />
     <Media Include="App\Assets\Sounds\se_chokerThrow.mp3" />
+    <Media Include="App\Assets\Sounds\se_attack.mp3" />
+    <Media Include="App\Assets\Sounds\se_barrier.mp3" />
+    <Media Include="App\Assets\Sounds\se_bossDown.mp3" />
+    <Media Include="App\Assets\Sounds\se_button.mp3" />
+    <Media Include="App\Assets\Sounds\se_fallDamage.mp3" />
+    <Media Include="App\Assets\Sounds\se_goal.mp3" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\engine\texture\box-shadow\128.png" />
@@ -353,6 +361,36 @@
     <Image Include="App\Assets\Select\stage1_1.png" />
     <Image Include="App\Assets\Select\stage1_2.png" />
     <Image Include="App\Assets\Select\stage1_3.png" />
+    <Image Include="App\Assets\Player\Damage\damege_00.png" />
+    <Image Include="App\Assets\Player\Damage\damege_01.png" />
+    <Image Include="App\Assets\Player\Damage\damege_02.png" />
+    <Image Include="App\Assets\Player\Damage\damege_03.png" />
+    <Image Include="App\Assets\Player\Damage\damege_04.png" />
+    <Image Include="App\Assets\Player\Damage\damege_05.png" />
+    <Image Include="App\Assets\Player\Damage\damege_06.png" />
+    <Image Include="App\Assets\Player\Damage\damege_07.png" />
+    <Image Include="App\Assets\Player\Damage\damege_08.png" />
+    <Image Include="App\Assets\Player\Damage\damege_09.png" />
+    <Image Include="App\Assets\Player\Damage\damege_10.png" />
+    <Image Include="App\Assets\Player\Damage\damege_11.png" />
+    <Image Include="App\Assets\Player\Damage\damege_12.png" />
+    <Image Include="App\Assets\Player\Damage\damege_13.png" />
+    <Image Include="App\Assets\Player\Damage\damege_14.png" />
+    <Image Include="App\Assets\Player\Damage\damege_15.png" />
+    <Image Include="App\Assets\Player\Damage\damege_16.png" />
+    <Image Include="App\Assets\Player\Damage\damege_17.png" />
+    <Image Include="App\Assets\Player\Damage\damege_18.png" />
+    <Image Include="App\Assets\Player\Damage\damege_19.png" />
+    <Image Include="App\Assets\Player\Damage\damege_20.png" />
+    <Image Include="App\Assets\Player\Damage\damege_21.png" />
+    <Image Include="App\Assets\Player\Damage\damege_22.png" />
+    <Image Include="App\Assets\Player\Damage\damege_23.png" />
+    <Image Include="App\Assets\Player\Damage\damege_24.png" />
+    <Image Include="App\Assets\Player\Damage\damege_25.png" />
+    <Image Include="App\Assets\Player\Damage\damege_26.png" />
+    <Image Include="App\Assets\Player\Damage\damege_27.png" />
+    <Image Include="App\Assets\Player\Damage\damege_28.png" />
+    <Image Include="App\Assets\Player\Damage\damege_29.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />

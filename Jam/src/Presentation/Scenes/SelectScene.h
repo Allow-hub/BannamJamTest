@@ -37,6 +37,9 @@ namespace Jam::Presentation::Scenes
 		SelectScene(const InitData& init)
 			: IScene{ init }
 		{
+			ResourceManager::initPlayerChoker();
+			ResourceManager::loadGroup(ResourceGroup::PlayerChoker);
+
 			FontAsset::Register(U"SelectTitleFont", 60, Typeface::Bold);
 			FontAsset::Register(U"SelectMenuFont", 40, Typeface::Bold);
 			FontAsset::Register(U"SelectStageFont", 30, Typeface::Regular);

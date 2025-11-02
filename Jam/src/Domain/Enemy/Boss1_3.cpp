@@ -39,7 +39,7 @@ namespace Jam::Domain::Enemy
 		// 攻撃パターンの確率設定
 		m_attackPatterns = {
 			{AttackState::Missile,0.3f},
-			{AttackState::SummonClown, 0.1f},
+			{AttackState::SummonClown, 0.2f},
 			{AttackState::Bomb, 0.3f},
 			{AttackState::Shockwave,0.3f}
 		};
@@ -421,6 +421,24 @@ namespace Jam::Domain::Enemy
 
 			if (clownEnemy)
 			{
+				Jam::Domain::Enemy::PatrolRoute route;
+				auto patrolPoints = { Vec2(0.0, 0.0) ,Vec2(1.0, 1.0) };
+				for (const auto& p : patrolPoints)
+				{
+					route.points << Vec2{ p.x, p.y };
+				}
+				route.loop = true;
+				route.waitTime = 0.0;
+				route.foundDistance = 1000.0;
+				clownEnemy->setPatrolRoute(route);
+
+				Jam::Domain::Enemy::ChaseAISettings chaseSettings;
+
+				chaseSettings.attackRange = 700.0;
+				chaseSettings.loseRange =1000.0;
+				chaseSettings.moveSpeedFactor = 1.2;
+
+				clownEnemy->setChaseSettings(chaseSettings);
 				clownBody->setCollisionListener(clownEnemy);
 
 				// EnemySpawnedイベントを発行

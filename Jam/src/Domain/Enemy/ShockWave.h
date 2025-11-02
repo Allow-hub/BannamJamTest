@@ -15,7 +15,7 @@ namespace Jam::Domain::Enemy
 		double m_animTimer = 0.0;
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_body;
 		Jam::Domain::Events::GameEventQueue& m_eventQueue;
-		double m_attackPower = 10.0;
+		double m_attackPower = 70.0;
 		double m_timer = 0.0;
 		double m_duration;
 		Vec2 m_startRect;

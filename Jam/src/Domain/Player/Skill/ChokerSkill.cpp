@@ -277,8 +277,8 @@ namespace Jam::Domain::Player
 	{
 		if (m_cooldownTimer > 0.0)
 		{
-			double progress = 1.0 - (m_cooldownTimer / m_cooldownTime);
-			RectF(10, 10, 200 * progress, 10).draw(ColorF(Palette::Violet, 0.5));
+			//double progress = 1.0 - (m_cooldownTimer / m_cooldownTime);
+			//RectF(10, 10, 200 * progress, 10).draw(ColorF(Palette::Violet, 0.5));
 		}
 
 		if (!m_isActive) return;

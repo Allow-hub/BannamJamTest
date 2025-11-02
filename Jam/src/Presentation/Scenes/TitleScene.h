@@ -2,6 +2,7 @@
 #include <Siv3D.hpp> // Siv3D v0.6.14
 #include "../../Presentation/AudioService.h"
 #include "TransitionManager.h"
+#include "../../Presentation/ResourceManager.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -39,6 +40,12 @@ namespace Jam::Presentation::Scenes
 		TitleScene(const InitData& init)
 			: IScene{ init }
 		{
+			ResourceManager::initPlayerIdle();
+			ResourceManager::loadGroup(ResourceGroup::PlayerIdle);
+
+			ResourceManager::initPlayerJump();
+			ResourceManager::loadGroup(ResourceGroup::PlayerJump);
+
 			backgroundTexture = Texture(U"Assets/Title/background.png");
 			logoTexture = Texture(U"Assets/Title/logo.png");
 			companyLogoTexture = Texture(U"Assets/Title/companyLogo.png");
@@ -74,7 +81,7 @@ namespace Jam::Presentation::Scenes
 
 			backgroundTexture.scaled(w / backgroundTexture.width()).draw(0, 0);
 			logoTexture.scaled(w / logoTexture.width()*0.5).draw(0, h / 2.3);
-			companyLogoTexture.scaled(w / companyLogoTexture.width() * 0.2).draw(w / 1.3, h/1.08);
+			companyLogoTexture.scaled(w / companyLogoTexture.width() * 0.11).draw(w / 1.2, h/1.2);
 		}
 
 		void drawFadeIn(double t) const override
