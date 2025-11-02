@@ -204,20 +204,20 @@
   {
     "type": "Eye",
     "position": {
-      "x": 8200,
-      "y": -500
+      "x": 8400,
+      "y": -350
     },
     "extra": {
       "ai": {
         "patrol": {
           "patrolPoints": [
             {
-              "x": 300,
-              "y": -200
+              "x": 8200,
+              "y": -300
             },
             {
-              "x": -300,
-              "y": -200
+              "x": 8600,
+              "y": -300
             }
           ],
           "loop": true,
@@ -424,12 +424,12 @@
         "patrol": {
           "patrolPoints": [
             {
-              "x": 300,
-              "y": -200
+              "x": 8700,
+              "y": 1400
             },
             {
-              "x": -300,
-              "y": -200
+              "x": -870,
+              "y": 1400
             }
           ],
           "loop": true,
@@ -603,19 +603,19 @@
     "type": "LittleDevil",
     "position": {
       "x": 14400,
-      "y": -600
+      "y": 900
     },
     "extra": {
       "ai": {
         "patrol": {
           "patrolPoints": [
             {
-              "x": 300,
-              "y": -200
+              "x": 14400,
+              "y": 1100
             },
             {
-              "x": -300,
-              "y": -200
+              "x": 14400,
+              "y": 700
             }
           ],
           "loop": true,
@@ -634,19 +634,19 @@
     "type": "Eye",
     "position": {
       "x": 14300,
-      "y": -500
+      "y": 900
     },
     "extra": {
       "ai": {
         "patrol": {
           "patrolPoints": [
             {
-              "x": 300,
-              "y": -200
+              "x": 14100,
+              "y": 700
             },
             {
-              "x": -300,
-              "y": -200
+              "x": 14500,
+              "y": 200
             }
           ],
           "loop": true,
@@ -864,6 +864,161 @@
             {
               "x": -300,
               "y": -200
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
+        },
+        "chase": {
+          "attackRange": 600.0,
+          "loseRange": 700.0,
+          "moveSpeedFactor": 1.2
+        }
+      }
+    }
+  },
+  {
+    "type": "LittleDevil",
+    "position": {
+      "x": 15700,
+      "y": 200
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 15700,
+              "y": 200
+            },
+            {
+              "x": 15700,
+              "y": 200
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
+        },
+        "chase": {
+          "attackRange": 600.0,
+          "loseRange": 700.0,
+          "moveSpeedFactor": 1.2
+        }
+      }
+    }
+  },
+  {
+    "type": "LittleDevil",
+    "position": {
+      "x": 15500,
+      "y": 0
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 15500,
+              "y": 0
+            },
+            {
+              "x": 15500,
+              "y": 0
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
+        },
+        "chase": {
+          "attackRange": 600.0,
+          "loseRange": 700.0,
+          "moveSpeedFactor": 1.2
+        }
+      }
+    }
+  },
+  {
+    "type": "LittleDevil",
+    "position": {
+      "x": 15750,
+      "y": -500
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 15750,
+              "y": -500
+            },
+            {
+              "x": 15750,
+              "y": -500
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
+        },
+        "chase": {
+          "attackRange": 600.0,
+          "loseRange": 700.0,
+          "moveSpeedFactor": 1.2
+        }
+      }
+    }
+  },
+  {
+    "type": "Eye",
+    "position": {
+      "x": 15750,
+      "y": -500
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 15750,
+              "y": -500
+            },
+            {
+              "x": -15750,
+              "y": -500
+            }
+          ],
+          "loop": true,
+          "waitTime": 1.0,
+          "foundDistance": 700.0
+        },
+        "chase": {
+          "attackRange": 600.0,
+          "loseRange": 700.0,
+          "moveSpeedFactor": 1.2
+        }
+      }
+    }
+  },
+  {
+    "type": "Eye",
+    "position": {
+      "x": 20100,
+      "y": 300
+    },
+    "extra": {
+      "ai": {
+        "patrol": {
+          "patrolPoints": [
+            {
+              "x": 20100,
+              "y": 300
+            },
+            {
+              "x": 20100,
+              "y": 300
             }
           ],
           "loop": true,

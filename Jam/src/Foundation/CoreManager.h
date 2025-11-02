@@ -66,7 +66,7 @@ namespace Jam::Foundation
 			case StageName::Stage1_2:
 				return StageData{ Vec2(50, -5), 2000.0,
 					{Vec2(4050, -200),Vec2(6350, -250),Vec2(9450, 1400)},
-					GoalData{ Vec2(12800,1800 ), Vec2(200, 200) } };
+					GoalData{ Vec2(12800,1600 ), Vec2(200, 200) } };
 			case StageName::Stage1_3:
 				return StageData{ Vec2(50, -5), 550.0,
 					{ Vec2(-10000, -10000), Vec2(-10000, -10000), Vec2(-10000, -10000) },
