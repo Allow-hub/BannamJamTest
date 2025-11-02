@@ -54,7 +54,7 @@ namespace Jam::Presentation
 			load(Sound::BGM_Title, samePath + U"bgm_title.mp3");
 			load(Sound::BGM_Story1, samePath + U"bgm_story1_1.mp3");
 			// 将来的に追加する場合
-			// load(Sound::BGM_Story2, samePath + U"bgm_story2.mp3");
+			 load(Sound::BGM_Story2, samePath + U"bgm_hauntedHouse.mp3");
 			// load(Sound::BGM_Story3, samePath + U"bgm_story3.mp3");
 			load(Sound::BGM_Game, samePath + U"bgm_ingame.mp3");
 		}

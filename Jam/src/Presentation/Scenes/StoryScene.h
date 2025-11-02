@@ -106,9 +106,14 @@ namespace Jam::Presentation::Scenes
 			{
 			// Story 1系 (1_1, 1_2, 1_3)
 			case Jam::Foundation::StageName::Stage1_1:
+				if (core.getClear())
+					storyBGM = Jam::Presentation::AudioService::Sound::BGM_Story2;
+				else
+					storyBGM = Jam::Presentation::AudioService::Sound::BGM_Story1;
+				break;
 			case Jam::Foundation::StageName::Stage1_2:
 			case Jam::Foundation::StageName::Stage1_3:
-				storyBGM = Jam::Presentation::AudioService::Sound::BGM_Story1;
+				storyBGM = Jam::Presentation::AudioService::Sound::BGM_Story2;
 				break;
 				
 			default:

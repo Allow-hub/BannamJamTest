@@ -1,561 +1,129 @@
-﻿  stdafx.cpp
-  Main.cpp
-  Bomb.cpp
-  Boss1_3.cpp
-  Clown.cpp
-  EnemyBase.cpp
-  Eye.cpp
-  GothicLolitaDoll.cpp
-  LittleDevil.cpp
-  Missile.cpp
-  Ribbon.cpp
-  ShockWave.cpp
-  Spider.cpp
-  Player.cpp
-  ChokerSkill.cpp
-  StageFactory.cpp
-  EnemyFactory.cpp
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Ribbon.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Ribbon.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Spider.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Spider.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/GothicLolitaDoll.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/GothicLolitaDoll.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Eye.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Eye.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Boss1_3.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Boss1_3.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Clown.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Clown.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\NormalStage.h(21,28): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Infrastructure/StageFactory.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingPlatformStage.h(62,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Infrastructure/StageFactory.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingPlatformStage.h(79,36): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Infrastructure/StageFactory.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingPlatformStage.h(96,36): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Infrastructure/StageFactory.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\OneWayPlatformStage.h(18,28): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Infrastructure/StageFactory.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Bomb.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Bomb.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/ShockWave.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/ShockWave.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Missile.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Missile.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(97,39): warning C4100: 'e': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/GothicLolitaDoll.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(104,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/GothicLolitaDoll.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(108,37): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/GothicLolitaDoll.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(112,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/GothicLolitaDoll.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(123,44): warning C4100: 'info': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/GothicLolitaDoll.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\DamageStage.h(91,63): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Infrastructure/StageFactory.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(97,39): warning C4100: 'e': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Ribbon.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(104,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Ribbon.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(108,37): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Ribbon.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(112,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Ribbon.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(123,44): warning C4100: 'info': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Ribbon.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(97,39): warning C4100: 'e': 参照されないパラメーター
-  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(97,39): warning C4100: 'e': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Boss1_3.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(104,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Boss1_3.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(104,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(108,37): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Boss1_3.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(108,37): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(112,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Boss1_3.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(112,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(123,44): warning C4100: 'info': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Boss1_3.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(123,44): warning C4100: 'info': 参照されないパラメーター
-  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TransitionManager.h(40,15): warning C4244: '初期化中': 'Arithmetic' から 's3d::int32' への変換です。データが失われる可能性があります。
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TransitionManager.h(40,15): warning C4244:         with
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TransitionManager.h(40,15): warning C4244:         [
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TransitionManager.h(40,15): warning C4244:             Arithmetic=double
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TransitionManager.h(40,15): warning C4244:         ]
+﻿  Main.cpp
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TransitionManager.h(40,15): warning C4244: '初期化中': 'Arithmetic' から 's3d::int32' への変換です。データが失われる可能性があります。
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TransitionManager.h(40,15): warning C4244:         with
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TransitionManager.h(40,15): warning C4244:         [
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TransitionManager.h(40,15): warning C4244:             Arithmetic=double
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TransitionManager.h(40,15): warning C4244:         ]
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TransitionManager.h(39,14): warning C4189: 'i': ローカル変数が初期化されましたが、参照されていません
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TransitionManager.h(39,14): warning C4189: 'i': ローカル変数が初期化されましたが、参照されていません
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(97,39): warning C4100: 'e': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Eye.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\GothicLolitaDoll.cpp(28,48): warning C4100: 'e': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/GothicLolitaDoll.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(104,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Eye.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(108,37): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Eye.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\GothicLolitaDoll.cpp(57,93): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/GothicLolitaDoll.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(112,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Eye.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(123,44): warning C4100: 'info': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Eye.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(97,39): warning C4100: 'e': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(104,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(108,37): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(112,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(123,44): warning C4100: 'info': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(97,39): warning C4100: 'e': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(104,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(108,37): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(112,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(123,44): warning C4100: 'info': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(97,39): warning C4100: 'e': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Bomb.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(104,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Bomb.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingDamagePlatformStage.h(116,69): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Infrastructure/StageFactory.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(108,37): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Bomb.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(112,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Bomb.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(123,44): warning C4100: 'info': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Bomb.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingDamagePlatformStage.h(152,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Infrastructure/StageFactory.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingDamagePlatformStage.h(169,36): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Infrastructure/StageFactory.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingDamagePlatformStage.h(186,36): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Infrastructure/StageFactory.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(97,39): warning C4100: 'e': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Clown.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(104,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Clown.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\Ribbon.cpp(53,37): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Ribbon.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(108,37): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Clown.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(112,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Clown.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(123,44): warning C4100: 'info': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Clown.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(97,39): warning C4100: 'e': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/ShockWave.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(104,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/ShockWave.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(108,37): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/ShockWave.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(112,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/ShockWave.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(123,44): warning C4100: 'info': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/ShockWave.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\Ribbon.cpp(135,83): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Ribbon.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\LittleDevil.cpp(24,43): warning C4100: 'e': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(97,39): warning C4100: 'e': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Missile.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(104,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Missile.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(108,37): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Missile.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(112,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Missile.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(123,44): warning C4100: 'info': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Missile.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\LittleDevil.cpp(51,88): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/LittleDevil.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(97,39): warning C4100: 'e': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Spider.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(104,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Spider.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(108,37): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Spider.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(112,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Spider.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(123,44): warning C4100: 'info': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Spider.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TransitionManager.h(55,33): warning C4244: '引数': 'double' から 's3d::Rect::value_type' への変換です。データが失われる可能性があります。
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TransitionManager.h(55,33): warning C4244: '引数': 'double' から 's3d::Rect::value_type' への変換です。データが失われる可能性があります。
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TransitionManager.h(61,25): warning C4244: '引数': 'double' から 's3d::Rect::value_type' への変換です。データが失われる可能性があります。
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TransitionManager.h(61,25): warning C4244: '引数': 'double' から 's3d::Rect::value_type' への変換です。データが失われる可能性があります。
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(97,39): warning C4100: 'e': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(104,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(108,37): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(112,38): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(123,44): warning C4100: 'info': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.cpp(21,22): warning C4305: '引数': 'int' から 'const bool' へ切り詰めます。
-  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\Spider.cpp(44,16): warning C4189: 'distance': ローカル変数が初期化されましたが、参照されていません
-  (ソース ファイル '/src/Domain/Enemy/Spider.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\Spider.cpp(43,10): warning C4189: 'currentType': ローカル変数が初期化されましたが、参照されていません
-  (ソース ファイル '/src/Domain/Enemy/Spider.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.cpp(50,22): warning C4244: '-=': 'const double' から 'int' への変換です。データが失われる可能性があります。
-  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\UseCase\AttackProcessor.h(48,18): warning C4100: 'attackerBodyId': 参照されないパラメーター
-  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EyeBeam.h(89,76): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Eye.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EyeBeam.h(90,76): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Eye.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\ShockWave.cpp(132,86): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/ShockWave.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\ShockWave.cpp(136,86): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/ShockWave.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EyeBeam.h(89,76): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EyeBeam.h(90,76): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/UseCase/EnemyFactory.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\Eye.cpp(211,80): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Eye.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.cpp(201,86): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/EnemyBase.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\Clown.cpp(87,36): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Clown.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\UseCase\AttackProcessor.h(48,18): warning C4100: 'attackerBodyId': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Boss1_3.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\Clown.cpp(118,82): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Clown.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Player.cpp(154,31): warning C4100: 'direction': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\Boss1_3.cpp(84,10): warning C4189: 'dir': ローカル変数が初期化されましたが、参照されていません
-  (ソース ファイル '/src/Domain/Enemy/Boss1_3.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Player.cpp(288,83): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Player.cpp(290,83): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Player.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\Boss1_3.cpp(115,41): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Boss1_3.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\Boss1_3.cpp(260,39): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Boss1_3.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.cpp(61,50): warning C4100: 'facingRight': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.cpp(93,43): warning C4100: 'position': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\Boss1_3.cpp(362,43): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Boss1_3.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.cpp(222,12): warning C4456: 'playerBody' を宣言すると、以前のローカル宣言が隠蔽されます
-  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
-      C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.cpp(198,11):
-      'playerBody' の宣言を確認してください
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.cpp(314,66): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Player\Skill\ChokerSkill.cpp(315,66): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Player/Skill/ChokerSkill.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\Boss1_3.cpp(437,41): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Boss1_3.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\Boss1_3.cpp(474,40): warning C4100: 'deltaTime': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Boss1_3.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\Missile.cpp(216,62): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Missile.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\Missile.cpp(217,62): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Missile.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\Boss1_3.cpp(611,84): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Boss1_3.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\Bomb.cpp(149,59): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Bomb.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\Bomb.cpp(150,59): warning C4100: 'other': 参照されないパラメーター
-  (ソース ファイル '/src/Domain/Enemy/Bomb.cpp' をコンパイルしています)
-  
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\UseCase\AttackProcessor.h(48,18): warning C4100: 'attackerBodyId': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TitleScene.h(65,52): warning C4244: '引数': 'double' から 's3d::int32' への変換です。データが失われる可能性があります。
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Infrastructure\Siv3DPhysicsBody.h(142,47): warning C4100: 'platformTopY': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\Scenes\TitleScene.h(72,51): warning C4244: '引数': 'double' から 's3d::int32' への変換です。データが失われる可能性があります。
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Infrastructure\Siv3DPhysicsBody.h(142,31): warning C4100: 'enabled': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\UseCase\AttackProcessor.h(48,18): warning C4100: 'attackerBodyId': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\DamageStage.h(91,63): warning C4100: 'other': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Infrastructure\Siv3DPhysicsBody.h(142,47): warning C4100: 'platformTopY': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingDamagePlatformStage.h(116,69): warning C4100: 'other': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Infrastructure\Siv3DPhysicsBody.h(142,31): warning C4100: 'enabled': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingDamagePlatformStage.h(152,38): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\DamageStage.h(91,63): warning C4100: 'other': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingDamagePlatformStage.h(169,36): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingDamagePlatformStage.h(116,69): warning C4100: 'other': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingDamagePlatformStage.h(186,36): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingDamagePlatformStage.h(152,38): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\NormalStage.h(21,28): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingDamagePlatformStage.h(169,36): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingPlatformStage.h(62,38): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingDamagePlatformStage.h(186,36): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingPlatformStage.h(79,36): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\NormalStage.h(21,28): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingPlatformStage.h(96,36): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingPlatformStage.h(62,38): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Stage\OneWayPlatformStage.h(18,28): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingPlatformStage.h(79,36): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\MovingPlatformStage.h(96,36): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Stage\OneWayPlatformStage.h(18,28): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(97,39): warning C4100: 'e': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(11,39): warning C4100: 'enemy': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(104,38): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyAI\IEnemyAI.h(13,38): warning C4100: 'enemy': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(108,37): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(97,39): warning C4100: 'e': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(112,38): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(104,38): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(123,44): warning C4100: 'info': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(108,37): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Infrastructure\Background\BackgroundLoader.h(97,33): warning C4101: 'e': ローカル変数は 1 度も使われていません。
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(112,38): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Presentation\SettingManager.h(187,22): warning C4834: [[nodiscard]] 属性を持つ関数の戻り値を破棄しています
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\Enemy\EnemyBase.h(123,44): warning C4100: 'info': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\FlagmentMemory.h(74,76): warning C4100: 'other': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Infrastructure\Background\BackgroundLoader.h(126,33): warning C4101: 'e': ローカル変数は 1 度も使われていません。
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\FlagmentMemory.h(75,76): warning C4100: 'other': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\PostEffect\BloomManager.h(155,78): warning C4100: 'applyVignette': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Presentation\Scenes\GameScene.h(37,10): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\SettingManager.h(200,22): warning C4834: [[nodiscard]] 属性を持つ関数の戻り値を破棄しています
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Presentation\Scenes\GameScene.h(38,10): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\FlagmentMemory.h(74,76): warning C4100: 'other': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\GoalArea.h(23,22): warning C4100: 'deltaTime': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\FlagmentMemory.h(75,76): warning C4100: 'other': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\GoalArea.h(50,76): warning C4100: 'other': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\Scenes\GameScene.h(37,10): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Domain\GoalArea.h(51,76): warning C4100: 'other': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\Scenes\GameScene.h(38,10): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Presentation\StoryManager.h(30,62): warning C4100: 'portraitSize': 参照されないパラメーター
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\GoalArea.h(27,22): warning C4100: 'deltaTime': 参照されないパラメーター
   (ソース ファイル '/Main.cpp' をコンパイルしています)
   
-     ライブラリ C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.lib とオブジェクト C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exp を作成中
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\GoalArea.h(62,76): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\Domain\GoalArea.h(63,76): warning C4100: 'other': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\StoryManager.h(30,62): warning C4100: 'portraitSize': 参照されないパラメーター
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+C:\Users\student\Documents\BannamJamTest\Jam\src\Presentation\Scenes\ResultScene.h(233,72): warning C4244: '引数': 'double' から 's3d::Point::value_type' への変換です。データが失われる可能性があります。
+  (ソース ファイル '/Main.cpp' をコンパイルしています)
+  
+     ライブラリ C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.lib とオブジェクト C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exp を作成中
   コード生成しています。
-C:\Users\PC_User\Documents\BannamJamTest\Jam\src\Infrastructure\EnemyLoader.h(135): warning C4715: 'Jam::Infrastructure::EnemyLoader::loadEnemyForStageFromJSON': 値を返さないコントロール パスがあります。
-  12173 of 12237 functions (99.5%) were compiled, the rest were copied from previous compilation.
-    250 functions were new in current compilation
-    3 functions had inline decision re-evaluated but remain unchanged
+C:\Users\student\Documents\BannamJamTest\Jam\src\Infrastructure\EnemyLoader.h(135): warning C4715: 'Jam::Infrastructure::EnemyLoader::loadEnemyForStageFromJSON': 値を返さないコントロール パスがあります。
+  503 of 12978 functions ( 3.9%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    240 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
-  Jam.vcxproj -> C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exe
-  C:\Users\PC_User\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exe
+  Jam.vcxproj -> C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exe
+  C:\Users\student\Documents\BannamJamTest\Jam\Intermediate\Jam\Release\Jam.exe
   1 個のファイルをコピーしました
