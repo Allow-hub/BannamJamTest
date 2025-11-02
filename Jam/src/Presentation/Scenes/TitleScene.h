@@ -81,7 +81,7 @@ namespace Jam::Presentation::Scenes
 
 			backgroundTexture.scaled(w / backgroundTexture.width()).draw(0, 0);
 			logoTexture.scaled(w / logoTexture.width()*0.5).draw(0, h / 2.3);
-			companyLogoTexture.scaled(w / companyLogoTexture.width() * 0.2).draw(w / 1.3, h/1.08);
+			companyLogoTexture.scaled(w / companyLogoTexture.width() * 0.11).draw(w / 1.2, h/1.2);
 		}
 
 		void drawFadeIn(double t) const override
