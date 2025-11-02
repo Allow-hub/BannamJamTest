@@ -545,6 +545,8 @@
     <None Include="src\Domain\Stage\Imata_Task.md" />
   </ItemGroup>
   <ItemGroup>
+    <Media Include="App\Assets\Sounds\bgm_hauntedHouse.mp3" />
+    <Media Include="App\Assets\Sounds\bgm_story1_1.mp3" />
     <Media Include="App\Assets\Sounds\se_attack.mp3" />
     <Media Include="App\Assets\Sounds\se_barrier.mp3" />
     <Media Include="App\Assets\Sounds\se_bossDown.mp3" />

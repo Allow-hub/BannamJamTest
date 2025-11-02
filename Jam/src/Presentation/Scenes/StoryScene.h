@@ -4,6 +4,7 @@
 #include "../StoryManager.h"
 #include "../../Foundation/CoreManager.h"
 #include "TransitionManager.h"
+#include "../AudioService.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -21,6 +22,8 @@ namespace Jam::Presentation::Scenes
 			: IScene{ init }
 			, skipEmoji{ U"▶️"_emoji }
 		{
+			// Story用BGMを再生（将来的にステージごとに分岐可能）
+			playStoryBGM();
 			initStory();
 		}
 
@@ -85,6 +88,31 @@ namespace Jam::Presentation::Scenes
 		}
 
 	private:
+		// Story用BGMを再生
+		void playStoryBGM()
+		{
+			auto& core = Jam::Foundation::CoreManager::Instance();
+			
+			// ステージに応じてBGMを変更
+			Jam::Presentation::AudioService::Sound storyBGM;
+			
+			switch (core.stageInfo.stageName)
+			{
+			// Story 1系 (1_1, 1_2, 1_3)
+			case Jam::Foundation::StageName::Stage1_1:
+			case Jam::Foundation::StageName::Stage1_2:
+			case Jam::Foundation::StageName::Stage1_3:
+				storyBGM = Jam::Presentation::AudioService::Sound::BGM_Story1;
+				break;
+				
+			default:
+				storyBGM = Jam::Presentation::AudioService::Sound::BGM_Story1;
+				break;
+			}
+			
+			Jam::Presentation::AudioService::get().play(storyBGM, true);
+		}
+
 		// ストーリー初期化
 		void initStory()
 		{
