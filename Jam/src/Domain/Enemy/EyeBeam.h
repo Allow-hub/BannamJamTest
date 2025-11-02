@@ -31,7 +31,7 @@ namespace Jam::Domain::Enemy
 			: m_body(body), m_playerId(playerId), m_eventQueue(eventQueue),
 			m_power(power), m_size(size), m_angle(angle)
 		{
-			m_texture = Texture{ U"Assets/Enemy/Eye/beam.png" };
+			m_texture = Texture{ Resource(U"Assets/Enemy/Eye/beam.png") };
 		}
 
 		void draw()

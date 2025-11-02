@@ -89,14 +89,14 @@ namespace Jam::Presentation
 			{
 				for (const auto& [portrait, path] : portraits)
 				{
-					portraitTextures[speaker][portrait] = Texture(path);
+					portraitTextures[speaker][portrait] = Texture(Resource(path));
 				}
 			}
 
 			// === 背景 ===
 			if (!backgroundPath.isEmpty())
 			{
-				backgroundTexture = Texture(backgroundPath);
+				backgroundTexture = Texture(Resource(backgroundPath));
 			}
 
 			// === ストーリー読み込み ===

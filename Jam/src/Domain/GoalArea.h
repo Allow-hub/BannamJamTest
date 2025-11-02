@@ -21,7 +21,7 @@ namespace Jam::Domain
 		GoalArea(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, std::function<void()> onClear)
 			: m_body(body), m_onClear(onClear)
 		{
-			m_texture = Texture(U"Assets/Stage/goal.png");
+			m_texture = Texture(Resource(U"Assets/Stage/goal.png"));
 		}
 
 		void update(double deltaTime)override

@@ -98,12 +98,12 @@ namespace Jam::Presentation::Scenes
 			// === テクスチャ読み込み ===
 			const FilePath assetRoot = FileSystem::InitialDirectory() + U"Assets/Result/";
 
-			m_background = Texture(assetRoot + U"GAME_OVER_screen.png");
-			m_titleGameOver = Texture(assetRoot + U"Result_Game_Over.png");
-			m_titleClear = Texture(assetRoot + U"Result_Crear.png");
-			m_titleMemory = Texture(assetRoot + U"result_title-MEMORY.png");
-			m_titleTime = Texture(assetRoot + U"result_TIME.png");
-			m_titleKill = Texture(assetRoot + U"result_KILL.png");
+			m_background = Texture(Resource(assetRoot + U"GAME_OVER_screen.png"));
+			m_titleGameOver = Texture(Resource(assetRoot + U"Result_Game_Over.png"));
+			m_titleClear = Texture(Resource(assetRoot + U"Result_Crear.png"));
+			m_titleMemory = Texture(Resource(assetRoot + U"result_title-MEMORY.png"));
+			m_titleTime = Texture(Resource(assetRoot + U"result_TIME.png"));
+			m_titleKill = Texture(Resource(assetRoot + U"result_KILL.png"));
 
 			// --- (追加) ステージ結果画像の読み込み分岐 ---
 			String resultImageName;
@@ -126,24 +126,17 @@ namespace Jam::Presentation::Scenes
 				break;
 			}
 
-			m_stageResultTexture = Texture(assetRoot + resultImageName);
+			m_stageResultTexture = Texture(Resource(assetRoot + resultImageName));
 			// --- ここまで追加 ---
 
 
 			// === フォールバック ===
-			if (not m_background) { m_background = Texture(U"example/city.png"); }
+			if (not m_background) { m_background = Texture(Resource(assetRoot + U"GAME_OVER_screen.png")); }
 			if (not m_titleGameOver) { Print(U"Error: Result_Game_Over.png not found!"); }
 			if (not m_titleClear) { Print(U"Error: Result_Crear.png not found!"); }
 			if (not m_titleMemory) { Print(U"Error: result_title-MEMORY.png not found!"); }
 			if (not m_titleTime) { Print(U"Error: result_TIME.png not found!"); }
 			if (not m_titleKill) { Print(U"Error: result_KILL.png not found!"); }
-
-			// (追加) ステージ結果画像のフォールバック
-			if (not m_stageResultTexture)
-			{
-				Print(U"Error: " + resultImageName + U" not found! Using example rect.");
-				m_stageResultTexture = Texture(U"example/white_rect.png");
-			}
 		}
 
 

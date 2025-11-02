@@ -284,7 +284,7 @@ namespace Jam::Presentation::Scenes
 			config.fontSize = 16;
 			Jam::Util::GridRenderer::instance().setConfig(config);
 			// 元画像を読み込む
-			Image originalImage(U"Assets/Cursor/cursor_yellow.png");
+			Image originalImage(Resource(U"Assets/Cursor/cursor_yellow.png"));
 			originalImage = originalImage.scaled(64, 64);
 			// カーソル登録
 			Jam::Infrastructure::CursorUtil::instance().registerCustomCursor(

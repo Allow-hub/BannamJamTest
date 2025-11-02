@@ -45,16 +45,16 @@ namespace Jam::Presentation::Scenes
 			FontAsset::Register(U"SelectStageFont", 30, Typeface::Regular);
 
 			// 画像の読み込み
-			m_worldBackgroundTexture = s3d::Texture{ U"Assets/Select/serect-AREA_back-screen.png" };
-			m_stageBackgroundTexture = s3d::Texture{ U"Assets/Select/serect-stage_back-screen.png" };
-			m_worldButtonTexture_01 = s3d::Texture{ U"Assets/Select/area_01.png" };
-			m_worldButtonTexture_02 = s3d::Texture{ U"Assets/Select/area_02.png" };
-			m_worldButtonTexture_03 = s3d::Texture{ U"Assets/Select/area_03.png" };
-			m_stageButtonTexture_01 = s3d::Texture{ U"Assets/Select/stage1_1.png" };
-			m_stageButtonTexture_02 = s3d::Texture{ U"Assets/Select/stage1_2.png" };
-			m_stageButtonTexture_03 = s3d::Texture{ U"Assets/Select/stage1_3.png" };
+			m_worldBackgroundTexture = s3d::Texture{ Resource(U"Assets/Select/serect-AREA_back-screen.png") };
+			m_stageBackgroundTexture = s3d::Texture{ Resource(U"Assets/Select/serect-stage_back-screen.png") };
+			m_worldButtonTexture_01 = s3d::Texture{ Resource(U"Assets/Select/area_01.png") };
+			m_worldButtonTexture_02 = s3d::Texture{ Resource(U"Assets/Select/area_02.png") };
+			m_worldButtonTexture_03 = s3d::Texture{ Resource(U"Assets/Select/area_03.png") };
+			m_stageButtonTexture_01 = s3d::Texture{ Resource(U"Assets/Select/stage1_1.png") };
+			m_stageButtonTexture_02 = s3d::Texture{ Resource(U"Assets/Select/stage1_2.png") };
+			m_stageButtonTexture_03 = s3d::Texture{ Resource(U"Assets/Select/stage1_3.png") };
 
-			m_backButtonTexture = s3d::Texture{ U"Assets/Select/stage-serect_BACK.png" };
+			m_backButtonTexture = s3d::Texture{ Resource(U"Assets/Select/stage-serect_BACK.png") };
 			Jam::Foundation::CoreManager::Instance().setClear(false);
 		}
 
@@ -257,7 +257,7 @@ namespace Jam::Presentation::Scenes
 			const double buttonSpacing = Scene::Height() * (200.0 / baseHeight);
 			const double startX = Scene::Width() - (Scene::Width() * (490.0 / baseWidth));
 			const double startY = Scene::Height() * (200.0 / baseHeight);
-			
+
 
 			// 選択中のワールドに応じてボタンを描画
 			if (m_selectedWorld == 1)

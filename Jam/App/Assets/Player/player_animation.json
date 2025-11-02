@@ -5,6 +5,11 @@
       "loop": true,
       "frames": [
         {
+          "path": "Assets/Player/Idle/idle_00.png",
+          "duration": 0.03333333333,
+          "scale": 0.04
+        },
+        {
           "path": "Assets/Player/Idle/idle_01.png",
           "duration": 0.03333333333,
           "scale": 0.04

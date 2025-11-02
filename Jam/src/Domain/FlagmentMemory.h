@@ -20,7 +20,7 @@ namespace Jam::Domain
 		FlagmentMemory(const Vec2& pos, std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body)
 			: m_position(pos)
 			, m_body(body)
-			, m_texture(U"Assets/FlagmentMemory.png")
+			, m_texture(Resource(U"Assets/FlagmentMemory.png"))
 		{
 		}
 

@@ -19,7 +19,7 @@ namespace Jam::Presentation
 			}
 
 			// 新規読み込み
-			s_cache[path] = Texture(path);
+			s_cache[path] = Texture(Resource(path));
 			return s_cache[path];
 		}
 

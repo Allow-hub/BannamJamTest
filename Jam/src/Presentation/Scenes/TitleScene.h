@@ -46,9 +46,9 @@ namespace Jam::Presentation::Scenes
 			ResourceManager::initPlayerJump();
 			ResourceManager::loadGroup(ResourceGroup::PlayerJump);
 
-			backgroundTexture = Texture(U"Assets/Title/background.png");
-			logoTexture = Texture(U"Assets/Title/logo.png");
-			companyLogoTexture = Texture(U"Assets/Title/companyLogo.png");
+			backgroundTexture = Texture(Resource(U"Assets/Title/background.png"));
+			logoTexture = Texture(Resource(U"Assets/Title/logo.png"));
+			companyLogoTexture = Texture(Resource(U"Assets/Title/companyLogo.png"));
 
 			Jam::Presentation::AudioService::get().play(Jam::Presentation::AudioService::Sound::BGM_Title, true);
 		}
