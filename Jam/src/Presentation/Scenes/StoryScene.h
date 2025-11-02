@@ -50,6 +50,11 @@ namespace Jam::Presentation::Scenes
 			const Rect skipRect{ Scene::Width() - 150, 20, 80, 80 };
 			if (skipRect.leftClicked())
 			{
+				// ボタンSEを再生
+				Jam::Presentation::AudioService::get().playOneShot(
+					Jam::Presentation::AudioService::Sound::SE_Button,
+					Jam::Presentation::AudioService::VOLUME_BUTTON
+				);
 				handleSkip();
 			}
 			if(KeyEscape.down())
