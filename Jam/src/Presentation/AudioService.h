@@ -8,7 +8,7 @@ namespace Jam::Presentation
 	{
 	public:
 		// 音量の定数定義
-		static constexpr double VOLUME_BUTTON =10.0;
+		static constexpr double VOLUME_BUTTON = 1.0;
 
 		enum class Sound
 		{
@@ -25,6 +25,9 @@ namespace Jam::Presentation
 			SE_FallDamage,
 			SE_BossDown,
 			BGM_Title,
+			BGM_Story1,
+			BGM_Story2,  // 将来用
+			BGM_Story3,  // 将来用
 			BGM_Game,
 		};
 
@@ -49,6 +52,10 @@ namespace Jam::Presentation
 			load(Sound::SE_FallDamage, samePath + U"se_fallDamage.mp3");
 			load(Sound::SE_BossDown, samePath + U"se_bossDown.mp3");
 			load(Sound::BGM_Title, samePath + U"bgm_title.mp3");
+			load(Sound::BGM_Story1, samePath + U"bgm_story1_1.mp3");
+			// 将来的に追加する場合
+			// load(Sound::BGM_Story2, samePath + U"bgm_story2.mp3");
+			// load(Sound::BGM_Story3, samePath + U"bgm_story3.mp3");
 			load(Sound::BGM_Game, samePath + U"bgm_ingame.mp3");
 		}
 
@@ -156,6 +163,9 @@ namespace Jam::Presentation
 			switch (sound)
 			{
 			case Sound::BGM_Title:
+			case Sound::BGM_Story1:
+			case Sound::BGM_Story2:
+			case Sound::BGM_Story3:
 			case Sound::BGM_Game:
 				return true;
 			default:

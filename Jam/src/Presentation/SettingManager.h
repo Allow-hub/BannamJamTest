@@ -11,10 +11,11 @@ namespace Jam::Presentation
 		Font font;
 		Texture m_backgroundTexture;
 		Texture m_backgroundMaskTexture;
+		Texture m_creditTexture;
 
 		SceneManager<String>* m_sceneManager = nullptr;
 
-		enum class Mode { Menu, Audio };
+		enum class Mode { Menu, Audio, Credit };
 		Mode m_mode = Mode::Menu;
 
 		struct Button
@@ -80,6 +81,7 @@ namespace Jam::Presentation
 		{
 			m_backgroundTexture = Texture{ U"Assets/setting_backMain.png" };
 			m_backgroundMaskTexture = Texture{ U"Assets/setting_back.png" };
+			m_creditTexture = Texture{ U"Assets/Credit.png" };
 			const int32 mainFontSize = static_cast<int32>(Scene::Height() * 0.07);
 			font = Font(mainFontSize, U"Assets/Font/PixelMplus12-Bold.ttf", FontStyle::Bold);
 			const double maxUnderline = font(U"BACK THE SELECT").region().w - 100.0;
@@ -89,7 +91,8 @@ namespace Jam::Presentation
 			buttons.emplace_back(U"RETRY", Vec2(70, 220), 60, maxUnderline);
 			buttons.emplace_back(U"EXIT", Vec2(70, 320), 60, maxUnderline);
 			buttons.emplace_back(U"BACK THE SELECT", Vec2(70, 420), 60, maxUnderline);
-			buttons.emplace_back(U"END", Vec2(70, 520), 60, maxUnderline);
+			buttons.emplace_back(U"CREDIT", Vec2(70, 520), 60, maxUnderline);
+			buttons.emplace_back(U"END", Vec2(70, 620), 60, maxUnderline);
 		}
 
 		void update()
@@ -105,6 +108,10 @@ namespace Jam::Presentation
 						if (b.label == U"AUDIO")
 						{
 							m_mode = Mode::Audio;
+						}
+						else if (b.label == U"CREDIT")
+						{
+							m_mode = Mode::Credit;
 						}
 						else if (b.label == U"RETRY")
 						{
@@ -191,6 +198,17 @@ namespace Jam::Presentation
 				SimpleGUI::Slider(U"SE", core.audioSetting.seVolume, Vec2(70, 340), 200, 200, true);
 
 				SimpleGUI::Button(U"BACK", Vec2(70, 420), 120, true);
+			}
+			else if (m_mode == Mode::Credit)
+			{
+				// クレジット画像を表示
+				m_creditTexture.resized(Scene::Size()).draw(0, 0);
+
+				// BACKボタン
+				if (SimpleGUI::Button(U"BACK", Vec2(70, 620), 120))
+				{
+					m_mode = Mode::Menu;
+				}
 			}
 		}
 	};
