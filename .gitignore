@@ -51,3 +51,60 @@
 
 
 Jam/Intermediate/
+# =========================
+# 🧊 Siv3D Project Specific
+# =========================
+
+# Siv3D のビルド中間ファイル
+Jam/Intermediate/
+Jam/Build/
+Jam/.vs/
+
+# Siv3D のビルド生成物
+*.res
+*.iobj
+*.ipdb
+*.idb
+*.ilk
+*.exp
+*.pdb
+*.obj
+*.exe
+*.dll
+*.lib
+
+# Siv3Dのキャッシュや実行時出力
+/App/AS_DEBUG/
+App/Screenshot/
+App/example/
+App/engine/
+App/dll/
+App/.vs/
+
+# Siv3D のエンジン一時フォルダ
+**/Temp/
+**/Intermediate/
+**/Cache/
+**/Logs/
+
+# 不要なバイナリや成果物
+*.log
+*.bin
+*.pack
+*.manifest
+
+# OSやIDE特有の一時ファイル
+.DS_Store
+Thumbs.db
+.vscode/
+*.code-workspace
+
+# =========================
+# 🧰 General Build Output
+# =========================
+/bin/
+/obj/
+/out/
+/build/
+/Debug/
+/Release/
