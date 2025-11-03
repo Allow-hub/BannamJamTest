@@ -129,7 +129,7 @@ namespace Jam::Infrastructure {
 			s_backgroundTextures[textureName] = texture;
 			return texture;
 		}
-		Console << U"[TextureLoader] Background Resource not found: " << resourcePath;
+		//Console << U"[TextureLoader] Background Resource not found: " << resourcePath;
 		return none;
 	}
 
@@ -143,7 +143,7 @@ namespace Jam::Infrastructure {
 	bool TextureLoader::loadBackgroundTexture(const String& name, const FilePath& resourcePath) {
 		Texture texture(Resource(resourcePath));
 		if (!texture) {
-			Console << U"[TextureLoader] Failed to load background Resource: " << resourcePath;
+			//Console << U"[TextureLoader] Failed to load background Resource: " << resourcePath;
 			return false;
 		}
 		s_backgroundTextures[name] = texture;
