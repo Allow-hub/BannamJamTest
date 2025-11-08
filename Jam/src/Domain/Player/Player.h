@@ -34,8 +34,8 @@ namespace Jam::Domain::Player
 		void draw() const;
 
 		// 移動・操作
-		void moveLeft();
-		void moveRight();
+		void moveLeft(double dt);
+		void moveRight(double dt);
 		void startDash();
 		void endDash();
 		void jump();
@@ -105,7 +105,6 @@ namespace Jam::Domain::Player
 		bool m_isDashing = false;
 		bool m_isChokering = false;
 		bool m_isPressingDown = false;
-		double dashMagnification = 2.0;
 		double m_fallLimitY = 0;
 		int m_jumpCount = 0;
 		const int maxJumpCount = 2;

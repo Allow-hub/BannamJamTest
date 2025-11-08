@@ -421,6 +421,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
+    <None Include="App\Assets\Player\player_animation_dummy.json" />
     <None Include="App\Assets\Story\stage1_2_clear.csv" />
     <None Include="App\Assets\Story\stage1_3_clear.csv" />
     <None Include="App\Assets\Story\stage1_3_start.csv" />

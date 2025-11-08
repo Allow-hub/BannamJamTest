@@ -141,6 +141,8 @@
     <Media Include="App\Assets\Sounds\se_button.mp3" />
     <Media Include="App\Assets\Sounds\se_fallDamage.mp3" />
     <Media Include="App\Assets\Sounds\se_goal.mp3" />
+    <Media Include="App\Assets\Sounds\bgm_hauntedHouse.mp3" />
+    <Media Include="App\Assets\Sounds\bgm_story1_1.mp3" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\engine\texture\box-shadow\128.png" />
@@ -579,6 +581,7 @@
     <None Include="App\Assets\Story\stage1_2_clear.csv" />
     <None Include="App\Assets\Story\stage1_3_clear.csv" />
     <None Include="App\Assets\Story\stage1_3_start.csv" />
+    <None Include="App\Assets\Player\player_animation_dummy.json" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="App\dll\soundtouch\COPYING.TXT" />

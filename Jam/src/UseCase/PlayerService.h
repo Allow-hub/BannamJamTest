@@ -49,13 +49,13 @@ namespace Jam::UseCase
 
 			if (inputState.left)
 			{
-				m_player->moveLeft();
+				m_player->moveLeft(deltaTime);
 				m_manager.setFacingLeft(true);
 				isWalking = true;
 			}
 			if (inputState.right)
 			{
-				m_player->moveRight();
+				m_player->moveRight(deltaTime);
 				m_manager.setFacingLeft(false);
 				isWalking = true;
 			}

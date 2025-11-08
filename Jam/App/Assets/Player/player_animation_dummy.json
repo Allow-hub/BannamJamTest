@@ -1,0 +1,59 @@
+{
+  "clips": [
+    {
+      "name": "Idle",
+      "loop": true,
+      "frames": [
+        {
+          "path": "Assets/Player/Idle/idle_00.png",
+          "duration": 0.03333333333,
+          "scale": 0.04
+        }
+      ]
+    },
+    {
+      "name": "Walk",
+      "loop": true,
+      "frames": [
+        {
+          "path": "Assets/Player/Walk/walk_00.png",
+          "duration": 0.03333333333,
+          "scale": 0.04
+        }
+      ]
+    },
+    {
+      "name": "Run",
+      "loop": true,
+      "frames": [
+        {
+          "path": "Assets/Player/Walk/walk_00.png",
+          "duration": 0.0222222222,
+          "scale": 0.04
+        }
+      ]
+    },
+    {
+      "name": "Jump",
+      "loop": false,
+      "frames": [
+        {
+          "path": "Assets/Player/Jump/jump_00.png",
+          "duration": 0.03333333333,
+          "scale": 0.04
+        }
+      ]
+    },
+    {
+      "name": "Choker_Throw",
+      "loop": false,
+      "frames": [
+        {
+          "path": "Assets/Player/ChokerThrow/choker_throw_00.png",
+          "duration": 0.02222222222,
+          "scale": 0.04
+        }
+      ]
+    }
+  ]
+}

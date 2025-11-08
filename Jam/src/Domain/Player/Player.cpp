@@ -32,17 +32,13 @@ namespace Jam::Domain::Player
 		// --- 落下中に下向きの力を追加 ---
 		auto velocity = m_body->getVelocity();
 
-		if (velocity.y > 0) // yが正なら下方向
-		{
-			double fallAccelerationBase = 3000.0;
-			double maxFallSpeed = 10000.0; // 最大落下速度
+		double fallAcceleration = 1000.0;
+		double maxFallSpeed = 3000.0;
 
-			// 現在の速度が上限を超えていないときだけ力を加える
-			if (velocity.y < maxFallSpeed)
-				m_body->applyForce({ 0, fallAccelerationBase });
-			else
-				m_body->setVelocity({ velocity.x, maxFallSpeed });
-		}
+		velocity.y += fallAcceleration * deltaTime; // フレームレートに依存しない加速
+		if (velocity.y > maxFallSpeed) velocity.y = maxFallSpeed;
+
+		m_body->setVelocity({ velocity.x, velocity.y });
 
 		// 全スキルを更新（アクティブ/非アクティブ問わず、必要なものだけ）
 		for (auto& skill : m_skills)
@@ -72,33 +68,31 @@ namespace Jam::Domain::Player
 				skill->draw();
 		}
 	}
-	void Player::moveLeft()
+	void Player::moveLeft(double dt)
 	{
 		double speedMultiplier = getHookedSpeedMultiplier();
 
-		m_body->applyForce({ -m_stats.moveSpeed * speedMultiplier, 0 });
+		m_body->applyForce({ -m_stats.moveSpeed * speedMultiplier* dt, 0 });
 		m_facingRight = false;
 	}
 
-	void Player::moveRight()
+	void Player::moveRight(double dt)
 	{
 		double speedMultiplier = getHookedSpeedMultiplier();
 
-		m_body->applyForce({ m_stats.moveSpeed * speedMultiplier, 0 });
+		m_body->applyForce({ m_stats.moveSpeed * speedMultiplier* dt, 0 });
 		m_facingRight = true;
 	}
 
 	void Player::startDash()
 	{
 		if (m_isDashing)return;
-		m_stats.moveSpeed *= dashMagnification;
 		m_isDashing = true;
 	}
 
 	void Player::endDash()
 	{
 		if (!m_isDashing)return;
-		m_stats.moveSpeed /= dashMagnification;
 		m_isDashing = false;
 	}
 
@@ -167,25 +161,6 @@ namespace Jam::Domain::Player
 	void Player::changeSkill(int direction)
 	{
 		if (m_skills.empty()) return;
-		//if (m_currentSkill)
-		//	m_currentSkill->onDeactivate();
-		// direction: 1 = ホイール上（次のスキル）、-1 = ホイール下（前のスキル）
-		//auto it = std::find(m_skills.begin(), m_skills.end(), m_currentSkill);
-		//if (it == m_skills.end())
-		//{
-		//	m_currentSkill = m_skills.front();
-		//	return;
-		//}
-
-		//// 次のスキル or 前のスキルに移動
-		//int index = static_cast<int>(std::distance(m_skills.begin(), it));
-		//index += direction;
-
-		//// 循環させる
-		//if (index < 0) index = static_cast<int>(m_skills.size()) - 1;
-		//else if (index >= static_cast<int>(m_skills.size())) index = 0;
-
-		//m_currentSkill = m_skills[index];
 	}
 
 	void Player::takeDamage(const DamageInfo& info)
@@ -213,15 +188,9 @@ namespace Jam::Domain::Player
 		m_onDamaged = std::move(callback);
 	}
 
-	s3d::Vec2 Player::getPosition() const
-	{
-		return m_body->getPosition();
-	}
+	Vec2 Player::getPosition() const { return m_body->getPosition(); }
 
-	bool Player::isFacingRight() const
-	{
-		return m_facingRight;
-	}
+	bool Player::isFacingRight() const { return m_facingRight; }
 
 	void Player::updateState()
 	{
