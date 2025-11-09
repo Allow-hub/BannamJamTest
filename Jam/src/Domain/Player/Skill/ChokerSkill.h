@@ -1,17 +1,16 @@
 ﻿#pragma once
-#include "IPlayerSkill.h"
 #include "../../Physics/ICollisionListener.h"
 #include "../../Events/GameEvents.h"
-#include "../Player.h"
 #include "../../../Foundation/CoroutineUtil.h"
-
 
 namespace Jam::Domain::Player
 {
-	// チョーカー（グラップリングフック）スキル
+	class Player;
+	struct PlayerStats;
+
+	// チョーカー（グラップリングフック）- Playerの固有能力
 	class ChokerSkill
 		: public Jam::Domain::Physics::ICollisionListener
-		, public IPlayerSkill
 		, public std::enable_shared_from_this<ChokerSkill>
 	{
 	private:
@@ -19,6 +18,8 @@ namespace Jam::Domain::Player
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_targetEnemy;
 		std::optional<s3d::P2DistanceJoint> m_joint;
 		Player& m_player;
+		Jam::Domain::Events::GameEventQueue& m_eventQueue;
+		Jam::Domain::Player::PlayerStats& m_playerStats;
 
 		bool m_isActive = false;
 		bool m_isFlying = false;
@@ -44,41 +45,41 @@ namespace Jam::Domain::Player
 		const double m_hookedMoveSpeed = 3.0;
 
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_ground;
-		Vec2 m_groundAnchorOffset = Vec2::Zero(); // 接地点とPhysicsBodyの相対位置
+		Vec2 m_groundAnchorOffset = Vec2::Zero();
 
 		double m_enemyHitFreezeTimer = 0.0;
-		const double m_enemyHitFreezeDuration = 0.1; // 停止時間（秒）
+		const double m_enemyHitFreezeDuration = 0.1;
 		bool m_isInEnemyHitFreeze = false;
 		bool m_isEnemySequenceActive = false;
-		// Joint縮小速度
-		const double m_enemyJointShrinkSpeed = 0.85; // より速い縮小率（1フレームあたり）
+		const double m_enemyJointShrinkSpeed = 0.85;
 
 		void releaseJoint();
 		void resetHook();
 		Jam::Util::Task	delayReset();
+		void hitGround();
+		void hitEnemy(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> enemy);
+		void createEnemyJoint();
+		void finishEnemySequence();
 
 	public:
 		ChokerSkill(Jam::Domain::Events::GameEventQueue& eventQueue,
 					Jam::Domain::Physics::PhysicsBodyID ownerId,
 					Jam::Domain::Player::PlayerStats& stats,
-					Player& player);//スキルからPlayerの固有能力っぽくなったので従属、直接持たせる
+					Player& player);
 
 		void init();
-		void use(const s3d::Vec2 position, bool facingRight) override;
-		void useReleased(const s3d::Vec2 position, bool facingRight) override;
-		void update(double deltaTime) override;
-		void draw() const override;
-		bool needUpdate() const override;
+		void use(const s3d::Vec2 position, bool facingRight);
+		void useReleased(const s3d::Vec2 position, bool facingRight);
+		void update(double deltaTime);
+		void draw() const;
+		bool needUpdate() const;
 
+		// ICollisionListener
 		void onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 		void onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 		void onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 
-		void hitGround();
-		void hitEnemy(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> enemy);
-		void createEnemyJoint();
-		void finishEnemySequence();
-		void onDeactivate();//スキルが切り替わった時の強制終了
+		void onDeactivate();
 
 		// ステータス情報
 		bool isFlying() const;
@@ -86,7 +87,6 @@ namespace Jam::Domain::Player
 		double getCooldownProgress() const;
 		double getRemainingCooldown() const;
 		double getHookedMoveSpeedMultiplier() const;
-
 
 		enum class HookState
 		{

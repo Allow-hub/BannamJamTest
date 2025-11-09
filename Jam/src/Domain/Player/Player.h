@@ -3,15 +3,13 @@
 #include "../Physics/IPhysicsBody.h"
 #include "../Physics/ICollisionListener.h"
 #include "../Events/GameEvents.h"
-#include "Skill/IPlayerSkill.h"
 #include "../ITakeDamageable.h"
 #include "../../Foundation/CoroutineUtil.h"
 #include "../../Presentation/FadeManager.h"
 
 namespace Jam::Domain::Player
 {
-	class IPlayerSkill;
-	enum class PlayerSkillType;
+	class ChokerSkill;
 
 	struct PlayerStats
 	{
@@ -23,7 +21,6 @@ namespace Jam::Domain::Player
 	};
 
 	// プレイヤーキャラクターを表すクラス
-	// 他クラスに依存しない
 	class Player : public Jam::Domain::Physics::ICollisionListener, public Jam::Domain::ITakeDamageable
 	{
 	public:
@@ -48,10 +45,9 @@ namespace Jam::Domain::Player
 
 		bool getIsChokering()const { return m_isChokering; }
 
-		// 攻撃・スキル
-		void skillPush();
-		void skillReleased();
-		void changeSkill(int direction);
+		// チョーカー操作
+		void chokerPush();
+		void chokerReleased();
 
 		// 情報取得
 		double getMaxHp() { return m_maxHp; }
@@ -89,7 +85,7 @@ namespace Jam::Domain::Player
 		void onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 
 		using DamageCallback = std::function<void(void)>;
-		void setOnDamagedCallback(DamageCallback callback);	//InGameUIに通知する用
+		void setOnDamagedCallback(DamageCallback callback);
 
 	private:
 		// 基本情報
@@ -109,12 +105,11 @@ namespace Jam::Domain::Player
 		int m_jumpCount = 0;
 		const int maxJumpCount = 2;
 
-		// スキル
-		std::vector<std::shared_ptr<IPlayerSkill>> m_skills;
-		std::shared_ptr<IPlayerSkill> m_currentSkill;
+		// チョーカー
+		std::shared_ptr<ChokerSkill> m_choker;
 
 		// 生存・ダメージ
-		bool m_isAlive = true; // 生存フラグ
+		bool m_isAlive = true;
 		bool m_isRespawning = false;
 		bool m_isInvincible = false;
 		void onDamaged(const DamageInfo& info);
@@ -122,8 +117,5 @@ namespace Jam::Domain::Player
 		Jam::Util::Task respawn();
 
 		DamageCallback m_onDamaged;
-
-		// 内部処理
-		void updateState();
 	};
 }

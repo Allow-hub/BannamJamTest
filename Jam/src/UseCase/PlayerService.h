@@ -14,9 +14,6 @@ namespace Jam::UseCase
 		Domain::IInputService& m_input;
 		Jam::Presentation::PlayerManager& m_manager;
 
-		double m_wheelAccumulator = 0.0; // 累積ホイール量
-		const double wheelThreshold = 1.0; // 1回転で切り替え
-
 	public:
 		PlayerService(const std::shared_ptr<Domain::Player::Player>& player,
 					  Domain::IInputService& input,
@@ -70,32 +67,19 @@ namespace Jam::UseCase
 				m_player->jump();
 				isJumping = true;
 			}
-			if (inputState.skillPush)
+			if (inputState.chokerPush)
 			{
-				m_player->skillPush();
+				m_player->chokerPush();
 			}
-			if (inputState.skillReleased)
+			if (inputState.chokerReleased)
 			{
-				m_player->skillReleased();
+				m_player->chokerReleased();
 			}
 
 			isChokerThrow = m_player->getIsChokering() ? true : false;
 
 			m_player->setPressingDown(inputState.down);
 
-			// マウスホイールでスキル切り替え
-			double wheelDelta = inputState.skillChange;
-			m_wheelAccumulator += wheelDelta;
-			while (m_wheelAccumulator >= wheelThreshold)
-			{
-				m_player->changeSkill(1);
-				m_wheelAccumulator -= wheelThreshold;
-			}
-			while (m_wheelAccumulator <= -wheelThreshold)
-			{
-				m_player->changeSkill(-1);
-				m_wheelAccumulator += wheelThreshold;
-			}
 
 			// 🔹 アニメーション状態を更新
 			m_manager.setAnim(U"isWalking", isWalking);
