@@ -126,7 +126,7 @@
     <ClCompile Include="src\Domain\Enemy\ShockWave.cpp" />
     <ClCompile Include="src\Domain\Enemy\Spider.cpp" />
     <ClCompile Include="src\Domain\Player\Player.cpp" />
-    <ClCompile Include="src\Domain\Player\Skill\ChokerSkill.cpp" />
+    <ClCompile Include="src\Domain\Player\Choker\ChokerSkill.cpp" />
     <ClCompile Include="src\Infrastructure\StageFactory.cpp" />
     <ClCompile Include="src\UseCase\EnemyFactory.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -638,8 +638,14 @@
     <ClInclude Include="src\Domain\Physics\IPhysicsBody.h" />
     <ClInclude Include="src\Domain\Physics\PhysicsTypes.h" />
     <ClInclude Include="src\Domain\Physics\PhysicsBodyID.h" />
-    <ClInclude Include="src\Domain\Player\Skill\ChokerSkill.h" />
+    <ClInclude Include="src\Domain\Player\Choker\ChokerContext.h" />
+    <ClInclude Include="src\Domain\Player\Choker\ChokerStates\ChokerFlyingState.h" />
+    <ClInclude Include="src\Domain\Player\Choker\ChokerStates\ChokerIdleState.h" />
+    <ClInclude Include="src\Domain\Player\Choker\ChokerSkill.h" />
+    <ClInclude Include="src\Domain\Player\Choker\ChokerStates\HookedEnemyState.h" />
+    <ClInclude Include="src\Domain\Player\Choker\ChokerStates\HookedGroundState.h" />
     <ClInclude Include="src\Domain\Player\Player.h" />
+    <ClInclude Include="src\Domain\Player\Choker\ChokerStates\IChokerState.h" />
     <ClInclude Include="src\Domain\Stage\BackgroundTypes.h" />
     <ClInclude Include="src\Domain\Stage\DamageStage.h" />
     <ClInclude Include="src\Domain\Stage\IStage.h" />

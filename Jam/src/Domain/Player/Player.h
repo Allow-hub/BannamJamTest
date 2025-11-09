@@ -54,7 +54,6 @@ namespace Jam::Domain::Player
 		s3d::Vec2 getPosition() const;
 		bool isFacingRight() const;
 		std::shared_ptr<Domain::Physics::IPhysicsBody> getPhysicsBody() { return m_body; }
-		double getHookedSpeedMultiplier() const;
 
 		// ステータス操作
 		void setHp(double h) { m_stats.hp = h; }

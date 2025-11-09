@@ -2,6 +2,7 @@
 #include "../../Physics/ICollisionListener.h"
 #include "../../Events/GameEvents.h"
 #include "../../../Foundation/CoroutineUtil.h"
+#include "ChokerStates/IChokerState.h"
 
 namespace Jam::Domain::Player
 {
@@ -15,51 +16,13 @@ namespace Jam::Domain::Player
 	{
 	private:
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_body;
-		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_targetEnemy;
 		std::optional<s3d::P2DistanceJoint> m_joint;
 		Player& m_player;
 		Jam::Domain::Events::GameEventQueue& m_eventQueue;
 		Jam::Domain::Player::PlayerStats& m_playerStats;
 
-		bool m_isActive = false;
-		bool m_isFlying = false;
-		bool m_isJointCreated = false;
-		bool m_isHooked = false;
-
-		Vec2 m_velocity = Vec2::Zero();
-		Vec2 m_lastDir;
-		Vec2 m_enemyImpluseDir = Vec2::Zero();
 		const Vec2 createOffset = Vec2{ 50, -30 };
 		Jam::Domain::Physics::PhysicsBodyID m_ownerId;
-
-		const double m_maxFlyTime = 0.3;
-		double m_flyTimer = 0.0;
-
-		// クールダウン
-		double m_cooldownTimer = 0.0;
-		const double m_cooldownTime = 0.1;
-
-		// フック挙動
-		const double m_pullImpulse = 300.0;
-		const double m_releaseImpulse = 300.0;
-		const double m_hookedMoveSpeed = 3.0;
-
-		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_ground;
-		Vec2 m_groundAnchorOffset = Vec2::Zero();
-
-		double m_enemyHitFreezeTimer = 0.0;
-		const double m_enemyHitFreezeDuration = 0.1;
-		bool m_isInEnemyHitFreeze = false;
-		bool m_isEnemySequenceActive = false;
-		const double m_enemyJointShrinkSpeed = 0.85;
-
-		void releaseJoint();
-		void resetHook();
-		Jam::Util::Task	delayReset();
-		void hitGround();
-		void hitEnemy(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> enemy);
-		void createEnemyJoint();
-		void finishEnemySequence();
 
 	public:
 		ChokerSkill(Jam::Domain::Events::GameEventQueue& eventQueue,
@@ -81,23 +44,21 @@ namespace Jam::Domain::Player
 
 		void onDeactivate();
 
-		// ステータス情報
-		bool isFlying() const;
-		bool isOnCooldown() const;
-		double getCooldownProgress() const;
-		double getRemainingCooldown() const;
-		double getHookedMoveSpeedMultiplier() const;
+		void releaseJoint();
+		void resetHook();
 
-		enum class HookState
+		template<class TState, class... Args>
+		void transitionTo(Args&&... args)
 		{
-			None,
-			Idle,
-			Flying,
-			HookedGround,
-			HookedEnemy
-		};
+			if (m_state)
+				m_state->exit(*m_ctx);
+			m_state = std::make_unique<TState>(std::forward<Args>(args)...);
+			m_state->enter(*m_ctx);
+		}
 
-		HookState m_hookState = HookState::Idle;
+		std::unique_ptr<IChokerState> m_state;
+		std::shared_ptr<ChokerContext> m_ctx;
+
 		~ChokerSkill();
 	};
 }

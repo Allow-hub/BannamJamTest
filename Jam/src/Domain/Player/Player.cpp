@@ -1,6 +1,6 @@
 ﻿#include "Player.h"
 #include "../Physics/IPhysicsBody.h"
-#include "Skill/ChokerSkill.h"
+#include "Choker/ChokerSkill.h"
 #include "../../Presentation/AudioService.h"
 #include "../../Infrastructure/PhysicsFilterManager.h"
 #include "../../Foundation/CoreManager.h"
@@ -65,15 +65,13 @@ namespace Jam::Domain::Player
 
 	void Player::moveLeft(double dt)
 	{
-		double speedMultiplier = getHookedSpeedMultiplier();
-		m_body->applyForce({ -m_stats.moveSpeed * speedMultiplier * dt, 0 });
+		m_body->applyForce({ -m_stats.moveSpeed  * dt, 0 });
 		m_facingRight = false;
 	}
 
 	void Player::moveRight(double dt)
 	{
-		double speedMultiplier = getHookedSpeedMultiplier();
-		m_body->applyForce({ m_stats.moveSpeed * speedMultiplier * dt, 0 });
+		m_body->applyForce({ m_stats.moveSpeed * dt, 0 });
 		m_facingRight = true;
 	}
 
@@ -189,15 +187,6 @@ namespace Jam::Domain::Player
 	{
 		co_await Jam::Util::WaitSeconds(cooldown);
 		m_canControl = true;
-	}
-
-	double Player::getHookedSpeedMultiplier() const
-	{
-		if (m_choker && m_choker->isFlying())
-		{
-			return m_choker->getHookedMoveSpeedMultiplier();
-		}
-		return 1.0;
 	}
 
 	void Player::onDamaged(const DamageInfo& info)
