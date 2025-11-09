@@ -65,13 +65,19 @@ namespace Jam::Domain::Player
 
 	void Player::moveLeft(double dt)
 	{
-		m_body->applyForce({ -m_stats.moveSpeed  * dt, 0 });
+		if (m_choker && m_choker->m_state->isHookedGround() && m_isDashing)
+			m_body->applyForce({ -m_stats.moveSpeed * 6 * dt, 0 });
+		else
+			m_body->applyForce({ -m_stats.moveSpeed * dt, 0 });
 		m_facingRight = false;
 	}
 
 	void Player::moveRight(double dt)
 	{
-		m_body->applyForce({ m_stats.moveSpeed * dt, 0 });
+		if (m_choker && m_choker->m_state->isHookedGround() && m_isDashing)
+			m_body->applyForce({ m_stats.moveSpeed * 6 * dt, 0 });
+		else
+			m_body->applyForce({ m_stats.moveSpeed * dt, 0 });
 		m_facingRight = true;
 	}
 

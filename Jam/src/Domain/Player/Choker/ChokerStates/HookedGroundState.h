@@ -7,6 +7,11 @@ namespace Jam::Domain::Player
 {
 	class HookedGroundState : public IChokerState
 	{
+	private:
+		const double m_minDist = 1.0;
+		const double m_maxDist = 400.0; // 上限
+		const double shrinkSpeed = 2000.0;
+		
 	public:
 		void enter(ChokerContext& ctx) override
 		{
@@ -30,7 +35,7 @@ namespace Jam::Domain::Player
 
 				Vec2 playerPos = playerBody->getPosition();
 				double dist = (hookPos - playerPos).length();
-				dist = std::clamp(dist, 1.0, 9999.0);
+				dist = std::clamp(dist, m_minDist, 9999.0);
 
 				ctx.skill.releaseJoint();
 
@@ -61,25 +66,33 @@ namespace Jam::Domain::Player
 
 		void update(ChokerContext& ctx, double deltaTime) override
 		{
-			if (ctx.ground)
+			if (!ctx.joint.has_value())
+				return;
+
+			if (ctx.ground)//動く床に追従
 			{
 				Vec2 groundPos = ctx.ground->getPosition();
 				ctx.body->setPos(groundPos + ctx.groundAnchorOffset);
 			}
-			double currentMax = ctx.joint->getMaxLength();
-			double newMax = currentMax * 0.992;
-			double minLimit = 50.0;
 
-			ctx.joint->setMaxLength(std::max(newMax, minLimit));
-			if (newMax <= minLimit) ctx.isHooked = true;
+			double currentMax = ctx.joint->getMaxLength();
+
+			// 縮める（m_maxDist 以下にはしない）
+			double newMax = currentMax - shrinkSpeed * deltaTime;
+			if (newMax < m_maxDist)
+				newMax = m_maxDist;
+
+			ctx.joint->setMaxLength(newMax);
 		}
 
-		void draw(const ChokerContext& ctx)const override
+		void draw(const ChokerContext& ctx) const override
 		{
 			ctx.body->drawFrame(3.0, Palette::Violet);
 
 			if (ctx.joint.has_value())
 				ctx.joint->draw(Palette::Violet);
-		}	
+		}
+
+		bool isHookedGround() const override { return true; }
 	};
 }

@@ -18,5 +18,8 @@ namespace Jam::Domain::Player
 
 		virtual void draw(const ChokerContext& ctx) const {}
 		virtual void onCollisionEnter(ChokerContext& ctx, std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body) {}
+
+		// Playerクラスで移動速度に影響を与えるときに使う
+		virtual bool isHookedGround() const { return false; }
 	};
 }

@@ -64,6 +64,7 @@ namespace Jam::Domain::Player
 
 		double getHp() { return m_stats.hp; }
 		bool getGrounded() const { return m_isGrounded; }
+		bool getDashing() const { return m_isDashing; }
 
 		void resetJumpState() {
 			m_isGrounded = true;
