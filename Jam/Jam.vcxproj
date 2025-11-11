@@ -114,6 +114,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="src\Domain\Editor\StageEditorManager.cpp" />
     <ClCompile Include="src\Domain\Enemy\Bomb.cpp" />
     <ClCompile Include="src\Domain\Enemy\Boss1_3.cpp" />
     <ClCompile Include="src\Domain\Enemy\Clown.cpp" />
@@ -128,7 +129,9 @@
     <ClCompile Include="src\Domain\Player\Player.cpp" />
     <ClCompile Include="src\Domain\Player\Skill\ChokerSkill.cpp" />
     <ClCompile Include="src\Infrastructure\StageFactory.cpp" />
+    <ClCompile Include="src\Presentation\Editor\StageEditorRenderer.cpp" />
     <ClCompile Include="src\UseCase\EnemyFactory.cpp" />
+    <ClCompile Include="src\UseCase\Editor\StageEditorService.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -609,6 +612,8 @@
     <Xml Include="App\example\xml\test.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Domain\Editor\StageEditorManager.h" />
+    <ClInclude Include="src\Domain\Editor\StageEditorTypes.h" />
     <ClInclude Include="src\Domain\Enemy\Bomb.h" />
     <ClInclude Include="src\Domain\Enemy\Boss1_3.h" />
     <ClInclude Include="src\Domain\Enemy\Clown.h" />
@@ -671,6 +676,7 @@
     <ClInclude Include="src\Presentation\AnimatorLoader.h" />
     <ClInclude Include="src\Presentation\AudioService.h" />
     <ClInclude Include="src\Presentation\CameraManager.h" />
+    <ClInclude Include="src\Presentation\Editor\StageEditorRenderer.h" />
     <ClInclude Include="src\Presentation\EffectManager.h" />
     <ClInclude Include="src\Presentation\EnemyManager.h" />
     <ClInclude Include="src\Presentation\FadeManager.h" />
@@ -682,6 +688,7 @@
     <ClInclude Include="src\Presentation\Scenes\GameScene.h" />
     <ClInclude Include="src\Presentation\Scenes\ResultScene.h" />
     <ClInclude Include="src\Presentation\Scenes\SelectScene.h" />
+    <ClInclude Include="src\Presentation\Scenes\StageEditorScene.h" />
     <ClInclude Include="src\Presentation\Scenes\StoryScene.h" />
     <ClInclude Include="src\Presentation\Scenes\TitleScene.h" />
     <ClInclude Include="src\Presentation\Scenes\TransitionManager.h" />
@@ -699,6 +706,7 @@
     <ClInclude Include="src\UseCase\GameEventHandler.h" />
     <ClInclude Include="src\UseCase\IndependentObjectService.h" />
     <ClInclude Include="src\UseCase\PlayerService.h" />
+    <ClInclude Include="src\UseCase\Editor\StageEditorService.h" />
     <ClInclude Include="src\UseCase\StageService.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>

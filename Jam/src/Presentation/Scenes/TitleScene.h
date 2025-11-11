@@ -14,7 +14,8 @@ namespace Jam::Presentation::Scenes
 		Select,
 		Story,
 		InGame,
-		Result
+		Result,
+		Editor
 	};
 
 	// シーン名を文字列に変換するヘルパー関数
@@ -25,6 +26,7 @@ namespace Jam::Presentation::Scenes
 		case SceneName::Story:   return U"Story";
 		case SceneName::InGame:  return U"InGame";
 		case SceneName::Result:  return U"Result";
+		case SceneName::Editor:  return U"StageEditor";
 		default:                 return U"";
 		}
 	}

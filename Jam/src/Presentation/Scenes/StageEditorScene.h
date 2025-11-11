@@ -1,0 +1,87 @@
+#pragma once
+#include <Siv3D.hpp>
+#include "../Editor/StageEditorRenderer.h"
+#include "../../UseCase/Editor/StageEditorService.h"
+
+namespace Jam::Presentation::Scenes
+{
+    using App = SceneManager<String>;
+    
+    class StageEditorScene : public App::Scene
+    {
+    private:
+        UseCase::Editor::StageEditorService m_editorService;
+        Editor::StageEditorRenderer m_renderer;
+        
+    public:
+        StageEditorScene(const InitData& init)
+            : IScene{ init }
+        {
+            m_renderer.init(&m_editorService);
+        }
+        
+        void update() override
+        {
+            m_editorService.updateCamera();
+            
+            if (Key1.down()) m_editorService.setMode(Domain::Editor::StageEditorMode::Select);
+            if (Key2.down()) m_editorService.setMode(Domain::Editor::StageEditorMode::Place);
+            if (Key3.down()) m_editorService.setMode(Domain::Editor::StageEditorMode::Delete);
+            
+            if (m_editorService.isTestMode())
+            {
+                m_editorService.updateTest();
+                return;
+            }
+            
+            Vec2 mousePos = m_editorService.screenToWorld(Cursor::Pos());
+            
+            switch (m_editorService.getMode())
+            {
+            case Domain::Editor::StageEditorMode::Place:
+                if (MouseL.down())
+                {
+                    m_editorService.handlePlacement(mousePos);
+                }
+                break;
+                
+            case Domain::Editor::StageEditorMode::Select:
+                if (MouseL.down())
+                {
+                    m_editorService.handleSelection(mousePos);
+                }
+                break;
+                
+            case Domain::Editor::StageEditorMode::Delete:
+                if (MouseL.down())
+                {
+                    m_editorService.handleDeletion(mousePos);
+                }
+                break;
+            }
+            
+            if (KeyControl.pressed() && KeyZ.down())
+            {
+                m_editorService.undo();
+            }
+            if (KeyControl.pressed() && KeyY.down())
+            {
+                m_editorService.redo();
+            }
+            
+            if (KeyControl.pressed() && KeyS.down())
+            {
+                m_editorService.saveStage(U"stage_edited.json");
+            }
+            if (KeyControl.pressed() && KeyO.down())
+            {
+                m_editorService.loadStage(U"stage_edited.json");
+            }
+        }
+        
+        void draw() const override
+        {
+            m_renderer.draw();
+        }
+    };
+}

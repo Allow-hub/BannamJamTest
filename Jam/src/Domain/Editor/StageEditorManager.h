@@ -1,0 +1,43 @@
+#pragma once
+#include "StageEditorTypes.h"
+
+namespace Jam::Domain::Editor
+{
+    class StageEditorManager
+    {
+    private:
+        Array<StageEditorObject> m_objects;
+        Array<StageEditorCommand> m_commandHistory;
+        size_t m_historyIndex = 0;
+        size_t m_nextId = 0;
+        Optional<size_t> m_selectedId;
+        
+    public:
+        size_t addObject(const Stage::StageObject& obj);
+        void removeObject(size_t id);
+        void moveObject(size_t id, const Vec2& newPos);
+        void modifyObject(size_t id, const Stage::StageObject& newObj);
+        
+        void selectObject(size_t id);
+        void clearSelection();
+        
+        Optional<size_t> getSelectedId() const { return m_selectedId; }
+        const StageEditorObject* getSelectedObject() const;
+        const Array<StageEditorObject>& getAllObjects() const { return m_objects; }
+        Optional<size_t> findObjectAt(const Vec2& pos) const;
+        
+        void undo();
+        void redo();
+        bool canUndo() const { return m_historyIndex > 0; }
+        bool canRedo() const { return m_historyIndex < m_commandHistory.size(); }
+        
+        void saveToJSON(const FilePath& path) const;
+        void loadFromJSON(const FilePath& path);
+        
+        void clear();
+        
+    private:
+        void executeCommand(const StageEditorCommand& cmd);
+        void addToHistory(const StageEditorCommand& cmd);
+    };
+}
