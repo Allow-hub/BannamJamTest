@@ -168,21 +168,67 @@ namespace Jam::Domain::Editor
     void StageEditorManager::saveToJSON(const FilePath& path) const
     {
         JSON json;
-        json[U"stage"][U"objects"] = Array<JSON>();
+        json[U"objects"] = Array<JSON>();
         
         for (const auto& editorObj : m_objects)
         {
             const auto& obj = editorObj.stageObject;
             JSON objJson;
-            objJson[U"x"] = obj.rect.x;
-            objJson[U"y"] = obj.rect.y;
-            objJson[U"width"] = obj.rect.w;
-            objJson[U"height"] = obj.rect.h;
-            objJson[U"groundSide"] = static_cast<int>(obj.groundSide);
-            objJson[U"type"] = static_cast<int>(obj.type);
+            
+            // rect配列形式で保存
+            objJson[U"rect"] = Array<double>{obj.rect.x, obj.rect.y, obj.rect.w, obj.rect.h};
+            
+            // type文字列で保存
+            String typeStr;
+            switch (obj.type) {
+                case Stage::StageType::Normal: typeStr = U"solid"; break;
+                case Stage::StageType::MovingPlatform: typeStr = U"move"; break;
+                case Stage::StageType::OneWayPlatform: typeStr = U"oneway"; break;
+                case Stage::StageType::DamagePlatform: typeStr = U"damage"; break;
+                case Stage::StageType::MovingDamagePlatform: typeStr = U"movingDamage"; break;
+                default: typeStr = U"solid"; break;
+            }
+            objJson[U"type"] = typeStr;
+            
+            // groundSide文字列で保存
+            String groundSideStr;
+            switch (obj.groundSide) {
+                case Stage::GroundSide::None: groundSideStr = U"none"; break;
+                case Stage::GroundSide::Up: groundSideStr = U"up"; break;
+                case Stage::GroundSide::Down: groundSideStr = U"down"; break;
+                case Stage::GroundSide::Left: groundSideStr = U"left"; break;
+                case Stage::GroundSide::Right: groundSideStr = U"right"; break;
+                case Stage::GroundSide::All: groundSideStr = U"All"; break;
+                default: groundSideStr = U"All"; break;
+            }
+            objJson[U"groundSide"] = groundSideStr;
+            
+            // metadata
             objJson[U"metadata"] = obj.metadata;
             
-            json[U"stage"][U"objects"].push_back(objJson);
+            // 動く床の場合、追加パラメータを保存
+            if (obj.type == Stage::StageType::MovingPlatform || obj.type == Stage::StageType::MovingDamagePlatform)
+            {
+                String movementTypeStr;
+                switch (obj.movementType) {
+                    case Stage::MovementType::Horizontal: movementTypeStr = U"horizontal"; break;
+                    case Stage::MovementType::Vertical: movementTypeStr = U"vertical"; break;
+                    case Stage::MovementType::Circular: movementTypeStr = U"circular"; break;
+                    default: movementTypeStr = U"horizontal"; break;
+                }
+                objJson[U"movementType"] = movementTypeStr;
+                objJson[U"movementSpeed"] = obj.movementSpeed;
+                objJson[U"movementDistance"] = obj.movementDistance;
+                objJson[U"loopMovement"] = obj.loopMovement;
+            }
+            
+            // ダメージ床の場合、ダメージ量を保存
+            if (obj.type == Stage::StageType::DamagePlatform || obj.type == Stage::StageType::MovingDamagePlatform)
+            {
+                objJson[U"damageAmount"] = obj.damageAmount;
+            }
+            
+            json[U"objects"].push_back(objJson);
         }
         
         json.save(path);
@@ -195,19 +241,67 @@ namespace Jam::Domain::Editor
         JSON json = JSON::Load(path);
         if (!json) return;
         
-        const auto& objects = json[U"stage"][U"objects"];
+        // "objects"キーから読み込み(既存のステージJSONと同じ形式)
+        if (!json.hasElement(U"objects")) return;
+        
+        const auto& objects = json[U"objects"];
         for (const auto& objJson : objects.arrayView())
         {
             Stage::StageObject obj;
-            obj.rect = RectF{
-                objJson[U"x"].get<double>(),
-                objJson[U"y"].get<double>(),
-                objJson[U"width"].get<double>(),
-                objJson[U"height"].get<double>()
-            };
-            obj.groundSide = static_cast<Stage::GroundSide>(objJson[U"groundSide"].get<int>());
-            obj.type = static_cast<Stage::StageType>(objJson[U"type"].get<int>());
-            obj.metadata = objJson[U"metadata"].get<String>();
+            
+            // rect配列から読み込み
+            if (objJson.hasElement(U"rect") && objJson[U"rect"].isArray())
+            {
+                const auto& rectArray = objJson[U"rect"];
+                obj.rect = RectF{
+                    rectArray[0].get<double>(),
+                    rectArray[1].get<double>(),
+                    rectArray[2].get<double>(),
+                    rectArray[3].get<double>()
+                };
+            }
+            
+            // type文字列から変換
+            if (objJson.hasElement(U"type"))
+            {
+                obj.type = Stage::stringToCollisionType(objJson[U"type"].getString());
+            }
+            
+            // groundSide文字列から変換
+            if (objJson.hasElement(U"groundSide"))
+            {
+                obj.groundSide = Stage::stringToGroundSide(objJson[U"groundSide"].getString());
+            }
+            
+            // metadata
+            if (objJson.hasElement(U"metadata"))
+            {
+                obj.metadata = objJson[U"metadata"].getString();
+            }
+            
+            // 動く床のパラメータ
+            if (objJson.hasElement(U"movementType"))
+            {
+                obj.movementType = Stage::stringToMovementType(objJson[U"movementType"].getString());
+            }
+            if (objJson.hasElement(U"movementSpeed"))
+            {
+                obj.movementSpeed = objJson[U"movementSpeed"].get<double>();
+            }
+            if (objJson.hasElement(U"movementDistance"))
+            {
+                obj.movementDistance = objJson[U"movementDistance"].get<double>();
+            }
+            if (objJson.hasElement(U"loopMovement"))
+            {
+                obj.loopMovement = objJson[U"loopMovement"].get<bool>();
+            }
+            
+            // ダメージ量
+            if (objJson.hasElement(U"damageAmount"))
+            {
+                obj.damageAmount = objJson[U"damageAmount"].get<double>();
+            }
             
             addObject(obj);
         }
