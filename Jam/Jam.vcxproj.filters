@@ -21,6 +21,15 @@
     <ClCompile Include="src\Presentation\StoryManager.cpp" />
     <ClCompile Include="src\Presentation\CameraManager.cpp" />
     <ClCompile Include="src\Presentation\AudioService.cpp" />
+    <ClCompile Include="src\UseCase\GameEventHandler.cpp" />
+    <ClCompile Include="src\Presentation\Animator.cpp" />
+    <ClCompile Include="src\UseCase\PlayerService.cpp" />
+    <ClCompile Include="src\UseCase\IndependentObjectService.cpp" />
+    <ClCompile Include="src\UseCase\CameraService.cpp" />
+    <ClCompile Include="src\UseCase\AttackProcessor.cpp" />
+    <ClCompile Include="src\Presentation\EnemyManager.cpp" />
+    <ClCompile Include="src\Infrastructure\AudioLoader.cpp" />
+    <ClCompile Include="src\Infrastructure\EnemyLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />

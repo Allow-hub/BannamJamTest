@@ -10,7 +10,7 @@ namespace Jam::Presentation
 	public:
 		// JSON から Animator にクリップを登録
 		// JSON ファイルから Animator のクリップをロードする
-		static bool LoadAnimatorFromJSON(Animator& animator, const String& jsonPath)
+		static bool loadAnimatorFromJSON(Animator& animator, const String& jsonPath)
 		{
 			const JSON json = JSON::Load(jsonPath);
 			if (not json)
@@ -70,7 +70,7 @@ namespace Jam::Presentation
 					}
 					clip.frames.push_back(frame);
 				}
-				animator.AddClip(clipName, clip);
+				animator.addClip(clipName, clip);
 			}
 			return true;
 		}

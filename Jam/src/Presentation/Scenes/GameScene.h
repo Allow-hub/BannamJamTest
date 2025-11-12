@@ -195,7 +195,7 @@ namespace Jam::Presentation::Scenes
 
 			// 敵ステータスをJSONからロード
 			std::unordered_map<Jam::Domain::EnemyType, Jam::Domain::Enemy::EnemyStatus> enemyStatusTable;
-			if (Jam::Infrastructure::EnemyLoader::LoadEnemyStatusFromJSON(
+			if (Jam::Infrastructure::EnemyLoader::loadEnemyStatusFromJSON(
 				U"Assets/Enemy/enemy_stats.json",
 				enemyStatusTable))
 			{

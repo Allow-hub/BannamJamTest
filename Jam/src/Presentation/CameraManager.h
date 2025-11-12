@@ -44,6 +44,8 @@ namespace Jam::Presentation
 		void focusOn(const Vec2& point, double duration, double zoom = 1.0);
 		void shake(double intensity, double duration);
 		void resetToFollow();
+
+		//特定の場所に固定
 		void lockFocusOn(const Vec2& point, double zoom = 1.0);
 		void updateFocusPoint(const Vec2& point);
 
