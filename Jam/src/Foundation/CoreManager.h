@@ -86,7 +86,6 @@ namespace Jam::Foundation
 			{
 			case StageName::Stage1_1:
 				Instance().stageInfo.stageName = StageName::Stage1_2;
-				Print << U"aa";
 				break;
 			case StageName::Stage1_2:
 				Instance().stageInfo.stageName = StageName::Stage1_3;
