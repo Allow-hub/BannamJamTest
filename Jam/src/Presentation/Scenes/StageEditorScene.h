@@ -74,6 +74,37 @@ namespace Jam::Presentation::Scenes
                 }
             }
             
+            if (KeyZ.down())
+            {
+                using MovementType = Domain::Stage::MovementType;
+                auto currentType = m_editorService.getMovementType();
+                switch (currentType)
+                {
+                case MovementType::Horizontal: m_editorService.setMovementType(MovementType::Vertical); break;
+                case MovementType::Vertical: m_editorService.setMovementType(MovementType::Circular); break;
+                case MovementType::Circular: m_editorService.setMovementType(MovementType::Horizontal); break;
+                default: m_editorService.setMovementType(MovementType::Horizontal); break;
+                }
+            }
+            
+            if (KeyX.down())
+            {
+                double currentDist = m_editorService.getMovementDistance();
+                if (KeyShift.pressed())
+                    m_editorService.setMovementDistance(Max(50.0, currentDist - 50.0));
+                else
+                    m_editorService.setMovementDistance(Min(1000.0, currentDist + 50.0));
+            }
+            
+            if (KeyC.down())
+            {
+                double currentSpeed = m_editorService.getMovementSpeed();
+                if (KeyShift.pressed())
+                    m_editorService.setMovementSpeed(Max(10.0, currentSpeed - 10.0));
+                else
+                    m_editorService.setMovementSpeed(Min(500.0, currentSpeed + 10.0));
+            }
+            
             if (m_editorService.isTestMode())
             {
                 m_editorService.updateTest();

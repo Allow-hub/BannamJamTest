@@ -123,6 +123,11 @@ namespace Jam::UseCase::Editor
         obj.groundSide = m_currentGroundSide;
         obj.type = m_currentStageType;
         obj.metadata = U"editor_object";
+        
+        obj.movementType = m_currentMovementType;
+        obj.movementDistance = m_currentMovementDistance;
+        obj.movementSpeed = m_currentMovementSpeed;
+        
         return obj;
     }
 }

@@ -18,6 +18,10 @@ namespace Jam::UseCase::Editor
         String m_currentTextureKey = U"default";
         Domain::Editor::PlacementOrientation m_placementOrientation = Domain::Editor::PlacementOrientation::Horizontal;
         
+        Domain::Stage::MovementType m_currentMovementType = Domain::Stage::MovementType::Horizontal;
+        double m_currentMovementDistance = 200.0;
+        double m_currentMovementSpeed = 100.0;
+        
         bool m_isTestMode = false;
         
     public:
@@ -31,10 +35,25 @@ namespace Jam::UseCase::Editor
         Vec2 screenToWorld(const Vec2& screenPos) const;
         Vec2 snapToGrid(const Vec2& pos) const;
         
-        void setCurrentStageType(Domain::Stage::StageType type) { m_currentStageType = type; }
+        void setCurrentStageType(Domain::Stage::StageType type) 
+        { 
+            m_currentStageType = type; 
+            if (type == Domain::Stage::StageType::DamagePlatform || 
+                type == Domain::Stage::StageType::MovingDamagePlatform)
+            {
+                m_currentGroundSide = Domain::Stage::GroundSide::None;
+            }
+        }
         void setCurrentGroundSide(Domain::Stage::GroundSide side) { m_currentGroundSide = side; }
         Domain::Stage::StageType getCurrentStageType() const { return m_currentStageType; }
         Domain::Stage::GroundSide getCurrentGroundSide() const { return m_currentGroundSide; }
+        
+        void setMovementType(Domain::Stage::MovementType type) { m_currentMovementType = type; }
+        void setMovementDistance(double distance) { m_currentMovementDistance = distance; }
+        void setMovementSpeed(double speed) { m_currentMovementSpeed = speed; }
+        Domain::Stage::MovementType getMovementType() const { return m_currentMovementType; }
+        double getMovementDistance() const { return m_currentMovementDistance; }
+        double getMovementSpeed() const { return m_currentMovementSpeed; }
         
         void setPlacementOrientation(Domain::Editor::PlacementOrientation orientation) { m_placementOrientation = orientation; }
         Domain::Editor::PlacementOrientation getPlacementOrientation() const { return m_placementOrientation; }

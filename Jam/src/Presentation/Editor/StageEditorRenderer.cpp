@@ -146,6 +146,25 @@ namespace Jam::Presentation::Editor
         m_smallFont(groundSideStr).draw(10, y, sideColor);
         
         y += 30;
+        
+        const String movementTypeStr = [this]() {
+            switch (m_service->getMovementType())
+            {
+            case Domain::Stage::MovementType::Horizontal: return U"横移動";
+            case Domain::Stage::MovementType::Vertical: return U"縦移動";
+            case Domain::Stage::MovementType::Circular: return U"円運動";
+            default: return U"不明";
+            }
+        }();
+        m_smallFont(U"移動タイプ: {}"_fmt(movementTypeStr)).draw(10, y, Palette::Orange);
+        
+        y += 25;
+        m_smallFont(U"移動距離: {:.0f}"_fmt(m_service->getMovementDistance())).draw(10, y, Palette::Orange);
+        
+        y += 25;
+        m_smallFont(U"移動速度: {:.0f}"_fmt(m_service->getMovementSpeed())).draw(10, y, Palette::Orange);
+        
+        y += 30;
         m_smallFont(U"配置方向").draw(10, y, Palette::White);
         y += 25;
         
@@ -186,7 +205,7 @@ namespace Jam::Presentation::Editor
     {
         int y = Scene::Height() - 30;
         
-        String help = U"1:選択 2:配置 3:削除 | Shift:水平 Alt:垂直 | 左クリック:操作 | Ctrl+S:保存 Ctrl+Z:元に戻す Ctrl+P:プレイ | ESC:終了";
+        String help = U"1:選択 2:配置 3:削除 | Q:タイプ E:接地面 Z:移動方向 X/Shift+X:距離 C/Shift+C:速度 | Ctrl+S:保存 Ctrl+P:プレイ | ESC:終了";
         m_smallFont(help).draw(10, y, Palette::White);
     }
 
