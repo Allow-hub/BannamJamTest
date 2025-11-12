@@ -1,4 +1,4 @@
-#include "StageEditorManager.h"
+﻿#include "StageEditorManager.h"
 
 namespace Jam::Domain::Editor
 {
@@ -259,15 +259,11 @@ namespace Jam::Domain::Editor
 
     void StageEditorManager::saveToJSON(const FilePath& path) const
     {
-        JSON json;
-        json[U"objects"] = Array<JSON>();
+        String output = U"{\n  \"objects\": [\n";
         
-        for (const auto& editorObj : m_objects)
+        for (size_t i = 0; i < m_objects.size(); ++i)
         {
-            const auto& obj = editorObj.stageObject;
-            JSON objJson;
-            
-            objJson[U"rect"] = Array<double>{obj.rect.x, obj.rect.y, obj.rect.w, obj.rect.h};
+            const auto& obj = m_objects[i].stageObject;
             
             String typeStr;
             switch (obj.type) {
@@ -278,7 +274,6 @@ namespace Jam::Domain::Editor
                 case Stage::StageType::MovingDamagePlatform: typeStr = U"movingDamage"; break;
                 default: typeStr = U"solid"; break;
             }
-            objJson[U"type"] = typeStr;
             
             String groundSideStr;
             switch (obj.groundSide) {
@@ -290,9 +285,16 @@ namespace Jam::Domain::Editor
                 case Stage::GroundSide::All: groundSideStr = U"All"; break;
                 default: groundSideStr = U"All"; break;
             }
-            objJson[U"groundSide"] = groundSideStr;
             
-            objJson[U"metadata"] = obj.metadata;
+            output += U"    {\n";
+            output += U"      \"rect\": [ ";
+            output += U"{}"_fmt(obj.rect.x) + U", ";
+            output += U"{}"_fmt(obj.rect.y) + U", ";
+            output += U"{}"_fmt(obj.rect.w) + U", ";
+            output += U"{}"_fmt(obj.rect.h) + U" ],\n";
+            output += U"      \"type\": \"" + typeStr + U"\",\n";
+            output += U"      \"groundSide\": \"" + groundSideStr + U"\",\n";
+            output += U"      \"metadata\": \"" + obj.metadata + U"\"";
             
             if (obj.type == Stage::StageType::MovingPlatform || obj.type == Stage::StageType::MovingDamagePlatform)
             {
@@ -303,21 +305,35 @@ namespace Jam::Domain::Editor
                     case Stage::MovementType::Circular: movementTypeStr = U"circular"; break;
                     default: movementTypeStr = U"horizontal"; break;
                 }
-                objJson[U"movementType"] = movementTypeStr;
-                objJson[U"movementSpeed"] = obj.movementSpeed;
-                objJson[U"movementDistance"] = obj.movementDistance;
-                objJson[U"loopMovement"] = obj.loopMovement;
-            }
+                output += U",\n      \"movementType\": \"" + movementTypeStr + U"\"";
+                output += U",\n      \"movementSpeed\": ";
+                output += U"{}"_fmt(obj.movementSpeed);
+                output += U",\n      \"movementDistance\": ";
+                output += U"{}"_fmt(obj.movementDistance);
+				output += U",\n      \"loopMovement\": " + String(obj.loopMovement ? U"true" : U"false");
+			}
             
             if (obj.type == Stage::StageType::DamagePlatform || obj.type == Stage::StageType::MovingDamagePlatform)
             {
-                objJson[U"damageAmount"] = obj.damageAmount;
+                output += U",\n      \"damageAmount\": ";
+                output += U"{}"_fmt(obj.damageAmount);
             }
             
-            json[U"objects"].push_back(objJson);
+            output += U"\n    }";
+            if (i < m_objects.size() - 1)
+            {
+                output += U",";
+            }
+            output += U"\n";
         }
         
-        json.save(path);
+        output += U"  ]\n}";
+        
+        TextWriter writer(path);
+        if (writer)
+        {
+            writer.write(output);
+        }
     }
 
     void StageEditorManager::loadFromJSON(const FilePath& path)
