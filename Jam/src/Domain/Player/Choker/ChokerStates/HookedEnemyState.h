@@ -10,6 +10,7 @@ namespace Jam::Domain::Player
 	class HookedEnemyState : public IChokerState
 	{
 	private:
+		Texture wireTex;
 		const double m_enemyJointShrinkSpeed = 0.75;
 		const double m_enemyHitFreezeDuration = 0.1;
 		const double m_minJointLength = 30.0;
@@ -111,6 +112,11 @@ namespace Jam::Domain::Player
 		}
 
 	public:
+		HookedEnemyState()
+			: wireTex(U"Assets/Player/wire.png")
+		{
+		}
+
 		void enter(ChokerContext& ctx) override
 		{
 			if (!ctx.targetEnemy)
@@ -238,14 +244,17 @@ namespace Jam::Domain::Player
 
 		void draw(const ChokerContext& ctx) const override
 		{
-			// フックの描画
-			ctx.body->drawFrame(3.0, Palette::Violet);
+			// プレイヤー位置とフック／敵位置
+			auto playerBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+				.getPhysicsFactory()->getBody(ctx.ownerId);
+			if (!playerBody || !ctx.targetEnemy) return;
 
-			// ジョイントの描画
-			if (ctx.joint.has_value())
-			{
-				ctx.joint->draw(Palette::Violet);
-			}
+			Vec2 playerPos = playerBody->getPosition();
+			Vec2 hookPos = ctx.body->getPosition();
+			drawWire(playerPos, hookPos, wireTex);
+
+			// フック本体を描く
+			ctx.body->drawFrame(3.0, Palette::Violet);
 		}
 
 		void exit(ChokerContext& ctx) override

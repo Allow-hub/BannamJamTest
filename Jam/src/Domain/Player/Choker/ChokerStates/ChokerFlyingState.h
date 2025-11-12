@@ -11,14 +11,21 @@ namespace Jam::Domain::Player
 	class ChokerFlyingState : public IChokerState
 	{
 	private:
+		Texture wireTex;
 		const Vec2 createOffset = Vec2{ 50, -30 };
 		const double maxFlyTime = 0.15; // 最大飛行時間
 		double flyTimer = 0.0;
 
 	public:
+		ChokerFlyingState()
+			: wireTex(U"Assets/Player/wire.png")
+		{
+		}
+
 		void enter(ChokerContext& ctx) override
 		{
 			Jam::Presentation::AudioService::get().playOneShot(Jam::Presentation::AudioService::Sound::SE_Choker, 0.3);
+
 			Vec2 target = Jam::Infrastructure::CursorUtil::instance().getCursorPosF();
 			bool isRight = (target.x >= ctx.player.getPosition().x);
 			Vec2 offset = isRight ? createOffset : Vec2{ -createOffset.x, createOffset.y };
@@ -49,24 +56,28 @@ namespace Jam::Domain::Player
 			}
 		}
 
-		void draw(const ChokerContext& ctx)const override
+		void draw(const ChokerContext& ctx) const override
 		{
+			const Vec2 playerPos = ctx.player.getPosition();
+			const Vec2 hookPos = ctx.body->getPosition();
+			drawWire(playerPos, hookPos, wireTex);
+
 			ctx.body->drawFrame(3.0, Palette::Violet);
 		}
 
 		void onCollisionEnter(ChokerContext& ctx, std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body) override
 		{
-			if(body->getLayer() == PhysicsLayer::Ground)
+			if (body->getLayer() == PhysicsLayer::Ground)
 			{
 				ctx.ground = body;
 				ctx.skill.transitionTo<HookedGroundState>();
 			}
-			else if(body->getLayer() == PhysicsLayer::Enemy)
+			else if (body->getLayer() == PhysicsLayer::Enemy)
 			{
 				ctx.targetEnemy = body;
 				ctx.skill.transitionTo<HookedEnemyState>();
 			}
-			else if(body->getLayer() == PhysicsLayer::Wall)
+			else if (body->getLayer() == PhysicsLayer::Wall)
 			{
 				ctx.body->setVelocity({ 0, 0 });
 			}

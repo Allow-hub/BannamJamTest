@@ -18,6 +18,9 @@
     <ClCompile Include="src\Domain\Enemy\ShockWave.cpp" />
     <ClCompile Include="src\Domain\Enemy\Bomb.cpp" />
     <ClCompile Include="src\Domain\Enemy\Missile.cpp" />
+    <ClCompile Include="src\Presentation\StoryManager.cpp" />
+    <ClCompile Include="src\Presentation\CameraManager.cpp" />
+    <ClCompile Include="src\Presentation\AudioService.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
@@ -398,6 +401,7 @@
     <Image Include="App\Assets\Player\Damage\damege_27.png" />
     <Image Include="App\Assets\Player\Damage\damege_28.png" />
     <Image Include="App\Assets\Player\Damage\damege_29.png" />
+    <Image Include="App\Assets\Player\wire.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />

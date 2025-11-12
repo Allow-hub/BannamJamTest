@@ -8,11 +8,17 @@ namespace Jam::Domain::Player
 	class HookedGroundState : public IChokerState
 	{
 	private:
+		Texture wireTex;
 		const double m_minDist = 1.0;
 		const double m_maxDist = 400.0; // 上限
 		const double shrinkSpeed = 2000.0;
 		
 	public:
+		HookedGroundState()
+			: wireTex(U"Assets/Player/wire.png")
+		{
+		}
+
 		void enter(ChokerContext& ctx) override
 		{
 			if (ctx.isFlying)
@@ -87,11 +93,21 @@ namespace Jam::Domain::Player
 
 		void draw(const ChokerContext& ctx) const override
 		{
-			ctx.body->drawFrame(3.0, Palette::Violet);
+			if (!ctx.joint.has_value()) return;
 
-			if (ctx.joint.has_value())
-				ctx.joint->draw(Palette::Violet);
+			auto playerBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
+				.getPhysicsFactory()->getBody(ctx.ownerId);
+			if (!playerBody) return;
+
+			const auto playerPos = playerBody->getPosition();
+			const auto hookPos = ctx.body->getPosition();
+
+			drawWire(playerPos, hookPos, wireTex);
+
+			ctx.body->drawFrame(3.0, Palette::Violet);
 		}
+
+
 
 		bool isHookedGround() const override { return true; }
 	};

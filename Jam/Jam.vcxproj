@@ -128,6 +128,9 @@
     <ClCompile Include="src\Domain\Player\Player.cpp" />
     <ClCompile Include="src\Domain\Player\Choker\ChokerSkill.cpp" />
     <ClCompile Include="src\Infrastructure\StageFactory.cpp" />
+    <ClCompile Include="src\Presentation\AudioService.cpp" />
+    <ClCompile Include="src\Presentation\CameraManager.cpp" />
+    <ClCompile Include="src\Presentation\StoryManager.cpp" />
     <ClCompile Include="src\UseCase\EnemyFactory.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -196,6 +199,7 @@
     <Image Include="App\Assets\Player\Damage\damege_27.png" />
     <Image Include="App\Assets\Player\Damage\damege_28.png" />
     <Image Include="App\Assets\Player\Damage\damege_29.png" />
+    <Image Include="App\Assets\Player\wire.png" />
     <Image Include="App\Assets\Select\area_01.png" />
     <Image Include="App\Assets\Select\area_02.png" />
     <Image Include="App\Assets\Select\area_03.png" />
