@@ -16,6 +16,7 @@ namespace Jam::UseCase::Editor
         Domain::Stage::StageType m_currentStageType = Domain::Stage::StageType::Normal;
         Domain::Stage::GroundSide m_currentGroundSide = Domain::Stage::GroundSide::All;
         String m_currentTextureKey = U"default";
+        Domain::Editor::PlacementOrientation m_placementOrientation = Domain::Editor::PlacementOrientation::Horizontal;
         
         bool m_isTestMode = false;
         
@@ -34,6 +35,15 @@ namespace Jam::UseCase::Editor
         void setCurrentGroundSide(Domain::Stage::GroundSide side) { m_currentGroundSide = side; }
         Domain::Stage::StageType getCurrentStageType() const { return m_currentStageType; }
         Domain::Stage::GroundSide getCurrentGroundSide() const { return m_currentGroundSide; }
+        
+        void setPlacementOrientation(Domain::Editor::PlacementOrientation orientation) { m_placementOrientation = orientation; }
+        Domain::Editor::PlacementOrientation getPlacementOrientation() const { return m_placementOrientation; }
+        void togglePlacementOrientation() 
+        {
+            m_placementOrientation = (m_placementOrientation == Domain::Editor::PlacementOrientation::Horizontal) 
+                ? Domain::Editor::PlacementOrientation::Vertical 
+                : Domain::Editor::PlacementOrientation::Horizontal;
+        }
         
         void handlePlacement(const Vec2& mousePos);
         void handleSelection(const Vec2& mousePos);

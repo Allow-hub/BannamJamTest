@@ -93,16 +93,14 @@ namespace Jam::Presentation::Scenes
 			m_inputManager()
 		{
 			Jam::Presentation::AudioService::get().play(Jam::Presentation::AudioService::Sound::BGM_Game, true);
-			//デバッグ用 - エディタで作成したステージを読み込む
-			//Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_1; // CoreManagerのenumに追加が必要
 
 			auto& core = Jam::Foundation::CoreManager::Instance();
-			// エディタからの遷移時はresetしない(ステージ情報を保持)
-			// core.reset();
 			
-			// エディタで作成したステージを読み込む場合はこちらを有効化
-			String stageName = U"Assets/Stage/stage_edited.json"; // エディタステージ(拡張子込み)
-			//String stageName = Jam::Foundation::CoreManager::stageNameToString(core.stageInfo.stageName); // 通常のステージ
+			if (!core.isEditorMode()) core.reset();
+			
+			String stageName;
+			if (core.isEditorMode()) stageName = U"stage_edited.json";
+			else stageName = Jam::Foundation::CoreManager::stageNameToString(core.stageInfo.stageName);
 			
 			core.setCurrentStageData(core.getStageData(core.stageInfo.stageName));
 

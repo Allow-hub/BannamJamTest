@@ -44,6 +44,36 @@ namespace Jam::Presentation::Scenes
             if (Key2.down()) m_editorService.setMode(Domain::Editor::StageEditorMode::Place);
             if (Key3.down()) m_editorService.setMode(Domain::Editor::StageEditorMode::Delete);
             
+            if (KeyQ.down())
+            {
+                using StageType = Domain::Stage::StageType;
+                auto currentType = m_editorService.getCurrentStageType();
+                switch (currentType)
+                {
+                case StageType::Normal: m_editorService.setCurrentStageType(StageType::MovingPlatform); break;
+                case StageType::MovingPlatform: m_editorService.setCurrentStageType(StageType::OneWayPlatform); break;
+                case StageType::OneWayPlatform: m_editorService.setCurrentStageType(StageType::DamagePlatform); break;
+                case StageType::DamagePlatform: m_editorService.setCurrentStageType(StageType::Normal); break;
+                default: m_editorService.setCurrentStageType(StageType::Normal); break;
+                }
+            }
+            
+            if (KeyE.down())
+            {
+                using GroundSide = Domain::Stage::GroundSide;
+                auto currentSide = m_editorService.getCurrentGroundSide();
+                switch (currentSide)
+                {
+                case GroundSide::All: m_editorService.setCurrentGroundSide(GroundSide::Up); break;
+                case GroundSide::Up: m_editorService.setCurrentGroundSide(GroundSide::Down); break;
+                case GroundSide::Down: m_editorService.setCurrentGroundSide(GroundSide::Left); break;
+                case GroundSide::Left: m_editorService.setCurrentGroundSide(GroundSide::Right); break;
+                case GroundSide::Right: m_editorService.setCurrentGroundSide(GroundSide::None); break;
+                case GroundSide::None: m_editorService.setCurrentGroundSide(GroundSide::All); break;
+                default: m_editorService.setCurrentGroundSide(GroundSide::All); break;
+                }
+            }
+            
             if (m_editorService.isTestMode())
             {
                 m_editorService.updateTest();
@@ -55,6 +85,15 @@ namespace Jam::Presentation::Scenes
             if (hasMouseInput)
             {
                 Vec2 mousePos = m_editorService.screenToWorld(Cursor::Pos());
+                
+                if (KeyShift.pressed())
+                {
+                    m_editorService.setPlacementOrientation(Domain::Editor::PlacementOrientation::Horizontal);
+                }
+                else if (KeyAlt.pressed())
+                {
+                    m_editorService.setPlacementOrientation(Domain::Editor::PlacementOrientation::Vertical);
+                }
                 
                 switch (m_editorService.getMode())
                 {

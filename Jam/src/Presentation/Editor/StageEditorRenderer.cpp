@@ -145,6 +145,14 @@ namespace Jam::Presentation::Editor
         ColorF sideColor = getGroundSideColor(m_service->getCurrentGroundSide());
         m_smallFont(groundSideStr).draw(10, y, sideColor);
         
+        y += 30;
+        m_smallFont(U"配置方向").draw(10, y, Palette::White);
+        y += 25;
+        
+        const String orientationStr = (m_service->getPlacementOrientation() == Domain::Editor::PlacementOrientation::Horizontal) 
+            ? U"水平 (Shift)" : U"垂直 (Alt)";
+        m_smallFont(orientationStr).draw(10, y, Palette::Cyan);
+        
         y += 40;
         m_smallFont(U"枠線の色:").draw(10, y, Palette::White);
         y += 25;
@@ -178,7 +186,7 @@ namespace Jam::Presentation::Editor
     {
         int y = Scene::Height() - 30;
         
-        String help = U"1:選択 2:配置 3:削除 | 左クリック:操作 右クリック:移動 | Ctrl+S:保存 Ctrl+Z:元に戻す Ctrl+P:プレイ | ESC:終了";
+        String help = U"1:選択 2:配置 3:削除 | Shift:水平 Alt:垂直 | 左クリック:操作 | Ctrl+S:保存 Ctrl+Z:元に戻す Ctrl+P:プレイ | ESC:終了";
         m_smallFont(help).draw(10, y, Palette::White);
     }
 

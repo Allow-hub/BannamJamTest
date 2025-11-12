@@ -12,6 +12,11 @@ namespace Jam::Domain::Editor
         Test
     };
 
+    enum class PlacementOrientation {
+        Horizontal,
+        Vertical
+    };
+
     struct StageEditorObject {
         Stage::StageObject stageObject;
         bool isSelected = false;

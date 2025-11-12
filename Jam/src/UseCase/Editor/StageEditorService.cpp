@@ -54,8 +54,17 @@ namespace Jam::UseCase::Editor
     void StageEditorService::handlePlacement(const Vec2& mousePos)
     {
         const int gridSize = m_settings.getGridSize();
+        Vec2 snappedPos = snapToGrid(mousePos);
         
-        RectF rect{mousePos.x, mousePos.y, gridSize, gridSize};
+        RectF rect;
+        if (m_placementOrientation == Domain::Editor::PlacementOrientation::Horizontal)
+        {
+            rect = RectF{snappedPos.x, snappedPos.y, gridSize, gridSize};
+        }
+        else
+        {
+            rect = RectF{snappedPos.x, snappedPos.y, gridSize, gridSize};
+        }
         
         auto obj = createStageObjectFromCurrent(rect);
         m_stageManager.addObject(obj);
