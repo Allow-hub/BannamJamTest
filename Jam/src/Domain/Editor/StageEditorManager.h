@@ -12,6 +12,8 @@ namespace Jam::Domain::Editor
         size_t m_nextId = 0;
         Optional<size_t> m_selectedId;
         
+        bool m_isExecutingCommand = false;
+        
     public:
         size_t addObject(const Stage::StageObject& obj);
         void removeObject(size_t id);
@@ -26,6 +28,8 @@ namespace Jam::Domain::Editor
         const Array<StageEditorObject>& getAllObjects() const { return m_objects; }
         Optional<size_t> findObjectAt(const Vec2& pos) const;
         
+		bool hasObjectAtExactPosition(const RectF& rect) const;
+
         void undo();
         void redo();
         bool canUndo() const { return m_historyIndex > 0; }
@@ -39,5 +43,7 @@ namespace Jam::Domain::Editor
     private:
         void executeCommand(const StageEditorCommand& cmd);
         void addToHistory(const StageEditorCommand& cmd);
+        
+        void removeObjectDirect(size_t id);
     };
 }

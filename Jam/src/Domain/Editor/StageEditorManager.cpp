@@ -10,10 +10,13 @@ namespace Jam::Domain::Editor
         
         m_objects.push_back(editorObj);
         
-        StageEditorCommand cmd;
-        cmd.type = StageEditorCommand::Type::Add;
-        cmd.object = editorObj;
-        addToHistory(cmd);
+        if (!m_isExecutingCommand)
+        {
+            StageEditorCommand cmd;
+            cmd.type = StageEditorCommand::Type::Add;
+            cmd.object = editorObj;
+            addToHistory(cmd);
+        }
         
         return *editorObj.id;
     }
@@ -24,11 +27,30 @@ namespace Jam::Domain::Editor
         {
             if (it->id == id)
             {
-                StageEditorCommand cmd;
-                cmd.type = StageEditorCommand::Type::Delete;
-                cmd.object = *it;
-                addToHistory(cmd);
+                if (!m_isExecutingCommand)
+                {
+                    StageEditorCommand cmd;
+                    cmd.type = StageEditorCommand::Type::Delete;
+                    cmd.object = *it;
+                    addToHistory(cmd);
+                }
                 
+                m_objects.erase(it);
+                if (m_selectedId == id)
+                {
+                    m_selectedId.reset();
+                }
+                break;
+            }
+        }
+    }
+
+    void StageEditorManager::removeObjectDirect(size_t id)
+    {
+        for (auto it = m_objects.begin(); it != m_objects.end(); ++it)
+        {
+            if (it->id == id)
+            {
                 m_objects.erase(it);
                 if (m_selectedId == id)
                 {
@@ -45,12 +67,15 @@ namespace Jam::Domain::Editor
         {
             if (obj.id == id)
             {
-                StageEditorCommand cmd;
-                cmd.type = StageEditorCommand::Type::Move;
-                cmd.object = obj;
-                cmd.oldPos = obj.stageObject.rect.pos;
-                cmd.newPos = newPos;
-                addToHistory(cmd);
+                if (!m_isExecutingCommand)
+                {
+                    StageEditorCommand cmd;
+                    cmd.type = StageEditorCommand::Type::Move;
+                    cmd.object = obj;
+                    cmd.oldPos = obj.stageObject.rect.pos;
+                    cmd.newPos = newPos;
+                    addToHistory(cmd);
+                }
                 
                 obj.stageObject.rect.setPos(newPos);
                 break;
@@ -64,10 +89,13 @@ namespace Jam::Domain::Editor
         {
             if (obj.id == id)
             {
-                StageEditorCommand cmd;
-                cmd.type = StageEditorCommand::Type::Modify;
-                cmd.object = obj;
-                addToHistory(cmd);
+                if (!m_isExecutingCommand)
+                {
+                    StageEditorCommand cmd;
+                    cmd.type = StageEditorCommand::Type::Modify;
+                    cmd.object = obj;
+                    addToHistory(cmd);
+                }
                 
                 obj.stageObject = newObj;
                 break;
@@ -109,20 +137,36 @@ namespace Jam::Domain::Editor
 
     Optional<size_t> StageEditorManager::findObjectAt(const Vec2& pos) const
     {
-        for (const auto& obj : m_objects)
+        for (auto it = m_objects.rbegin(); it != m_objects.rend(); ++it)
         {
-            if (obj.stageObject.rect.contains(pos))
+            if (it->stageObject.rect.contains(pos))
             {
-                return obj.id;
+                return it->id;
             }
         }
         return none;
+    }
+    
+    bool StageEditorManager::hasObjectAtExactPosition(const RectF& rect) const
+    {
+        for (const auto& obj : m_objects)
+        {
+            if (obj.stageObject.rect.x == rect.x &&
+                obj.stageObject.rect.y == rect.y &&
+                obj.stageObject.rect.w == rect.w &&
+                obj.stageObject.rect.h == rect.h)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     void StageEditorManager::undo()
     {
         if (!canUndo()) return;
         
+        m_isExecutingCommand = true;
         m_historyIndex--;
         const auto& cmd = m_commandHistory[m_historyIndex];
         
@@ -131,8 +175,7 @@ namespace Jam::Domain::Editor
         case StageEditorCommand::Type::Add:
             if (cmd.object.id)
             {
-                removeObject(*cmd.object.id);
-                m_historyIndex--;
+                removeObjectDirect(*cmd.object.id);
             }
             break;
             
@@ -153,16 +196,65 @@ namespace Jam::Domain::Editor
                 }
             }
             break;
+            
+        case StageEditorCommand::Type::Modify:
+            if (cmd.object.id)
+            {
+                for (auto& obj : m_objects)
+                {
+                    if (obj.id == *cmd.object.id)
+                    {
+                        obj.stageObject = cmd.object.stageObject;
+                        break;
+                    }
+                }
+            }
+            break;
         }
+        
+        m_isExecutingCommand = false;
     }
 
     void StageEditorManager::redo()
     {
         if (!canRedo()) return;
         
+        m_isExecutingCommand = true;
         const auto& cmd = m_commandHistory[m_historyIndex];
-        executeCommand(cmd);
         m_historyIndex++;
+        
+        switch (cmd.type)
+        {
+        case StageEditorCommand::Type::Add:
+            m_objects.push_back(cmd.object);
+            break;
+            
+        case StageEditorCommand::Type::Delete:
+            if (cmd.object.id)
+            {
+                removeObjectDirect(*cmd.object.id);
+            }
+            break;
+            
+        case StageEditorCommand::Type::Move:
+            if (cmd.object.id)
+            {
+                for (auto& obj : m_objects)
+                {
+                    if (obj.id == *cmd.object.id)
+                    {
+                        obj.stageObject.rect.setPos(cmd.newPos);
+                        break;
+                    }
+                }
+            }
+            break;
+            
+        case StageEditorCommand::Type::Modify:
+            break;
+        }
+        
+        m_isExecutingCommand = false;
     }
 
     void StageEditorManager::saveToJSON(const FilePath& path) const
@@ -175,10 +267,8 @@ namespace Jam::Domain::Editor
             const auto& obj = editorObj.stageObject;
             JSON objJson;
             
-            // rect配列形式で保存
             objJson[U"rect"] = Array<double>{obj.rect.x, obj.rect.y, obj.rect.w, obj.rect.h};
             
-            // type文字列で保存
             String typeStr;
             switch (obj.type) {
                 case Stage::StageType::Normal: typeStr = U"solid"; break;
@@ -190,7 +280,6 @@ namespace Jam::Domain::Editor
             }
             objJson[U"type"] = typeStr;
             
-            // groundSide文字列で保存
             String groundSideStr;
             switch (obj.groundSide) {
                 case Stage::GroundSide::None: groundSideStr = U"none"; break;
@@ -203,10 +292,8 @@ namespace Jam::Domain::Editor
             }
             objJson[U"groundSide"] = groundSideStr;
             
-            // metadata
             objJson[U"metadata"] = obj.metadata;
             
-            // 動く床の場合、追加パラメータを保存
             if (obj.type == Stage::StageType::MovingPlatform || obj.type == Stage::StageType::MovingDamagePlatform)
             {
                 String movementTypeStr;
@@ -222,7 +309,6 @@ namespace Jam::Domain::Editor
                 objJson[U"loopMovement"] = obj.loopMovement;
             }
             
-            // ダメージ床の場合、ダメージ量を保存
             if (obj.type == Stage::StageType::DamagePlatform || obj.type == Stage::StageType::MovingDamagePlatform)
             {
                 objJson[U"damageAmount"] = obj.damageAmount;
@@ -241,15 +327,16 @@ namespace Jam::Domain::Editor
         JSON json = JSON::Load(path);
         if (!json) return;
         
-        // "objects"キーから読み込み(既存のステージJSONと同じ形式)
         if (!json.hasElement(U"objects")) return;
         
         const auto& objects = json[U"objects"];
+        
+        m_isExecutingCommand = true;
+        
         for (const auto& objJson : objects.arrayView())
         {
             Stage::StageObject obj;
             
-            // rect配列から読み込み
             if (objJson.hasElement(U"rect") && objJson[U"rect"].isArray())
             {
                 const auto& rectArray = objJson[U"rect"];
@@ -261,25 +348,21 @@ namespace Jam::Domain::Editor
                 };
             }
             
-            // type文字列から変換
             if (objJson.hasElement(U"type"))
             {
                 obj.type = Stage::stringToCollisionType(objJson[U"type"].getString());
             }
             
-            // groundSide文字列から変換
             if (objJson.hasElement(U"groundSide"))
             {
                 obj.groundSide = Stage::stringToGroundSide(objJson[U"groundSide"].getString());
             }
             
-            // metadata
             if (objJson.hasElement(U"metadata"))
             {
                 obj.metadata = objJson[U"metadata"].getString();
             }
             
-            // 動く床のパラメータ
             if (objJson.hasElement(U"movementType"))
             {
                 obj.movementType = Stage::stringToMovementType(objJson[U"movementType"].getString());
@@ -297,7 +380,6 @@ namespace Jam::Domain::Editor
                 obj.loopMovement = objJson[U"loopMovement"].get<bool>();
             }
             
-            // ダメージ量
             if (objJson.hasElement(U"damageAmount"))
             {
                 obj.damageAmount = objJson[U"damageAmount"].get<double>();
@@ -305,6 +387,8 @@ namespace Jam::Domain::Editor
             
             addObject(obj);
         }
+        
+        m_isExecutingCommand = false;
     }
 
     void StageEditorManager::clear()
@@ -317,6 +401,8 @@ namespace Jam::Domain::Editor
 
     void StageEditorManager::executeCommand(const StageEditorCommand& cmd)
     {
+        m_isExecutingCommand = true;
+        
         switch (cmd.type)
         {
         case StageEditorCommand::Type::Add:
@@ -326,23 +412,40 @@ namespace Jam::Domain::Editor
         case StageEditorCommand::Type::Delete:
             if (cmd.object.id)
             {
-                removeObject(*cmd.object.id);
+                removeObjectDirect(*cmd.object.id);
             }
             break;
             
         case StageEditorCommand::Type::Move:
             if (cmd.object.id)
             {
-                moveObject(*cmd.object.id, cmd.newPos);
+                for (auto& obj : m_objects)
+                {
+                    if (obj.id == *cmd.object.id)
+                    {
+                        obj.stageObject.rect.setPos(cmd.newPos);
+                        break;
+                    }
+                }
             }
             break;
         }
+        
+        m_isExecutingCommand = false;
     }
 
     void StageEditorManager::addToHistory(const StageEditorCommand& cmd)
     {
+        constexpr size_t maxHistorySize = 100;
+        
         m_commandHistory.resize(m_historyIndex);
         m_commandHistory.push_back(cmd);
         m_historyIndex++;
+        
+        if (m_commandHistory.size() > maxHistorySize)
+        {
+            m_commandHistory.erase(m_commandHistory.begin());
+            m_historyIndex--;
+        }
     }
 }

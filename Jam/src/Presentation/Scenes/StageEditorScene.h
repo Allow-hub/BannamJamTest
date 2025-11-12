@@ -22,6 +22,22 @@ namespace Jam::Presentation::Scenes
         
         void update() override
         {
+            if (KeyEscape.down())
+            {
+                System::Exit();
+            }
+            
+            if (KeyControl.pressed() && KeyP.down())
+            {
+                m_editorService.saveStage(U"Assets/Stage/stage_edited.json");
+                
+                auto& core = Jam::Foundation::CoreManager::Instance();
+                core.stageInfo.stageName = Jam::Foundation::StageName::Stage1_1;
+                
+                changeScene(ToSceneString(SceneName::InGame));
+                return;
+            }
+            
             m_editorService.updateCamera();
             
             if (Key1.down()) m_editorService.setMode(Domain::Editor::StageEditorMode::Select);
@@ -34,30 +50,39 @@ namespace Jam::Presentation::Scenes
                 return;
             }
             
-            Vec2 mousePos = m_editorService.screenToWorld(Cursor::Pos());
+            bool hasMouseInput = MouseL.down() || MouseL.up() || MouseR.down();
             
-            switch (m_editorService.getMode())
+            if (hasMouseInput)
             {
-            case Domain::Editor::StageEditorMode::Place:
-                if (MouseL.down())
-                {
-                    m_editorService.handlePlacement(mousePos);
-                }
-                break;
+                Vec2 mousePos = m_editorService.screenToWorld(Cursor::Pos());
                 
-            case Domain::Editor::StageEditorMode::Select:
-                if (MouseL.down())
+                switch (m_editorService.getMode())
                 {
-                    m_editorService.handleSelection(mousePos);
+                case Domain::Editor::StageEditorMode::Place:
+                    if (MouseL.down())
+                    {
+                        m_editorService.handlePlacement(mousePos);
+                    }
+                    else if (MouseL.up() && MouseL.pressedDuration() > 0.1s)
+                    {
+                        m_editorService.handlePlacement(mousePos);
+                    }
+                    break;
+                    
+                case Domain::Editor::StageEditorMode::Select:
+                    if (MouseL.down())
+                    {
+                        m_editorService.handleSelection(mousePos);
+                    }
+                    break;
+                    
+                case Domain::Editor::StageEditorMode::Delete:
+                    if (MouseL.down())
+                    {
+                        m_editorService.handleDeletion(mousePos);
+                    }
+                    break;
                 }
-                break;
-                
-            case Domain::Editor::StageEditorMode::Delete:
-                if (MouseL.down())
-                {
-                    m_editorService.handleDeletion(mousePos);
-                }
-                break;
             }
             
             if (KeyControl.pressed() && KeyZ.down())
@@ -71,11 +96,11 @@ namespace Jam::Presentation::Scenes
             
             if (KeyControl.pressed() && KeyS.down())
             {
-                m_editorService.saveStage(U"stage_edited.json");
+                m_editorService.saveStage(U"Assets/Stage/stage_edited.json");
             }
             if (KeyControl.pressed() && KeyO.down())
             {
-                m_editorService.loadStage(U"stage_edited.json");
+                m_editorService.loadStage(U"Assets/Stage/stage_edited.json");
             }
         }
         

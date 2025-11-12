@@ -9,20 +9,28 @@ namespace Jam::UseCase::Editor
     void StageEditorService::updateCamera()
     {
         const double speed = m_settings.getCameraSpeed();
+        Vec2 movement{0, 0};
         
-        if (KeyW.pressed()) m_camera.jumpTo(m_camera.getCenter() + Vec2{0, -speed}, 0.0);
-        if (KeyS.pressed()) m_camera.jumpTo(m_camera.getCenter() + Vec2{0, speed}, 0.0);
-        if (KeyA.pressed()) m_camera.jumpTo(m_camera.getCenter() + Vec2{-speed, 0}, 0.0);
-        if (KeyD.pressed()) m_camera.jumpTo(m_camera.getCenter() + Vec2{speed, 0}, 0.0);
+        if (KeyW.pressed()) movement.y -= speed;
+        if (KeyS.pressed()) movement.y += speed;
+        if (KeyA.pressed()) movement.x -= speed;
+        if (KeyD.pressed()) movement.x += speed;
         
-        // ホイールでカメラ移動速度調整
+        if (movement.x != 0.0 || movement.y != 0.0)
+        {
+            Vec2 newCenter = m_camera.getCenter() + movement;
+            m_camera.setCenter(newCenter);
+        }
+        
         if (Mouse::Wheel() > 0)
         {
-            m_settings.setCameraSpeed(Min(20.0, m_settings.getCameraSpeed() + 1.0));
+            double newScale = Min(4.0, m_camera.getScale() * 1.1);
+            m_camera.setScale(newScale);
         }
         else if (Mouse::Wheel() < 0)
         {
-            m_settings.setCameraSpeed(Max(1.0, m_settings.getCameraSpeed() - 1.0));
+            double newScale = Max(0.1, m_camera.getScale() / 1.1);
+            m_camera.setScale(newScale);
         }
     }
 
@@ -45,27 +53,12 @@ namespace Jam::UseCase::Editor
 
     void StageEditorService::handlePlacement(const Vec2& mousePos)
     {
-        Vec2 snapped = snapToGrid(mousePos);
+        const int gridSize = m_settings.getGridSize();
         
-        if (!m_placementStart)
-        {
-            m_placementStart = snapped;
-        }
-        else
-        {
-            Vec2 size = snapped - *m_placementStart;
-            if (Abs(size.x) > 10 && Abs(size.y) > 10)
-            {
-                RectF rect{*m_placementStart, Abs(size.x), Abs(size.y)};
-                if (size.x < 0) rect.x += size.x;
-                if (size.y < 0) rect.y += size.y;
-                
-                auto obj = createStageObjectFromCurrent(rect);
-                m_stageManager.addObject(obj);
-                
-                m_placementStart.reset();
-            }
-        }
+        RectF rect{mousePos.x, mousePos.y, gridSize, gridSize};
+        
+        auto obj = createStageObjectFromCurrent(rect);
+        m_stageManager.addObject(obj);
     }
 
     void StageEditorService::handleSelection(const Vec2& mousePos)

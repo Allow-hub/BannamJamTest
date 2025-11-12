@@ -93,12 +93,17 @@ namespace Jam::Presentation::Scenes
 			m_inputManager()
 		{
 			Jam::Presentation::AudioService::get().play(Jam::Presentation::AudioService::Sound::BGM_Game, true);
-			//デバッグ用
+			//デバッグ用 - エディタで作成したステージを読み込む
 			//Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_1; // CoreManagerのenumに追加が必要
 
 			auto& core = Jam::Foundation::CoreManager::Instance();
-			core.reset();
-			String stageName = Jam::Foundation::CoreManager::stageNameToString(core.stageInfo.stageName);//ステージ名
+			// エディタからの遷移時はresetしない(ステージ情報を保持)
+			// core.reset();
+			
+			// エディタで作成したステージを読み込む場合はこちらを有効化
+			String stageName = U"Assets/Stage/stage_edited.json"; // エディタステージ(拡張子込み)
+			//String stageName = Jam::Foundation::CoreManager::stageNameToString(core.stageInfo.stageName); // 通常のステージ
+			
 			core.setCurrentStageData(core.getStageData(core.stageInfo.stageName));
 
 			// --- FactoryServiceLocator初期化 ---
@@ -163,8 +168,10 @@ namespace Jam::Presentation::Scenes
 				.getPhysicsFactory();
 
 			// ステージ名からJSONファイル名を生成
-			// イベントキューとプレイヤーIDを渡す（ダメージ床用）
-			m_stageService->initialize(stageName + U".json", bodyFactory, *m_gameEventQueue, playerBody->getID());
+			// イベントキューとプレイヤーIDを渡す(ダメージ床用)
+			// stageName に .json が含まれていない場合のみ追加
+			String stageFilePath = stageName.ends_with(U".json") ? stageName : (stageName + U".json");
+			m_stageService->initialize(stageFilePath, bodyFactory, *m_gameEventQueue, playerBody->getID());
 
 			// ステージの物理ボディをGameSceneの物理ボディリストに追加（衝突検出用）
 			for (const auto& stageBody : m_stageService->getPhysicsBodies()) {

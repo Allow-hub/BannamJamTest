@@ -29,30 +29,50 @@ namespace Jam::Presentation::Editor
 
     void StageEditorRenderer::drawGrid(const Camera2D& camera, int gridSize) const
     {
-        const int gridCount = 100;
+        const Vec2 center = camera.getCenter();
+        const double scale = camera.getScale();
+        const double viewWidth = Scene::Width() / scale;
+        const double viewHeight = Scene::Height() / scale;
+        
+        const int startX = static_cast<int>((center.x - viewWidth / 2) / gridSize) - 1;
+        const int endX = static_cast<int>((center.x + viewWidth / 2) / gridSize) + 1;
+        const int startY = static_cast<int>((center.y - viewHeight / 2) / gridSize) - 1;
+        const int endY = static_cast<int>((center.y + viewHeight / 2) / gridSize) + 1;
+        
         const ColorF gridColor{0.3, 0.3, 0.3, 0.5};
         
-        for (int x = -gridCount; x <= gridCount; ++x)
+        for (int x = startX; x <= endX; ++x)
         {
-            Line{x * gridSize, -gridCount * gridSize, x * gridSize, gridCount * gridSize}
+            double xPos = x * gridSize;
+            Line{xPos, startY * gridSize, xPos, endY * gridSize}
                 .draw(0.5, gridColor);
         }
         
-        for (int y = -gridCount; y <= gridCount; ++y)
+        for (int y = startY; y <= endY; ++y)
         {
-            Line{-gridCount * gridSize, y * gridSize, gridCount * gridSize, y * gridSize}
+            double yPos = y * gridSize;
+            Line{startX * gridSize, yPos, endX * gridSize, yPos}
                 .draw(0.5, gridColor);
         }
         
-        Line{0, -gridCount * gridSize, 0, gridCount * gridSize}.draw(1.0, Palette::Red);
-        Line{-gridCount * gridSize, 0, gridCount * gridSize, 0}.draw(1.0, Palette::Green);
+        Line{0, startY * gridSize, 0, endY * gridSize}.draw(2.0, Palette::Red);
+        Line{startX * gridSize, 0, endX * gridSize, 0}.draw(2.0, Palette::Green);
     }
 
     void StageEditorRenderer::drawObjects(const Camera2D& camera, const Array<Domain::Editor::StageEditorObject>& objects) const
     {
+        const Vec2 center = camera.getCenter();
+        const double scale = camera.getScale();
+        const double viewWidth = Scene::Width() / scale;
+        const double viewHeight = Scene::Height() / scale;
+        const RectF viewRect{center.x - viewWidth / 2, center.y - viewHeight / 2, viewWidth, viewHeight};
+        
         for (const auto& obj : objects)
         {
-            drawObject(obj, obj.isSelected);
+            if (viewRect.intersects(obj.stageObject.rect))
+            {
+                drawObject(obj, obj.isSelected);
+            }
         }
     }
 
@@ -60,15 +80,14 @@ namespace Jam::Presentation::Editor
     {
         const auto& rect = obj.stageObject.rect;
         
-        ColorF fillColor = isSelected ? ColorF{1.0, 1.0, 0.0, 0.3} : ColorF{0.5, 0.8, 1.0, 0.3};
+        ColorF fillColor = isSelected ? ColorF{1.0, 1.0, 0.0, 0.3} : ColorF{0.5, 0.8, 1.0, 0.2};
         ColorF frameColor = getGroundSideColor(obj.stageObject.groundSide);
         
-        rect.draw(fillColor);
-        rect.drawFrame(2.0, frameColor);
+        rect.draw(fillColor).drawFrame(2.0, frameColor);
         
         if (isSelected)
         {
-            rect.drawFrame(4.0, Palette::Yellow);
+            rect.drawFrame(3.0, 0.0, Palette::Yellow);
         }
     }
 
@@ -85,45 +104,55 @@ namespace Jam::Presentation::Editor
         const String modeStr = [this]() {
             switch (m_service->getMode())
             {
-            case Domain::Editor::StageEditorMode::Select: return U"Select";
-            case Domain::Editor::StageEditorMode::Place: return U"Place";
-            case Domain::Editor::StageEditorMode::Delete: return U"Delete";
-            case Domain::Editor::StageEditorMode::Move: return U"Move";
-            case Domain::Editor::StageEditorMode::Test: return U"Test";
-            default: return U"Unknown";
+            case Domain::Editor::StageEditorMode::Select: return U"選択";
+            case Domain::Editor::StageEditorMode::Place: return U"配置";
+            case Domain::Editor::StageEditorMode::Delete: return U"削除";
+            case Domain::Editor::StageEditorMode::Move: return U"移動";
+            case Domain::Editor::StageEditorMode::Test: return U"テスト";
+            default: return U"不明";
             }
         }();
         
-        m_font(U"Mode: ", modeStr).draw(10, 10, Palette::White);
+        m_font(U"モード: ", modeStr).draw(10, 10, Palette::White);
     }
 
     void StageEditorRenderer::drawObjectPalette() const
     {
         int y = 50;
         
-        m_smallFont(U"StageType").draw(10, y, Palette::White);
+        m_smallFont(U"ステージタイプ").draw(10, y, Palette::White);
         y += 30;
         
         m_smallFont(getStageTypeName(m_service->getCurrentStageType())).draw(10, y, Palette::Yellow);
         y += 30;
         
-        m_smallFont(U"GroundSide").draw(10, y, Palette::White);
+        m_smallFont(U"接地面").draw(10, y, Palette::White);
         y += 30;
         
         const String groundSideStr = [this]() {
             switch (m_service->getCurrentGroundSide())
             {
-            case Domain::Stage::GroundSide::All: return U"All";
-            case Domain::Stage::GroundSide::Up: return U"Up";
-            case Domain::Stage::GroundSide::Down: return U"Down";
-            case Domain::Stage::GroundSide::Left: return U"Left";
-            case Domain::Stage::GroundSide::Right: return U"Right";
-            case Domain::Stage::GroundSide::None: return U"None";
-            default: return U"Unknown";
+            case Domain::Stage::GroundSide::All: return U"全方向";
+            case Domain::Stage::GroundSide::Up: return U"上";
+            case Domain::Stage::GroundSide::Down: return U"下";
+            case Domain::Stage::GroundSide::Left: return U"左";
+            case Domain::Stage::GroundSide::Right: return U"右";
+            case Domain::Stage::GroundSide::None: return U"なし";
+            default: return U"不明";
             }
         }();
         
-        m_smallFont(groundSideStr).draw(10, y, Palette::Yellow);
+        ColorF sideColor = getGroundSideColor(m_service->getCurrentGroundSide());
+        m_smallFont(groundSideStr).draw(10, y, sideColor);
+        
+        y += 40;
+        m_smallFont(U"枠線の色:").draw(10, y, Palette::White);
+        y += 25;
+        m_smallFont(U"白:全方向").draw(15, y, Palette::White); y += 20;
+        m_smallFont(U"赤:上").draw(15, y, Palette::Red); y += 20;
+        m_smallFont(U"青:下").draw(15, y, Palette::Blue); y += 20;
+        m_smallFont(U"緑:左").draw(15, y, Palette::Green); y += 20;
+        m_smallFont(U"黄:右").draw(15, y, Palette::Yellow);
     }
 
     void StageEditorRenderer::drawPropertyPanel() const
@@ -134,14 +163,14 @@ namespace Jam::Presentation::Editor
         int x = Scene::Width() - 200;
         int y = 10;
         
-        m_smallFont(U"Selected Object").draw(x, y, Palette::White);
+        m_smallFont(U"選択中のオブジェクト").draw(x, y, Palette::White);
         y += 30;
         
-        m_smallFont(U"Pos: ({:.0f}, {:.0f})"_fmt(selected->stageObject.rect.x, selected->stageObject.rect.y))
+        m_smallFont(U"位置: ({:.0f}, {:.0f})"_fmt(selected->stageObject.rect.x, selected->stageObject.rect.y))
             .draw(x, y, Palette::White);
         y += 25;
         
-        m_smallFont(U"Size: ({:.0f}, {:.0f})"_fmt(selected->stageObject.rect.w, selected->stageObject.rect.h))
+        m_smallFont(U"サイズ: ({:.0f}, {:.0f})"_fmt(selected->stageObject.rect.w, selected->stageObject.rect.h))
             .draw(x, y, Palette::White);
     }
 
@@ -149,7 +178,7 @@ namespace Jam::Presentation::Editor
     {
         int y = Scene::Height() - 30;
         
-        String help = U"1:Select 2:Place 3:Delete | LClick:Action RClick:Move | Ctrl+S:Save Ctrl+Z:Undo";
+        String help = U"1:選択 2:配置 3:削除 | 左クリック:操作 右クリック:移動 | Ctrl+S:保存 Ctrl+Z:元に戻す Ctrl+P:プレイ | ESC:終了";
         m_smallFont(help).draw(10, y, Palette::White);
     }
 
@@ -171,10 +200,10 @@ namespace Jam::Presentation::Editor
     {
         switch (type)
         {
-        case Domain::Stage::StageType::Normal: return U"Normal";
-        case Domain::Stage::StageType::MovingPlatform: return U"Moving";
-        case Domain::Stage::StageType::DamagePlatform: return U"Damage";
-        default: return U"Unknown";
+        case Domain::Stage::StageType::Normal: return U"通常";
+        case Domain::Stage::StageType::MovingPlatform: return U"動く床";
+        case Domain::Stage::StageType::DamagePlatform: return U"ダメージ床";
+        default: return U"不明";
         }
     }
 }
