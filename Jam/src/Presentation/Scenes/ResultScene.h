@@ -1,11 +1,10 @@
 ﻿#pragma once
 #include <Siv3D.hpp> // Siv3D v0.6.14
-#include "TitleScene.h"
-#include "SelectScene.h"
+#include "SceneName.h"
 #include "../../Foundation/CoreManager.h"
-#include "../../Presentation/SettingManager.h"
-#include "TransitionManager.h"
 #include "../AudioService.h"
+#include "TransitionManager.h"
+#include "../../Presentation/SettingManager.h"
 
 namespace Jam::Presentation::Scenes
 {

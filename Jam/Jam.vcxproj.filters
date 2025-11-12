@@ -30,6 +30,12 @@
     <ClCompile Include="src\Presentation\EnemyManager.cpp" />
     <ClCompile Include="src\Infrastructure\AudioLoader.cpp" />
     <ClCompile Include="src\Infrastructure\EnemyLoader.cpp" />
+    <ClCompile Include="src\Presentation\PlayerManager.cpp" />
+    <ClCompile Include="src\Presentation\SettingManager.cpp" />
+    <ClCompile Include="src\Presentation\Scenes\GameScene.cpp" />
+    <ClCompile Include="src\Infrastructure\TextureLoader.cpp" />
+    <ClCompile Include="src\Presentation\Scenes\StoryScene.cpp" />
+    <ClCompile Include="src\Presentation\IndependentObjectManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
@@ -129,6 +135,7 @@
     <ClInclude Include="src\Domain\Player\Choker\ChokerContext.h" />
     <ClInclude Include="src\Domain\Player\Choker\ChokerStates\HookedGroundState.h" />
     <ClInclude Include="src\Domain\Player\Choker\ChokerStates\HookedEnemyState.h" />
+    <ClInclude Include="src\Presentation\Scenes\SceneName.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />

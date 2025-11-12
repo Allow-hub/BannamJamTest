@@ -39,11 +39,13 @@ namespace Jam::Presentation
 				  const HashTable<Speaker, HashTable<Portrait, FilePath>>& characterPortraits,
 				  const FilePath& backgroundPath = U"");
 
+		// アクティブ・非アクティブの発話者の色を設定する
 		void setDimmingColors(const ColorF& activeColor, const ColorF& inactiveColor);
 
 		void update(double deltaTime);
 		void draw() const;
 
+		// テキストを指定した文字数ごとに改行する
 		String wrapText(const String& text, size_t maxCharsPerLine) const;
 
 		void skip(bool enable);

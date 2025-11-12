@@ -130,10 +130,16 @@
     <ClCompile Include="src\Infrastructure\AudioLoader.cpp" />
     <ClCompile Include="src\Infrastructure\EnemyLoader.cpp" />
     <ClCompile Include="src\Infrastructure\StageFactory.cpp" />
+    <ClCompile Include="src\Infrastructure\TextureLoader.cpp" />
     <ClCompile Include="src\Presentation\Animator.cpp" />
     <ClCompile Include="src\Presentation\AudioService.cpp" />
     <ClCompile Include="src\Presentation\CameraManager.cpp" />
     <ClCompile Include="src\Presentation\EnemyManager.cpp" />
+    <ClCompile Include="src\Presentation\IndependentObjectManager.cpp" />
+    <ClCompile Include="src\Presentation\PlayerManager.cpp" />
+    <ClCompile Include="src\Presentation\Scenes\GameScene.cpp" />
+    <ClCompile Include="src\Presentation\Scenes\StoryScene.cpp" />
+    <ClCompile Include="src\Presentation\SettingManager.cpp" />
     <ClCompile Include="src\Presentation\StoryManager.cpp" />
     <ClCompile Include="src\UseCase\AttackProcessor.cpp" />
     <ClCompile Include="src\UseCase\CameraService.cpp" />
@@ -700,6 +706,7 @@
     <ClInclude Include="src\Presentation\ResourceManager.h" />
     <ClInclude Include="src\Presentation\Scenes\GameScene.h" />
     <ClInclude Include="src\Presentation\Scenes\ResultScene.h" />
+    <ClInclude Include="src\Presentation\Scenes\SceneName.h" />
     <ClInclude Include="src\Presentation\Scenes\SelectScene.h" />
     <ClInclude Include="src\Presentation\Scenes\StoryScene.h" />
     <ClInclude Include="src\Presentation\Scenes\TitleScene.h" />
