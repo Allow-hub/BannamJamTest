@@ -129,6 +129,8 @@
     <ClCompile Include="src\Domain\Player\Choker\ChokerSkill.cpp" />
     <ClCompile Include="src\Infrastructure\AudioLoader.cpp" />
     <ClCompile Include="src\Infrastructure\EnemyLoader.cpp" />
+    <ClCompile Include="src\Infrastructure\FactoryServiceLocator.cpp" />
+    <ClCompile Include="src\Infrastructure\IndependentObjectFactory.cpp" />
     <ClCompile Include="src\Infrastructure\StageFactory.cpp" />
     <ClCompile Include="src\Infrastructure\TextureLoader.cpp" />
     <ClCompile Include="src\Presentation\Animator.cpp" />
@@ -136,9 +138,13 @@
     <ClCompile Include="src\Presentation\CameraManager.cpp" />
     <ClCompile Include="src\Presentation\EnemyManager.cpp" />
     <ClCompile Include="src\Presentation\IndependentObjectManager.cpp" />
+    <ClCompile Include="src\Presentation\InGameUIManager.cpp" />
     <ClCompile Include="src\Presentation\PlayerManager.cpp" />
     <ClCompile Include="src\Presentation\Scenes\GameScene.cpp" />
+    <ClCompile Include="src\Presentation\Scenes\ResultScene.cpp" />
+    <ClCompile Include="src\Presentation\Scenes\SelectScene.cpp" />
     <ClCompile Include="src\Presentation\Scenes\StoryScene.cpp" />
+    <ClCompile Include="src\Presentation\Scenes\TitleScene.cpp" />
     <ClCompile Include="src\Presentation\SettingManager.cpp" />
     <ClCompile Include="src\Presentation\StoryManager.cpp" />
     <ClCompile Include="src\UseCase\AttackProcessor.cpp" />

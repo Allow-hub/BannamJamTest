@@ -153,7 +153,7 @@ namespace Jam::Domain::Player
 			ctx.targetEnemy->setVelocity(Vec2::Zero());
 
 			// イベント発行
-			ctx.eventQueue.push(Events::PlayerChokerSkillEvent{ 0.9, 0.5 });
+			ctx.eventQueue.push(Events::PlayerChokerSkillEvent{ 0.9, 0.5 ,ctx.body->getPosition(),m_enemyImpulseDir });
 		}
 
 		void update(ChokerContext& ctx, double deltaTime) override

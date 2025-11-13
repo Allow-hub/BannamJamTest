@@ -108,6 +108,8 @@ namespace Jam::UseCase
 	void GameEventHandler::handlePlayerChokerSkilled(const Domain::Events::PlayerChokerSkillEvent& e)
 	{
 		m_cameraEventQueue.push(CameraZoomEvent{ e.zoom, e.duration });
+		m_effectEventQueue.push(ChokerSkillEffectEvent{
+			e.position, e.direction});	
 	}
 
 	void GameEventHandler::handlePlayerDamaged(const Domain::Events::PlayerDamagedEvent& e)
