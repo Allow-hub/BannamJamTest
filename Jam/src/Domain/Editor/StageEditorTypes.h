@@ -7,14 +7,7 @@ namespace Jam::Domain::Editor
     enum class StageEditorMode {
         Select,
         Place,
-        Delete,
-        Move,
-        Test
-    };
-
-    enum class PlacementOrientation {
-        Horizontal,
-        Vertical
+        Delete
     };
 
     struct StageEditorObject {

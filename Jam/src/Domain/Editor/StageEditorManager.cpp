@@ -360,8 +360,8 @@ namespace Jam::Domain::Editor
                 output += U"{}"_fmt(static_cast<int>(obj.movementSpeed));
                 output += U",\n      \"movementDistance\": ";
                 output += U"{}"_fmt(static_cast<int>(obj.movementDistance));
-				output += U",\n      \"loopMovement\": " + String(obj.loopMovement ? U"true" : U"false");
-			}
+                output += U",\n      \"loopMovement\": " + String(obj.loopMovement ? U"true" : U"false");
+            }
             
             if (obj.type == Stage::StageType::DamagePlatform || obj.type == Stage::StageType::MovingDamagePlatform)
             {
@@ -463,41 +463,6 @@ namespace Jam::Domain::Editor
         m_commandHistory.clear();
         m_historyIndex = 0;
         m_selectedIds.clear();
-    }
-
-    void StageEditorManager::executeCommand(const StageEditorCommand& cmd)
-    {
-        m_isExecutingCommand = true;
-        
-        switch (cmd.type)
-        {
-        case StageEditorCommand::Type::Add:
-            m_objects.push_back(cmd.object);
-            break;
-            
-        case StageEditorCommand::Type::Delete:
-            if (cmd.object.id)
-            {
-                removeObjectDirect(*cmd.object.id);
-            }
-            break;
-            
-        case StageEditorCommand::Type::Move:
-            if (cmd.object.id)
-            {
-                for (auto& obj : m_objects)
-                {
-                    if (obj.id == *cmd.object.id)
-                    {
-                        obj.stageObject.rect.setPos(cmd.newPos);
-                        break;
-                    }
-                }
-            }
-            break;
-        }
-        
-        m_isExecutingCommand = false;
     }
 
     void StageEditorManager::addToHistory(const StageEditorCommand& cmd)

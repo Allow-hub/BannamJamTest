@@ -11,7 +11,6 @@ namespace Jam::Domain::Editor
         size_t m_historyIndex = 0;
         size_t m_nextId = 0;
         HashSet<size_t> m_selectedIds;
-        
         bool m_isExecutingCommand = false;
         
     public:
@@ -31,8 +30,7 @@ namespace Jam::Domain::Editor
         Array<const StageEditorObject*> getSelectedObjects() const;
         const Array<StageEditorObject>& getAllObjects() const { return m_objects; }
         Optional<size_t> findObjectAt(const Vec2& pos) const;
-        
-		bool hasObjectAtExactPosition(const RectF& rect) const;
+        bool hasObjectAtExactPosition(const RectF& rect) const;
 
         void undo();
         void redo();
@@ -41,15 +39,11 @@ namespace Jam::Domain::Editor
         
         void saveToJSON(const FilePath& path) const;
         void loadFromJSON(const FilePath& path);
-        
         void clear();
         
     private:
-        void executeCommand(const StageEditorCommand& cmd);
-        void addToHistory(const StageEditorCommand& cmd);
-        
         void removeObjectDirect(size_t id);
-        
+        void addToHistory(const StageEditorCommand& cmd);
         Array<Stage::StageObject> mergeAdjacentObjects() const;
     };
 }

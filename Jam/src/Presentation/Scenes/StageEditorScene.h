@@ -18,7 +18,6 @@ namespace Jam::Presentation::Scenes
             : IScene{ init }
         {
             m_renderer.init(&m_editorService);
-            m_renderer.setEditableService(&m_editorService);
         }
         
         void update() override
@@ -47,13 +46,7 @@ namespace Jam::Presentation::Scenes
             
             m_renderer.drawGUIPanel();
             
-            if (m_editorService.isTestMode())
-            {
-                m_editorService.updateTest();
-                return;
-            }
-            
-            bool hasMouseInput = MouseL.down() || MouseL.pressed() || MouseL.up() || MouseR.down();
+            bool hasMouseInput = MouseL.down() || MouseL.pressed() || MouseL.up();
             
             const int guiPanelX = Scene::Width() - 300;
             const bool isMouseOverGUI = Cursor::Pos().x >= guiPanelX;
@@ -61,15 +54,6 @@ namespace Jam::Presentation::Scenes
             if (hasMouseInput && !isMouseOverGUI)
             {
                 Vec2 mousePos = m_editorService.screenToWorld(Cursor::Pos());
-                
-                if (KeyShift.pressed())
-                {
-                    m_editorService.setPlacementOrientation(Domain::Editor::PlacementOrientation::Horizontal);
-                }
-                else if (KeyAlt.pressed())
-                {
-                    m_editorService.setPlacementOrientation(Domain::Editor::PlacementOrientation::Vertical);
-                }
                 
                 switch (m_editorService.getMode())
                 {

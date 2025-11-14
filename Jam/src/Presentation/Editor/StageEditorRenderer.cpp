@@ -3,10 +3,9 @@
 
 namespace Jam::Presentation::Editor
 {
-    void StageEditorRenderer::init(const UseCase::Editor::StageEditorService* service)
+    void StageEditorRenderer::init(UseCase::Editor::StageEditorService* service)
     {
         m_service = service;
-        m_editableService = const_cast<UseCase::Editor::StageEditorService*>(service);
     }
 
     void StageEditorRenderer::draw() const
@@ -25,11 +24,21 @@ namespace Jam::Presentation::Editor
 
             drawObjects(camera, m_service->getStageManager().getAllObjects());
             
-            // ドラッグ中のプレビュー表示
-            if (auto dragRect = m_editableService->getDragRect())
+            if (auto dragRect = m_service->getDragRect())
             {
                 dragRect->draw(ColorF{0.0, 1.0, 0.0, 0.3});
-                dragRect->drawFrame(2.0, ColorF{0.0, 1.0, 0.0, 0.8});
+                
+                const double x = dragRect->x;
+                const double y = dragRect->y;
+                const double w = dragRect->w;
+                const double h = dragRect->h;
+                const double lineWidth = 2.0;
+                const ColorF lineColor{0.0, 1.0, 0.0, 0.8};
+                
+                Line{x, y, x + w, y}.draw(lineWidth, lineColor);
+                Line{x, y + h, x + w, y + h}.draw(lineWidth, lineColor);
+                Line{x, y, x, y + h}.draw(lineWidth, lineColor);
+                Line{x + w, y, x + w, y + h}.draw(lineWidth, lineColor);
             }
         }
     }
@@ -51,15 +60,13 @@ namespace Jam::Presentation::Editor
         for (int x = startX; x <= endX; ++x)
         {
             double xPos = x * gridSize;
-            Line{xPos, startY * gridSize, xPos, endY * gridSize}
-                .draw(0.5, gridColor);
+            Line{xPos, startY * gridSize, xPos, endY * gridSize}.draw(0.5, gridColor);
         }
         
         for (int y = startY; y <= endY; ++y)
         {
             double yPos = y * gridSize;
-            Line{startX * gridSize, yPos, endX * gridSize, yPos}
-                .draw(0.5, gridColor);
+            Line{startX * gridSize, yPos, endX * gridSize, yPos}.draw(0.5, gridColor);
         }
         
         Line{0, startY * gridSize, 0, endY * gridSize}.draw(2.0, Palette::Red);
@@ -125,8 +132,6 @@ namespace Jam::Presentation::Editor
             }
         }
         
-        ColorF frameColor = getGroundSideColor(obj.stageObject.groundSide);
-        
         rect.draw(fillColor);
         
         switch (obj.stageObject.groundSide)
@@ -159,7 +164,7 @@ namespace Jam::Presentation::Editor
 
     void StageEditorRenderer::drawGUIPanel()
     {
-        if (!m_editableService) return;
+        if (!m_service) return;
         
         const int panelWidth = m_isPanelCollapsed ? 40 : 300;
         const int panelX = Scene::Width() - panelWidth;
@@ -180,19 +185,18 @@ namespace Jam::Presentation::Editor
         m_font(U"ステージエディタ").draw(panelX + 10, y, Palette::White);
         y += 40;
         
-        // カメラ速度設定
         SimpleGUI::Headline(U"カメラ設定", Vec2{panelX + 10, y});
         y += 40;
         
-        double cameraSpeed = m_editableService->getSettings().getCameraSpeed();
+        double cameraSpeed = m_service->getSettings().getCameraSpeed();
         if (SimpleGUI::Slider(U"移動速度: {:.1f}"_fmt(cameraSpeed), cameraSpeed, 1.0, 30.0, Vec2{panelX + 10, y}, 120, 120))
         {
-            m_editableService->getSettings().setCameraSpeed(cameraSpeed);
+            m_service->getSettings().setCameraSpeed(cameraSpeed);
         }
         y += 45;
         
         const String modeStr = [this]() {
-            switch (m_editableService->getMode())
+            switch (m_service->getMode())
             {
             case Domain::Editor::StageEditorMode::Select: return U"選択";
             case Domain::Editor::StageEditorMode::Place: return U"配置";
@@ -206,7 +210,7 @@ namespace Jam::Presentation::Editor
         SimpleGUI::Headline(U"ステージタイプ", Vec2{panelX + 10, y});
         y += 30;
         
-        const String currentTypeName = getStageTypeName(m_editableService->getCurrentStageType());
+        const String currentTypeName = getStageTypeName(m_service->getCurrentStageType());
         const RectF typeButtonRect{panelX + 10, y, 270, 30};
         
         if (typeButtonRect.leftClicked())
@@ -232,11 +236,11 @@ namespace Jam::Presentation::Editor
             for (const auto& [name, type] : types)
             {
                 const RectF itemRect{panelX + 10, y, 270, 30};
-                const bool isSelected = m_editableService->getCurrentStageType() == type;
+                const bool isSelected = m_service->getCurrentStageType() == type;
                 
                 if (itemRect.leftClicked())
                 {
-                    m_editableService->setCurrentStageType(type);
+                    m_service->setCurrentStageType(type);
                     m_isStageTypeDropdownOpen = false;
                 }
                 
@@ -252,7 +256,7 @@ namespace Jam::Presentation::Editor
         SimpleGUI::Headline(U"接地面設定", Vec2{panelX + 10, y});
         y += 40;
         
-        const auto currentType = m_editableService->getCurrentStageType();
+        const auto currentType = m_service->getCurrentStageType();
         
         String groundSideText;
         if (currentType == Domain::Stage::StageType::Normal || 
@@ -275,13 +279,13 @@ namespace Jam::Presentation::Editor
         
         y += 15;
         
-        if (m_editableService->getCurrentStageType() == Domain::Stage::StageType::MovingPlatform)
+        if (m_service->getCurrentStageType() == Domain::Stage::StageType::MovingPlatform)
         {
             SimpleGUI::Headline(U"移動設定", Vec2{panelX + 10, y});
             y += 40;
             
             const Array<String> movementTypes = {U"横移動", U"縦移動", U"円運動"};
-            const String currentMovementTypeName = movementTypes[static_cast<size_t>(m_editableService->getMovementType())];
+            const String currentMovementTypeName = movementTypes[static_cast<size_t>(m_service->getMovementType())];
             const RectF movementButtonRect{panelX + 10, y, 270, 30};
             
             if (movementButtonRect.leftClicked())
@@ -300,11 +304,11 @@ namespace Jam::Presentation::Editor
                 for (size_t i = 0; i < movementTypes.size(); ++i)
                 {
                     const RectF itemRect{panelX + 10, y, 270, 30};
-                    const bool isSelected = static_cast<size_t>(m_editableService->getMovementType()) == i;
+                    const bool isSelected = static_cast<size_t>(m_service->getMovementType()) == i;
                     
                     if (itemRect.leftClicked())
                     {
-                        m_editableService->setMovementType(static_cast<Domain::Stage::MovementType>(i));
+                        m_service->setMovementType(static_cast<Domain::Stage::MovementType>(i));
                         m_isMovementTypeDropdownOpen = false;
                     }
                     
@@ -317,13 +321,13 @@ namespace Jam::Presentation::Editor
                 y += 15;
             }
             
-            const bool isCircular = m_editableService->getMovementType() == Domain::Stage::MovementType::Circular;
+            const bool isCircular = m_service->getMovementType() == Domain::Stage::MovementType::Circular;
             const String distanceLabel = isCircular ? U"半径" : U"距離";
             
-            double distance = m_editableService->getMovementDistance();
+            double distance = m_service->getMovementDistance();
             if (SimpleGUI::Slider(distanceLabel + U": {:.0f}"_fmt(distance), distance, 50.0, 1000.0, Vec2{panelX + 10, y}, 100, 100))
             {
-                m_editableService->setMovementDistance(distance);
+                m_service->setMovementDistance(distance);
             }
             y += 30;
             
@@ -336,15 +340,15 @@ namespace Jam::Presentation::Editor
             {
                 if (auto value = ParseOpt<double>(m_distanceTextEdit.text))
                 {
-                    m_editableService->setMovementDistance(Clamp(*value, 50.0, 1000.0));
+                    m_service->setMovementDistance(Clamp(*value, 50.0, 1000.0));
                 }
             }
             y += 20;
             
-            double speed = m_editableService->getMovementSpeed();
+            double speed = m_service->getMovementSpeed();
             if (SimpleGUI::Slider(U"速度: {:.0f}"_fmt(speed), speed, 10.0, 500.0, Vec2{panelX + 10, y}, 100, 100))
             {
-                m_editableService->setMovementSpeed(speed);
+                m_service->setMovementSpeed(speed);
             }
             y += 30;
             
@@ -357,29 +361,29 @@ namespace Jam::Presentation::Editor
             {
                 if (auto value = ParseOpt<double>(m_speedTextEdit.text))
                 {
-                    m_editableService->setMovementSpeed(Clamp(*value, 10.0, 500.0));
+                    m_service->setMovementSpeed(Clamp(*value, 10.0, 500.0));
                 }
             }
             y += 25;
             
-            bool loopMovement = m_editableService->getLoopMovement();
+            bool loopMovement = m_service->getLoopMovement();
             if (SimpleGUI::CheckBox(loopMovement, U"ループ移動", Vec2{panelX + 10, y}, 270))
             {
-                m_editableService->setLoopMovement(loopMovement);
+                m_service->setLoopMovement(loopMovement);
             }
             y += 45;
         }
         
-        if (m_editableService->getCurrentStageType() == Domain::Stage::StageType::DamagePlatform ||
-            m_editableService->getCurrentStageType() == Domain::Stage::StageType::MovingDamagePlatform)
+        if (m_service->getCurrentStageType() == Domain::Stage::StageType::DamagePlatform ||
+            m_service->getCurrentStageType() == Domain::Stage::StageType::MovingDamagePlatform)
         {
             SimpleGUI::Headline(U"ダメージ設定", Vec2{panelX + 10, y});
             y += 40;
             
-            double damageAmount = m_editableService->getDamageAmount();
+            double damageAmount = m_service->getDamageAmount();
             if (SimpleGUI::Slider(U"ダメージ: {:.0f}"_fmt(damageAmount), damageAmount, 1.0, 50.0, Vec2{panelX + 10, y}, 100, 100))
             {
-                m_editableService->setDamageAmount(Math::Round(damageAmount));
+                m_service->setDamageAmount(Math::Round(damageAmount));
             }
             y += 30;
             
@@ -392,7 +396,7 @@ namespace Jam::Presentation::Editor
             {
                 if (auto value = ParseOpt<int>(m_damageTextEdit.text))
                 {
-                    m_editableService->setDamageAmount(Clamp(*value, 1, 50));
+                    m_service->setDamageAmount(Clamp(*value, 1, 50));
                 }
             }
             y += 35;
@@ -401,20 +405,20 @@ namespace Jam::Presentation::Editor
         SimpleGUI::Headline(U"識別名", Vec2{panelX + 10, y});
         y += 40;
         
-        if (m_metadataTextEdit.text != m_editableService->getMetadata())
+        if (m_metadataTextEdit.text != m_service->getMetadata())
         {
-            m_metadataTextEdit.text = m_editableService->getMetadata();
+            m_metadataTextEdit.text = m_service->getMetadata();
         }
         
         if (SimpleGUI::TextBox(m_metadataTextEdit, Vec2{panelX + 10, y}, 270, 20))
         {
-            m_editableService->setMetadata(m_metadataTextEdit.text);
+            m_service->setMetadata(m_metadataTextEdit.text);
         }
         y += 35;
         m_smallFont(U"(オブジェクトの識別用名称)").draw(panelX + 15, y, ColorF{0.7, 0.7, 0.7});
         y += 45;
         
-        const Array<const Domain::Editor::StageEditorObject*> selectedObjects = m_editableService->getStageManager().getSelectedObjects();
+        const Array<const Domain::Editor::StageEditorObject*> selectedObjects = m_service->getStageManager().getSelectedObjects();
         if (!selectedObjects.isEmpty())
         {
             SimpleGUI::Headline(U"選択中", Vec2{panelX + 10, y});

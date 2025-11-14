@@ -1,4 +1,4 @@
-#include "StageEditorService.h"
+﻿#include "StageEditorService.h"
 
 namespace Jam::UseCase::Editor
 {
@@ -8,10 +8,7 @@ namespace Jam::UseCase::Editor
 
     void StageEditorService::updateCamera()
     {
-        if (KeyControl.pressed() || KeyAlt.pressed()) return;
-        
-        // TextBoxがアクティブな時はキー入力を無効化
-        if (TextInput::GetEditingText()) return;
+        if (KeyControl.pressed() || KeyAlt.pressed() || TextInput::GetEditingText()) return;
         
         const double speed = m_settings.getCameraSpeed();
         Vec2 movement{0, 0};
@@ -23,20 +20,16 @@ namespace Jam::UseCase::Editor
         
         if (movement.x != 0.0 || movement.y != 0.0)
         {
-            Vec2 newCenter = m_camera.getCenter() + movement;
-            m_camera.setCenter(newCenter);
+            m_camera.setCenter(m_camera.getCenter() + movement);
         }
         
-        // ホイール向きを反転: 上スクロールで縮小、下スクロールで拡大
         if (Mouse::Wheel() > 0)
         {
-            double newScale = Max(0.1, m_camera.getScale() / 1.1);
-            m_camera.setScale(newScale);
+            m_camera.setScale(Max(0.1, m_camera.getScale() / 1.1));
         }
         else if (Mouse::Wheel() < 0)
         {
-            double newScale = Min(4.0, m_camera.getScale() * 1.1);
-            m_camera.setScale(newScale);
+            m_camera.setScale(Min(4.0, m_camera.getScale() * 1.1));
         }
     }
 
@@ -57,37 +50,97 @@ namespace Jam::UseCase::Editor
         };
     }
 
+    void StageEditorService::setCurrentStageType(Domain::Stage::StageType type)
+    {
+        m_state.stageType = type;
+        updateGroundSideForType(type);
+        updateMetadataForType(type);
+    }
+
+    void StageEditorService::updateGroundSideForType(Domain::Stage::StageType type)
+    {
+        switch (type)
+        {
+        case Domain::Stage::StageType::Normal:
+        case Domain::Stage::StageType::MovingPlatform:
+            m_state.groundSide = Domain::Stage::GroundSide::All;
+            break;
+        case Domain::Stage::StageType::OneWayPlatform:
+            m_state.groundSide = Domain::Stage::GroundSide::Up;
+            break;
+        case Domain::Stage::StageType::DamagePlatform:
+        case Domain::Stage::StageType::MovingDamagePlatform:
+            m_state.groundSide = Domain::Stage::GroundSide::None;
+            break;
+        }
+    }
+
+    void StageEditorService::updateMetadataForType(Domain::Stage::StageType type)
+    {
+        switch (type)
+        {
+        case Domain::Stage::StageType::Normal:
+            m_state.metadata = U"普通の床";
+            break;
+        case Domain::Stage::StageType::MovingPlatform:
+            m_state.metadata = U"動く床";
+            break;
+        case Domain::Stage::StageType::OneWayPlatform:
+            m_state.metadata = U"すり抜け床";
+            break;
+        case Domain::Stage::StageType::DamagePlatform:
+            m_state.metadata = U"ダメージ床";
+            break;
+        case Domain::Stage::StageType::MovingDamagePlatform:
+            m_state.metadata = U"動くダメージ床";
+            break;
+        }
+    }
+
+    void StageEditorService::setMovementDistance(double distance)
+    {
+        m_state.movementDistance = distance;
+        m_stageManager.updateSelectedObjectsMovement(distance, m_state.movementSpeed, m_state.movementType);
+    }
+
+    void StageEditorService::setMovementSpeed(double speed)
+    {
+        m_state.movementSpeed = speed;
+        m_stageManager.updateSelectedObjectsMovement(m_state.movementDistance, speed, m_state.movementType);
+    }
+
+    void StageEditorService::setDamageAmount(double amount)
+    {
+        m_state.damageAmount = amount;
+        m_stageManager.updateSelectedObjectsDamage(amount);
+    }
+
     void StageEditorService::handlePlacement(const Vec2& mousePos)
     {
         const int gridSize = m_settings.getGridSize();
         Vec2 snappedPos = snapToGrid(mousePos);
         
-        // ドラッグ開始
         if (MouseL.down())
         {
             m_dragStart = snappedPos;
             m_currentDragPos = snappedPos;
         }
         
-        // ドラッグ中
         if (MouseL.pressed() && m_dragStart)
         {
             m_currentDragPos = snappedPos;
         }
         
-        // ドラッグ終了時にオブジェクトを追加
         if (MouseL.up() && m_dragStart)
         {
             Vec2 start = *m_dragStart;
             Vec2 end = snappedPos;
             
-            // 開始位置から終了位置まで（どの方向でも対応）
             double x = Min(start.x, end.x);
             double y = Min(start.y, end.y);
             double x2 = Max(start.x, end.x);
             double y2 = Max(start.y, end.y);
             
-            // 幅と高さを計算（グリッド数×グリッドサイズ）
             double w = x2 - x + gridSize;
             double h = y2 - y + gridSize;
             
@@ -97,24 +150,21 @@ namespace Jam::UseCase::Editor
             {
                 auto obj = createStageObjectFromCurrent(rect);
                 
-                // 大きな矩形の場合、移動距離を自動調整（動く床のみ）
                 if (obj.type == Domain::Stage::StageType::MovingPlatform || 
                     obj.type == Domain::Stage::StageType::MovingDamagePlatform)
                 {
                     if (obj.movementType == Domain::Stage::MovementType::Horizontal)
                     {
-                        // 横移動の場合、幅の2倍を移動距離とする
                         obj.movementDistance = w * 2.0;
                     }
                     else if (obj.movementType == Domain::Stage::MovementType::Vertical)
                     {
-                        // 縦移動の場合、高さの2倍を移動距離とする
                         obj.movementDistance = h * 2.0;
                     }
                     else if (obj.movementType == Domain::Stage::MovementType::Circular)
                     {
-                        // 円移動の場合、短辺の半分を半径とする
-                        obj.movementDistance = Min(w, h) * 0.5;
+                        // 円移動の場合、矩形の短辺と同じ半径にする
+                        obj.movementDistance = Min(w, h);
                     }
                 }
                 
@@ -133,13 +183,11 @@ namespace Jam::UseCase::Editor
         Vec2 start = *m_dragStart;
         Vec2 currentPos = *m_currentDragPos;
         
-        // 開始位置から現在位置まで（どの方向でも対応）
         double x = Min(start.x, currentPos.x);
         double y = Min(start.y, currentPos.y);
         double x2 = Max(start.x, currentPos.x);
         double y2 = Max(start.y, currentPos.y);
         
-        // 幅と高さを計算（グリッド数×グリッドサイズ）
         double w = x2 - x + gridSize;
         double h = y2 - y + gridSize;
         
@@ -150,12 +198,10 @@ namespace Jam::UseCase::Editor
     {
         auto id = m_stageManager.findObjectAt(mousePos);
         
-        // CtrlまたはShiftが押されている場合は追加選択
         bool isAdditiveSelect = KeyControl.pressed() || KeyShift.pressed();
         
         if (id)
         {
-            // Ctrlが押されている場合、すでに選択されていれば解除
             if (KeyControl.pressed() && m_stageManager.getSelectedIds().contains(*id))
             {
                 m_stageManager.deselectObject(*id);
@@ -167,7 +213,6 @@ namespace Jam::UseCase::Editor
         }
         else
         {
-            // 何もない場所をクリックした場合、修飾キーがなければ選択解除
             if (!isAdditiveSelect)
             {
                 m_stageManager.clearSelection();
@@ -183,7 +228,6 @@ namespace Jam::UseCase::Editor
             m_stageManager.removeObject(*id);
         }
         
-        // 選択中のオブジェクトをすべて削除
         auto selectedIds = m_stageManager.getSelectedIds();
         for (auto selectedId : selectedIds)
         {
@@ -191,58 +235,18 @@ namespace Jam::UseCase::Editor
         }
     }
 
-    void StageEditorService::handleMove(const Vec2& mousePos)
-    {
-        auto selectedIds = m_stageManager.getSelectedIds();
-        if (!selectedIds.empty())
-        {
-            Vec2 snapped = snapToGrid(mousePos);
-            
-            // 最初の選択オブジェクトを基準に相対移動
-            auto selectedObjects = m_stageManager.getSelectedObjects();
-            if (!selectedObjects.isEmpty())
-            {
-                Vec2 basePos = selectedObjects[0]->stageObject.rect.pos;
-                Vec2 offset = snapped - basePos;
-                
-                // すべての選択オブジェクトを同じオフセットで移動
-                for (const auto* obj : selectedObjects)
-                {
-                    Vec2 newPos = obj->stageObject.rect.pos + offset;
-                    m_stageManager.moveObject(*obj->id, newPos);
-                }
-            }
-        }
-    }
-
-    void StageEditorService::startTest()
-    {
-        m_isTestMode = true;
-    }
-
-    void StageEditorService::stopTest()
-    {
-        m_isTestMode = false;
-    }
-
-    void StageEditorService::updateTest()
-    {
-    }
-
     Domain::Stage::StageObject StageEditorService::createStageObjectFromCurrent(const RectF& rect) const
     {
         Domain::Stage::StageObject obj;
         obj.rect = rect;
-        obj.groundSide = m_currentGroundSide;
-        obj.type = m_currentStageType;
-        obj.metadata = m_currentMetadata;
-        
-        obj.movementType = m_currentMovementType;
-        obj.movementDistance = m_currentMovementDistance;
-        obj.movementSpeed = m_currentMovementSpeed;
-        obj.loopMovement = m_currentLoopMovement;
-        
-        obj.damageAmount = m_currentDamageAmount;
+        obj.groundSide = m_state.groundSide;
+        obj.type = m_state.stageType;
+        obj.metadata = m_state.metadata;
+        obj.movementType = m_state.movementType;
+        obj.movementDistance = m_state.movementDistance;
+        obj.movementSpeed = m_state.movementSpeed;
+        obj.loopMovement = m_state.loopMovement;
+        obj.damageAmount = m_state.damageAmount;
         
         return obj;
     }

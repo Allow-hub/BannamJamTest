@@ -3,6 +3,18 @@
 
 namespace Jam::UseCase::Editor
 {
+    struct EditorState
+    {
+        Domain::Stage::StageType stageType = Domain::Stage::StageType::Normal;
+        Domain::Stage::GroundSide groundSide = Domain::Stage::GroundSide::All;
+        Domain::Stage::MovementType movementType = Domain::Stage::MovementType::Horizontal;
+        double movementDistance = 200.0;
+        double movementSpeed = 100.0;
+        bool loopMovement = true;
+        double damageAmount = 10.0;
+        String metadata = U"普通の床";
+    };
+
     class StageEditorService
     {
     private:
@@ -12,23 +24,10 @@ namespace Jam::UseCase::Editor
         
         Camera2D m_camera{Vec2{0, 0}, 1.0};
         
-        Optional<Vec2> m_placementStart;
         Optional<Vec2> m_dragStart;
         Optional<Vec2> m_currentDragPos;
-        Domain::Stage::StageType m_currentStageType = Domain::Stage::StageType::Normal;
-        Domain::Stage::GroundSide m_currentGroundSide = Domain::Stage::GroundSide::All;
-        String m_currentTextureKey = U"default";
-        Domain::Editor::PlacementOrientation m_placementOrientation = Domain::Editor::PlacementOrientation::Horizontal;
         
-        Domain::Stage::MovementType m_currentMovementType = Domain::Stage::MovementType::Horizontal;
-        double m_currentMovementDistance = 200.0;
-        double m_currentMovementSpeed = 100.0;
-        bool m_currentLoopMovement = true;
-        
-        double m_currentDamageAmount = 10.0;
-        String m_currentMetadata = U"普通の床";
-        
-        bool m_isTestMode = false;
+        EditorState m_state;
         
     public:
         StageEditorService();
@@ -41,83 +40,27 @@ namespace Jam::UseCase::Editor
         Vec2 screenToWorld(const Vec2& screenPos) const;
         Vec2 snapToGrid(const Vec2& pos) const;
         
-        void setCurrentStageType(Domain::Stage::StageType type) 
-        { 
-            m_currentStageType = type;
-            
-            switch (type)
-            {
-            case Domain::Stage::StageType::Normal:
-            case Domain::Stage::StageType::MovingPlatform:
-                m_currentGroundSide = Domain::Stage::GroundSide::All;
-                break;
-            case Domain::Stage::StageType::OneWayPlatform:
-                m_currentGroundSide = Domain::Stage::GroundSide::Up;
-                break;
-            case Domain::Stage::StageType::DamagePlatform:
-            case Domain::Stage::StageType::MovingDamagePlatform:
-                m_currentGroundSide = Domain::Stage::GroundSide::None;
-                break;
-            }
-            
-            switch (type)
-            {
-            case Domain::Stage::StageType::Normal:
-                m_currentMetadata = U"普通の床";
-                break;
-            case Domain::Stage::StageType::MovingPlatform:
-                m_currentMetadata = U"動く床";
-                break;
-            case Domain::Stage::StageType::OneWayPlatform:
-                m_currentMetadata = U"すり抜け床";
-                break;
-            case Domain::Stage::StageType::DamagePlatform:
-                m_currentMetadata = U"ダメージ床";
-                break;
-            case Domain::Stage::StageType::MovingDamagePlatform:
-                m_currentMetadata = U"動くダメージ床";
-                break;
-            }
-        }
-        void setCurrentGroundSide(Domain::Stage::GroundSide side) { m_currentGroundSide = side; }
-        Domain::Stage::StageType getCurrentStageType() const { return m_currentStageType; }
-        Domain::Stage::GroundSide getCurrentGroundSide() const { return m_currentGroundSide; }
+        void setCurrentStageType(Domain::Stage::StageType type);
+        Domain::Stage::StageType getCurrentStageType() const { return m_state.stageType; }
+        Domain::Stage::GroundSide getCurrentGroundSide() const { return m_state.groundSide; }
         
-        void setMovementType(Domain::Stage::MovementType type) { m_currentMovementType = type; }
-        void setMovementDistance(double distance) { 
-            m_currentMovementDistance = distance; 
-            m_stageManager.updateSelectedObjectsMovement(distance, m_currentMovementSpeed, m_currentMovementType);
-        }
-        void setMovementSpeed(double speed) { 
-            m_currentMovementSpeed = speed; 
-            m_stageManager.updateSelectedObjectsMovement(m_currentMovementDistance, speed, m_currentMovementType);
-        }
-        void setLoopMovement(bool loop) { m_currentLoopMovement = loop; }
-        void setDamageAmount(double amount) { 
-            m_currentDamageAmount = amount; 
-            m_stageManager.updateSelectedObjectsDamage(amount);
-        }
-        void setMetadata(const String& metadata) { m_currentMetadata = metadata; }
-        Domain::Stage::MovementType getMovementType() const { return m_currentMovementType; }
-        double getMovementDistance() const { return m_currentMovementDistance; }
-        double getMovementSpeed() const { return m_currentMovementSpeed; }
-        bool getLoopMovement() const { return m_currentLoopMovement; }
-        double getDamageAmount() const { return m_currentDamageAmount; }
-        const String& getMetadata() const { return m_currentMetadata; }
+        void setMovementType(Domain::Stage::MovementType type) { m_state.movementType = type; }
+        void setMovementDistance(double distance);
+        void setMovementSpeed(double speed);
+        void setLoopMovement(bool loop) { m_state.loopMovement = loop; }
+        void setDamageAmount(double amount);
+        void setMetadata(const String& metadata) { m_state.metadata = metadata; }
         
-        void setPlacementOrientation(Domain::Editor::PlacementOrientation orientation) { m_placementOrientation = orientation; }
-        Domain::Editor::PlacementOrientation getPlacementOrientation() const { return m_placementOrientation; }
-        void togglePlacementOrientation() 
-        {
-            m_placementOrientation = (m_placementOrientation == Domain::Editor::PlacementOrientation::Horizontal) 
-                ? Domain::Editor::PlacementOrientation::Vertical 
-                : Domain::Editor::PlacementOrientation::Horizontal;
-        }
+        Domain::Stage::MovementType getMovementType() const { return m_state.movementType; }
+        double getMovementDistance() const { return m_state.movementDistance; }
+        double getMovementSpeed() const { return m_state.movementSpeed; }
+        bool getLoopMovement() const { return m_state.loopMovement; }
+        double getDamageAmount() const { return m_state.damageAmount; }
+        const String& getMetadata() const { return m_state.metadata; }
         
         void handlePlacement(const Vec2& mousePos);
         void handleSelection(const Vec2& mousePos);
         void handleDeletion(const Vec2& mousePos);
-        void handleMove(const Vec2& mousePos);
         
         Optional<RectF> getDragRect() const;
         
@@ -125,11 +68,6 @@ namespace Jam::UseCase::Editor
         void redo() { m_stageManager.redo(); }
         bool canUndo() const { return m_stageManager.canUndo(); }
         bool canRedo() const { return m_stageManager.canRedo(); }
-        
-        void startTest();
-        void stopTest();
-        bool isTestMode() const { return m_isTestMode; }
-        void updateTest();
         
         void saveStage(const FilePath& path) { m_stageManager.saveToJSON(path); }
         void loadStage(const FilePath& path) { m_stageManager.loadFromJSON(path); }
@@ -141,5 +79,7 @@ namespace Jam::UseCase::Editor
         
     private:
         Domain::Stage::StageObject createStageObjectFromCurrent(const RectF& rect) const;
+        void updateGroundSideForType(Domain::Stage::StageType type);
+        void updateMetadataForType(Domain::Stage::StageType type);
     };
 }

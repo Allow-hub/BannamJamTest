@@ -6,24 +6,21 @@ namespace Jam::Presentation::Editor
     class StageEditorRenderer
     {
     private:
-        const UseCase::Editor::StageEditorService* m_service = nullptr;
-        UseCase::Editor::StageEditorService* m_editableService = nullptr;
+        UseCase::Editor::StageEditorService* m_service = nullptr;
         Font m_font{20};
         Font m_smallFont{16};
         
-        mutable bool m_isPanelCollapsed = false;
-        mutable bool m_isStageTypeDropdownOpen = false;
-        mutable bool m_isGroundSideDropdownOpen = false;
-        mutable bool m_isMovementTypeDropdownOpen = false;
+        bool m_isPanelCollapsed = false;
+        bool m_isStageTypeDropdownOpen = false;
+        bool m_isMovementTypeDropdownOpen = false;
         
-        mutable TextEditState m_metadataTextEdit;
-        mutable TextEditState m_distanceTextEdit;
-        mutable TextEditState m_speedTextEdit;
-        mutable TextEditState m_damageTextEdit;
+        TextEditState m_metadataTextEdit;
+        TextEditState m_distanceTextEdit;
+        TextEditState m_speedTextEdit;
+        TextEditState m_damageTextEdit;
         
     public:
-        void init(const UseCase::Editor::StageEditorService* service);
-        void setEditableService(UseCase::Editor::StageEditorService* service) { m_editableService = service; }
+        void init(UseCase::Editor::StageEditorService* service);
         void draw() const;
         void drawGUIPanel();
         
