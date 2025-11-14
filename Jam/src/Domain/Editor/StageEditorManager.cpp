@@ -151,6 +151,38 @@ namespace Jam::Domain::Editor
         return result;
     }
 
+    void StageEditorManager::updateSelectedObjectsMovement(double distance, double speed, Domain::Stage::MovementType type)
+    {
+        for (auto& obj : m_objects)
+        {
+            if (m_selectedIds.contains(*obj.id))
+            {
+                if (obj.stageObject.type == Stage::StageType::MovingPlatform ||
+                    obj.stageObject.type == Stage::StageType::MovingDamagePlatform)
+                {
+                    obj.stageObject.movementDistance = distance;
+                    obj.stageObject.movementSpeed = speed;
+                    obj.stageObject.movementType = type;
+                }
+            }
+        }
+    }
+
+    void StageEditorManager::updateSelectedObjectsDamage(double damage)
+    {
+        for (auto& obj : m_objects)
+        {
+            if (m_selectedIds.contains(*obj.id))
+            {
+                if (obj.stageObject.type == Stage::StageType::DamagePlatform ||
+                    obj.stageObject.type == Stage::StageType::MovingDamagePlatform)
+                {
+                    obj.stageObject.damageAmount = damage;
+                }
+            }
+        }
+    }
+
     Optional<size_t> StageEditorManager::findObjectAt(const Vec2& pos) const
     {
         for (auto it = m_objects.rbegin(); it != m_objects.rend(); ++it)
@@ -325,9 +357,9 @@ namespace Jam::Domain::Editor
                 }
                 output += U",\n      \"movementType\": \"" + movementTypeStr + U"\"";
                 output += U",\n      \"movementSpeed\": ";
-                output += U"{}"_fmt(obj.movementSpeed);
+                output += U"{}"_fmt(static_cast<int>(obj.movementSpeed));
                 output += U",\n      \"movementDistance\": ";
-                output += U"{}"_fmt(obj.movementDistance);
+                output += U"{}"_fmt(static_cast<int>(obj.movementDistance));
 				output += U",\n      \"loopMovement\": " + String(obj.loopMovement ? U"true" : U"false");
 			}
             

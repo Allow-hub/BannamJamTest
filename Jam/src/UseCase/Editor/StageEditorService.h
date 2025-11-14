@@ -82,10 +82,19 @@ namespace Jam::UseCase::Editor
         Domain::Stage::GroundSide getCurrentGroundSide() const { return m_currentGroundSide; }
         
         void setMovementType(Domain::Stage::MovementType type) { m_currentMovementType = type; }
-        void setMovementDistance(double distance) { m_currentMovementDistance = distance; }
-        void setMovementSpeed(double speed) { m_currentMovementSpeed = speed; }
+        void setMovementDistance(double distance) { 
+            m_currentMovementDistance = distance; 
+            m_stageManager.updateSelectedObjectsMovement(distance, m_currentMovementSpeed, m_currentMovementType);
+        }
+        void setMovementSpeed(double speed) { 
+            m_currentMovementSpeed = speed; 
+            m_stageManager.updateSelectedObjectsMovement(m_currentMovementDistance, speed, m_currentMovementType);
+        }
         void setLoopMovement(bool loop) { m_currentLoopMovement = loop; }
-        void setDamageAmount(double amount) { m_currentDamageAmount = amount; }
+        void setDamageAmount(double amount) { 
+            m_currentDamageAmount = amount; 
+            m_stageManager.updateSelectedObjectsDamage(amount);
+        }
         void setMetadata(const String& metadata) { m_currentMetadata = metadata; }
         Domain::Stage::MovementType getMovementType() const { return m_currentMovementType; }
         double getMovementDistance() const { return m_currentMovementDistance; }

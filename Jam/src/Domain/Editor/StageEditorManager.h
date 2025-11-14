@@ -24,6 +24,9 @@ namespace Jam::Domain::Editor
         void deselectObject(size_t id);
         void clearSelection();
         
+        void updateSelectedObjectsMovement(double distance, double speed, Domain::Stage::MovementType type);
+        void updateSelectedObjectsDamage(double damage);
+        
         const HashSet<size_t>& getSelectedIds() const { return m_selectedIds; }
         Array<const StageEditorObject*> getSelectedObjects() const;
         const Array<StageEditorObject>& getAllObjects() const { return m_objects; }

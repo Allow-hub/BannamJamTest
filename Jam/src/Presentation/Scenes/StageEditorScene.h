@@ -107,11 +107,17 @@ namespace Jam::Presentation::Scenes
             
             if (KeyControl.pressed() && KeyS.down())
             {
-                m_editorService.saveStage(U"Assets/Stage/stage_edited.json");
+                if (const auto path = Dialog::SaveFile({ FileFilter::JSON() }, U"App/Assets/Stage/"))
+                {
+                    m_editorService.saveStage(*path);
+                }
             }
             if (KeyControl.pressed() && KeyO.down())
             {
-                m_editorService.loadStage(U"Assets/Stage/stage_edited.json");
+                if (const auto path = Dialog::OpenFile({ FileFilter::JSON() }, U"App/Assets/Stage/"))
+                {
+                    m_editorService.loadStage(*path);
+                }
             }
         }
         

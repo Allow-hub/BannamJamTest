@@ -359,22 +359,22 @@ namespace Jam::Presentation::Editor
             y += 40;
             
             double damageAmount = m_editableService->getDamageAmount();
-            if (SimpleGUI::Slider(U"ダメージ: {:.1f}"_fmt(damageAmount), damageAmount, 1.0, 50.0, Vec2{panelX + 10, y}, 100, 100))
+            if (SimpleGUI::Slider(U"ダメージ: {:.0f}"_fmt(damageAmount), damageAmount, 1.0, 50.0, Vec2{panelX + 10, y}, 100, 100))
             {
-                m_editableService->setDamageAmount(damageAmount);
+                m_editableService->setDamageAmount(Math::Round(damageAmount));
             }
             y += 30;
             
-            String damageStr = U"{:.1f}"_fmt(damageAmount);
+            String damageStr = U"{:.0f}"_fmt(damageAmount);
             if (m_damageTextEdit.text != damageStr && !m_damageTextEdit.active)
             {
                 m_damageTextEdit.text = damageStr;
             }
             if (SimpleGUI::TextBox(m_damageTextEdit, Vec2{panelX + 210, y - 25}, 70))
             {
-                if (auto value = ParseOpt<double>(m_damageTextEdit.text))
+                if (auto value = ParseOpt<int>(m_damageTextEdit.text))
                 {
-                    m_editableService->setDamageAmount(Clamp(*value, 1.0, 50.0));
+                    m_editableService->setDamageAmount(Clamp(*value, 1, 50));
                 }
             }
             y += 35;
