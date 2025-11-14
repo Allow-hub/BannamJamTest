@@ -15,6 +15,9 @@ namespace Jam::UseCase
 		Domain::IInputService& m_input;
 		Jam::Presentation::PlayerManager& m_manager;
 
+		Timer damageTimer{ 1.0s };
+		void onPlayerDamaged();
+
 	public:
 		PlayerService(const std::shared_ptr<Domain::Player::Player>& player,
 					  Domain::IInputService& input,

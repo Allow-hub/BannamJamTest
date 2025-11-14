@@ -12,13 +12,15 @@ namespace Jam::Presentation
 		// 条件を設定
 		anim.setDefaultClip(U"Idle");
 		anim.addCondition({ { {U"isWalking", true} }, U"Walk", 1 });
-		anim.addCondition({ { {U"isRunning", true} }, U"Run", 2 });
-		anim.addCondition({ { {U"isJumping", true} }, U"Jump", 3 });
-		anim.addCondition({ { {U"isChokerThrow", true} }, U"Choker_Throw", 4 });
+		//anim.addCondition({ { {U"isRunning", true} }, U"Run", 2 });
+		anim.addCondition({ { {U"isJumping", true} }, U"Jump", 2 });
+		anim.addCondition({ { {U"isChokerThrow", true} }, U"Choker_Throw", 3 });
+		anim.addCondition({ { {U"isDamage", true} }, U"Damage", 4 });
 
-		anim.setBool(U"isRunning", false);
+		//anim.setBool(U"isRunning", false);
 		anim.setBool(U"isJumping", false);
 		anim.setBool(U"isChokerThrows", false);
+		anim.setBool(U"isDamage", false);
 	}
 
 	void PlayerManager::setAnim(String name, bool b)

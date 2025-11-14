@@ -13,6 +13,7 @@ namespace Jam::UseCase
 			m_player->getPhysicsBody()->getID(),
 			m_player
 		);
+		m_player->addOnDamagedCallback([this]() { this->onPlayerDamaged(); });
 	}
 
 	void PlayerService::update(double deltaTime)
@@ -65,6 +66,11 @@ namespace Jam::UseCase
 			isJumping = true;
 		}
 
+		if (damageTimer.reachedZero())
+		{
+			m_manager.setAnim(U"isDamage", false);
+		}
+
 		if (inputState.chokerPush) m_player->chokerPush();
 		if (inputState.chokerReleased) m_player->chokerReleased();
 
@@ -79,6 +85,12 @@ namespace Jam::UseCase
 		m_manager.setAnim(U"isChokerThrow", isChokerThrow);
 
 		m_player->update(deltaTime);
+	}
+	void PlayerService::onPlayerDamaged()
+	{
+		// ダメージを受けたときの処理
+		m_manager.setAnim(U"isDamage", true);
+		damageTimer.restart();
 	}
 
 	std::shared_ptr<Domain::Player::Player> PlayerService::getPlayer() const

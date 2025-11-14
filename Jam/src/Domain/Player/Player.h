@@ -85,7 +85,9 @@ namespace Jam::Domain::Player
 		void onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 
 		using DamageCallback = std::function<void(void)>;
-		void setOnDamagedCallback(DamageCallback callback);
+
+		std::vector<DamageCallback> m_onDamagedCallbacks;
+		void addOnDamagedCallback(DamageCallback callback);
 
 	private:
 		// 基本情報

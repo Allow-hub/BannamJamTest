@@ -24,7 +24,7 @@ namespace Jam::Presentation
 		m_fragmentMemory_02 = Texture(Resource(U"Assets/UI/fragment_02.png"));
 		m_fragmentMemory_03 = Texture(Resource(U"Assets/UI/fragment_03.png"));
 
-		m_player->setOnDamagedCallback([this]() { this->onPlayerDamaged(); });
+		m_player->addOnDamagedCallback([this]() { this->onPlayerDamaged(); });
 	}
 
 	void InGameUIManager::update()

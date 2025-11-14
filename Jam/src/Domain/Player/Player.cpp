@@ -160,7 +160,8 @@ namespace Jam::Domain::Player
 		if (m_isInvincible) return;
 
 		m_stats.hp -= info.amount;
-		if (m_onDamaged) m_onDamaged();
+		for (auto& cb : m_onDamagedCallbacks)
+			cb();
 
 		if (m_stats.hp <= 0)
 		{
@@ -173,10 +174,9 @@ namespace Jam::Domain::Player
 			onDamaged(info);
 		}
 	}
-
-	void Player::setOnDamagedCallback(DamageCallback callback)
+	void Player::addOnDamagedCallback(DamageCallback callback)
 	{
-		m_onDamaged = std::move(callback);
+		m_onDamagedCallbacks.push_back(std::move(callback));
 	}
 
 	Vec2 Player::getPosition() const { return m_body->getPosition(); }
