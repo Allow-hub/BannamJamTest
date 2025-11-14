@@ -74,7 +74,7 @@ namespace Jam::Presentation::Scenes
                 switch (m_editorService.getMode())
                 {
                 case Domain::Editor::StageEditorMode::Place:
-                    if (MouseL.down() || MouseL.pressed())
+                    if (MouseL.down() || MouseL.pressed() || MouseL.up())
                     {
                         m_editorService.handlePlacement(mousePos);
                     }

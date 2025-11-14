@@ -62,23 +62,66 @@ namespace Jam::UseCase::Editor
         const int gridSize = m_settings.getGridSize();
         Vec2 snappedPos = snapToGrid(mousePos);
         
-        RectF rect;
-        if (m_placementOrientation == Domain::Editor::PlacementOrientation::Horizontal)
+        // ドラッグ開始
+        if (MouseL.down())
         {
-            rect = RectF{snappedPos.x, snappedPos.y, gridSize, gridSize};
-        }
-        else
-        {
-            rect = RectF{snappedPos.x, snappedPos.y, gridSize, gridSize};
+            m_dragStart = snappedPos;
+            m_currentDragPos = snappedPos;
         }
         
-        if (m_stageManager.hasObjectAtExactPosition(rect))
+        // ドラッグ中
+        if (MouseL.pressed() && m_dragStart)
         {
-            return;
+            m_currentDragPos = snappedPos;
         }
         
-        auto obj = createStageObjectFromCurrent(rect);
-        m_stageManager.addObject(obj);
+        // ドラッグ終了時にオブジェクトを追加
+        if (MouseL.up() && m_dragStart)
+        {
+            Vec2 start = *m_dragStart;
+            Vec2 end = snappedPos;
+            
+            // 開始位置から終了位置まで（どの方向でも対応）
+            double x = Min(start.x, end.x);
+            double y = Min(start.y, end.y);
+            double x2 = Max(start.x, end.x);
+            double y2 = Max(start.y, end.y);
+            
+            // 幅と高さを計算（最低でもgridSize分）
+            double w = x2 - x + gridSize;
+            double h = y2 - y + gridSize;
+            
+            RectF rect{x, y, w, h};
+            
+            if (!m_stageManager.hasObjectAtExactPosition(rect))
+            {
+                auto obj = createStageObjectFromCurrent(rect);
+                m_stageManager.addObject(obj);
+            }
+            m_dragStart.reset();
+            m_currentDragPos.reset();
+        }
+    }
+    
+    Optional<RectF> StageEditorService::getDragRect() const
+    {
+        if (!m_dragStart || !m_currentDragPos) return none;
+        
+        const int gridSize = m_settings.getGridSize();
+        Vec2 start = *m_dragStart;
+        Vec2 currentPos = *m_currentDragPos;
+        
+        // 開始位置から現在位置まで（どの方向でも対応）
+        double x = Min(start.x, currentPos.x);
+        double y = Min(start.y, currentPos.y);
+        double x2 = Max(start.x, currentPos.x);
+        double y2 = Max(start.y, currentPos.y);
+        
+        // 幅と高さを計算（最低でもgridSize分）
+        double w = x2 - x + gridSize;
+        double h = y2 - y + gridSize;
+        
+        return RectF{x, y, w, h};
     }
 
     void StageEditorService::handleSelection(const Vec2& mousePos)

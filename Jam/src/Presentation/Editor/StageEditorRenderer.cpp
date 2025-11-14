@@ -24,6 +24,13 @@ namespace Jam::Presentation::Editor
             }
 
             drawObjects(camera, m_service->getStageManager().getAllObjects());
+            
+            // ドラッグ中のプレビュー表示
+            if (auto dragRect = m_editableService->getDragRect())
+            {
+                dragRect->draw(ColorF{0.0, 1.0, 0.0, 0.3});
+                dragRect->drawFrame(2.0, ColorF{0.0, 1.0, 0.0, 0.8});
+            }
         }
     }
 

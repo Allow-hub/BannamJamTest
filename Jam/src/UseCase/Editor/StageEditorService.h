@@ -13,6 +13,8 @@ namespace Jam::UseCase::Editor
         Camera2D m_camera{Vec2{0, 0}, 1.0};
         
         Optional<Vec2> m_placementStart;
+        Optional<Vec2> m_dragStart;
+        Optional<Vec2> m_currentDragPos;
         Domain::Stage::StageType m_currentStageType = Domain::Stage::StageType::Normal;
         Domain::Stage::GroundSide m_currentGroundSide = Domain::Stage::GroundSide::All;
         String m_currentTextureKey = U"default";
@@ -116,6 +118,8 @@ namespace Jam::UseCase::Editor
         void handleSelection(const Vec2& mousePos);
         void handleDeletion(const Vec2& mousePos);
         void handleMove(const Vec2& mousePos);
+        
+        Optional<RectF> getDragRect() const;
         
         void undo() { m_stageManager.undo(); }
         void redo() { m_stageManager.redo(); }
