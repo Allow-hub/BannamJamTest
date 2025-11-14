@@ -8,7 +8,7 @@ namespace Jam::UseCase::Editor
     private:
         Domain::Editor::StageEditorManager m_stageManager;
         Domain::Editor::StageEditorSettings m_settings;
-        Domain::Editor::StageEditorMode m_mode = Domain::Editor::StageEditorMode::Select;
+        Domain::Editor::StageEditorMode m_mode = Domain::Editor::StageEditorMode::Place;
         
         Camera2D m_camera{Vec2{0, 0}, 1.0};
         
@@ -38,10 +38,21 @@ namespace Jam::UseCase::Editor
         void setCurrentStageType(Domain::Stage::StageType type) 
         { 
             m_currentStageType = type; 
-            if (type == Domain::Stage::StageType::DamagePlatform || 
-                type == Domain::Stage::StageType::MovingDamagePlatform)
+            
+            switch (type)
             {
+            case Domain::Stage::StageType::Normal:
+                break;
+            case Domain::Stage::StageType::MovingPlatform:
+                m_currentGroundSide = Domain::Stage::GroundSide::All;
+                break;
+            case Domain::Stage::StageType::OneWayPlatform:
+                m_currentGroundSide = Domain::Stage::GroundSide::Up;
+                break;
+            case Domain::Stage::StageType::DamagePlatform:
+            case Domain::Stage::StageType::MovingDamagePlatform:
                 m_currentGroundSide = Domain::Stage::GroundSide::None;
+                break;
             }
         }
         void setCurrentGroundSide(Domain::Stage::GroundSide side) { m_currentGroundSide = side; }

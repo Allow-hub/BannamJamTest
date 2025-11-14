@@ -18,6 +18,7 @@ namespace Jam::Presentation::Scenes
             : IScene{ init }
         {
             m_renderer.init(&m_editorService);
+            m_renderer.setEditableService(&m_editorService);
         }
         
         void update() override
@@ -44,66 +45,7 @@ namespace Jam::Presentation::Scenes
             if (Key2.down()) m_editorService.setMode(Domain::Editor::StageEditorMode::Place);
             if (Key3.down()) m_editorService.setMode(Domain::Editor::StageEditorMode::Delete);
             
-            if (KeyQ.down())
-            {
-                using StageType = Domain::Stage::StageType;
-                auto currentType = m_editorService.getCurrentStageType();
-                switch (currentType)
-                {
-                case StageType::Normal: m_editorService.setCurrentStageType(StageType::MovingPlatform); break;
-                case StageType::MovingPlatform: m_editorService.setCurrentStageType(StageType::OneWayPlatform); break;
-                case StageType::OneWayPlatform: m_editorService.setCurrentStageType(StageType::DamagePlatform); break;
-                case StageType::DamagePlatform: m_editorService.setCurrentStageType(StageType::Normal); break;
-                default: m_editorService.setCurrentStageType(StageType::Normal); break;
-                }
-            }
-            
-            if (KeyE.down())
-            {
-                using GroundSide = Domain::Stage::GroundSide;
-                auto currentSide = m_editorService.getCurrentGroundSide();
-                switch (currentSide)
-                {
-                case GroundSide::All: m_editorService.setCurrentGroundSide(GroundSide::Up); break;
-                case GroundSide::Up: m_editorService.setCurrentGroundSide(GroundSide::Down); break;
-                case GroundSide::Down: m_editorService.setCurrentGroundSide(GroundSide::Left); break;
-                case GroundSide::Left: m_editorService.setCurrentGroundSide(GroundSide::Right); break;
-                case GroundSide::Right: m_editorService.setCurrentGroundSide(GroundSide::None); break;
-                case GroundSide::None: m_editorService.setCurrentGroundSide(GroundSide::All); break;
-                default: m_editorService.setCurrentGroundSide(GroundSide::All); break;
-                }
-            }
-            
-            if (KeyZ.down())
-            {
-                using MovementType = Domain::Stage::MovementType;
-                auto currentType = m_editorService.getMovementType();
-                switch (currentType)
-                {
-                case MovementType::Horizontal: m_editorService.setMovementType(MovementType::Vertical); break;
-                case MovementType::Vertical: m_editorService.setMovementType(MovementType::Circular); break;
-                case MovementType::Circular: m_editorService.setMovementType(MovementType::Horizontal); break;
-                default: m_editorService.setMovementType(MovementType::Horizontal); break;
-                }
-            }
-            
-            if (KeyX.down())
-            {
-                double currentDist = m_editorService.getMovementDistance();
-                if (KeyShift.pressed())
-                    m_editorService.setMovementDistance(Max(50.0, currentDist - 50.0));
-                else
-                    m_editorService.setMovementDistance(Min(1000.0, currentDist + 50.0));
-            }
-            
-            if (KeyC.down())
-            {
-                double currentSpeed = m_editorService.getMovementSpeed();
-                if (KeyShift.pressed())
-                    m_editorService.setMovementSpeed(Max(10.0, currentSpeed - 10.0));
-                else
-                    m_editorService.setMovementSpeed(Min(500.0, currentSpeed + 10.0));
-            }
+            m_renderer.drawGUIPanel();
             
             if (m_editorService.isTestMode())
             {
@@ -113,7 +55,10 @@ namespace Jam::Presentation::Scenes
             
             bool hasMouseInput = MouseL.down() || MouseL.up() || MouseR.down();
             
-            if (hasMouseInput)
+            const int guiPanelX = Scene::Width() - 300;
+            const bool isMouseOverGUI = Cursor::Pos().x >= guiPanelX;
+            
+            if (hasMouseInput && !isMouseOverGUI)
             {
                 Vec2 mousePos = m_editorService.screenToWorld(Cursor::Pos());
                 

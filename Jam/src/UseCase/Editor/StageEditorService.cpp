@@ -46,8 +46,8 @@ namespace Jam::UseCase::Editor
         
         const int gridSize = m_settings.getGridSize();
         return Vec2{
-            Math::Round(pos.x / gridSize) * gridSize,
-            Math::Round(pos.y / gridSize) * gridSize
+            Math::Floor(pos.x / gridSize) * gridSize,
+            Math::Floor(pos.y / gridSize) * gridSize
         };
     }
 
@@ -64,6 +64,11 @@ namespace Jam::UseCase::Editor
         else
         {
             rect = RectF{snappedPos.x, snappedPos.y, gridSize, gridSize};
+        }
+        
+        if (m_stageManager.hasObjectAtExactPosition(rect))
+        {
+            return;
         }
         
         auto obj = createStageObjectFromCurrent(rect);

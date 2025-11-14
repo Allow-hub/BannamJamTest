@@ -45,5 +45,7 @@ namespace Jam::Domain::Editor
         void addToHistory(const StageEditorCommand& cmd);
         
         void removeObjectDirect(size_t id);
+        
+        Array<Stage::StageObject> mergeAdjacentObjects() const;
     };
 }

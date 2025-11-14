@@ -259,11 +259,13 @@ namespace Jam::Domain::Editor
 
     void StageEditorManager::saveToJSON(const FilePath& path) const
     {
+        Array<Stage::StageObject> mergedObjects = mergeAdjacentObjects();
+        
         String output = U"{\n  \"objects\": [\n";
         
-        for (size_t i = 0; i < m_objects.size(); ++i)
+        for (size_t i = 0; i < mergedObjects.size(); ++i)
         {
-            const auto& obj = m_objects[i].stageObject;
+            const auto& obj = mergedObjects[i];
             
             String typeStr;
             switch (obj.type) {
@@ -288,10 +290,10 @@ namespace Jam::Domain::Editor
             
             output += U"    {\n";
             output += U"      \"rect\": [ ";
-            output += U"{}"_fmt(obj.rect.x) + U", ";
-            output += U"{}"_fmt(obj.rect.y) + U", ";
-            output += U"{}"_fmt(obj.rect.w) + U", ";
-            output += U"{}"_fmt(obj.rect.h) + U" ],\n";
+            output += U"{}"_fmt(static_cast<int>(obj.rect.x)) + U", ";
+            output += U"{}"_fmt(static_cast<int>(obj.rect.y)) + U", ";
+            output += U"{}"_fmt(static_cast<int>(obj.rect.w)) + U", ";
+            output += U"{}"_fmt(static_cast<int>(obj.rect.h)) + U" ],\n";
             output += U"      \"type\": \"" + typeStr + U"\",\n";
             output += U"      \"groundSide\": \"" + groundSideStr + U"\",\n";
             output += U"      \"metadata\": \"" + obj.metadata + U"\"";
@@ -320,7 +322,7 @@ namespace Jam::Domain::Editor
             }
             
             output += U"\n    }";
-            if (i < m_objects.size() - 1)
+            if (i < mergedObjects.size() - 1)
             {
                 output += U",";
             }
@@ -463,5 +465,90 @@ namespace Jam::Domain::Editor
             m_commandHistory.erase(m_commandHistory.begin());
             m_historyIndex--;
         }
+    }
+
+    Array<Stage::StageObject> StageEditorManager::mergeAdjacentObjects() const
+    {
+        Array<Stage::StageObject> result;
+        HashSet<size_t> merged;
+        
+        constexpr double epsilon = 0.5;
+        
+        for (size_t i = 0; i < m_objects.size(); ++i)
+        {
+            if (merged.contains(i)) continue;
+            
+            const auto& obj = m_objects[i].stageObject;
+            RectF mergedRect = obj.rect;
+            merged.insert(i);
+            
+            bool foundMerge = true;
+            while (foundMerge)
+            {
+                foundMerge = false;
+                
+                for (size_t j = 0; j < m_objects.size(); ++j)
+                {
+                    if (merged.contains(j)) continue;
+                    
+                    const auto& other = m_objects[j].stageObject;
+                    
+                    if (obj.type != other.type ||
+                        obj.groundSide != other.groundSide ||
+                        obj.movementType != other.movementType ||
+                        Math::Abs(obj.movementSpeed - other.movementSpeed) > epsilon ||
+                        Math::Abs(obj.movementDistance - other.movementDistance) > epsilon ||
+                        Math::Abs(obj.damageAmount - other.damageAmount) > epsilon)
+                    {
+                        continue;
+                    }
+                    
+                    const RectF otherRect = other.rect;
+                    
+                    if (Math::Abs(mergedRect.y - otherRect.y) < epsilon && 
+                        Math::Abs(mergedRect.h - otherRect.h) < epsilon)
+                    {
+                        if (Math::Abs((mergedRect.x + mergedRect.w) - otherRect.x) < epsilon)
+                        {
+                            mergedRect.w = otherRect.x + otherRect.w - mergedRect.x;
+                            merged.insert(j);
+                            foundMerge = true;
+                        }
+                        else if (Math::Abs((otherRect.x + otherRect.w) - mergedRect.x) < epsilon)
+                        {
+                            double rightEdge = mergedRect.x + mergedRect.w;
+                            mergedRect.x = otherRect.x;
+                            mergedRect.w = rightEdge - otherRect.x;
+                            merged.insert(j);
+                            foundMerge = true;
+                        }
+                    }
+                    else if (Math::Abs(mergedRect.x - otherRect.x) < epsilon && 
+                             Math::Abs(mergedRect.w - otherRect.w) < epsilon)
+                    {
+                        if (Math::Abs((mergedRect.y + mergedRect.h) - otherRect.y) < epsilon)
+                        {
+                            mergedRect.h = otherRect.y + otherRect.h - mergedRect.y;
+                            merged.insert(j);
+                            foundMerge = true;
+                        }
+                        else if (Math::Abs((otherRect.y + otherRect.h) - mergedRect.y) < epsilon)
+                        {
+                            double bottomEdge = mergedRect.y + mergedRect.h;
+                            mergedRect.y = otherRect.y;
+                            mergedRect.h = bottomEdge - otherRect.y;
+                            merged.insert(j);
+                            foundMerge = true;
+                        }
+                    }
+                }
+            }
+            
+            Stage::StageObject mergedObj = obj;
+            mergedObj.rect = mergedRect;
+            result.push_back(mergedObj);
+        }
+        
+        return result;
     }
 }

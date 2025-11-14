@@ -1,10 +1,12 @@
-﻿#include "StageEditorRenderer.h"
+﻿#include <Siv3D.hpp>
+#include "StageEditorRenderer.h"
 
 namespace Jam::Presentation::Editor
 {
     void StageEditorRenderer::init(const UseCase::Editor::StageEditorService* service)
     {
         m_service = service;
+        m_editableService = const_cast<UseCase::Editor::StageEditorService*>(service);
     }
 
     void StageEditorRenderer::draw() const
@@ -23,8 +25,6 @@ namespace Jam::Presentation::Editor
 
             drawObjects(camera, m_service->getStageManager().getAllObjects());
         }
-
-        drawUI();
     }
 
     void StageEditorRenderer::drawGrid(const Camera2D& camera, int gridSize) const
@@ -80,10 +80,56 @@ namespace Jam::Presentation::Editor
     {
         const auto& rect = obj.stageObject.rect;
         
-        ColorF fillColor = isSelected ? ColorF{1.0, 1.0, 0.0, 0.3} : ColorF{0.5, 0.8, 1.0, 0.2};
+        ColorF fillColor;
+        if (isSelected)
+        {
+            fillColor = ColorF{1.0, 1.0, 0.0, 0.3};
+        }
+        else
+        {
+            switch (obj.stageObject.type)
+            {
+            case Domain::Stage::StageType::Normal:
+                fillColor = ColorF{0.5, 0.8, 1.0, 0.2};
+                break;
+            case Domain::Stage::StageType::MovingPlatform:
+                fillColor = ColorF{0.0, 0.8, 0.0, 0.3};
+                break;
+            case Domain::Stage::StageType::OneWayPlatform:
+                fillColor = ColorF{0.3, 0.6, 1.0, 0.5};
+                break;
+            case Domain::Stage::StageType::DamagePlatform:
+                fillColor = ColorF{1.0, 0.0, 0.0, 0.3};
+                break;
+            default:
+                fillColor = ColorF{0.5, 0.8, 1.0, 0.2};
+                break;
+            }
+        }
+        
         ColorF frameColor = getGroundSideColor(obj.stageObject.groundSide);
         
-        rect.draw(fillColor).drawFrame(2.0, frameColor);
+        rect.draw(fillColor);
+        
+        switch (obj.stageObject.groundSide)
+        {
+        case Domain::Stage::GroundSide::All:
+            break;
+        case Domain::Stage::GroundSide::Up:
+            Line{rect.tl(), rect.tr()}.draw(3.0, ColorF{0.0, 1.0, 0.0, 0.8});
+            break;
+        case Domain::Stage::GroundSide::Down:
+            Line{rect.bl(), rect.br()}.draw(3.0, ColorF{0.0, 1.0, 0.0, 0.8});
+            break;
+        case Domain::Stage::GroundSide::Left:
+            Line{rect.tl(), rect.bl()}.draw(3.0, ColorF{0.0, 1.0, 0.0, 0.8});
+            break;
+        case Domain::Stage::GroundSide::Right:
+            Line{rect.tr(), rect.br()}.draw(3.0, ColorF{0.0, 1.0, 0.0, 0.8});
+            break;
+        case Domain::Stage::GroundSide::None:
+            break;
+        }
         
         if (isSelected)
         {
@@ -91,122 +137,211 @@ namespace Jam::Presentation::Editor
         }
     }
 
-    void StageEditorRenderer::drawUI() const
+    void StageEditorRenderer::drawGUIPanel()
     {
-        drawToolbar();
-        drawObjectPalette();
-        drawPropertyPanel();
-        drawStatusBar();
-    }
-
-    void StageEditorRenderer::drawToolbar() const
-    {
+        if (!m_editableService) return;
+        
+        const int panelWidth = m_isPanelCollapsed ? 40 : 300;
+        const int panelX = Scene::Width() - panelWidth;
+        const int panelY = 0;
+        const int panelHeight = Scene::Height();
+        
+        RectF{panelX, panelY, panelWidth, panelHeight}.draw(ColorF{0.15, 0.15, 0.15, 0.95});
+        
+        if (SimpleGUI::Button(m_isPanelCollapsed ? U"◀" : U"▶", Vec2{panelX + 5, 10}, 30))
+        {
+            m_isPanelCollapsed = !m_isPanelCollapsed;
+        }
+        
+        if (m_isPanelCollapsed) return;
+        
+        int y = 50;
+        
+        m_font(U"ステージエディタ").draw(panelX + 10, y, Palette::White);
+        y += 40;
+        
         const String modeStr = [this]() {
-            switch (m_service->getMode())
+            switch (m_editableService->getMode())
             {
             case Domain::Editor::StageEditorMode::Select: return U"選択";
             case Domain::Editor::StageEditorMode::Place: return U"配置";
             case Domain::Editor::StageEditorMode::Delete: return U"削除";
-            case Domain::Editor::StageEditorMode::Move: return U"移動";
-            case Domain::Editor::StageEditorMode::Test: return U"テスト";
             default: return U"不明";
             }
         }();
+        m_smallFont(U"モード: " + modeStr).draw(panelX + 10, y, Palette::Yellow);
+        y += 35;
         
-        m_font(U"モード: ", modeStr).draw(10, 10, Palette::White);
-    }
-
-    void StageEditorRenderer::drawObjectPalette() const
-    {
-        int y = 50;
-        
-        m_smallFont(U"ステージタイプ").draw(10, y, Palette::White);
+        SimpleGUI::Headline(U"ステージタイプ", Vec2{panelX + 10, y});
         y += 30;
         
-        m_smallFont(getStageTypeName(m_service->getCurrentStageType())).draw(10, y, Palette::Yellow);
-        y += 30;
+        const String currentTypeName = getStageTypeName(m_editableService->getCurrentStageType());
+        const RectF typeButtonRect{panelX + 10, y, 270, 30};
         
-        m_smallFont(U"接地面").draw(10, y, Palette::White);
-        y += 30;
+        if (typeButtonRect.leftClicked())
+        {
+            m_isStageTypeDropdownOpen = !m_isStageTypeDropdownOpen;
+        }
         
-        const String groundSideStr = [this]() {
-            switch (m_service->getCurrentGroundSide())
+        typeButtonRect.draw(m_isStageTypeDropdownOpen ? ColorF{0.3, 0.5, 0.7} : ColorF{0.2, 0.2, 0.2});
+        typeButtonRect.drawFrame(1, Palette::White);
+        m_smallFont(currentTypeName).draw(panelX + 20, y + 7, Palette::White);
+        m_smallFont(m_isStageTypeDropdownOpen ? U"▲" : U"▼").draw(panelX + 250, y + 7, Palette::White);
+        y += 35;
+        
+        if (m_isStageTypeDropdownOpen)
+        {
+            const Array<std::pair<String, Domain::Stage::StageType>> types = {
+                {U"通常床", Domain::Stage::StageType::Normal},
+                {U"動く床", Domain::Stage::StageType::MovingPlatform},
+                {U"すり抜け床", Domain::Stage::StageType::OneWayPlatform},
+                {U"ダメージ床", Domain::Stage::StageType::DamagePlatform}
+            };
+            
+            for (const auto& [name, type] : types)
             {
-            case Domain::Stage::GroundSide::All: return U"全方向";
-            case Domain::Stage::GroundSide::Up: return U"上";
-            case Domain::Stage::GroundSide::Down: return U"下";
-            case Domain::Stage::GroundSide::Left: return U"左";
-            case Domain::Stage::GroundSide::Right: return U"右";
-            case Domain::Stage::GroundSide::None: return U"なし";
-            default: return U"不明";
+                const RectF itemRect{panelX + 10, y, 270, 30};
+                const bool isSelected = m_editableService->getCurrentStageType() == type;
+                
+                if (itemRect.leftClicked())
+                {
+                    m_editableService->setCurrentStageType(type);
+                    m_isStageTypeDropdownOpen = false;
+                }
+                
+                itemRect.draw(isSelected ? ColorF{0.3, 0.5, 0.7} : 
+                             itemRect.mouseOver() ? ColorF{0.3, 0.3, 0.3} : ColorF{0.2, 0.2, 0.2});
+                itemRect.drawFrame(1, Palette::White);
+                m_smallFont(name).draw(panelX + 20, y + 7, Palette::White);
+                y += 30;
             }
-        }();
+            y += 10;
+        }
         
-        ColorF sideColor = getGroundSideColor(m_service->getCurrentGroundSide());
-        m_smallFont(groundSideStr).draw(10, y, sideColor);
-        
+        SimpleGUI::Headline(U"接地面設定", Vec2{panelX + 10, y});
         y += 30;
         
-        const String movementTypeStr = [this]() {
-            switch (m_service->getMovementType())
+        const Array<String> groundSideNames = {U"全方向", U"上", U"下", U"左", U"右", U"なし"};
+        const String currentGroundSideName = groundSideNames[static_cast<size_t>(m_editableService->getCurrentGroundSide())];
+        const RectF groundButtonRect{panelX + 10, y, 270, 30};
+        
+        if (groundButtonRect.leftClicked())
+        {
+            m_isGroundSideDropdownOpen = !m_isGroundSideDropdownOpen;
+        }
+        
+        groundButtonRect.draw(m_isGroundSideDropdownOpen ? ColorF{0.3, 0.5, 0.7} : ColorF{0.2, 0.2, 0.2});
+        groundButtonRect.drawFrame(1, Palette::White);
+        m_smallFont(currentGroundSideName).draw(panelX + 20, y + 7, Palette::White);
+        m_smallFont(m_isGroundSideDropdownOpen ? U"▲" : U"▼").draw(panelX + 250, y + 7, Palette::White);
+        y += 35;
+        
+        if (m_isGroundSideDropdownOpen)
+        {
+            for (size_t i = 0; i < groundSideNames.size(); ++i)
             {
-            case Domain::Stage::MovementType::Horizontal: return U"横移動";
-            case Domain::Stage::MovementType::Vertical: return U"縦移動";
-            case Domain::Stage::MovementType::Circular: return U"円運動";
-            default: return U"不明";
+                const RectF itemRect{panelX + 10, y, 270, 30};
+                const bool isSelected = static_cast<size_t>(m_editableService->getCurrentGroundSide()) == i;
+                
+                if (itemRect.leftClicked())
+                {
+                    m_editableService->setCurrentGroundSide(static_cast<Domain::Stage::GroundSide>(i));
+                    m_isGroundSideDropdownOpen = false;
+                }
+                
+                itemRect.draw(isSelected ? ColorF{0.3, 0.5, 0.7} : 
+                             itemRect.mouseOver() ? ColorF{0.3, 0.3, 0.3} : ColorF{0.2, 0.2, 0.2});
+                itemRect.drawFrame(1, Palette::White);
+                m_smallFont(groundSideNames[i]).draw(panelX + 20, y + 7, Palette::White);
+                y += 30;
             }
-        }();
-        m_smallFont(U"移動タイプ: {}"_fmt(movementTypeStr)).draw(10, y, Palette::Orange);
+            y += 10;
+        }
         
+        if (m_editableService->getCurrentStageType() == Domain::Stage::StageType::MovingPlatform)
+        {
+            SimpleGUI::Headline(U"移動設定", Vec2{panelX + 10, y});
+            y += 30;
+            
+            const Array<String> movementTypes = {U"横移動", U"縦移動", U"円運動"};
+            const String currentMovementTypeName = movementTypes[static_cast<size_t>(m_editableService->getMovementType())];
+            const RectF movementButtonRect{panelX + 10, y, 270, 30};
+            
+            if (movementButtonRect.leftClicked())
+            {
+                m_isMovementTypeDropdownOpen = !m_isMovementTypeDropdownOpen;
+            }
+            
+            movementButtonRect.draw(m_isMovementTypeDropdownOpen ? ColorF{0.3, 0.5, 0.7} : ColorF{0.2, 0.2, 0.2});
+            movementButtonRect.drawFrame(1, Palette::White);
+            m_smallFont(currentMovementTypeName).draw(panelX + 20, y + 7, Palette::White);
+            m_smallFont(m_isMovementTypeDropdownOpen ? U"▲" : U"▼").draw(panelX + 250, y + 7, Palette::White);
+            y += 35;
+            
+            if (m_isMovementTypeDropdownOpen)
+            {
+                for (size_t i = 0; i < movementTypes.size(); ++i)
+                {
+                    const RectF itemRect{panelX + 10, y, 270, 30};
+                    const bool isSelected = static_cast<size_t>(m_editableService->getMovementType()) == i;
+                    
+                    if (itemRect.leftClicked())
+                    {
+                        m_editableService->setMovementType(static_cast<Domain::Stage::MovementType>(i));
+                        m_isMovementTypeDropdownOpen = false;
+                    }
+                    
+                    itemRect.draw(isSelected ? ColorF{0.3, 0.5, 0.7} : 
+                                 itemRect.mouseOver() ? ColorF{0.3, 0.3, 0.3} : ColorF{0.2, 0.2, 0.2});
+                    itemRect.drawFrame(1, Palette::White);
+                    m_smallFont(movementTypes[i]).draw(panelX + 20, y + 7, Palette::White);
+                    y += 30;
+                }
+                y += 10;
+            }
+            
+            double distance = m_editableService->getMovementDistance();
+            if (SimpleGUI::Slider(U"距離: {:.0f}"_fmt(distance), distance, 50.0, 1000.0, Vec2{panelX + 10, y}, 140, 130))
+            {
+                m_editableService->setMovementDistance(distance);
+            }
+            y += 35;
+            
+            double speed = m_editableService->getMovementSpeed();
+            if (SimpleGUI::Slider(U"速度: {:.0f}"_fmt(speed), speed, 10.0, 500.0, Vec2{panelX + 10, y}, 140, 130))
+            {
+                m_editableService->setMovementSpeed(speed);
+            }
+            y += 45;
+        }
+        
+        const auto* selected = m_editableService->getStageManager().getSelectedObject();
+        if (selected)
+        {
+            SimpleGUI::Headline(U"選択中", Vec2{panelX + 10, y});
+            y += 25;
+            m_smallFont(U"位置: ({:.0f}, {:.0f})"_fmt(selected->stageObject.rect.x, selected->stageObject.rect.y))
+                .draw(panelX + 15, y, Palette::White);
+            y += 20;
+            m_smallFont(U"サイズ: ({:.0f}, {:.0f})"_fmt(selected->stageObject.rect.w, selected->stageObject.rect.h))
+                .draw(panelX + 15, y, Palette::White);
+            y += 30;
+        }
+        
+        y = Scene::Height() - 150;
+        SimpleGUI::Headline(U"操作", Vec2{panelX + 10, y});
         y += 25;
-        m_smallFont(U"移動距離: {:.0f}"_fmt(m_service->getMovementDistance())).draw(10, y, Palette::Orange);
-        
+        m_smallFont(U"1: 選択モード").draw(panelX + 15, y, Palette::White);
+        y += 20;
+        m_smallFont(U"2: 配置モード").draw(panelX + 15, y, Palette::White);
+        y += 20;
+        m_smallFont(U"3: 削除モード").draw(panelX + 15, y, Palette::White);
         y += 25;
-        m_smallFont(U"移動速度: {:.0f}"_fmt(m_service->getMovementSpeed())).draw(10, y, Palette::Orange);
-        
-        y += 30;
-        m_smallFont(U"配置方向").draw(10, y, Palette::White);
-        y += 25;
-        
-        const String orientationStr = (m_service->getPlacementOrientation() == Domain::Editor::PlacementOrientation::Horizontal) 
-            ? U"水平 (Shift)" : U"垂直 (Alt)";
-        m_smallFont(orientationStr).draw(10, y, Palette::Cyan);
-        
-        y += 40;
-        m_smallFont(U"枠線の色:").draw(10, y, Palette::White);
-        y += 25;
-        m_smallFont(U"白:全方向").draw(15, y, Palette::White); y += 20;
-        m_smallFont(U"赤:上").draw(15, y, Palette::Red); y += 20;
-        m_smallFont(U"青:下").draw(15, y, Palette::Blue); y += 20;
-        m_smallFont(U"緑:左").draw(15, y, Palette::Green); y += 20;
-        m_smallFont(U"黄:右").draw(15, y, Palette::Yellow);
-    }
-
-    void StageEditorRenderer::drawPropertyPanel() const
-    {
-        const auto* selected = m_service->getStageManager().getSelectedObject();
-        if (!selected) return;
-        
-        int x = Scene::Width() - 200;
-        int y = 10;
-        
-        m_smallFont(U"選択中のオブジェクト").draw(x, y, Palette::White);
-        y += 30;
-        
-        m_smallFont(U"位置: ({:.0f}, {:.0f})"_fmt(selected->stageObject.rect.x, selected->stageObject.rect.y))
-            .draw(x, y, Palette::White);
-        y += 25;
-        
-        m_smallFont(U"サイズ: ({:.0f}, {:.0f})"_fmt(selected->stageObject.rect.w, selected->stageObject.rect.h))
-            .draw(x, y, Palette::White);
-    }
-
-    void StageEditorRenderer::drawStatusBar() const
-    {
-        int y = Scene::Height() - 30;
-        
-        String help = U"1:選択 2:配置 3:削除 | Q:タイプ E:接地面 Z:移動方向 X/Shift+X:距離 C/Shift+C:速度 | Ctrl+S:保存 Ctrl+P:プレイ | ESC:終了";
-        m_smallFont(help).draw(10, y, Palette::White);
+        m_smallFont(U"Ctrl+S: 保存").draw(panelX + 15, y, Palette::White);
+        y += 20;
+        m_smallFont(U"Ctrl+P: プレイ").draw(panelX + 15, y, Palette::White);
+        y += 20;
+        m_smallFont(U"ESC: 終了").draw(panelX + 15, y, Palette::White);
     }
 
     ColorF StageEditorRenderer::getGroundSideColor(Domain::Stage::GroundSide side) const
