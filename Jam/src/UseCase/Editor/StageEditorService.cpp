@@ -87,7 +87,7 @@ namespace Jam::UseCase::Editor
             double x2 = Max(start.x, end.x);
             double y2 = Max(start.y, end.y);
             
-            // 幅と高さを計算（最低でもgridSize分）
+            // 幅と高さを計算（グリッド数×グリッドサイズ）
             double w = x2 - x + gridSize;
             double h = y2 - y + gridSize;
             
@@ -96,6 +96,28 @@ namespace Jam::UseCase::Editor
             if (!m_stageManager.hasObjectAtExactPosition(rect))
             {
                 auto obj = createStageObjectFromCurrent(rect);
+                
+                // 大きな矩形の場合、移動距離を自動調整（動く床のみ）
+                if (obj.type == Domain::Stage::StageType::MovingPlatform || 
+                    obj.type == Domain::Stage::StageType::MovingDamagePlatform)
+                {
+                    if (obj.movementType == Domain::Stage::MovementType::Horizontal)
+                    {
+                        // 横移動の場合、幅の2倍を移動距離とする
+                        obj.movementDistance = w * 2.0;
+                    }
+                    else if (obj.movementType == Domain::Stage::MovementType::Vertical)
+                    {
+                        // 縦移動の場合、高さの2倍を移動距離とする
+                        obj.movementDistance = h * 2.0;
+                    }
+                    else if (obj.movementType == Domain::Stage::MovementType::Circular)
+                    {
+                        // 円移動の場合、短辺の半分を半径とする
+                        obj.movementDistance = Min(w, h) * 0.5;
+                    }
+                }
+                
                 m_stageManager.addObject(obj);
             }
             m_dragStart.reset();
@@ -117,7 +139,7 @@ namespace Jam::UseCase::Editor
         double x2 = Max(start.x, currentPos.x);
         double y2 = Max(start.y, currentPos.y);
         
-        // 幅と高さを計算（最低でもgridSize分）
+        // 幅と高さを計算（グリッド数×グリッドサイズ）
         double w = x2 - x + gridSize;
         double h = y2 - y + gridSize;
         

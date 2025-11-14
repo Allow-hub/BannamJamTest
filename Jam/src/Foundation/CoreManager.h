@@ -36,7 +36,7 @@ namespace Jam::Foundation
 		inline static bool m_isDied = false;
 		inline static bool m_isPause = false;
 		inline static int m_defeatedEnemyCount = 0; // 敵撃破数を保持
-        inline static bool m_useEditorMode = true; // Editorモードかどうか
+        inline static bool m_useEditorMode = false; // Editorモードかどうか
 
 	public:
 		static CoreManager& Instance()

@@ -180,6 +180,17 @@ namespace Jam::Presentation::Editor
         m_font(U"ステージエディタ").draw(panelX + 10, y, Palette::White);
         y += 40;
         
+        // カメラ速度設定
+        SimpleGUI::Headline(U"カメラ設定", Vec2{panelX + 10, y});
+        y += 40;
+        
+        double cameraSpeed = m_editableService->getSettings().getCameraSpeed();
+        if (SimpleGUI::Slider(U"移動速度: {:.1f}"_fmt(cameraSpeed), cameraSpeed, 1.0, 30.0, Vec2{panelX + 10, y}, 120, 120))
+        {
+            m_editableService->getSettings().setCameraSpeed(cameraSpeed);
+        }
+        y += 45;
+        
         const String modeStr = [this]() {
             switch (m_editableService->getMode())
             {
