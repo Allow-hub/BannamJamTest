@@ -8,6 +8,8 @@ namespace Jam::UseCase::Editor
 
     void StageEditorService::updateCamera()
     {
+        if (KeyControl.pressed() || KeyAlt.pressed()) return;
+        
         const double speed = m_settings.getCameraSpeed();
         Vec2 movement{0, 0};
         
@@ -132,6 +134,9 @@ namespace Jam::UseCase::Editor
         obj.movementType = m_currentMovementType;
         obj.movementDistance = m_currentMovementDistance;
         obj.movementSpeed = m_currentMovementSpeed;
+        obj.loopMovement = m_currentLoopMovement;
+        
+        obj.damageAmount = m_currentDamageAmount;
         
         return obj;
     }

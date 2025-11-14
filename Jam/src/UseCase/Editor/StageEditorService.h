@@ -21,6 +21,9 @@ namespace Jam::UseCase::Editor
         Domain::Stage::MovementType m_currentMovementType = Domain::Stage::MovementType::Horizontal;
         double m_currentMovementDistance = 200.0;
         double m_currentMovementSpeed = 100.0;
+        bool m_currentLoopMovement = true;
+        
+        double m_currentDamageAmount = 10.0;
         
         bool m_isTestMode = false;
         
@@ -37,12 +40,11 @@ namespace Jam::UseCase::Editor
         
         void setCurrentStageType(Domain::Stage::StageType type) 
         { 
-            m_currentStageType = type; 
+            m_currentStageType = type;
             
             switch (type)
             {
             case Domain::Stage::StageType::Normal:
-                break;
             case Domain::Stage::StageType::MovingPlatform:
                 m_currentGroundSide = Domain::Stage::GroundSide::All;
                 break;
@@ -62,9 +64,13 @@ namespace Jam::UseCase::Editor
         void setMovementType(Domain::Stage::MovementType type) { m_currentMovementType = type; }
         void setMovementDistance(double distance) { m_currentMovementDistance = distance; }
         void setMovementSpeed(double speed) { m_currentMovementSpeed = speed; }
+        void setLoopMovement(bool loop) { m_currentLoopMovement = loop; }
+        void setDamageAmount(double amount) { m_currentDamageAmount = amount; }
         Domain::Stage::MovementType getMovementType() const { return m_currentMovementType; }
         double getMovementDistance() const { return m_currentMovementDistance; }
         double getMovementSpeed() const { return m_currentMovementSpeed; }
+        bool getLoopMovement() const { return m_currentLoopMovement; }
+        double getDamageAmount() const { return m_currentDamageAmount; }
         
         void setPlacementOrientation(Domain::Editor::PlacementOrientation orientation) { m_placementOrientation = orientation; }
         Domain::Editor::PlacementOrientation getPlacementOrientation() const { return m_placementOrientation; }

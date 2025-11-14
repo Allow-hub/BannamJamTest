@@ -67,11 +67,22 @@ namespace Jam::Presentation::Editor
         const double viewHeight = Scene::Height() / scale;
         const RectF viewRect{center.x - viewWidth / 2, center.y - viewHeight / 2, viewWidth, viewHeight};
         
+        const Vec2 playerSpawnPos{0, 0};
+        const double playerRadius = 20.0;
+        Circle{playerSpawnPos, playerRadius}.draw(ColorF{0.0, 1.0, 1.0, 0.5});
+        Circle{playerSpawnPos, playerRadius}.drawFrame(2.0, ColorF{0.0, 1.0, 1.0});
+        Circle{playerSpawnPos, 5.0}.draw(ColorF{1.0, 1.0, 1.0});
+        
         for (const auto& obj : objects)
         {
             if (viewRect.intersects(obj.stageObject.rect))
             {
                 drawObject(obj, obj.isSelected);
+                
+                if (obj.stageObject.type == Domain::Stage::StageType::MovingPlatform)
+                {
+                    drawMovementGuide(obj.stageObject);
+                }
             }
         }
     }
@@ -114,18 +125,19 @@ namespace Jam::Presentation::Editor
         switch (obj.stageObject.groundSide)
         {
         case Domain::Stage::GroundSide::All:
+            rect.stretched(2.0).drawFrame(4.0, 0, ColorF{0.0, 1.0, 0.0});
             break;
         case Domain::Stage::GroundSide::Up:
-            Line{rect.tl(), rect.tr()}.draw(3.0, ColorF{0.0, 1.0, 0.0, 0.8});
+            Line{rect.tl(), rect.tr()}.stretched(2.0, 0).draw(4.0, ColorF{0.0, 1.0, 0.0});
             break;
         case Domain::Stage::GroundSide::Down:
-            Line{rect.bl(), rect.br()}.draw(3.0, ColorF{0.0, 1.0, 0.0, 0.8});
+            Line{rect.bl(), rect.br()}.stretched(2.0, 0).draw(4.0, ColorF{0.0, 1.0, 0.0});
             break;
         case Domain::Stage::GroundSide::Left:
-            Line{rect.tl(), rect.bl()}.draw(3.0, ColorF{0.0, 1.0, 0.0, 0.8});
+            Line{rect.tl(), rect.bl()}.stretched(0, 2.0).draw(4.0, ColorF{0.0, 1.0, 0.0});
             break;
         case Domain::Stage::GroundSide::Right:
-            Line{rect.tr(), rect.br()}.draw(3.0, ColorF{0.0, 1.0, 0.0, 0.8});
+            Line{rect.tr(), rect.br()}.stretched(0, 2.0).draw(4.0, ColorF{0.0, 1.0, 0.0});
             break;
         case Domain::Stage::GroundSide::None:
             break;
@@ -219,44 +231,32 @@ namespace Jam::Presentation::Editor
         }
         
         SimpleGUI::Headline(U"接地面設定", Vec2{panelX + 10, y});
-        y += 30;
-        
-        const Array<String> groundSideNames = {U"全方向", U"上", U"下", U"左", U"右", U"なし"};
-        const String currentGroundSideName = groundSideNames[static_cast<size_t>(m_editableService->getCurrentGroundSide())];
-        const RectF groundButtonRect{panelX + 10, y, 270, 30};
-        
-        if (groundButtonRect.leftClicked())
-        {
-            m_isGroundSideDropdownOpen = !m_isGroundSideDropdownOpen;
-        }
-        
-        groundButtonRect.draw(m_isGroundSideDropdownOpen ? ColorF{0.3, 0.5, 0.7} : ColorF{0.2, 0.2, 0.2});
-        groundButtonRect.drawFrame(1, Palette::White);
-        m_smallFont(currentGroundSideName).draw(panelX + 20, y + 7, Palette::White);
-        m_smallFont(m_isGroundSideDropdownOpen ? U"▲" : U"▼").draw(panelX + 250, y + 7, Palette::White);
         y += 35;
         
-        if (m_isGroundSideDropdownOpen)
+        const auto currentType = m_editableService->getCurrentStageType();
+        
+        String groundSideText;
+        if (currentType == Domain::Stage::StageType::Normal || 
+            currentType == Domain::Stage::StageType::MovingPlatform)
         {
-            for (size_t i = 0; i < groundSideNames.size(); ++i)
-            {
-                const RectF itemRect{panelX + 10, y, 270, 30};
-                const bool isSelected = static_cast<size_t>(m_editableService->getCurrentGroundSide()) == i;
-                
-                if (itemRect.leftClicked())
-                {
-                    m_editableService->setCurrentGroundSide(static_cast<Domain::Stage::GroundSide>(i));
-                    m_isGroundSideDropdownOpen = false;
-                }
-                
-                itemRect.draw(isSelected ? ColorF{0.3, 0.5, 0.7} : 
-                             itemRect.mouseOver() ? ColorF{0.3, 0.3, 0.3} : ColorF{0.2, 0.2, 0.2});
-                itemRect.drawFrame(1, Palette::White);
-                m_smallFont(groundSideNames[i]).draw(panelX + 20, y + 7, Palette::White);
-                y += 30;
-            }
-            y += 10;
+            groundSideText = U"上下の接地判定";
         }
+        else if (currentType == Domain::Stage::StageType::OneWayPlatform)
+        {
+            groundSideText = U"上のみの接地判定";
+        }
+        else if (currentType == Domain::Stage::StageType::DamagePlatform || 
+                 currentType == Domain::Stage::StageType::MovingDamagePlatform)
+        {
+            groundSideText = U"接地判定なし";
+        }
+        
+        m_smallFont(groundSideText).draw(panelX + 15, y, ColorF{0.0, 1.0, 0.0});
+        y += 30;
+        m_smallFont(U"(StageTypeにより自動設定)").draw(panelX + 15, y, ColorF{0.7, 0.7, 0.7});
+        y += 35;
+        
+        y += 15;
         
         if (m_editableService->getCurrentStageType() == Domain::Stage::StageType::MovingPlatform)
         {
@@ -300,8 +300,11 @@ namespace Jam::Presentation::Editor
                 y += 10;
             }
             
+            const bool isCircular = m_editableService->getMovementType() == Domain::Stage::MovementType::Circular;
+            const String distanceLabel = isCircular ? U"半径" : U"距離";
+            
             double distance = m_editableService->getMovementDistance();
-            if (SimpleGUI::Slider(U"距離: {:.0f}"_fmt(distance), distance, 50.0, 1000.0, Vec2{panelX + 10, y}, 140, 130))
+            if (SimpleGUI::Slider(distanceLabel + U": {:.0f}"_fmt(distance), distance, 50.0, 1000.0, Vec2{panelX + 10, y}, 140, 130))
             {
                 m_editableService->setMovementDistance(distance);
             }
@@ -311,6 +314,27 @@ namespace Jam::Presentation::Editor
             if (SimpleGUI::Slider(U"速度: {:.0f}"_fmt(speed), speed, 10.0, 500.0, Vec2{panelX + 10, y}, 140, 130))
             {
                 m_editableService->setMovementSpeed(speed);
+            }
+            y += 45;
+            
+            bool loopMovement = m_editableService->getLoopMovement();
+            if (SimpleGUI::CheckBox(loopMovement, U"ループ移動", Vec2{panelX + 10, y}, 270))
+            {
+                m_editableService->setLoopMovement(loopMovement);
+            }
+            y += 35;
+        }
+        
+        if (m_editableService->getCurrentStageType() == Domain::Stage::StageType::DamagePlatform ||
+            m_editableService->getCurrentStageType() == Domain::Stage::StageType::MovingDamagePlatform)
+        {
+            SimpleGUI::Headline(U"ダメージ設定", Vec2{panelX + 10, y});
+            y += 30;
+            
+            double damageAmount = m_editableService->getDamageAmount();
+            if (SimpleGUI::Slider(U"ダメージ: {:.1f}"_fmt(damageAmount), damageAmount, 1.0, 50.0, Vec2{panelX + 10, y}, 140, 130))
+            {
+                m_editableService->setDamageAmount(damageAmount);
             }
             y += 45;
         }
@@ -358,12 +382,74 @@ namespace Jam::Presentation::Editor
         }
     }
 
+    void StageEditorRenderer::drawMovementGuide(const Domain::Stage::StageObject& obj) const
+    {
+        const Vec2 center = obj.rect.center();
+        const double distance = obj.movementDistance;
+        const ColorF guideColor{1.0, 0.5, 0.0, 0.8};
+        const double arrowSize = 15.0;
+        
+        Vec2 startPos, endPos;
+        
+        switch (obj.movementType)
+        {
+        case Domain::Stage::MovementType::Horizontal:
+            startPos = Vec2{center.x - distance / 2, center.y};
+            endPos = Vec2{center.x + distance / 2, center.y};
+            
+            Line{startPos, endPos}.draw(3.0, guideColor);
+            
+            Triangle{
+                Vec2{endPos.x, endPos.y},
+                Vec2{endPos.x - arrowSize, endPos.y - arrowSize / 2},
+                Vec2{endPos.x - arrowSize, endPos.y + arrowSize / 2}
+            }.draw(guideColor);
+            
+            Triangle{
+                Vec2{startPos.x, startPos.y},
+                Vec2{startPos.x + arrowSize, startPos.y - arrowSize / 2},
+                Vec2{startPos.x + arrowSize, startPos.y + arrowSize / 2}
+            }.draw(guideColor);
+            
+            Circle{startPos, 5.0}.draw(guideColor);
+            Circle{endPos, 5.0}.draw(guideColor);
+            break;
+            
+        case Domain::Stage::MovementType::Vertical:
+            startPos = Vec2{center.x, center.y - distance / 2};
+            endPos = Vec2{center.x, center.y + distance / 2};
+            
+            Line{startPos, endPos}.draw(3.0, guideColor);
+            
+            Triangle{
+                Vec2{endPos.x, endPos.y},
+                Vec2{endPos.x - arrowSize / 2, endPos.y - arrowSize},
+                Vec2{endPos.x + arrowSize / 2, endPos.y - arrowSize}
+            }.draw(guideColor);
+            
+            Triangle{
+                Vec2{startPos.x, startPos.y},
+                Vec2{startPos.x - arrowSize / 2, startPos.y + arrowSize},
+                Vec2{startPos.x + arrowSize / 2, startPos.y + arrowSize}
+            }.draw(guideColor);
+            
+            Circle{startPos, 5.0}.draw(guideColor);
+            Circle{endPos, 5.0}.draw(guideColor);
+            break;
+            
+        case Domain::Stage::MovementType::Circular:
+            Circle{center, distance}.drawFrame(3.0, guideColor);
+            break;
+        }
+    }
+
     String StageEditorRenderer::getStageTypeName(Domain::Stage::StageType type) const
     {
         switch (type)
         {
         case Domain::Stage::StageType::Normal: return U"通常";
         case Domain::Stage::StageType::MovingPlatform: return U"動く床";
+        case Domain::Stage::StageType::OneWayPlatform: return U"すり抜け床";
         case Domain::Stage::StageType::DamagePlatform: return U"ダメージ床";
         default: return U"不明";
         }

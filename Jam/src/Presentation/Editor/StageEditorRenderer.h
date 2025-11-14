@@ -26,6 +26,7 @@ namespace Jam::Presentation::Editor
         void drawGrid(const Camera2D& camera, int gridSize) const;
         void drawObjects(const Camera2D& camera, const Array<Domain::Editor::StageEditorObject>& objects) const;
         void drawObject(const Domain::Editor::StageEditorObject& obj, bool isSelected) const;
+        void drawMovementGuide(const Domain::Stage::StageObject& obj) const;
         
         ColorF getGroundSideColor(Domain::Stage::GroundSide side) const;
         String getStageTypeName(Domain::Stage::StageType type) const;
