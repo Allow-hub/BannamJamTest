@@ -56,7 +56,8 @@ Jam/Intermediate/
 # =========================
 
 # Siv3D のビルド中間ファイル
-Jam/Intermediate/
+Jam/Release/Intermediate/
+Jam/Debug/Intermediate/
 Jam/Build/
 Jam/.vs/
 
