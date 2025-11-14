@@ -125,7 +125,8 @@ namespace Jam::Presentation::Editor
         switch (obj.stageObject.groundSide)
         {
         case Domain::Stage::GroundSide::All:
-            rect.stretched(2.0).drawFrame(4.0, 0, ColorF{0.0, 1.0, 0.0});
+            Line{rect.tl(), rect.tr()}.stretched(2.0, 0).draw(4.0, ColorF{0.0, 1.0, 0.0});
+            Line{rect.bl(), rect.br()}.stretched(2.0, 0).draw(4.0, ColorF{0.0, 1.0, 0.0});
             break;
         case Domain::Stage::GroundSide::Up:
             Line{rect.tl(), rect.tr()}.stretched(2.0, 0).draw(4.0, ColorF{0.0, 1.0, 0.0});
@@ -231,7 +232,7 @@ namespace Jam::Presentation::Editor
         }
         
         SimpleGUI::Headline(U"接地面設定", Vec2{panelX + 10, y});
-        y += 35;
+        y += 40;
         
         const auto currentType = m_editableService->getCurrentStageType();
         
@@ -252,16 +253,14 @@ namespace Jam::Presentation::Editor
         }
         
         m_smallFont(groundSideText).draw(panelX + 15, y, ColorF{0.0, 1.0, 0.0});
-        y += 30;
-        m_smallFont(U"(StageTypeにより自動設定)").draw(panelX + 15, y, ColorF{0.7, 0.7, 0.7});
-        y += 35;
+        y += 40;
         
         y += 15;
         
         if (m_editableService->getCurrentStageType() == Domain::Stage::StageType::MovingPlatform)
         {
             SimpleGUI::Headline(U"移動設定", Vec2{panelX + 10, y});
-            y += 30;
+            y += 40;
             
             const Array<String> movementTypes = {U"横移動", U"縦移動", U"円運動"};
             const String currentMovementTypeName = movementTypes[static_cast<size_t>(m_editableService->getMovementType())];
@@ -276,7 +275,7 @@ namespace Jam::Presentation::Editor
             movementButtonRect.drawFrame(1, Palette::White);
             m_smallFont(currentMovementTypeName).draw(panelX + 20, y + 7, Palette::White);
             m_smallFont(m_isMovementTypeDropdownOpen ? U"▲" : U"▼").draw(panelX + 250, y + 7, Palette::White);
-            y += 35;
+            y += 40;
             
             if (m_isMovementTypeDropdownOpen)
             {
@@ -297,75 +296,129 @@ namespace Jam::Presentation::Editor
                     m_smallFont(movementTypes[i]).draw(panelX + 20, y + 7, Palette::White);
                     y += 30;
                 }
-                y += 10;
+                y += 15;
             }
             
             const bool isCircular = m_editableService->getMovementType() == Domain::Stage::MovementType::Circular;
             const String distanceLabel = isCircular ? U"半径" : U"距離";
             
             double distance = m_editableService->getMovementDistance();
-            if (SimpleGUI::Slider(distanceLabel + U": {:.0f}"_fmt(distance), distance, 50.0, 1000.0, Vec2{panelX + 10, y}, 140, 130))
+            if (SimpleGUI::Slider(distanceLabel + U": {:.0f}"_fmt(distance), distance, 50.0, 1000.0, Vec2{panelX + 10, y}, 100, 100))
             {
                 m_editableService->setMovementDistance(distance);
             }
-            y += 35;
+            y += 30;
+            
+            String distanceStr = U"{:.0f}"_fmt(distance);
+            if (m_distanceTextEdit.text != distanceStr && !m_distanceTextEdit.active)
+            {
+                m_distanceTextEdit.text = distanceStr;
+            }
+            if (SimpleGUI::TextBox(m_distanceTextEdit, Vec2{panelX + 210, y - 25}, 70))
+            {
+                if (auto value = ParseOpt<double>(m_distanceTextEdit.text))
+                {
+                    m_editableService->setMovementDistance(Clamp(*value, 50.0, 1000.0));
+                }
+            }
+            y += 20;
             
             double speed = m_editableService->getMovementSpeed();
-            if (SimpleGUI::Slider(U"速度: {:.0f}"_fmt(speed), speed, 10.0, 500.0, Vec2{panelX + 10, y}, 140, 130))
+            if (SimpleGUI::Slider(U"速度: {:.0f}"_fmt(speed), speed, 10.0, 500.0, Vec2{panelX + 10, y}, 100, 100))
             {
                 m_editableService->setMovementSpeed(speed);
             }
-            y += 45;
+            y += 30;
+            
+            String speedStr = U"{:.0f}"_fmt(speed);
+            if (m_speedTextEdit.text != speedStr && !m_speedTextEdit.active)
+            {
+                m_speedTextEdit.text = speedStr;
+            }
+            if (SimpleGUI::TextBox(m_speedTextEdit, Vec2{panelX + 210, y - 25}, 70))
+            {
+                if (auto value = ParseOpt<double>(m_speedTextEdit.text))
+                {
+                    m_editableService->setMovementSpeed(Clamp(*value, 10.0, 500.0));
+                }
+            }
+            y += 25;
             
             bool loopMovement = m_editableService->getLoopMovement();
             if (SimpleGUI::CheckBox(loopMovement, U"ループ移動", Vec2{panelX + 10, y}, 270))
             {
                 m_editableService->setLoopMovement(loopMovement);
             }
-            y += 35;
+            y += 45;
         }
         
         if (m_editableService->getCurrentStageType() == Domain::Stage::StageType::DamagePlatform ||
             m_editableService->getCurrentStageType() == Domain::Stage::StageType::MovingDamagePlatform)
         {
             SimpleGUI::Headline(U"ダメージ設定", Vec2{panelX + 10, y});
-            y += 30;
+            y += 40;
             
             double damageAmount = m_editableService->getDamageAmount();
-            if (SimpleGUI::Slider(U"ダメージ: {:.1f}"_fmt(damageAmount), damageAmount, 1.0, 50.0, Vec2{panelX + 10, y}, 140, 130))
+            if (SimpleGUI::Slider(U"ダメージ: {:.1f}"_fmt(damageAmount), damageAmount, 1.0, 50.0, Vec2{panelX + 10, y}, 100, 100))
             {
                 m_editableService->setDamageAmount(damageAmount);
             }
-            y += 45;
+            y += 30;
+            
+            String damageStr = U"{:.1f}"_fmt(damageAmount);
+            if (m_damageTextEdit.text != damageStr && !m_damageTextEdit.active)
+            {
+                m_damageTextEdit.text = damageStr;
+            }
+            if (SimpleGUI::TextBox(m_damageTextEdit, Vec2{panelX + 210, y - 25}, 70))
+            {
+                if (auto value = ParseOpt<double>(m_damageTextEdit.text))
+                {
+                    m_editableService->setDamageAmount(Clamp(*value, 1.0, 50.0));
+                }
+            }
+            y += 35;
         }
         
-        const auto* selected = m_editableService->getStageManager().getSelectedObject();
-        if (selected)
+        SimpleGUI::Headline(U"識別名", Vec2{panelX + 10, y});
+        y += 40;
+        
+        if (m_metadataTextEdit.text != m_editableService->getMetadata())
+        {
+            m_metadataTextEdit.text = m_editableService->getMetadata();
+        }
+        
+        if (SimpleGUI::TextBox(m_metadataTextEdit, Vec2{panelX + 10, y}, 270, 20))
+        {
+            m_editableService->setMetadata(m_metadataTextEdit.text);
+        }
+        y += 35;
+        m_smallFont(U"(オブジェクトの識別用名称)").draw(panelX + 15, y, ColorF{0.7, 0.7, 0.7});
+        y += 45;
+        
+        const Array<const Domain::Editor::StageEditorObject*> selectedObjects = m_editableService->getStageManager().getSelectedObjects();
+        if (!selectedObjects.isEmpty())
         {
             SimpleGUI::Headline(U"選択中", Vec2{panelX + 10, y});
             y += 25;
-            m_smallFont(U"位置: ({:.0f}, {:.0f})"_fmt(selected->stageObject.rect.x, selected->stageObject.rect.y))
-                .draw(panelX + 15, y, Palette::White);
-            y += 20;
-            m_smallFont(U"サイズ: ({:.0f}, {:.0f})"_fmt(selected->stageObject.rect.w, selected->stageObject.rect.h))
-                .draw(panelX + 15, y, Palette::White);
-            y += 30;
+            
+            if (selectedObjects.size() == 1)
+            {
+                const auto* selected = selectedObjects[0];
+                m_smallFont(U"位置: ({:.0f}, {:.0f})"_fmt(selected->stageObject.rect.x, selected->stageObject.rect.y))
+                    .draw(panelX + 15, y, Palette::White);
+                y += 20;
+                m_smallFont(U"サイズ: ({:.0f}, {:.0f})"_fmt(selected->stageObject.rect.w, selected->stageObject.rect.h))
+                    .draw(panelX + 15, y, Palette::White);
+                y += 30;
+            }
+            else
+            {
+                m_smallFont(U"{} 個のオブジェクトを選択中"_fmt(selectedObjects.size()))
+                    .draw(panelX + 15, y, Palette::White);
+                y += 30;
+            }
         }
-        
-        y = Scene::Height() - 150;
-        SimpleGUI::Headline(U"操作", Vec2{panelX + 10, y});
-        y += 25;
-        m_smallFont(U"1: 選択モード").draw(panelX + 15, y, Palette::White);
-        y += 20;
-        m_smallFont(U"2: 配置モード").draw(panelX + 15, y, Palette::White);
-        y += 20;
-        m_smallFont(U"3: 削除モード").draw(panelX + 15, y, Palette::White);
-        y += 25;
-        m_smallFont(U"Ctrl+S: 保存").draw(panelX + 15, y, Palette::White);
-        y += 20;
-        m_smallFont(U"Ctrl+P: プレイ").draw(panelX + 15, y, Palette::White);
-        y += 20;
-        m_smallFont(U"ESC: 終了").draw(panelX + 15, y, Palette::White);
     }
 
     ColorF StageEditorRenderer::getGroundSideColor(Domain::Stage::GroundSide side) const

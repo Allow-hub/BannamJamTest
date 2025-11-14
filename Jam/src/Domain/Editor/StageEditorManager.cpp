@@ -36,10 +36,7 @@ namespace Jam::Domain::Editor
                 }
                 
                 m_objects.erase(it);
-                if (m_selectedId == id)
-                {
-                    m_selectedId.reset();
-                }
+                m_selectedIds.erase(id);
                 break;
             }
         }
@@ -52,10 +49,7 @@ namespace Jam::Domain::Editor
             if (it->id == id)
             {
                 m_objects.erase(it);
-                if (m_selectedId == id)
-                {
-                    m_selectedId.reset();
-                }
+                m_selectedIds.erase(id);
                 break;
             }
         }
@@ -103,36 +97,58 @@ namespace Jam::Domain::Editor
         }
     }
 
-    void StageEditorManager::selectObject(size_t id)
+    void StageEditorManager::selectObject(size_t id, bool additive)
     {
+        if (!additive)
+        {
+            m_selectedIds.clear();
+        }
+        
+        m_selectedIds.insert(id);
+        
         for (auto& obj : m_objects)
         {
-            obj.isSelected = (obj.id == id);
+            obj.isSelected = m_selectedIds.contains(*obj.id);
         }
-        m_selectedId = id;
+    }
+    
+    void StageEditorManager::deselectObject(size_t id)
+    {
+        m_selectedIds.erase(id);
+        
+        for (auto& obj : m_objects)
+        {
+            if (obj.id == id)
+            {
+                obj.isSelected = false;
+                break;
+            }
+        }
     }
 
     void StageEditorManager::clearSelection()
     {
+        m_selectedIds.clear();
+        
         for (auto& obj : m_objects)
         {
             obj.isSelected = false;
         }
-        m_selectedId.reset();
     }
 
-    const StageEditorObject* StageEditorManager::getSelectedObject() const
+    Array<const StageEditorObject*> StageEditorManager::getSelectedObjects() const
     {
-        if (!m_selectedId) return nullptr;
+        Array<const StageEditorObject*> result;
         
         for (const auto& obj : m_objects)
         {
-            if (obj.id == *m_selectedId)
+            if (m_selectedIds.contains(*obj.id))
             {
-                return &obj;
+                result.push_back(&obj);
             }
         }
-        return nullptr;
+        
+        return result;
     }
 
     Optional<size_t> StageEditorManager::findObjectAt(const Vec2& pos) const
@@ -318,7 +334,7 @@ namespace Jam::Domain::Editor
             if (obj.type == Stage::StageType::DamagePlatform || obj.type == Stage::StageType::MovingDamagePlatform)
             {
                 output += U",\n      \"damageAmount\": ";
-                output += U"{}"_fmt(obj.damageAmount);
+                output += U"{}".fmt(static_cast<int>(obj.damageAmount));
             }
             
             output += U"\n    }";
@@ -414,7 +430,7 @@ namespace Jam::Domain::Editor
         m_objects.clear();
         m_commandHistory.clear();
         m_historyIndex = 0;
-        m_selectedId.reset();
+        m_selectedIds.clear();
     }
 
     void StageEditorManager::executeCommand(const StageEditorCommand& cmd)

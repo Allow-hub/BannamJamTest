@@ -53,7 +53,7 @@ namespace Jam::Presentation::Scenes
                 return;
             }
             
-            bool hasMouseInput = MouseL.down() || MouseL.up() || MouseR.down();
+            bool hasMouseInput = MouseL.down() || MouseL.pressed() || MouseL.up() || MouseR.down();
             
             const int guiPanelX = Scene::Width() - 300;
             const bool isMouseOverGUI = Cursor::Pos().x >= guiPanelX;
@@ -74,11 +74,7 @@ namespace Jam::Presentation::Scenes
                 switch (m_editorService.getMode())
                 {
                 case Domain::Editor::StageEditorMode::Place:
-                    if (MouseL.down())
-                    {
-                        m_editorService.handlePlacement(mousePos);
-                    }
-                    else if (MouseL.up() && MouseL.pressedDuration() > 0.1s)
+                    if (MouseL.down() || MouseL.pressed())
                     {
                         m_editorService.handlePlacement(mousePos);
                     }
@@ -92,7 +88,7 @@ namespace Jam::Presentation::Scenes
                     break;
                     
                 case Domain::Editor::StageEditorMode::Delete:
-                    if (MouseL.down())
+                    if (MouseL.down() || MouseL.pressed())
                     {
                         m_editorService.handleDeletion(mousePos);
                     }

@@ -10,7 +10,7 @@ namespace Jam::Domain::Editor
         Array<StageEditorCommand> m_commandHistory;
         size_t m_historyIndex = 0;
         size_t m_nextId = 0;
-        Optional<size_t> m_selectedId;
+        HashSet<size_t> m_selectedIds;
         
         bool m_isExecutingCommand = false;
         
@@ -20,11 +20,12 @@ namespace Jam::Domain::Editor
         void moveObject(size_t id, const Vec2& newPos);
         void modifyObject(size_t id, const Stage::StageObject& newObj);
         
-        void selectObject(size_t id);
+        void selectObject(size_t id, bool additive = false);
+        void deselectObject(size_t id);
         void clearSelection();
         
-        Optional<size_t> getSelectedId() const { return m_selectedId; }
-        const StageEditorObject* getSelectedObject() const;
+        const HashSet<size_t>& getSelectedIds() const { return m_selectedIds; }
+        Array<const StageEditorObject*> getSelectedObjects() const;
         const Array<StageEditorObject>& getAllObjects() const { return m_objects; }
         Optional<size_t> findObjectAt(const Vec2& pos) const;
         

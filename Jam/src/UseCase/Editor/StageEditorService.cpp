@@ -10,6 +10,9 @@ namespace Jam::UseCase::Editor
     {
         if (KeyControl.pressed() || KeyAlt.pressed()) return;
         
+        // TextBoxがアクティブな時はキー入力を無効化
+        if (TextInput::GetEditingText()) return;
+        
         const double speed = m_settings.getCameraSpeed();
         Vec2 movement{0, 0};
         
@@ -24,14 +27,15 @@ namespace Jam::UseCase::Editor
             m_camera.setCenter(newCenter);
         }
         
+        // ホイール向きを反転: 上スクロールで縮小、下スクロールで拡大
         if (Mouse::Wheel() > 0)
         {
-            double newScale = Min(4.0, m_camera.getScale() * 1.1);
+            double newScale = Max(0.1, m_camera.getScale() / 1.1);
             m_camera.setScale(newScale);
         }
         else if (Mouse::Wheel() < 0)
         {
-            double newScale = Max(0.1, m_camera.getScale() / 1.1);
+            double newScale = Min(4.0, m_camera.getScale() * 1.1);
             m_camera.setScale(newScale);
         }
     }
@@ -80,13 +84,29 @@ namespace Jam::UseCase::Editor
     void StageEditorService::handleSelection(const Vec2& mousePos)
     {
         auto id = m_stageManager.findObjectAt(mousePos);
+        
+        // CtrlまたはShiftが押されている場合は追加選択
+        bool isAdditiveSelect = KeyControl.pressed() || KeyShift.pressed();
+        
         if (id)
         {
-            m_stageManager.selectObject(*id);
+            // Ctrlが押されている場合、すでに選択されていれば解除
+            if (KeyControl.pressed() && m_stageManager.getSelectedIds().contains(*id))
+            {
+                m_stageManager.deselectObject(*id);
+            }
+            else
+            {
+                m_stageManager.selectObject(*id, isAdditiveSelect);
+            }
         }
         else
         {
-            m_stageManager.clearSelection();
+            // 何もない場所をクリックした場合、修飾キーがなければ選択解除
+            if (!isAdditiveSelect)
+            {
+                m_stageManager.clearSelection();
+            }
         }
     }
 
@@ -97,15 +117,36 @@ namespace Jam::UseCase::Editor
         {
             m_stageManager.removeObject(*id);
         }
+        
+        // 選択中のオブジェクトをすべて削除
+        auto selectedIds = m_stageManager.getSelectedIds();
+        for (auto selectedId : selectedIds)
+        {
+            m_stageManager.removeObject(selectedId);
+        }
     }
 
     void StageEditorService::handleMove(const Vec2& mousePos)
     {
-        auto selectedId = m_stageManager.getSelectedId();
-        if (selectedId)
+        auto selectedIds = m_stageManager.getSelectedIds();
+        if (!selectedIds.empty())
         {
             Vec2 snapped = snapToGrid(mousePos);
-            m_stageManager.moveObject(*selectedId, snapped);
+            
+            // 最初の選択オブジェクトを基準に相対移動
+            auto selectedObjects = m_stageManager.getSelectedObjects();
+            if (!selectedObjects.isEmpty())
+            {
+                Vec2 basePos = selectedObjects[0]->stageObject.rect.pos;
+                Vec2 offset = snapped - basePos;
+                
+                // すべての選択オブジェクトを同じオフセットで移動
+                for (const auto* obj : selectedObjects)
+                {
+                    Vec2 newPos = obj->stageObject.rect.pos + offset;
+                    m_stageManager.moveObject(*obj->id, newPos);
+                }
+            }
         }
     }
 
@@ -129,7 +170,7 @@ namespace Jam::UseCase::Editor
         obj.rect = rect;
         obj.groundSide = m_currentGroundSide;
         obj.type = m_currentStageType;
-        obj.metadata = U"editor_object";
+        obj.metadata = m_currentMetadata;
         
         obj.movementType = m_currentMovementType;
         obj.movementDistance = m_currentMovementDistance;

@@ -16,6 +16,11 @@ namespace Jam::Presentation::Editor
         mutable bool m_isGroundSideDropdownOpen = false;
         mutable bool m_isMovementTypeDropdownOpen = false;
         
+        mutable TextEditState m_metadataTextEdit;
+        mutable TextEditState m_distanceTextEdit;
+        mutable TextEditState m_speedTextEdit;
+        mutable TextEditState m_damageTextEdit;
+        
     public:
         void init(const UseCase::Editor::StageEditorService* service);
         void setEditableService(UseCase::Editor::StageEditorService* service) { m_editableService = service; }

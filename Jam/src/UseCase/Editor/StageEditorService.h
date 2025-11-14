@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../../Domain/Editor/StageEditorManager.h"
 
 namespace Jam::UseCase::Editor
@@ -24,6 +24,7 @@ namespace Jam::UseCase::Editor
         bool m_currentLoopMovement = true;
         
         double m_currentDamageAmount = 10.0;
+        String m_currentMetadata = U"普通の床";
         
         bool m_isTestMode = false;
         
@@ -56,6 +57,25 @@ namespace Jam::UseCase::Editor
                 m_currentGroundSide = Domain::Stage::GroundSide::None;
                 break;
             }
+            
+            switch (type)
+            {
+            case Domain::Stage::StageType::Normal:
+                m_currentMetadata = U"普通の床";
+                break;
+            case Domain::Stage::StageType::MovingPlatform:
+                m_currentMetadata = U"動く床";
+                break;
+            case Domain::Stage::StageType::OneWayPlatform:
+                m_currentMetadata = U"すり抜け床";
+                break;
+            case Domain::Stage::StageType::DamagePlatform:
+                m_currentMetadata = U"ダメージ床";
+                break;
+            case Domain::Stage::StageType::MovingDamagePlatform:
+                m_currentMetadata = U"動くダメージ床";
+                break;
+            }
         }
         void setCurrentGroundSide(Domain::Stage::GroundSide side) { m_currentGroundSide = side; }
         Domain::Stage::StageType getCurrentStageType() const { return m_currentStageType; }
@@ -66,11 +86,13 @@ namespace Jam::UseCase::Editor
         void setMovementSpeed(double speed) { m_currentMovementSpeed = speed; }
         void setLoopMovement(bool loop) { m_currentLoopMovement = loop; }
         void setDamageAmount(double amount) { m_currentDamageAmount = amount; }
+        void setMetadata(const String& metadata) { m_currentMetadata = metadata; }
         Domain::Stage::MovementType getMovementType() const { return m_currentMovementType; }
         double getMovementDistance() const { return m_currentMovementDistance; }
         double getMovementSpeed() const { return m_currentMovementSpeed; }
         bool getLoopMovement() const { return m_currentLoopMovement; }
         double getDamageAmount() const { return m_currentDamageAmount; }
+        const String& getMetadata() const { return m_currentMetadata; }
         
         void setPlacementOrientation(Domain::Editor::PlacementOrientation orientation) { m_placementOrientation = orientation; }
         Domain::Editor::PlacementOrientation getPlacementOrientation() const { return m_placementOrientation; }
