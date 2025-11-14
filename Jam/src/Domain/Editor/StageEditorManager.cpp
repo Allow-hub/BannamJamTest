@@ -334,7 +334,7 @@ namespace Jam::Domain::Editor
             if (obj.type == Stage::StageType::DamagePlatform || obj.type == Stage::StageType::MovingDamagePlatform)
             {
                 output += U",\n      \"damageAmount\": ";
-                output += U"{}".fmt(static_cast<int>(obj.damageAmount));
+                output += U"{}"_fmt(static_cast<int>(obj.damageAmount));
             }
             
             output += U"\n    }";
