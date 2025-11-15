@@ -1,0 +1,35 @@
+﻿[
+    {
+        "type": "LittleDevil",
+        "position": {
+            "x": -447,
+            "y": 125
+        },
+        "extra": {
+            "ai": {
+                "patrol": {
+                    "patrolPoints": [
+                        {
+                            "x": 300,
+                            "y": 0
+                        },
+                        {
+                            "x": -300,
+                            "y": 0
+                        }
+                    ],
+                    "loop": true,
+                    "waitTime": 1,
+                    "foundDistance": 700
+                }
+            }
+        }
+    },
+    {
+        "type": "Boss1_3",
+        "position": {
+            "x": 129,
+            "y": 75
+        }
+    }
+]

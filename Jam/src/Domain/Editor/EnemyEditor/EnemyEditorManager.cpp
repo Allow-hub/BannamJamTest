@@ -234,10 +234,10 @@ namespace Jam::Domain::Editor
             const auto& e = m_enemies[i].enemyObject;
             
             output += U"    {\n";
-            output += Format(U"        \"type\": \"{}\",\n", enemyTypeToString(e.type));
+            output += U"        \"type\": \"" + enemyTypeToString(e.type) + U"\",\n";
             output += U"        \"position\": {\n";
-            output += Format(U"            \"x\": {},\n", static_cast<int>(e.position.x));
-            output += Format(U"            \"y\": {}\n", static_cast<int>(e.position.y));
+            output += U"            \"x\": " + Format(static_cast<int>(e.position.x)) + U",\n";
+            output += U"            \"y\": " + Format(static_cast<int>(e.position.y)) + U"\n";
             output += U"        }";
             
             // ボス以外はAI設定を追加
@@ -252,26 +252,26 @@ namespace Jam::Domain::Editor
                 {
                     const auto& point = e.patrol.patrolPoints[j];
                     output += U"                        {\n";
-                    output += Format(U"                            \"x\": {},\n", static_cast<int>(point.position.x));
-                    output += Format(U"                            \"y\": {}\n", static_cast<int>(point.position.y));
+                    output += U"                            \"x\": " + Format(static_cast<int>(point.position.x)) + U",\n";
+                    output += U"                            \"y\": " + Format(static_cast<int>(point.position.y)) + U"\n";
                     output += U"                        }";
                     if (j < e.patrol.patrolPoints.size() - 1) output += U",";
                     output += U"\n";
                 }
                 
                 output += U"                    ],\n";
-                output += Format(U"                    \"loop\": {},\n", (e.patrol.loop ? U"true" : U"false"));
-                output += Format(U"                    \"waitTime\": {},\n", e.patrol.waitTime);
-                output += Format(U"                    \"foundDistance\": {}\n", e.patrol.foundDistance);
+                output += U"                    \"loop\": " + String(e.patrol.loop ? U"true" : U"false") + U",\n";
+                output += U"                    \"waitTime\": " + Format(e.patrol.waitTime) + U",\n";
+                output += U"                    \"foundDistance\": " + Format(e.patrol.foundDistance) + U"\n";
                 output += U"                }";
                 
                 // chase設定（対応する敵のみ）
                 if (e.chase)
                 {
                     output += U",\n                \"chase\": {\n";
-                    output += Format(U"                    \"attackRange\": {},\n", e.chase->attackRange);
-                    output += Format(U"                    \"loseRange\": {},\n", e.chase->loseRange);
-                    output += Format(U"                    \"moveSpeedFactor\": {}\n", e.chase->moveSpeedFactor);
+                    output += U"                    \"attackRange\": " + Format(e.chase->attackRange) + U",\n";
+                    output += U"                    \"loseRange\": " + Format(e.chase->loseRange) + U",\n";
+                    output += U"                    \"moveSpeedFactor\": " + Format(e.chase->moveSpeedFactor) + U"\n";
                     output += U"                }\n";
                 }
                 else
