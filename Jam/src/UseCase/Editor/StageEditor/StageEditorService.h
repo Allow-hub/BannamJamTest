@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../../Domain/Editor/StageEditorManager.h"
+#include "../../../Domain/Editor/StageEditor/StageEditorManager.h"
 
 namespace Jam::UseCase::Editor
 {

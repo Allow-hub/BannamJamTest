@@ -1,5 +1,5 @@
 #pragma once
-#include "../../UseCase/Editor/StageEditorService.h"
+#include "../../../UseCase/Editor/StageEditor/StageEditorService.h"
 
 namespace Jam::Presentation::Editor
 {
@@ -10,19 +10,22 @@ namespace Jam::Presentation::Editor
         Font m_font{20};
         Font m_smallFont{16};
         
-        bool m_isPanelCollapsed = false;
-        bool m_isStageTypeDropdownOpen = false;
-        bool m_isMovementTypeDropdownOpen = false;
+        mutable bool m_isPanelCollapsed = false;
+        mutable bool m_isStageTypeDropdownOpen = false;
+        mutable bool m_isMovementTypeDropdownOpen = false;
+        mutable bool m_switchToEnemyEditor = false;
         
-        TextEditState m_metadataTextEdit;
-        TextEditState m_distanceTextEdit;
-        TextEditState m_speedTextEdit;
-        TextEditState m_damageTextEdit;
+        mutable TextEditState m_metadataTextEdit;
+        mutable TextEditState m_distanceTextEdit;
+        mutable TextEditState m_speedTextEdit;
+        mutable TextEditState m_damageTextEdit;
         
     public:
         void init(UseCase::Editor::StageEditorService* service);
         void draw() const;
-        void drawGUIPanel();
+        void drawGUIPanel() const;
+        bool isEditorSwitchRequested() const { return m_switchToEnemyEditor; }
+        void resetEditorSwitchRequest() const { m_switchToEnemyEditor = false; }
         
     private:
         void drawGrid(const Camera2D& camera, int gridSize) const;

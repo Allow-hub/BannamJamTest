@@ -18,9 +18,9 @@
     <ClCompile Include="src\Domain\Enemy\ShockWave.cpp" />
     <ClCompile Include="src\Domain\Enemy\Bomb.cpp" />
     <ClCompile Include="src\Domain\Enemy\Missile.cpp" />
-    <ClCompile Include="src\Domain\Editor\StageEditorManager.cpp" />
-    <ClCompile Include="src\UseCase\Editor\StageEditorService.cpp" />
-    <ClCompile Include="src\Presentation\Editor\StageEditorRenderer.cpp" />
+    <ClCompile Include="src\Domain\Editor\StageEditor\StageEditorManager.cpp" />
+    <ClCompile Include="src\UseCase\Editor\StageEditor\StageEditorService.cpp" />
+    <ClCompile Include="src\Presentation\Editor\StageEditor\StageEditorRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
@@ -115,10 +115,10 @@
     <ClInclude Include="src\Domain\Stage\OneWayPlatformStage.h" />
     <ClInclude Include="src\Presentation\ResourceManager.h" />
     <ClInclude Include="src\Presentation\TextureManager.h" />
-    <ClInclude Include="src\Domain\Editor\StageEditorTypes.h" />
-    <ClInclude Include="src\Domain\Editor\StageEditorManager.h" />
-    <ClInclude Include="src\UseCase\Editor\StageEditorService.h" />
-    <ClInclude Include="src\Presentation\Editor\StageEditorRenderer.h" />
+    <ClInclude Include="src\Domain\Editor\StageEditor\StageEditorTypes.h" />
+    <ClInclude Include="src\Domain\Editor\StageEditor\StageEditorManager.h" />
+    <ClInclude Include="src\UseCase\Editor\StageEditor\StageEditorService.h" />
+    <ClInclude Include="src\Presentation\Editor\StageEditor\StageEditorRenderer.h" />
     <ClInclude Include="src\Presentation\Scenes\StageEditorScene.h" />
   </ItemGroup>
   <ItemGroup>

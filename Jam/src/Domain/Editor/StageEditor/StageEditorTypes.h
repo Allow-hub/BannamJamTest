@@ -1,6 +1,6 @@
 #pragma once
 #include <Siv3D.hpp>
-#include "../Stage/StageTypes.h"
+#include "../../Stage/StageTypes.h"
 
 namespace Jam::Domain::Editor
 {
