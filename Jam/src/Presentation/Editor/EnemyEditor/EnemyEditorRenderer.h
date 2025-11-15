@@ -22,13 +22,12 @@ namespace Jam::Presentation::Editor
         
     public:
         void init(UseCase::Editor::EnemyEditorService* service);
-        void draw() const;
+        void drawEnemies() const;
         void drawGUIPanel() const;
         bool isEditorSwitchRequested() const { return m_switchToStageEditor; }
         void resetEditorSwitchRequest() const { m_switchToStageEditor = false; }
         
     private:
-        void drawEnemies() const;
         void drawEnemy(const Domain::Editor::EnemyEditorObject& enemy, bool isSelected) const;
         void drawPatrolRange(const Domain::Editor::EnemyObject& enemy) const;
         String getEnemyTypeName(Domain::Editor::EnemyType type) const;

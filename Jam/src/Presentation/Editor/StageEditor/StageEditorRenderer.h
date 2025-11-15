@@ -22,7 +22,7 @@ namespace Jam::Presentation::Editor
         
     public:
         void init(UseCase::Editor::StageEditorService* service);
-        void draw() const;
+        void drawStageView() const;
         void drawGUIPanel() const;
         bool isEditorSwitchRequested() const { return m_switchToEnemyEditor; }
         void resetEditorSwitchRequest() const { m_switchToEnemyEditor = false; }

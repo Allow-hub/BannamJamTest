@@ -8,7 +8,7 @@ namespace Jam::Presentation::Editor
         m_service = service;
     }
 
-    void StageEditorRenderer::draw() const
+    void StageEditorRenderer::drawStageView() const
     {
         if (!m_service) return;
         
@@ -41,8 +41,6 @@ namespace Jam::Presentation::Editor
                 Line{x + w, y, x + w, y + h}.draw(lineWidth, lineColor);
             }
         }
-        
-        drawGUIPanel();
     }
 
     void StageEditorRenderer::drawGrid(const Camera2D& camera, int gridSize) const
@@ -187,7 +185,7 @@ namespace Jam::Presentation::Editor
         m_font(U"ステージエディタ").draw(panelX + 10, y, Palette::White);
         y += 40;
         
-        if (SimpleGUI::Button(U"Switch to Enemy Editor", Vec2{panelX + 10, y}, 280))
+        if (SimpleGUI::Button(U"敵エディタに切り替え", Vec2{panelX + 10, y}, 280))
         {
             m_switchToEnemyEditor = true;
         }

@@ -224,8 +224,14 @@ namespace Jam::Presentation::Scenes
 			);
 
 			// ステージ用敵配置 JSON をロードして敵を生成
+			String enemyFilePath;
+			if (core.isEditorMode())
+				enemyFilePath = U"Assets/Enemy/enemy_edited.json";
+			else
+				enemyFilePath = U"Assets/Enemy/enemy_" + stageName + U".json";
+			
 			if (!Jam::Infrastructure::EnemyLoader::loadEnemyForStageFromJSON(
-				U"Assets/Enemy/enemy_" + stageName + U".json",
+				enemyFilePath,
 				m_enemyFactory,
 				m_enemyManager,
 				playerBodyId, *m_gameEventQueue))

@@ -2,8 +2,8 @@
     {
         "type": "LittleDevil",
         "position": {
-            "x": -447,
-            "y": 125
+            "x": -281,
+            "y": 43
         },
         "extra": {
             "ai": {
@@ -28,8 +28,8 @@
     {
         "type": "Boss1_3",
         "position": {
-            "x": 129,
-            "y": 75
+            "x": 194,
+            "y": -21
         }
     }
 ]

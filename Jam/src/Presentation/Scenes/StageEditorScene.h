@@ -109,7 +109,6 @@ namespace Jam::Presentation::Scenes
                         m_stageEditorService.handleSelection(mousePos);
                     }
                     break;
-                    
                 case Domain::Editor::StageEditorMode::Delete:
                     if (MouseL.down() || MouseL.pressed())
                     {
@@ -146,6 +145,18 @@ namespace Jam::Presentation::Scenes
         
         void updateEnemyEditor()
         {
+            if (KeyControl.pressed() && KeyP.down())
+            {
+                m_stageEditorService.saveStage(U"Assets/Stage/stage_edited.json");
+                m_enemyEditorService.saveEnemies(U"Assets/Enemy/enemy_edited.json");
+                
+                auto& core = Jam::Foundation::CoreManager::Instance();
+                core.stageInfo.stageName = Jam::Foundation::StageName::Stage1_1;
+                
+                changeScene(ToSceneString(SceneName::InGame));
+                return;
+            }
+            
             m_enemyEditorService.updateCamera();
             
             bool hasMouseInput = MouseL.down() || MouseL.pressed();
@@ -159,7 +170,7 @@ namespace Jam::Presentation::Scenes
                 
                 if (MouseL.down())
                 {
-                    // TODO: Enemy配置ロジック
+                    m_enemyEditorService.handlePlacement(mousePos);
                 }
             }
             
@@ -190,13 +201,22 @@ namespace Jam::Presentation::Scenes
         
         void draw() const override
         {
+            Scene::SetBackground(ColorF{0.1, 0.15, 0.25});
+            
+            // ステージビュー（グリッド、オブジェクト）は常に描画
+            m_stageRenderer.drawStageView();
+            
+            // 敵も常に描画
+            m_enemyRenderer.drawEnemies();
+            
+            // GUIパネルのみ切り替え
             if (m_editorTarget == Domain::Editor::EditorTarget::Stage)
             {
-                m_stageRenderer.draw();
+                m_stageRenderer.drawGUIPanel();
             }
             else
             {
-                m_enemyRenderer.draw();
+                m_enemyRenderer.drawGUIPanel();
             }
         }
     };

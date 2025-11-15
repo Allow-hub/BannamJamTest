@@ -1,7 +1,7 @@
 ﻿{
   "objects": [
     {
-      "rect": [ -500, 250, 800, 50 ],
+      "rect": [ -400, 200, 700, 50 ],
       "type": "solid",
       "groundSide": "All",
       "metadata": "普通の床"
