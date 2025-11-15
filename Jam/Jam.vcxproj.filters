@@ -5,7 +5,7 @@
     <ClCompile Include="src\Domain\Enemy\EnemyBase.cpp" />
     <ClCompile Include="src\Domain\Enemy\LittleDevil.cpp" />
     <ClCompile Include="src\Domain\Player\Player.cpp" />
-    <ClCompile Include="src\Domain\Player\Skill\ChokerSkill.cpp" />
+    <ClCompile Include="src\Domain\Player\Choker\ChokerSkill.cpp" />
     <ClCompile Include="src\UseCase\EnemyFactory.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="src\Infrastructure\StageFactory.cpp" />
@@ -18,6 +18,30 @@
     <ClCompile Include="src\Domain\Enemy\ShockWave.cpp" />
     <ClCompile Include="src\Domain\Enemy\Bomb.cpp" />
     <ClCompile Include="src\Domain\Enemy\Missile.cpp" />
+    <ClCompile Include="src\Presentation\StoryManager.cpp" />
+    <ClCompile Include="src\Presentation\CameraManager.cpp" />
+    <ClCompile Include="src\Presentation\AudioService.cpp" />
+    <ClCompile Include="src\UseCase\GameEventHandler.cpp" />
+    <ClCompile Include="src\Presentation\Animator.cpp" />
+    <ClCompile Include="src\UseCase\PlayerService.cpp" />
+    <ClCompile Include="src\UseCase\IndependentObjectService.cpp" />
+    <ClCompile Include="src\UseCase\CameraService.cpp" />
+    <ClCompile Include="src\UseCase\AttackProcessor.cpp" />
+    <ClCompile Include="src\Presentation\EnemyManager.cpp" />
+    <ClCompile Include="src\Infrastructure\AudioLoader.cpp" />
+    <ClCompile Include="src\Infrastructure\EnemyLoader.cpp" />
+    <ClCompile Include="src\Presentation\PlayerManager.cpp" />
+    <ClCompile Include="src\Presentation\SettingManager.cpp" />
+    <ClCompile Include="src\Presentation\Scenes\GameScene.cpp" />
+    <ClCompile Include="src\Infrastructure\TextureLoader.cpp" />
+    <ClCompile Include="src\Presentation\Scenes\StoryScene.cpp" />
+    <ClCompile Include="src\Presentation\IndependentObjectManager.cpp" />
+    <ClCompile Include="src\Infrastructure\FactoryServiceLocator.cpp" />
+    <ClCompile Include="src\Infrastructure\IndependentObjectFactory.cpp" />
+    <ClCompile Include="src\Presentation\Scenes\TitleScene.cpp" />
+    <ClCompile Include="src\Presentation\Scenes\SelectScene.cpp" />
+    <ClCompile Include="src\Presentation\Scenes\ResultScene.cpp" />
+    <ClCompile Include="src\Presentation\InGameUIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
@@ -33,8 +57,7 @@
     <ClInclude Include="src\Domain\Physics\IPhysicsBody.h" />
     <ClInclude Include="src\Domain\Physics\PhysicsTypes.h" />
     <ClInclude Include="src\Domain\Physics\PhysicsBodyID.h" />
-    <ClInclude Include="src\Domain\Player\Skill\ChokerSkill.h" />
-    <ClInclude Include="src\Domain\Player\Skill\IPlayerSkill.h" />
+    <ClInclude Include="src\Domain\Player\Choker\ChokerSkill.h" />
     <ClInclude Include="src\Domain\Player\Player.h" />
     <ClInclude Include="src\Domain\Stage\BackgroundTypes.h" />
     <ClInclude Include="src\Domain\Stage\IStage.h" />
@@ -112,6 +135,14 @@
     <ClInclude Include="src\Domain\Stage\OneWayPlatformStage.h" />
     <ClInclude Include="src\Presentation\ResourceManager.h" />
     <ClInclude Include="src\Presentation\TextureManager.h" />
+    <ClInclude Include="src\Domain\Player\Choker\ChokerStates\IChokerState.h" />
+    <ClInclude Include="src\Domain\Player\Choker\ChokerStates\ChokerIdleState.h" />
+    <ClInclude Include="src\Domain\Player\Choker\ChokerStates\ChokerFlyingState.h" />
+    <ClInclude Include="src\Domain\Player\Choker\ChokerContext.h" />
+    <ClInclude Include="src\Domain\Player\Choker\ChokerStates\HookedGroundState.h" />
+    <ClInclude Include="src\Domain\Player\Choker\ChokerStates\HookedEnemyState.h" />
+    <ClInclude Include="src\Presentation\Scenes\SceneName.h" />
+    <ClInclude Include="src\Domain\Player\Choker\ChokerStates\CustomDistanceJoint.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />
@@ -141,6 +172,8 @@
     <Media Include="App\Assets\Sounds\se_button.mp3" />
     <Media Include="App\Assets\Sounds\se_fallDamage.mp3" />
     <Media Include="App\Assets\Sounds\se_goal.mp3" />
+    <Media Include="App\Assets\Sounds\bgm_hauntedHouse.mp3" />
+    <Media Include="App\Assets\Sounds\bgm_story1_1.mp3" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\engine\texture\box-shadow\128.png" />
@@ -361,36 +394,37 @@
     <Image Include="App\Assets\Select\stage1_1.png" />
     <Image Include="App\Assets\Select\stage1_2.png" />
     <Image Include="App\Assets\Select\stage1_3.png" />
-    <Image Include="App\Assets\Player\Damage\damege_00.png" />
-    <Image Include="App\Assets\Player\Damage\damege_01.png" />
-    <Image Include="App\Assets\Player\Damage\damege_02.png" />
-    <Image Include="App\Assets\Player\Damage\damege_03.png" />
-    <Image Include="App\Assets\Player\Damage\damege_04.png" />
-    <Image Include="App\Assets\Player\Damage\damege_05.png" />
-    <Image Include="App\Assets\Player\Damage\damege_06.png" />
-    <Image Include="App\Assets\Player\Damage\damege_07.png" />
-    <Image Include="App\Assets\Player\Damage\damege_08.png" />
-    <Image Include="App\Assets\Player\Damage\damege_09.png" />
-    <Image Include="App\Assets\Player\Damage\damege_10.png" />
-    <Image Include="App\Assets\Player\Damage\damege_11.png" />
-    <Image Include="App\Assets\Player\Damage\damege_12.png" />
-    <Image Include="App\Assets\Player\Damage\damege_13.png" />
-    <Image Include="App\Assets\Player\Damage\damege_14.png" />
-    <Image Include="App\Assets\Player\Damage\damege_15.png" />
-    <Image Include="App\Assets\Player\Damage\damege_16.png" />
-    <Image Include="App\Assets\Player\Damage\damege_17.png" />
-    <Image Include="App\Assets\Player\Damage\damege_18.png" />
-    <Image Include="App\Assets\Player\Damage\damege_19.png" />
-    <Image Include="App\Assets\Player\Damage\damege_20.png" />
-    <Image Include="App\Assets\Player\Damage\damege_21.png" />
-    <Image Include="App\Assets\Player\Damage\damege_22.png" />
-    <Image Include="App\Assets\Player\Damage\damege_23.png" />
-    <Image Include="App\Assets\Player\Damage\damege_24.png" />
-    <Image Include="App\Assets\Player\Damage\damege_25.png" />
-    <Image Include="App\Assets\Player\Damage\damege_26.png" />
-    <Image Include="App\Assets\Player\Damage\damege_27.png" />
-    <Image Include="App\Assets\Player\Damage\damege_28.png" />
-    <Image Include="App\Assets\Player\Damage\damege_29.png" />
+    <Image Include="App\Assets\Player\wire.png" />
+    <Image Include="App\Assets\Player\Damage\damage_00.png" />
+    <Image Include="App\Assets\Player\Damage\damage_01.png" />
+    <Image Include="App\Assets\Player\Damage\damage_02.png" />
+    <Image Include="App\Assets\Player\Damage\damage_03.png" />
+    <Image Include="App\Assets\Player\Damage\damage_04.png" />
+    <Image Include="App\Assets\Player\Damage\damage_05.png" />
+    <Image Include="App\Assets\Player\Damage\damage_06.png" />
+    <Image Include="App\Assets\Player\Damage\damage_07.png" />
+    <Image Include="App\Assets\Player\Damage\damage_08.png" />
+    <Image Include="App\Assets\Player\Damage\damage_09.png" />
+    <Image Include="App\Assets\Player\Damage\damage_10.png" />
+    <Image Include="App\Assets\Player\Damage\damage_11.png" />
+    <Image Include="App\Assets\Player\Damage\damage_12.png" />
+    <Image Include="App\Assets\Player\Damage\damage_13.png" />
+    <Image Include="App\Assets\Player\Damage\damage_14.png" />
+    <Image Include="App\Assets\Player\Damage\damage_15.png" />
+    <Image Include="App\Assets\Player\Damage\damage_16.png" />
+    <Image Include="App\Assets\Player\Damage\damage_17.png" />
+    <Image Include="App\Assets\Player\Damage\damage_18.png" />
+    <Image Include="App\Assets\Player\Damage\damage_19.png" />
+    <Image Include="App\Assets\Player\Damage\damage_20.png" />
+    <Image Include="App\Assets\Player\Damage\damage_21.png" />
+    <Image Include="App\Assets\Player\Damage\damage_22.png" />
+    <Image Include="App\Assets\Player\Damage\damage_23.png" />
+    <Image Include="App\Assets\Player\Damage\damage_24.png" />
+    <Image Include="App\Assets\Player\Damage\damage_25.png" />
+    <Image Include="App\Assets\Player\Damage\damage_26.png" />
+    <Image Include="App\Assets\Player\Damage\damage_27.png" />
+    <Image Include="App\Assets\Player\Damage\damage_28.png" />
+    <Image Include="App\Assets\Player\Damage\damage_29.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />
@@ -579,6 +613,7 @@
     <None Include="App\Assets\Story\stage1_2_clear.csv" />
     <None Include="App\Assets\Story\stage1_3_clear.csv" />
     <None Include="App\Assets\Story\stage1_3_start.csv" />
+    <None Include="App\Assets\Player\player_animation_dummy.json" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="App\dll\soundtouch\COPYING.TXT" />
