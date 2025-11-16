@@ -150,22 +150,28 @@ namespace Jam::UseCase::Editor
             {
                 auto obj = createStageObjectFromCurrent(rect);
                 
+                // 動く床の場合、矩形サイズに基づいて初期距離を提案
                 if (obj.type == Domain::Stage::StageType::MovingPlatform || 
                     obj.type == Domain::Stage::StageType::MovingDamagePlatform)
                 {
+                    double suggestedDistance = m_state.movementDistance;
+                    
                     if (obj.movementType == Domain::Stage::MovementType::Horizontal)
                     {
-                        obj.movementDistance = w * 2.0;
+                        suggestedDistance = w * 2.0;
                     }
                     else if (obj.movementType == Domain::Stage::MovementType::Vertical)
                     {
-                        obj.movementDistance = h * 2.0;
+                        suggestedDistance = h * 2.0;
                     }
                     else if (obj.movementType == Domain::Stage::MovementType::Circular)
                     {
-                        // 円移動の場合、矩形の短辺と同じ半径にする
-                        obj.movementDistance = Min(w, h);
+                        suggestedDistance = Min(w, h);
                     }
+                    
+                    obj.movementDistance = suggestedDistance;
+                    // UIの設定値も更新して、次回配置時やスライダー操作に反映
+                    m_state.movementDistance = suggestedDistance;
                 }
                 
                 m_stageManager.addObject(obj);
