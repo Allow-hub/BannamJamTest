@@ -1,10 +1,97 @@
 ﻿{
   "objects": [
     {
-      "rect": [ -400, 200, 700, 50 ],
-      "type": "solid",
-      "groundSide": "All",
-      "metadata": "普通の床"
+      "groundSide": "all",
+      "metadata": "普通の床",
+      "rect": [
+        150,
+        350,
+        50,
+        50
+      ],
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "普通の床",
+      "rect": [
+        -300,
+        100,
+        350,
+        50
+      ],
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "普通の床",
+      "rect": [
+        -450,
+        300,
+        450,
+        100
+      ],
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "loopMovement": true,
+      "metadata": "動く床",
+      "movementDistance": 200,
+      "movementSpeed": 100,
+      "movementType": "horizontal",
+      "rect": [
+        -300,
+        500,
+        450,
+        50
+      ],
+      "type": "moving_platform"
+    },
+    {
+      "groundSide": "all",
+      "loopMovement": true,
+      "metadata": "動く床",
+      "movementDistance": 499,
+      "movementSpeed": 100,
+      "movementType": "horizontal",
+      "rect": [
+        -300,
+        750,
+        150,
+        50
+      ],
+      "type": "moving_platform"
+    },
+    {
+      "groundSide": "all",
+      "loopMovement": true,
+      "metadata": "動く床",
+      "movementDistance": 499,
+      "movementSpeed": 100,
+      "movementType": "vertical",
+      "rect": [
+        400,
+        350,
+        50,
+        50
+      ],
+      "type": "moving_platform"
+    },
+    {
+      "groundSide": "all",
+      "loopMovement": true,
+      "metadata": "動く床",
+      "movementDistance": 499,
+      "movementSpeed": 69,
+      "movementType": "circular",
+      "rect": [
+        -1050,
+        400,
+        50,
+        50
+      ],
+      "type": "moving_platform"
     }
   ]
 }

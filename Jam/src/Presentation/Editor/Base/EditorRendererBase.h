@@ -1,0 +1,159 @@
+﻿#pragma once
+#include <Siv3D.hpp>
+
+namespace Jam::Presentation::Editor
+{
+    template<typename TService>
+    class EditorRendererBase
+    {
+    protected:
+        TService* m_service = nullptr;
+        Font m_font{20};
+        Font m_smallFont{16};
+        
+        mutable bool m_isPanelCollapsed = false;
+        mutable double m_scrollY = 0.0;
+        
+        static constexpr int PANEL_WIDTH = 300;
+        
+        int getPanelX() const
+        {
+            return Scene::Width() - PANEL_WIDTH;
+        }
+        
+        bool isMouseOverPanel() const
+        {
+            return Cursor::Pos().x >= getPanelX();
+        }
+        
+        void handlePanelScroll() const
+        {
+            if (isMouseOverPanel())
+            {
+                m_scrollY = Max(0.0, m_scrollY - Mouse::Wheel() * 20.0);
+            }
+        }
+        
+        void drawTitleAndToggle(const String& title) const
+        {
+            int y = 10;
+            if (drawCollapseButton(getPanelX()))
+            {
+                m_isPanelCollapsed = !m_isPanelCollapsed;
+            }
+            m_font(title).draw(getPanelX() + 45, y, Palette::White);
+        }
+        
+        int getContentStartY() const
+        {
+            return 55; // タイトル領域の高さ
+        }
+        
+        int drawCameraSettings(int y) const
+        {
+            SimpleGUI::Headline(U"カメラ操作", Vec2{getPanelX() + 10, y});
+            y += 35;
+            
+            double cameraSpeed = m_service->getCameraSpeed();
+            if (SimpleGUI::Slider(U"速度: {:.1f}"_fmt(cameraSpeed), cameraSpeed, 1.0, 20.0, Vec2{getPanelX() + 10, y}, 80, 180))
+            {
+                m_service->setCameraSpeed(cameraSpeed);
+            }
+            y += 40;
+            
+            m_smallFont(U"WASD: 移動").draw(getPanelX() + 15, y, Palette::White);
+            y += 25;
+            m_smallFont(U"ホイール: ズーム").draw(getPanelX() + 15, y, Palette::White);
+            y += 40;
+            return y;
+        }
+        
+        int drawModeDisplay(int y) const
+        {
+            SimpleGUI::Headline(U"モード切り替え", Vec2{getPanelX() + 10, y});
+            y += 35;
+            m_smallFont(U"1: 選択").draw(getPanelX() + 15, y, Palette::White);
+            y += 25;
+            m_smallFont(U"2: 配置").draw(getPanelX() + 15, y, Palette::White);
+            y += 25;
+            m_smallFont(U"3: 削除").draw(getPanelX() + 15, y, Palette::White);
+            y += 40;
+            return y;
+        }
+        
+        void drawBasicPanel() const
+        {
+            drawPanelBackground(PANEL_WIDTH);
+        }
+        
+    public:
+        virtual ~EditorRendererBase() = default;
+        
+        void init(TService* service)
+        {
+            m_service = service;
+        }
+        
+        // ===== 派生クラスで実装 =====
+        virtual void drawView() const = 0;
+        virtual void drawGUIPanel() const = 0;
+        
+    protected:
+        // 共通のGUI要素
+        void drawPanelBackground(int panelWidth) const
+        {
+            const int panelX = Scene::Width() - panelWidth;
+            RectF{panelX, 0, panelWidth, Scene::Height()}.draw(ColorF{0.15, 0.15, 0.15, 0.95});
+        }
+        
+        auto createPanelTransformer() const
+        {
+            const int panelX = Scene::Width() - PANEL_WIDTH;
+            return Transformer2D{Mat3x2::Translate(0, -m_scrollY), TransformCursor::Yes, Transformer2D::Target::PushLocal};
+        }
+        
+        bool drawCollapseButton(int panelX) const
+        {
+            return SimpleGUI::Button(
+                m_isPanelCollapsed ? U"◀" : U"▶", 
+                Vec2{panelX + 5, 10}, 
+                30
+            );
+        }
+        
+        void drawModeIndicator(int x, int y, const String& modeName) const
+        {
+            m_smallFont(U"モード: " + modeName).draw(x, y, Palette::Yellow);
+        }
+        
+        // グリッド描画（StageEditor用）
+        void drawGrid(const Camera2D& camera, int gridSize) const
+        {
+            const Vec2 center = camera.getCenter();
+            const double scale = camera.getScale();
+            const double viewWidth = Scene::Width() / scale;
+            const double viewHeight = Scene::Height() / scale;
+            
+            const int startX = static_cast<int>((center.x - viewWidth / 2) / gridSize) - 1;
+            const int endX = static_cast<int>((center.x + viewWidth / 2) / gridSize) + 1;
+            const int startY = static_cast<int>((center.y - viewHeight / 2) / gridSize) - 1;
+            const int endY = static_cast<int>((center.y + viewHeight / 2) / gridSize) + 1;
+            
+            const ColorF gridColor{0.3, 0.3, 0.3, 0.5};
+            
+            for (int x = startX; x <= endX; ++x) {
+                double xPos = x * gridSize;
+                Line{xPos, startY * gridSize, xPos, endY * gridSize}.draw(0.5, gridColor);
+            }
+            
+            for (int y = startY; y <= endY; ++y) {
+                double yPos = y * gridSize;
+                Line{startX * gridSize, yPos, endX * gridSize, yPos}.draw(0.5, gridColor);
+            }
+            
+            // 原点の軸
+            Line{0, startY * gridSize, 0, endY * gridSize}.draw(2.0, Palette::Red);
+            Line{startX * gridSize, 0, endX * gridSize, 0}.draw(2.0, Palette::Green);
+        }
+    };
+}

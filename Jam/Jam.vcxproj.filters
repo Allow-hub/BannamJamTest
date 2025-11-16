@@ -21,6 +21,9 @@
     <ClCompile Include="src\Domain\Editor\StageEditor\StageEditorManager.cpp" />
     <ClCompile Include="src\UseCase\Editor\StageEditor\StageEditorService.cpp" />
     <ClCompile Include="src\Presentation\Editor\StageEditor\StageEditorRenderer.cpp" />
+    <ClCompile Include="src\Domain\Editor\EnemyEditor\EnemyEditorManager.cpp" />
+    <ClCompile Include="src\Presentation\Editor\EnemyEditor\EnemyEditorRenderer.cpp" />
+    <ClCompile Include="src\UseCase\Editor\EnemyEditor\EnemyEditorService.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
@@ -120,6 +123,13 @@
     <ClInclude Include="src\UseCase\Editor\StageEditor\StageEditorService.h" />
     <ClInclude Include="src\Presentation\Editor\StageEditor\StageEditorRenderer.h" />
     <ClInclude Include="src\Presentation\Scenes\StageEditorScene.h" />
+    <ClInclude Include="src\Domain\Editor\EnemyEditor\EnemyEditorManager.h" />
+    <ClInclude Include="src\Domain\Editor\EnemyEditor\EnemyEditorTypes.h" />
+    <ClInclude Include="src\Presentation\Editor\EnemyEditor\EnemyEditorRenderer.h" />
+    <ClInclude Include="src\UseCase\Editor\EnemyEditor\EnemyEditorService.h" />
+    <ClInclude Include="src\Domain\Editor\Base\EditorManagerBase.h" />
+    <ClInclude Include="src\UseCase\Editor\Base\EditorServiceBase.h" />
+    <ClInclude Include="src\Presentation\Editor\Base\EditorRendererBase.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />

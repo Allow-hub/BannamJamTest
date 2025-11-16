@@ -1,7 +1,10 @@
+// ========================================
+// EnemyEditorService.h（リファクタリング版）
+// ========================================
 #pragma once
+#include "../Base/EditorServiceBase.h"
 #include "../../../Domain/Editor/EnemyEditor/EnemyEditorManager.h"
 #include "../../../Domain/Editor/StageEditor/StageEditorTypes.h"
-#include "../../../Presentation/CameraManager.h"
 
 namespace Jam::UseCase::Editor
 {
@@ -15,28 +18,25 @@ namespace Jam::UseCase::Editor
         double loseRange = 700.0;
         double moveSpeedFactor = 1.2;
     };
-
-    class EnemyEditorService
+    
+    class EnemyEditorService : public EditorServiceBase<Domain::Editor::EnemyEditorManager>
     {
     private:
-        Domain::Editor::EnemyEditorManager m_enemyManager;
+        Domain::Editor::StageEditorSettings m_settings;
         EnemyEditorState m_state;
-        Presentation::CameraManager m_cameraManager;
-        
-        int m_patrolPointIndex = 0;
-        Optional<Vec2> m_placingPosition;
-        Array<Vec2> m_tempPatrolPoints;
         
     public:
-        EnemyEditorService();
+        EnemyEditorService() = default;
         
-        void updateCamera() { m_cameraManager.update(Scene::DeltaTime()); }
-        auto createCameraTransformer() const { return m_cameraManager.createTransformer(); }
-        Vec2 screenToWorld(const Vec2& screenPos) const { return m_cameraManager.screenToWorld(screenPos); }
+        // ===== 設定アクセス =====
+        const Domain::Editor::StageEditorSettings& getSettings() const { return m_settings; }
+        Domain::Editor::StageEditorSettings& getSettings() { return m_settings; }
         
-        void setEnemyType(Domain::Editor::EnemyType type);
+        // ===== 敵タイプ設定 =====
+        void setEnemyType(Domain::Editor::EnemyType type) { m_state.enemyType = type; }
         Domain::Editor::EnemyType getEnemyType() const { return m_state.enemyType; }
         
+        // ===== AI設定 =====
         void setPatrolDistance(double distance) { m_state.patrolDistance = distance; }
         void setPatrolWaitTime(double time) { m_state.patrolWaitTime = time; }
         void setFoundDistance(double distance) { m_state.foundDistance = distance; }
@@ -51,26 +51,74 @@ namespace Jam::UseCase::Editor
         double getLoseRange() const { return m_state.loseRange; }
         double getMoveSpeedFactor() const { return m_state.moveSpeedFactor; }
         
-        void handlePlacement(const Vec2& mousePos);
-        void handleSelection(const Vec2& mousePos);
-        void handleDeletion(const Vec2& mousePos);
+        // ===== 入力処理（オーバーライド） =====
+        void handlePlacement(const Vec2& mousePos) override
+        {
+            if (MouseL.down()) {
+                // 重複配置を防ぐ：既存の敵と近すぎないかチェック
+                if (!m_manager.hasOverlappingEnemy(mousePos)) {
+                    auto enemy = createEnemyFromCurrent(mousePos);
+                    m_manager.addObject(enemy);
+                }
+            }
+        }
         
-        void undo() { m_enemyManager.undo(); }
-        void redo() { m_enemyManager.redo(); }
-        bool canUndo() const { return m_enemyManager.canUndo(); }
-        bool canRedo() const { return m_enemyManager.canRedo(); }
+        void handleSelection(const Vec2& mousePos) override
+        {
+            auto id = m_manager.findObjectAt(mousePos);
+            bool isAdditiveSelect = KeyControl.pressed() || KeyShift.pressed();
+            
+            if (id) {
+                if (KeyControl.pressed() && m_manager.getSelectedIds().contains(*id)) {
+                    m_manager.deselectObject(*id);
+                } else {
+                    m_manager.selectObject(*id, isAdditiveSelect);
+                }
+            } else {
+                if (!isAdditiveSelect) {
+                    m_manager.clearSelection();
+                }
+            }
+        }
         
-        void saveEnemies(const FilePath& path) { m_enemyManager.saveToJSON(path); }
-        void loadEnemies(const FilePath& path) { m_enemyManager.loadFromJSON(path); }
-        void newEnemies() { m_enemyManager.clear(); }
-        
-        const Domain::Editor::EnemyEditorManager& getEnemyManager() const { return m_enemyManager; }
-        
-        int getPatrolPointIndex() const { return m_patrolPointIndex; }
-        const Optional<Vec2>& getPlacingPosition() const { return m_placingPosition; }
-        const Array<Vec2>& getTempPatrolPoints() const { return m_tempPatrolPoints; }
+        void handleDeletion(const Vec2& mousePos) override
+        {
+            if (auto id = m_manager.findObjectAt(mousePos)) {
+                m_manager.removeObject(*id);
+            }
+        }
         
     private:
-        Domain::Editor::EnemyObject createEnemyFromCurrent(const Vec2& position) const;
+        Domain::Editor::EnemyObject createEnemyFromCurrent(const Vec2& position) const
+        {
+            Domain::Editor::EnemyObject enemy;
+            enemy.type = m_state.enemyType;
+            enemy.position = position;
+            
+            // ボス以外はAI設定を追加
+            if (!enemy.isBoss()) {
+                // 巡回ポイント（相対座標）
+                Domain::Editor::PatrolPoint point1, point2;
+                point1.position = Vec2{m_state.patrolDistance, 0};
+                point2.position = Vec2{-m_state.patrolDistance, 0};
+                
+                enemy.patrol.patrolPoints.push_back(point1);
+                enemy.patrol.patrolPoints.push_back(point2);
+                enemy.patrol.loop = true;
+                enemy.patrol.waitTime = m_state.patrolWaitTime;
+                enemy.patrol.foundDistance = m_state.foundDistance;
+                
+                // 追跡AIを持つ敵の場合
+                if (enemy.hasChaseAI()) {
+                    Domain::Editor::ChaseAI chase;
+                    chase.attackRange = m_state.attackRange;
+                    chase.loseRange = m_state.loseRange;
+                    chase.moveSpeedFactor = m_state.moveSpeedFactor;
+                    enemy.chase = chase;
+                }
+            }
+            
+            return enemy;
+        }
     };
 }

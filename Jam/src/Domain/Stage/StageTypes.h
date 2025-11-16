@@ -94,4 +94,27 @@ namespace Jam::Domain::Stage {
 		default: return U"none";
 		}
 	}
+
+	// MovementTypeから文字列への変換
+	inline String movementTypeToString(MovementType type) {
+		switch (type) {
+		case MovementType::Horizontal: return U"horizontal";
+		case MovementType::Vertical: return U"vertical";
+		case MovementType::Circular: return U"circular";
+		default: return U"horizontal";
+		}
+	}
+
+	// GroundSideから文字列への変換
+	inline String groundSideToString(GroundSide side) {
+		switch (side) {
+		case GroundSide::None: return U"none";
+		case GroundSide::Up: return U"up";
+		case GroundSide::Down: return U"down";
+		case GroundSide::Left: return U"left";
+		case GroundSide::Right: return U"right";
+		case GroundSide::All: return U"all";
+		default: return U"all";
+		}
+	}
 }
