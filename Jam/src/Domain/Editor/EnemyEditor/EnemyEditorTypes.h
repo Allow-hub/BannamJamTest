@@ -1,20 +1,20 @@
-#pragma once
+﻿#pragma once
 #include <Siv3D.hpp>
 
 namespace Jam::Domain::Editor
 {
-    // 敵の種類
+    // 謨ｵ縺ｮ遞ｮ鬘・
     enum class EnemyType
     {
-        LittleDevil,    // 小悪魔
-        Spider,         // 蜘蛛
-        Ribbon,         // リボン
-        Eye,            // 目玉
-        Clown,          // 道化師
-        Boss1_3         // ボス
+        LittleDevil,    // 蟆乗が鬲・
+        Spider,         // 陷倩屁
+        Ribbon,         // 繝ｪ繝懊Φ
+        Eye,            // 逶ｮ邇・
+        Clown,          // 驕灘喧蟶ｫ
+        Boss1_3         // 繝懊せ
     };
 
-    // 敵の種類を文字列に変換
+    // 謨ｵ縺ｮ遞ｮ鬘槭ｒ譁・ｭ怜・縺ｫ螟画鋤
     inline String enemyTypeToString(EnemyType type)
     {
         switch (type)
@@ -29,7 +29,7 @@ namespace Jam::Domain::Editor
         }
     }
 
-    // 文字列を敵の種類に変換
+    // 譁・ｭ怜・繧呈雰縺ｮ遞ｮ鬘槭↓螟画鋤
     inline EnemyType stringToEnemyType(const String& str)
     {
         if (str == U"LittleDevil") return EnemyType::LittleDevil;
@@ -41,13 +41,13 @@ namespace Jam::Domain::Editor
         return EnemyType::LittleDevil;
     }
 
-    // 巡回ポイント
+    // 蟾｡蝗槭・繧､繝ｳ繝・
     struct PatrolPoint
     {
         Vec2 position;
     };
 
-    // AI巡回設定
+    // AI蟾｡蝗櫁ｨｭ螳・
     struct PatrolAI
     {
         Array<PatrolPoint> patrolPoints;
@@ -56,7 +56,7 @@ namespace Jam::Domain::Editor
         double foundDistance = 700.0;
     };
 
-    // AI追跡設定
+    // AI霑ｽ霍｡險ｭ螳・
     struct ChaseAI
     {
         double attackRange = 600.0;
@@ -64,30 +64,30 @@ namespace Jam::Domain::Editor
         double moveSpeedFactor = 1.2;
     };
 
-    // 敵オブジェクト
+    // 謨ｵ繧ｪ繝悶ず繧ｧ繧ｯ繝・
     struct EnemyObject
     {
         EnemyType type = EnemyType::LittleDevil;
         Vec2 position{0, 0};
         
-        // AI設定（LittleDevilは巡回のみ、それ以外は追跡も持つ）
+        // AI險ｭ螳夲ｼ・ittleDevil縺ｯ蟾｡蝗槭・縺ｿ縲√◎繧御ｻ･螟悶・霑ｽ霍｡繧よ戟縺､・・
         PatrolAI patrol;
         Optional<ChaseAI> chase;
         
-        // 追跡AIを持つか判定
+        // 霑ｽ霍｡AI繧呈戟縺､縺句愛螳・
         bool hasChaseAI() const
         {
             return type != EnemyType::LittleDevil && type != EnemyType::Boss1_3;
         }
         
-        // ボスか判定
+        // 繝懊せ縺句愛螳・
         bool isBoss() const
         {
             return type == EnemyType::Boss1_3;
         }
     };
 
-    // エディタ用の敵オブジェクト
+    // 繧ｨ繝・ぅ繧ｿ逕ｨ縺ｮ謨ｵ繧ｪ繝悶ず繧ｧ繧ｯ繝・
     struct EnemyEditorObject
     {
         Optional<size_t> id;
@@ -95,7 +95,7 @@ namespace Jam::Domain::Editor
         bool isSelected = false;
     };
 
-    // Undo/Redo用コマンド
+    // Undo/Redo逕ｨ繧ｳ繝槭Φ繝・
     struct EnemyEditorCommand
     {
         enum class Type

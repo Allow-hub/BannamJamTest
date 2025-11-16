@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Siv3D.hpp>
 
 namespace Jam::Domain::Editor
@@ -15,7 +15,7 @@ namespace Jam::Domain::Editor
         Optional<Vec2> oldPos;
         Optional<Vec2> newPos;
         
-        // Modify用（改善：新旧データを保存）
+        // Modify用（変更前後のデータを保存）
         Optional<typename TObject::DataType> oldData;
         Optional<typename TObject::DataType> newData;
     };

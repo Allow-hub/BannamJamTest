@@ -4,31 +4,9 @@
       "groundSide": "all",
       "metadata": "普通の床",
       "rect": [
+        -250,
         150,
-        350,
-        50,
-        50
-      ],
-      "type": "normal"
-    },
-    {
-      "groundSide": "all",
-      "metadata": "普通の床",
-      "rect": [
-        -300,
-        100,
-        350,
-        50
-      ],
-      "type": "normal"
-    },
-    {
-      "groundSide": "all",
-      "metadata": "普通の床",
-      "rect": [
-        -450,
-        300,
-        450,
+        550,
         100
       ],
       "type": "normal"
@@ -37,13 +15,13 @@
       "groundSide": "all",
       "loopMovement": true,
       "metadata": "動く床",
-      "movementDistance": 200,
+      "movementDistance": 100,
       "movementSpeed": 100,
       "movementType": "horizontal",
       "rect": [
-        -300,
-        500,
-        450,
+        250,
+        50,
+        50,
         50
       ],
       "type": "moving_platform"
@@ -52,27 +30,27 @@
       "groundSide": "all",
       "loopMovement": true,
       "metadata": "動く床",
-      "movementDistance": 499,
-      "movementSpeed": 100,
-      "movementType": "horizontal",
-      "rect": [
-        -300,
-        750,
-        150,
-        50
-      ],
-      "type": "moving_platform"
-    },
-    {
-      "groundSide": "all",
-      "loopMovement": true,
-      "metadata": "動く床",
-      "movementDistance": 499,
-      "movementSpeed": 100,
+      "movementDistance": 300,
+      "movementSpeed": 222,
       "movementType": "vertical",
       "rect": [
-        400,
-        350,
+        300,
+        -250,
+        50,
+        150
+      ],
+      "type": "moving_platform"
+    },
+    {
+      "groundSide": "all",
+      "loopMovement": true,
+      "metadata": "動く床",
+      "movementDistance": 50,
+      "movementSpeed": 222,
+      "movementType": "circular",
+      "rect": [
+        -350,
+        -350,
         50,
         50
       ],
@@ -82,16 +60,70 @@
       "groundSide": "all",
       "loopMovement": true,
       "metadata": "動く床",
-      "movementDistance": 499,
-      "movementSpeed": 69,
+      "movementDistance": 50,
+      "movementSpeed": 222,
       "movementType": "circular",
       "rect": [
-        -1050,
-        400,
+        -50,
+        -200,
         50,
         50
       ],
       "type": "moving_platform"
+    },
+    {
+      "groundSide": "all",
+      "loopMovement": true,
+      "metadata": "動く床",
+      "movementDistance": 50,
+      "movementSpeed": 222,
+      "movementType": "circular",
+      "rect": [
+        50,
+        -150,
+        50,
+        50
+      ],
+      "type": "moving_platform"
+    },
+    {
+      "groundSide": "all",
+      "loopMovement": true,
+      "metadata": "動く床",
+      "movementDistance": 100,
+      "movementSpeed": 222,
+      "movementType": "circular",
+      "rect": [
+        0,
+        -400,
+        100,
+        150
+      ],
+      "type": "moving_platform"
+    },
+    {
+      "damageAmount": 10,
+      "groundSide": "none",
+      "metadata": "ダメージ床",
+      "rect": [
+        450,
+        0,
+        100,
+        200
+      ],
+      "type": "damage_platform"
+    },
+    {
+      "damageAmount": 10,
+      "groundSide": "none",
+      "metadata": "ダメージ床",
+      "rect": [
+        -500,
+        -150,
+        200,
+        400
+      ],
+      "type": "damage_platform"
     }
   ]
 }

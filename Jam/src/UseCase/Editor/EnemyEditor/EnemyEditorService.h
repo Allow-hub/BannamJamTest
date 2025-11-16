@@ -1,5 +1,5 @@
-// ========================================
-// EnemyEditorService.h（リファクタリング版）
+﻿// ========================================
+// EnemyEditorService.h・医Μ繝輔ぃ繧ｯ繧ｿ繝ｪ繝ｳ繧ｰ迚茨ｼ・
 // ========================================
 #pragma once
 #include "../Base/EditorServiceBase.h"
@@ -28,15 +28,15 @@ namespace Jam::UseCase::Editor
     public:
         EnemyEditorService() = default;
         
-        // ===== 設定アクセス =====
+        // ===== 險ｭ螳壹い繧ｯ繧ｻ繧ｹ =====
         const Domain::Editor::StageEditorSettings& getSettings() const { return m_settings; }
         Domain::Editor::StageEditorSettings& getSettings() { return m_settings; }
         
-        // ===== 敵タイプ設定 =====
+        // ===== 謨ｵ繧ｿ繧､繝苓ｨｭ螳・=====
         void setEnemyType(Domain::Editor::EnemyType type) { m_state.enemyType = type; }
         Domain::Editor::EnemyType getEnemyType() const { return m_state.enemyType; }
         
-        // ===== AI設定 =====
+        // ===== AI險ｭ螳・=====
         void setPatrolDistance(double distance) { m_state.patrolDistance = distance; }
         void setPatrolWaitTime(double time) { m_state.patrolWaitTime = time; }
         void setFoundDistance(double distance) { m_state.foundDistance = distance; }
@@ -51,74 +51,12 @@ namespace Jam::UseCase::Editor
         double getLoseRange() const { return m_state.loseRange; }
         double getMoveSpeedFactor() const { return m_state.moveSpeedFactor; }
         
-        // ===== 入力処理（オーバーライド） =====
-        void handlePlacement(const Vec2& mousePos) override
-        {
-            if (MouseL.down()) {
-                // 重複配置を防ぐ：既存の敵と近すぎないかチェック
-                if (!m_manager.hasOverlappingEnemy(mousePos)) {
-                    auto enemy = createEnemyFromCurrent(mousePos);
-                    m_manager.addObject(enemy);
-                }
-            }
-        }
-        
-        void handleSelection(const Vec2& mousePos) override
-        {
-            auto id = m_manager.findObjectAt(mousePos);
-            bool isAdditiveSelect = KeyControl.pressed() || KeyShift.pressed();
-            
-            if (id) {
-                if (KeyControl.pressed() && m_manager.getSelectedIds().contains(*id)) {
-                    m_manager.deselectObject(*id);
-                } else {
-                    m_manager.selectObject(*id, isAdditiveSelect);
-                }
-            } else {
-                if (!isAdditiveSelect) {
-                    m_manager.clearSelection();
-                }
-            }
-        }
-        
-        void handleDeletion(const Vec2& mousePos) override
-        {
-            if (auto id = m_manager.findObjectAt(mousePos)) {
-                m_manager.removeObject(*id);
-            }
-        }
+        // ===== 蜈･蜉帛・逅・ｼ医が繝ｼ繝舌・繝ｩ繧､繝会ｼ・=====
+        void handlePlacement(const Vec2& mousePos) override;
+        void handleSelection(const Vec2& mousePos) override;
+        void handleDeletion(const Vec2& mousePos) override;
         
     private:
-        Domain::Editor::EnemyObject createEnemyFromCurrent(const Vec2& position) const
-        {
-            Domain::Editor::EnemyObject enemy;
-            enemy.type = m_state.enemyType;
-            enemy.position = position;
-            
-            // ボス以外はAI設定を追加
-            if (!enemy.isBoss()) {
-                // 巡回ポイント（相対座標）
-                Domain::Editor::PatrolPoint point1, point2;
-                point1.position = Vec2{m_state.patrolDistance, 0};
-                point2.position = Vec2{-m_state.patrolDistance, 0};
-                
-                enemy.patrol.patrolPoints.push_back(point1);
-                enemy.patrol.patrolPoints.push_back(point2);
-                enemy.patrol.loop = true;
-                enemy.patrol.waitTime = m_state.patrolWaitTime;
-                enemy.patrol.foundDistance = m_state.foundDistance;
-                
-                // 追跡AIを持つ敵の場合
-                if (enemy.hasChaseAI()) {
-                    Domain::Editor::ChaseAI chase;
-                    chase.attackRange = m_state.attackRange;
-                    chase.loseRange = m_state.loseRange;
-                    chase.moveSpeedFactor = m_state.moveSpeedFactor;
-                    enemy.chase = chase;
-                }
-            }
-            
-            return enemy;
-        }
+        Domain::Editor::EnemyObject createEnemyFromCurrent(const Vec2& position) const;
     };
 }

@@ -18,7 +18,8 @@ namespace Jam::Presentation::Editor
         
         int getPanelX() const
         {
-            return Scene::Width() - PANEL_WIDTH;
+            const int actualWidth = m_isPanelCollapsed ? 40 : PANEL_WIDTH;
+            return Scene::Width() - actualWidth;
         }
         
         bool isMouseOverPanel() const
@@ -30,7 +31,7 @@ namespace Jam::Presentation::Editor
         {
             if (isMouseOverPanel())
             {
-                m_scrollY = Max(0.0, m_scrollY - Mouse::Wheel() * 20.0);
+                m_scrollY = Max(0.0, m_scrollY + Mouse::Wheel() * 20.0);
             }
         }
         
@@ -102,8 +103,9 @@ namespace Jam::Presentation::Editor
         // 共通のGUI要素
         void drawPanelBackground(int panelWidth) const
         {
-            const int panelX = Scene::Width() - panelWidth;
-            RectF{panelX, 0, panelWidth, Scene::Height()}.draw(ColorF{0.15, 0.15, 0.15, 0.95});
+            const int actualWidth = m_isPanelCollapsed ? 40 : panelWidth;
+            const int panelX = Scene::Width() - actualWidth;
+            RectF{panelX, 0, actualWidth, Scene::Height()}.draw(ColorF{0.15, 0.15, 0.15, 0.95});
         }
         
         auto createPanelTransformer() const

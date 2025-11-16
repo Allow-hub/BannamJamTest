@@ -10,6 +10,7 @@
 namespace Jam::Presentation::Scenes
 {
     using App = SceneManager<String>;
+
     
     class StageEditorScene : public App::Scene
     {

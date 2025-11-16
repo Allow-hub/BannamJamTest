@@ -1,35 +1,33 @@
 ﻿[
-    {
-        "type": "LittleDevil",
-        "position": {
-            "x": -281,
-            "y": 43
+  {
+    "extra": {
+      "ai": {
+        "chase": {
+          "attackRange": 600.0,
+          "loseRange": 700.0,
+          "moveSpeedFactor": 1.2
         },
-        "extra": {
-            "ai": {
-                "patrol": {
-                    "patrolPoints": [
-                        {
-                            "x": 300,
-                            "y": 0
-                        },
-                        {
-                            "x": -300,
-                            "y": 0
-                        }
-                    ],
-                    "loop": true,
-                    "waitTime": 1,
-                    "foundDistance": 700
-                }
+        "patrol": {
+          "foundDistance": 700.0,
+          "loop": true,
+          "patrolPoints": [
+            {
+              "x": 300,
+              "y": 0
+            },
+            {
+              "x": -300,
+              "y": 0
             }
+          ],
+          "waitTime": 1.0
         }
+      }
     },
-    {
-        "type": "Boss1_3",
-        "position": {
-            "x": 194,
-            "y": -21
-        }
-    }
+    "position": {
+      "x": -220,
+      "y": -102
+    },
+    "type": "Eye"
+  }
 ]

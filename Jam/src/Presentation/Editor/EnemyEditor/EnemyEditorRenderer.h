@@ -1,7 +1,4 @@
-﻿// ========================================
-// EnemyEditorRenderer.h（リファクタリング版）
-// ========================================
-#pragma once
+﻿#pragma once
 #include "../Base/EditorRendererBase.h"
 #include "../../../UseCase/Editor/EnemyEditor/EnemyEditorService.h"
 

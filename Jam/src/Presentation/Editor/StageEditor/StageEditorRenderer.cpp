@@ -141,7 +141,8 @@ namespace Jam::Presentation::Editor
             }
             else if (this->m_service->getMovementType() == Domain::Stage::MovementType::Circular)
             {
-                suggestedDistance = Min(obj.rect.w, obj.rect.h);
+                // 円運動の半径：床の長辺を基準とする
+                suggestedDistance = Max(obj.rect.w, obj.rect.h);
             }
             
             this->m_smallFont(U"推奨距離: {:.0f}"_fmt(suggestedDistance))

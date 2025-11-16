@@ -18,8 +18,12 @@
     <ClCompile Include="src\Domain\Enemy\ShockWave.cpp" />
     <ClCompile Include="src\Domain\Enemy\Bomb.cpp" />
     <ClCompile Include="src\Domain\Enemy\Missile.cpp" />
+    <ClCompile Include="src\Domain\Editor\EnemyEditor\EnemyEditorManager.cpp" />
+    <ClCompile Include="src\Domain\Editor\StageEditor\StageEditorManager.cpp" />
     <ClCompile Include="src\Presentation\Editor\EnemyEditor\EnemyEditorRenderer.cpp" />
     <ClCompile Include="src\Presentation\Editor\StageEditor\StageEditorRenderer.cpp" />
+    <ClCompile Include="src\UseCase\Editor\EnemyEditor\EnemyEditorService.cpp" />
+    <ClCompile Include="src\UseCase\Editor\StageEditor\StageEditorService.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
