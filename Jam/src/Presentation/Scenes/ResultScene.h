@@ -4,7 +4,7 @@
 #include "SelectScene.h"
 #include "../../Foundation/CoreManager.h"
 #include "../../Presentation/SettingManager.h"
-#include "TransitionManager.h"
+#include "Transition/TransitionManager.h"
 #include "../AudioService.h"
 
 namespace Jam::Presentation::Scenes
@@ -322,13 +322,13 @@ namespace Jam::Presentation::Scenes
 		void drawFadeIn(double t) const override
 		{
 			draw();
-			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeIn(t);
+			Jam::Presentation::Scenes::TransitionManager::Instance().drawFadeIn(t);
 		}
 
 		void drawFadeOut(double t) const override
 		{
 			draw();
-			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeOut(t);
+			Jam::Presentation::Scenes::TransitionManager::Instance().drawFadeOut(t);
 		}
 	};
 }

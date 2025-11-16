@@ -2,7 +2,7 @@
 #include <Siv3D.hpp> // Siv3D v0.6.14
 #include "TitleScene.h"
 #include "../../Foundation/CoreManager.h"
-#include "TransitionManager.h"
+#include "Transition/TransitionManager.h"
 #include "../AudioService.h"
 
 namespace Jam::Presentation::Scenes
@@ -106,14 +106,14 @@ namespace Jam::Presentation::Scenes
 		void drawFadeIn(double t) const override
 		{
 			draw();
-			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeIn(t);
+			Jam::Presentation::Scenes::TransitionManager::Instance().drawFadeIn(t);
 		}
 
 		// シーンがフェードアウトする（消える）ときの描画
 		void drawFadeOut(double t) const override
 		{
 			draw();
-			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeOut(t);
+			Jam::Presentation::Scenes::TransitionManager::Instance().drawFadeOut(t);
 		}
 
 	private:

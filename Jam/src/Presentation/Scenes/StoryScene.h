@@ -3,7 +3,7 @@
 #include "TitleScene.h"
 #include "../StoryManager.h"
 #include "../../Foundation/CoreManager.h"
-#include "TransitionManager.h"
+#include "Transition/TransitionManager.h"
 #include "../AudioService.h"
 #include "../../Presentation/ResourceManager.h"
 
@@ -38,7 +38,7 @@ namespace Jam::Presentation::Scenes
 			{
 				if (storyManager.isEnd())
 				{
-					Jam::Presentation::Scenes::TransitionManager::Instance().rec.init(30);
+					Jam::Presentation::Scenes::TransitionManager::Instance().reset(30);
 					handleStoryEnd();
 					return;
 				}
@@ -84,13 +84,13 @@ namespace Jam::Presentation::Scenes
 		void drawFadeIn(double t) const override
 		{
 			draw();
-			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeIn(t);
+			Jam::Presentation::Scenes::TransitionManager::Instance().drawFadeIn(t);
 		}
 
 		void drawFadeOut(double t) const override
 		{
 			draw();
-			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeOut(t);
+			Jam::Presentation::Scenes::TransitionManager::Instance().drawFadeOut(t);
 		}
 
 	private:

@@ -38,7 +38,7 @@
 #include "../../Presentation/IndependentObjectManager.h";
 #include "../../Domain/GoalArea.h"
 #include "TitleScene.h"
-#include "TransitionManager.h"
+#include "Transition/TransitionManager.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -448,13 +448,13 @@ namespace Jam::Presentation::Scenes
 		void drawFadeIn(double t) const override
 		{
 			draw();
-			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeIn(t);
+			Jam::Presentation::Scenes::TransitionManager::Instance().drawFadeIn(t);
 		}
 
 		void drawFadeOut(double t) const override
 		{
 			draw();
-			Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeOut(t);
+			Jam::Presentation::Scenes::TransitionManager::Instance().drawFadeOut(t);
 		}
 
 	private:
