@@ -31,3 +31,6 @@ Shift	ダッシュ
 マウス操作	チョーカーの方向を操作
 
 ##　紹介動画
+
+https://github.com/user-attachments/assets/d6db38d7-c7d2-4f07-876f-a9856d44e746
+
