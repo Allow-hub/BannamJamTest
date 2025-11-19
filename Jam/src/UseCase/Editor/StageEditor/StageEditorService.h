@@ -18,6 +18,8 @@ namespace Jam::UseCase::Editor
         bool loopMovement = true;
         double damageAmount = 10.0;
         String metadata = U"普通の床";
+        String texturePath = U"";  // テクスチャファイルのパス
+        bool autoCalculateDistance = true;  // 移動距離を自動計算するか
     };
     
     class StageEditorService : public EditorServiceBase<Domain::Editor::StageEditorManager>
@@ -28,6 +30,10 @@ namespace Jam::UseCase::Editor
         
         Optional<Vec2> m_dragStart;
         Optional<Vec2> m_currentDragPos;
+        
+        // 選択モード用のドラッグ
+        Optional<Vec2> m_selectDragStart;
+        Optional<Vec2> m_selectDragCurrent;
         
     public:
         StageEditorService() = default;
@@ -49,6 +55,8 @@ namespace Jam::UseCase::Editor
         void setLoopMovement(bool loop) { m_state.loopMovement = loop; }
         void setDamageAmount(double amount);
         void setMetadata(const String& metadata) { m_state.metadata = metadata; }
+        void setTexturePath(const String& path) { m_state.texturePath = path; }
+        void setAutoCalculateDistance(bool autoCalc) { m_state.autoCalculateDistance = autoCalc; }
         
         Domain::Stage::MovementType getMovementType() const { return m_state.movementType; }
         double getMovementDistance() const { return m_state.movementDistance; }
@@ -56,12 +64,15 @@ namespace Jam::UseCase::Editor
         bool getLoopMovement() const { return m_state.loopMovement; }
         double getDamageAmount() const { return m_state.damageAmount; }
         const String& getMetadata() const { return m_state.metadata; }
+        const String& getTexturePath() const { return m_state.texturePath; }
+        bool getAutoCalculateDistance() const { return m_state.autoCalculateDistance; }
         
         // ===== グリッドスナップ =====
         Vec2 snapToGrid(const Vec2& pos) const;
         
         // ===== ドラッグ矩形 =====
         Optional<RectF> getDragRect() const;
+        Optional<RectF> getSelectionDragRect() const;  // 選択モード用
         
         // ===== 入力処理（オーバーライド） =====
         void handlePlacement(const Vec2& mousePos) override;

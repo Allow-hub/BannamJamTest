@@ -22,11 +22,6 @@ namespace Jam::Presentation::Editor
             return Scene::Width() - actualWidth;
         }
         
-        bool isMouseOverPanel() const
-        {
-            return Cursor::Pos().x >= getPanelX();
-        }
-        
         void handlePanelScroll() const
         {
             if (isMouseOverPanel())
@@ -93,6 +88,15 @@ namespace Jam::Presentation::Editor
         void init(TService* service)
         {
             m_service = service;
+        }
+        
+        // パネルが折りたたまれているかを取得
+        bool isPanelCollapsed() const { return m_isPanelCollapsed; }
+        
+        // マウスがパネル上にあるかを取得（折りたたみ状態を考慮）
+        bool isMouseOverPanel() const
+        {
+            return Cursor::Pos().x >= getPanelX();
         }
         
         // ===== 派生クラスで実装 =====

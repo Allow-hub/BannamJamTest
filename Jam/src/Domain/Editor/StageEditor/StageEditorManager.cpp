@@ -313,6 +313,11 @@ namespace Jam::Domain::Editor
         json[U"groundSide"] = Stage::groundSideToString(obj.groundSide);
         json[U"metadata"] = obj.metadata;
         
+        // テクスチャ情報を保存
+        if (!obj.texturePath.isEmpty()) {
+            json[U"texturePath"] = obj.texturePath;
+        }
+        
         if (obj.type == Stage::StageType::MovingPlatform ||
             obj.type == Stage::StageType::MovingDamagePlatform) {
             json[U"movementType"] = Stage::movementTypeToString(obj.movementType);
@@ -355,6 +360,11 @@ namespace Jam::Domain::Editor
         }
         if (json.hasElement(U"metadata")) {
             obj.metadata = json[U"metadata"].getString();
+        }
+        
+        // テクスチャ情報を読み込み
+        if (json.hasElement(U"texturePath")) {
+            obj.texturePath = json[U"texturePath"].getString();
         }
         
         if (json.hasElement(U"movementType")) {

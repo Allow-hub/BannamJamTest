@@ -49,11 +49,15 @@ namespace Jam::Domain::Stage {
 		// ダメージプラットフォーム用の追加データ
 		double damageAmount = 10.0;     // 与えるダメージ量
 
+		// テクスチャ情報
+		String texturePath;             // テクスチャファイルのパス（相対パスまたは絶対パス）
+
 		// デフォルトコンストラクタ(JSONパース時の安全な初期化用)
 		StageObject()
 			: rect(0, 0, 0, 0)
 			, type(StageType::None)
-			, metadata(U"") {
+			, metadata(U"")
+			, texturePath(U"") {
 		}
 	};
 

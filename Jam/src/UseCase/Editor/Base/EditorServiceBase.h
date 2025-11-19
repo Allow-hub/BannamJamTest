@@ -87,11 +87,29 @@ namespace Jam::UseCase::Editor
     {
     protected:
         TManager m_manager;
-        EditorCameraController m_cameraController;
+        EditorCameraController* m_cameraController = nullptr;
+        EditorCameraController m_ownCameraController;  // デフォルトのカメラ
         EditorMode m_mode = EditorMode::Place;
         
     public:
         virtual ~EditorServiceBase() = default;
+        
+        // カメラコントローラを外部から設定（共有用）
+        void setSharedCameraController(EditorCameraController* controller) 
+        { 
+            m_cameraController = controller; 
+        }
+        
+        // 実際に使用するカメラコントローラを取得
+        EditorCameraController& getCameraController()
+        {
+            return m_cameraController ? *m_cameraController : m_ownCameraController;
+        }
+        
+        const EditorCameraController& getCameraController() const
+        {
+            return m_cameraController ? *m_cameraController : m_ownCameraController;
+        }
         
         // ===== 共通インターフェース =====
         
@@ -100,17 +118,17 @@ namespace Jam::UseCase::Editor
         EditorMode getMode() const { return m_mode; }
         
         // カメラ操作
-        void updateCamera() { m_cameraController.update(); }
-        const Camera2D& getCamera() const { return m_cameraController.getCamera(); }
+        void updateCamera() { getCameraController().update(); }
+        const Camera2D& getCamera() const { return getCameraController().getCamera(); }
         Vec2 screenToWorld(const Vec2& screenPos) const { 
-            return m_cameraController.screenToWorld(screenPos); 
+            return getCameraController().screenToWorld(screenPos); 
         }
         auto createCameraTransformer() const { 
-            return m_cameraController.createTransformer(); 
+            return getCameraController().createTransformer(); 
         }
         
-        void setCameraSpeed(double speed) { m_cameraController.setSpeed(speed); }
-        double getCameraSpeed() const { return m_cameraController.getSpeed(); }
+        void setCameraSpeed(double speed) { getCameraController().setSpeed(speed); }
+        double getCameraSpeed() const { return getCameraController().getSpeed(); }
         
         // マネージャーアクセス
         const TManager& getManager() const { return m_manager; }

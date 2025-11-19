@@ -7,8 +7,23 @@ namespace Jam::Presentation::Editor
         SimpleGUI::Headline(U"現在のモード", Vec2{this->getPanelX() + 10, y});
         y += 35;
         
-        String modeName = U"配置モード";
-        ColorF modeColor = Palette::Lime;
+        String modeName;
+        ColorF modeColor;
+        switch (this->m_service->getMode())
+        {
+        case UseCase::Editor::EditorMode::Select:
+            modeName = U"選択モード";
+            modeColor = Palette::Cyan;
+            break;
+        case UseCase::Editor::EditorMode::Place:
+            modeName = U"配置モード";
+            modeColor = Palette::Lime;
+            break;
+        case UseCase::Editor::EditorMode::Delete:
+            modeName = U"削除モード";
+            modeColor = Palette::Red;
+            break;
+        }
         
         this->m_font(modeName).draw(this->getPanelX() + 15, y, modeColor);
         y += 45;

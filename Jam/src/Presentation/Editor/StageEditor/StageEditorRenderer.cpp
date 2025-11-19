@@ -1,4 +1,5 @@
 ﻿#include "StageEditorRenderer.h"
+#include "../../TextureManager.h"
 
 namespace Jam::Presentation::Editor
 {
@@ -67,6 +68,54 @@ namespace Jam::Presentation::Editor
         return y;
     }
     
+    int StageEditorRenderer::drawTextureSelector(int y) const
+    {
+        SimpleGUI::Headline(U"テクスチャ", Vec2{this->getPanelX() + 10, y});
+        y += 30;
+        
+        // 利用可能なテクスチャのリスト（Assets/Stageフォルダ内の画像ファイル）
+        const Array<std::pair<String, String>> textures = {
+            {U"なし", U""},
+            {U"通常ステージ", U"Assets/Stage/normal_stage.png"},
+            {U"動く床", U"Assets/Stage/moving_platform.png"},
+            {U"ダメージ床", U"Assets/Stage/damage_Stage.jpg"},
+            {U"ゴール", U"Assets/Stage/Goal.png"}
+        };
+        
+        String currentTextureName = U"なし";
+        const String& currentPath = this->m_service->getTexturePath();
+        for (const auto& [name, path] : textures)
+        {
+            if (path == currentPath)
+            {
+                currentTextureName = name;
+                break;
+            }
+        }
+        
+        if (SimpleGUI::Button(currentTextureName, Vec2{this->getPanelX() + 10, y}, 270))
+        {
+            m_isTextureDropdownOpen = !m_isTextureDropdownOpen;
+        }
+        y += 35;
+        
+        if (m_isTextureDropdownOpen)
+        {
+            for (const auto& [name, path] : textures)
+            {
+                if (SimpleGUI::Button(name, Vec2{this->getPanelX() + 15, y}, 260))
+                {
+                    this->m_service->setTexturePath(path);
+                    m_isTextureDropdownOpen = false;
+                }
+                y += 30;
+            }
+            y += 10;
+        }
+        
+        return y;
+    }
+    
     int StageEditorRenderer::drawGroundSideInfo(int y) const
     {
         SimpleGUI::Headline(U"接地面設定", Vec2{this->getPanelX() + 10, y});
@@ -124,9 +173,17 @@ namespace Jam::Presentation::Editor
             y += 15;
         }
         
+        // 自動計算チェックボックス
+        bool autoCalc = this->m_service->getAutoCalculateDistance();
+        if (SimpleGUI::CheckBox(autoCalc, U"サイズから自動計算", Vec2{this->getPanelX() + 10, y}, 270))
+        {
+            this->m_service->setAutoCalculateDistance(autoCalc);
+        }
+        y += 35;
+        
         // 選択中のオブジェクトがあれば、サイズに基づいた推奨距離を表示
         const auto selectedObjects = this->m_service->getManager().getSelectedObjects();
-        if (!selectedObjects.isEmpty())
+        if (!selectedObjects.isEmpty() && autoCalc)
         {
             const auto& obj = selectedObjects[0]->data;
             double suggestedDistance = 200.0;
@@ -156,17 +213,85 @@ namespace Jam::Presentation::Editor
             y += 40;
         }
         
+        // 距離設定（スライダー + テキスト入力）
         double distance = this->m_service->getMovementDistance();
         if (SimpleGUI::Slider(U"距離: {:.0f}"_fmt(distance), distance, 50.0, 1000.0, Vec2{this->getPanelX() + 10, y}, 100, 160))
         {
             this->m_service->setMovementDistance(distance);
+            m_distanceTextEdit.text = Format(static_cast<int>(distance));
+        }
+        y += 35;
+        
+        // テキスト入力フィールド
+        if (m_distanceTextEdit.text.isEmpty() || !m_distanceTextEdit.active)
+        {
+            m_distanceTextEdit.text = Format(static_cast<int>(this->m_service->getMovementDistance()));
+        }
+        
+        const int distanceTextY = y;
+        if (SimpleGUI::TextBox(m_distanceTextEdit, Vec2{this->getPanelX() + 10, y}, 120))
+        {
+            if (auto value = ParseOpt<double>(m_distanceTextEdit.text))
+            {
+                this->m_service->setMovementDistance(Clamp(*value, 50.0, 1000.0));
+            }
+        }
+        
+        if (m_distanceTextEdit.active)
+        {
+            if (KeyEnter.down() || KeyEscape.down())
+            {
+                m_distanceTextEdit.active = false;
+            }
+            else if (MouseL.down())
+            {
+                const RectF textBoxRect(this->getPanelX() + 10, distanceTextY, 120, 36);
+                if (!textBoxRect.contains(Cursor::Pos()))
+                {
+                    m_distanceTextEdit.active = false;
+                }
+            }
         }
         y += 40;
         
+        // 速度設定（スライダー + テキスト入力）
         double speed = this->m_service->getMovementSpeed();
         if (SimpleGUI::Slider(U"速度: {:.0f}"_fmt(speed), speed, 10.0, 500.0, Vec2{this->getPanelX() + 10, y}, 100, 160))
         {
             this->m_service->setMovementSpeed(speed);
+            m_speedTextEdit.text = Format(static_cast<int>(speed));
+        }
+        y += 35;
+        
+        // テキスト入力フィールド
+        if (m_speedTextEdit.text.isEmpty() || !m_speedTextEdit.active)
+        {
+            m_speedTextEdit.text = Format(static_cast<int>(this->m_service->getMovementSpeed()));
+        }
+        
+        const int speedTextY = y;
+        if (SimpleGUI::TextBox(m_speedTextEdit, Vec2{this->getPanelX() + 10, y}, 120))
+        {
+            if (auto value = ParseOpt<double>(m_speedTextEdit.text))
+            {
+                this->m_service->setMovementSpeed(Clamp(*value, 10.0, 500.0));
+            }
+        }
+        
+        if (m_speedTextEdit.active)
+        {
+            if (KeyEnter.down() || KeyEscape.down())
+            {
+                m_speedTextEdit.active = false;
+            }
+            else if (MouseL.down())
+            {
+                const RectF textBoxRect(this->getPanelX() + 10, speedTextY, 120, 36);
+                if (!textBoxRect.contains(Cursor::Pos()))
+                {
+                    m_speedTextEdit.active = false;
+                }
+            }
         }
         y += 40;
         
@@ -189,10 +314,44 @@ namespace Jam::Presentation::Editor
         SimpleGUI::Headline(U"ダメージ設定", Vec2{this->getPanelX() + 10, y});
         y += 40;
         
+        // ダメージ設定（スライダー + テキスト入力）
         double damageAmount = this->m_service->getDamageAmount();
         if (SimpleGUI::Slider(U"ダメージ: {:.0f}"_fmt(damageAmount), damageAmount, 1.0, 50.0, Vec2{this->getPanelX() + 10, y}, 100, 160))
         {
             this->m_service->setDamageAmount(Math::Round(damageAmount));
+            m_damageTextEdit.text = Format(static_cast<int>(damageAmount));
+        }
+        y += 35;
+        
+        // テキスト入力フィールド
+        if (m_damageTextEdit.text.isEmpty() || !m_damageTextEdit.active)
+        {
+            m_damageTextEdit.text = Format(static_cast<int>(this->m_service->getDamageAmount()));
+        }
+        
+        const int damageTextY = y;
+        if (SimpleGUI::TextBox(m_damageTextEdit, Vec2{this->getPanelX() + 10, y}, 120))
+        {
+            if (auto value = ParseOpt<double>(m_damageTextEdit.text))
+            {
+                this->m_service->setDamageAmount(Math::Round(Clamp(*value, 1.0, 50.0)));
+            }
+        }
+        
+        if (m_damageTextEdit.active)
+        {
+            if (KeyEnter.down() || KeyEscape.down())
+            {
+                m_damageTextEdit.active = false;
+            }
+            else if (MouseL.down())
+            {
+                const RectF textBoxRect(this->getPanelX() + 10, damageTextY, 120, 36);
+                if (!textBoxRect.contains(Cursor::Pos()))
+                {
+                    m_damageTextEdit.active = false;
+                }
+            }
         }
         y += 45;
         
@@ -213,6 +372,25 @@ namespace Jam::Presentation::Editor
         {
             this->m_service->setMetadata(m_metadataTextEdit.text);
         }
+        
+        // Enterキー、Escキー、またはテキストボックス外をクリックでフォーカスを外す
+        if (m_metadataTextEdit.active)
+        {
+            if (KeyEnter.down() || KeyEscape.down())
+            {
+                m_metadataTextEdit.active = false;
+            }
+            // テキストボックス外をクリックした場合もフォーカスを外す
+            else if (MouseL.down())
+            {
+                const RectF textBoxRect(this->getPanelX() + 10, y, 270, 36);
+                if (!textBoxRect.contains(Cursor::Pos()))
+                {
+                    m_metadataTextEdit.active = false;
+                }
+            }
+        }
+        
         y += 45;
         
         return y;
@@ -279,35 +457,59 @@ namespace Jam::Presentation::Editor
     {
         const RectF& rect = obj.data.rect;
         
-        ColorF fillColor;
-        if (isSelected)
+        // テクスチャがある場合は描画
+        bool hasTexture = false;
+        if (!obj.data.texturePath.isEmpty())
         {
-            fillColor = ColorF{1.0, 1.0, 0.0, 0.3};
-        }
-        else
-        {
-            switch (obj.data.type)
+            try
             {
-            case Domain::Stage::StageType::Normal:
-                fillColor = ColorF{0.5, 0.8, 1.0, 0.2};
-                break;
-            case Domain::Stage::StageType::MovingPlatform:
-                fillColor = ColorF{0.0, 0.8, 0.0, 0.3};
-                break;
-            case Domain::Stage::StageType::OneWayPlatform:
-                fillColor = ColorF{0.3, 0.6, 1.0, 0.5};
-                break;
-            case Domain::Stage::StageType::DamagePlatform:
-                fillColor = ColorF{1.0, 0.0, 0.0, 0.3};
-                break;
-            default:
-                fillColor = ColorF{0.5, 0.8, 1.0, 0.2};
-                break;
+                const auto& texture = TextureManager::Load(obj.data.texturePath);
+                if (texture)
+                {
+                    texture.resized(rect.size).draw(rect.pos);
+                    hasTexture = true;
+                }
+            }
+            catch (...)
+            {
+                // テクスチャロードに失敗した場合は通常描画にフォールバック
             }
         }
         
-        rect.draw(fillColor);
+        // テクスチャがない場合は通常の色で描画
+        if (!hasTexture)
+        {
+            ColorF fillColor;
+            if (isSelected)
+            {
+                fillColor = ColorF{1.0, 1.0, 0.0, 0.3};
+            }
+            else
+            {
+                switch (obj.data.type)
+                {
+                case Domain::Stage::StageType::Normal:
+                    fillColor = ColorF{0.5, 0.8, 1.0, 0.2};
+                    break;
+                case Domain::Stage::StageType::MovingPlatform:
+                    fillColor = ColorF{0.0, 0.8, 0.0, 0.3};
+                    break;
+                case Domain::Stage::StageType::OneWayPlatform:
+                    fillColor = ColorF{0.3, 0.6, 1.0, 0.5};
+                    break;
+                case Domain::Stage::StageType::DamagePlatform:
+                    fillColor = ColorF{1.0, 0.0, 0.0, 0.3};
+                    break;
+                default:
+                    fillColor = ColorF{0.5, 0.8, 1.0, 0.2};
+                    break;
+                }
+            }
+            
+            rect.draw(fillColor);
+        }
         
+        // 接地面の表示
         switch (obj.data.groundSide)
         {
         case Domain::Stage::GroundSide::All:
@@ -330,6 +532,7 @@ namespace Jam::Presentation::Editor
             break;
         }
         
+        // 選択時のフレーム
         if (isSelected)
         {
             rect.drawFrame(3.0, 0.0, Palette::Yellow);
@@ -340,7 +543,8 @@ namespace Jam::Presentation::Editor
     {
         const Vec2 center = obj.rect.center();
         const double distance = obj.movementDistance;
-        const ColorF guideColor{1.0, 0.5, 0.0, 0.8};
+        // ループのオン/オフで色を変える（オレンジ：ループ、シアン：往復）
+        const ColorF guideColor = obj.loopMovement ? ColorF{1.0, 0.5, 0.0, 0.8} : ColorF{0.0, 1.0, 1.0, 0.8};
         const double arrowSize = 15.0;
         
         Vec2 startPos, endPos;

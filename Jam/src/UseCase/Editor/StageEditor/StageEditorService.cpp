@@ -57,6 +57,21 @@ namespace Jam::UseCase::Editor
         return RectF{x, y, w, h};
     }
     
+    Optional<RectF> StageEditorService::getSelectionDragRect() const
+    {
+        if (!m_selectDragStart || !m_selectDragCurrent) return none;
+        
+        Vec2 start = *m_selectDragStart;
+        Vec2 current = *m_selectDragCurrent;
+        
+        double x = Min(start.x, current.x);
+        double y = Min(start.y, current.y);
+        double w = Abs(current.x - start.x);
+        double h = Abs(current.y - start.y);
+        
+        return RectF{x, y, w, h};
+    }
+    
     void StageEditorService::handlePlacement(const Vec2& mousePos)
     {
         const int gridSize = m_settings.getGridSize();
@@ -88,8 +103,10 @@ namespace Jam::UseCase::Editor
             if (!m_manager.hasOverlappingObject(rect)) {
                 auto obj = createStageObjectFromCurrent(rect);
                 
-                if (obj.type == Domain::Stage::StageType::MovingPlatform || 
-                    obj.type == Domain::Stage::StageType::MovingDamagePlatform)
+                // 自動計算モードの場合のみ、サイズに基づいて距離を設定
+                if (m_state.autoCalculateDistance &&
+                    (obj.type == Domain::Stage::StageType::MovingPlatform || 
+                     obj.type == Domain::Stage::StageType::MovingDamagePlatform))
                 {
                     double suggestedDistance = m_state.movementDistance;
                     
@@ -121,19 +138,66 @@ namespace Jam::UseCase::Editor
     
     void StageEditorService::handleSelection(const Vec2& mousePos)
     {
-        auto id = m_manager.findObjectAt(mousePos);
-        bool isAdditiveSelect = KeyControl.pressed() || KeyShift.pressed();
+        // ドラッグ開始
+        if (MouseL.down())
+        {
+            m_selectDragStart = mousePos;
+            m_selectDragCurrent = mousePos;
+        }
         
-        if (id) {
-            if (KeyControl.pressed() && m_manager.getSelectedIds().contains(*id)) {
-                m_manager.deselectObject(*id);
-            } else {
-                m_manager.selectObject(*id, isAdditiveSelect);
+        // ドラッグ中
+        if (MouseL.pressed() && m_selectDragStart)
+        {
+            m_selectDragCurrent = mousePos;
+        }
+        
+        // ドラッグ終了
+        if (MouseL.up() && m_selectDragStart)
+        {
+            const bool isAdditiveSelect = KeyControl.pressed() || KeyShift.pressed();
+            
+            // ドラッグが小さい場合はクリックとみなす
+            const double dragDistance = m_selectDragStart->distanceFrom(mousePos);
+            if (dragDistance < 5.0)
+            {
+                // クリック選択
+                auto id = m_manager.findObjectAt(mousePos);
+                
+                if (id) {
+                    if (KeyControl.pressed() && m_manager.getSelectedIds().contains(*id)) {
+                        m_manager.deselectObject(*id);
+                    } else {
+                        m_manager.selectObject(*id, isAdditiveSelect);
+                    }
+                } else {
+                    if (!isAdditiveSelect) {
+                        m_manager.clearSelection();
+                    }
+                }
             }
-        } else {
-            if (!isAdditiveSelect) {
-                m_manager.clearSelection();
+            else
+            {
+                // 矩形選択
+                if (auto rect = getSelectionDragRect())
+                {
+                    if (!isAdditiveSelect)
+                    {
+                        m_manager.clearSelection();
+                    }
+                    
+                    // 矩形内のオブジェクトをすべて選択
+                    for (const auto& obj : m_manager.getAllObjects())
+                    {
+                        if (obj.id && rect->intersects(obj.data.rect))
+                        {
+                            m_manager.selectObject(*obj.id, true);
+                        }
+                    }
+                }
             }
+            
+            m_selectDragStart.reset();
+            m_selectDragCurrent.reset();
         }
     }
     
@@ -162,6 +226,7 @@ namespace Jam::UseCase::Editor
         obj.movementSpeed = m_state.movementSpeed;
         obj.loopMovement = m_state.loopMovement;
         obj.damageAmount = m_state.damageAmount;
+        obj.texturePath = m_state.texturePath;  // テクスチャパスを設定
         
         return obj;
     }

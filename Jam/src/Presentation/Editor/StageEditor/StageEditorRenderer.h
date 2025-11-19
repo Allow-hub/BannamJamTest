@@ -12,9 +12,13 @@ namespace Jam::Presentation::Editor
     private:
         mutable bool m_isStageTypeDropdownOpen = false;
         mutable bool m_isMovementTypeDropdownOpen = false;
+        mutable bool m_isTextureDropdownOpen = false;
         mutable bool m_switchToEnemyEditor = false;
         
         mutable TextEditState m_metadataTextEdit;
+        mutable TextEditState m_distanceTextEdit;
+        mutable TextEditState m_speedTextEdit;
+        mutable TextEditState m_damageTextEdit;
         
     public:
         void drawView() const override
@@ -27,10 +31,18 @@ namespace Jam::Presentation::Editor
             
             drawObjects(camera, this->m_service->getManager().getAllObjects());
             
+            // 配置モードのドラッグ矩形
             if (auto dragRect = this->m_service->getDragRect())
             {
                 dragRect->draw(ColorF{0.0, 1.0, 0.0, 0.3});
                 dragRect->drawFrame(2.0, ColorF{0.0, 1.0, 0.0, 0.8});
+            }
+            
+            // 選択モードのドラッグ矩形
+            if (auto selectionRect = this->m_service->getSelectionDragRect())
+            {
+                selectionRect->draw(ColorF{0.0, 0.5, 1.0, 0.2});
+                selectionRect->drawFrame(2.0, ColorF{0.0, 0.5, 1.0, 0.8});
             }
         }
         
@@ -59,6 +71,7 @@ namespace Jam::Presentation::Editor
                 y = this->drawModeDisplay(y);
                 y = drawCurrentMode(y);
                 y = drawStageTypeSelector(y);
+                y = drawTextureSelector(y);
                 y = drawGroundSideInfo(y);
                 y = drawMovementSettings(y);
                 y = drawDamageSettings(y);
@@ -70,12 +83,20 @@ namespace Jam::Presentation::Editor
         bool isEditorSwitchRequested() const { return m_switchToEnemyEditor; }
         void resetEditorSwitchRequest() const { m_switchToEnemyEditor = false; }
         
+        // テキスト入力中かどうかを判定
+        bool isTextInputActive() const
+        {
+            return m_metadataTextEdit.active || m_distanceTextEdit.active || 
+                   m_speedTextEdit.active || m_damageTextEdit.active;
+        }
+        
         // StageEditorSceneから呼び出すためpublicに
         void drawObject(const Domain::Editor::StageEditorObjectNew& obj, bool isSelected) const;
         
     private:
         int drawCurrentMode(int y) const;
         int drawStageTypeSelector(int y) const;
+        int drawTextureSelector(int y) const;
         int drawGroundSideInfo(int y) const;
         int drawMovementSettings(int y) const;
         int drawDamageSettings(int y) const;
