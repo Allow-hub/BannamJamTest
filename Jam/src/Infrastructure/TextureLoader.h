@@ -98,17 +98,17 @@ namespace Jam::Infrastructure {
 
 		switch (type) {
 		case Jam::Domain::Stage::StageType::Normal:
-			return basePath + U"White_Test.png";
+			return basePath + U"normal_stage.png";
 		case Jam::Domain::Stage::StageType::MovingPlatform:
 			return basePath + U"moving_platform.png";
 		case Jam::Domain::Stage::StageType::OneWayPlatform:
-			return basePath + U"White_Test.png";
+			return basePath + U"normal_stage.png";
 		case Jam::Domain::Stage::StageType::DamagePlatform:
 			return basePath + U"damage_Stage.jpg";
 		case Jam::Domain::Stage::StageType::MovingDamagePlatform:
 			return basePath + U"damage_Stage.jpg";
 		default:
-			return basePath + U"White_Test.png";
+			return basePath + U"normal_stage.png";
 		}
 	}
 
