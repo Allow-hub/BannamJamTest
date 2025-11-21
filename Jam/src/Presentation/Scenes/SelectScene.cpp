@@ -80,14 +80,20 @@ namespace Jam::Presentation::Scenes
 	void SelectScene::drawFadeIn(double t) const
 	{
 		draw();
-		TransitionManager::Instance().drawFadeIn(t);
+		Jam::Presentation::Scenes::TransitionManager::Instance().drawFadeIn(
+		Jam::Presentation::Scenes::TransitionType::RectSlide,
+		t
+		);
 	}
 
 	// シーンがフェードアウトする（消える）ときの描画
 	void SelectScene::drawFadeOut(double t) const
 	{
 		draw();
-		TransitionManager::Instance().drawFadeOut(t);
+		Jam::Presentation::Scenes::TransitionManager::Instance().drawFadeOut(
+		Jam::Presentation::Scenes::TransitionType::RectSlide,
+		t
+		);
 	}
 
 	// --- ワールド選択のロジック ---
