@@ -1,5 +1,5 @@
-﻿#include <Siv3D.hpp>       // <-- ★修正: Siv3Dの機能(Random, Clampなど)を使うためインクルード
-#include "RectSlide.h" // 対応するヘッダーをインクルード
+﻿#include <Siv3D.hpp>       
+#include "RectSlide.h" 
 
 namespace Jam::Presentation::Scenes
 {
@@ -7,10 +7,9 @@ namespace Jam::Presentation::Scenes
 	RectSlide::RectSlide(Size s, int32 amount)
 		: area(s) // メンバ初期化子リスト
 	{
-		init(amount); // コンストラクタ内で init を呼ぶ
+		init(amount); 
 	}
 
-	// ランダムカラー (プライベートメソッド)
 	ColorF RectSlide::randomcol() const
 	{
 		double hue = Random(270.0, 330.0);
@@ -19,7 +18,6 @@ namespace Jam::Presentation::Scenes
 		return ColorF{ HSV{ hue, saturation, value } };
 	}
 
-	// 初期化
 	void RectSlide::init(int32 amount)
 	{
 		rects.clear();

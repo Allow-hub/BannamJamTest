@@ -1,10 +1,10 @@
 ﻿#pragma once
-#include <Siv3D.hpp> // int32 や double を使うために必要
+#include <Siv3D.hpp> 
 
 namespace Jam::Presentation::Scenes
 {
 	/**
-	 * @brief シーン遷移アニメーションのインターフェース（抽象クラス）
+	 シーン遷移アニメーションのインターフェース（抽象クラス）
 	 */
 	class ITransition
 	{

@@ -2,23 +2,14 @@
 #include <Siv3D.hpp>
 #include <memory>
 #include "ITransition.h"
-#include "RectSlide.h" // デフォルトのトランジションとしてRectSlideを指定
+#include "RectSlide.h" 
 
 namespace Jam::Presentation::Scenes
 {
-	/**
-	 * @brief シーン遷移エフェクトを管理するシングルトンクラス
-	 *
-	 * アプリケーション全体で一つの遷移エフェクト（ITransition）を
-	 * 共有・管理します。
-	 */
 	class TransitionManager
 	{
 	public:
-		/**
-		 * @brief 唯一のインスタンスを取得します。
-		 * @return TransitionManager& インスタンスへの参照
-		 */
+
 		static TransitionManager& Instance()
 		{
 			static TransitionManager instance;
@@ -73,14 +64,8 @@ namespace Jam::Presentation::Scenes
 		}
 
 	private:
-		// 管理対象のトランジション (インターフェースのポインタとして保持)
 		std::unique_ptr<ITransition> m_transition;
 
-		/**
-		 * @brief プライベートコンストラクタ（シングルトンのため）
-		 *
-		 * デフォルトで RectSlide を生成して保持します。
-		 */
 		TransitionManager()
 			: m_transition(std::make_unique<RectSlide>(Scene::Size()))
 		{
@@ -88,7 +73,6 @@ namespace Jam::Presentation::Scenes
 
 		~TransitionManager() = default;
 
-		// コピーとムーブを禁止
 		TransitionManager(const TransitionManager&) = delete;
 		TransitionManager& operator=(const TransitionManager&) = delete;
 		TransitionManager(TransitionManager&&) = delete;
