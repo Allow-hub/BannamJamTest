@@ -95,6 +95,12 @@ namespace Jam::UseCase
 		double barrierRadius = 150.0; // バリアの半径
 	};
 
+	struct ChokerSkillEffectEvent
+	{
+		Vec2 position;
+		Vec2 direction;
+	};
+
 	using EffectEvent = std::variant<
 		StarEffectEvent,
 		ExplosionEffectEvent,
@@ -103,7 +109,8 @@ namespace Jam::UseCase
 		TextEffectEvent,
 		RingEffectEvent,
 		FallDeathEffectEvent,
-		GlassShatterEffectEvent
+		GlassShatterEffectEvent,
+		ChokerSkillEffectEvent
 	>;
 
 	//エフェクトのキュー

@@ -69,6 +69,8 @@ namespace Jam::Domain::Events
 	{
 		double zoom;
 		double duration;
+		Vec2 position;
+		Vec2 direction;
 	};
 
 	struct BossAppearedEvent

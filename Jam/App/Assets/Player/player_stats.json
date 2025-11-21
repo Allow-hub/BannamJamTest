@@ -2,8 +2,8 @@
   "stats": {
     "hp": 400,
     "power": 100,
-    "moveSpeed": 6500.0,
-    "jumpPower": 1000.0
+    "moveSpeed": 500000.0,
+    "jumpPower": 1500.0
   },
     "physics": {
         "friction": 0.9,

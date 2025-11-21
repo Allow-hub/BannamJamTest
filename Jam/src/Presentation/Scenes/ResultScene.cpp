@@ -1,0 +1,281 @@
+﻿#include "ResultScene.h"
+#include "../../Foundation/CoreManager.h"
+#include "../AudioService.h"
+#include "TransitionManager.h"
+#include "../../Presentation/SettingManager.h"
+
+
+namespace Jam::Presentation::Scenes
+{
+	ResultScene::ResultScene(const InitData& init)
+		: IScene{ init }
+	{
+		const double baseWidth = 1920.0;
+		const double baseHeight = 1080.0;
+
+		auto& core = Jam::Foundation::CoreManager::Instance();
+		m_isClear = core.getClear();
+		m_flagmentAmount = core.getFlagment();
+		m_maxFlagment = core.getMaxFlagment();
+		m_defeatedCount = core.getDefeatedEnemyCount();
+		m_time = static_cast<unsigned int>(core.getTimer());
+
+		// --- フォント読み込み ---
+		m_titleFont = Font(static_cast<int32>(Scene::Height() * (100.0 / baseHeight)), Typeface::Heavy);
+		m_statLabelFont = Font(static_cast<int32>(Scene::Height() * (30.0 / baseHeight)), Typeface::Bold);
+		m_statValueFont = Font(static_cast<int32>(Scene::Height() * (130.0 / baseHeight)), U"Assets/Font/PixelMplus12-Bold.ttf");
+
+		if (not m_statValueFont)
+		{
+			Print(U"Error: StatValueFont not found.");
+			m_statValueFont = Font(static_cast<int32>(Scene::Height() * (130.0 / baseHeight)), Typeface::Bold);
+		}
+
+		const int32 mainFontSize = static_cast<int32>(Scene::Height() * 0.07);
+		m_buttonFont = Font(mainFontSize, U"Assets/Font/PixelMplus12-Bold.ttf");
+
+		if (not m_buttonFont)
+		{
+			Print(U"Error: ButtonFont not found.");
+			m_buttonFont = Font(mainFontSize, Typeface::Bold);
+		}
+
+		// --- ボタン座標初期化 ---
+		const double buttonWidth = Scene::Width() * (400.0 / baseWidth);
+		const double buttonX = Scene::Center().x - (buttonWidth / 2.0);
+		const double buttonHeight = Scene::Height() * (80.0 / baseHeight);
+		const double buttonYBase = Scene::Height() * (650.0 / baseHeight);
+		const double buttonMargin = Scene::Height() * (90.0 / baseHeight);
+
+		m_retryButton = RectF(buttonX, buttonYBase, buttonWidth, buttonHeight);
+		m_mapButton = RectF(buttonX, buttonYBase + buttonMargin, buttonWidth, buttonHeight);
+		m_nextStageButton = RectF(buttonX, buttonYBase + buttonMargin * 2, buttonWidth, buttonHeight);
+
+		// --- テクスチャ読み込み ---
+		m_background = Texture(Resource(U"Assets/Result/GAME_OVER_screen.png"));
+		m_titleGameOver = Texture(Resource(U"Assets/Result/Result_Game_Over.png"));
+		m_titleClear = Texture(Resource(U"Assets/Result/Result_Crear.png"));
+		m_titleMemory = Texture(Resource(U"Assets/Result/result_title-MEMORY.png"));
+		m_titleTime = Texture(Resource(U"Assets/Result/result_TIME.png"));
+		m_titleKill = Texture(Resource(U"Assets/Result/result_KILL.png"));
+
+		// ステージごとの画像
+		String resultImageName;
+		switch (core.stageInfo.stageName)
+		{
+		case Jam::Foundation::StageName::Stage1_1:
+			resultImageName = m_isClear ? U"1_1_clear.png" : U"1_1_miss.png";
+			break;
+		case Jam::Foundation::StageName::Stage1_2:
+			resultImageName = m_isClear ? U"1_2_clear.png" : U"1_2_miss.png";
+			break;
+		case Jam::Foundation::StageName::Stage1_3:
+			resultImageName = m_isClear ? U"1_3_clear.png" : U"1_3_miss.png";
+			break;
+		default:
+			resultImageName = U"1_1_clear.png";
+			break;
+		}
+
+		m_stageResultTexture = Texture(Resource(U"Assets/Result/" + resultImageName));
+	}
+
+	void ResultScene::update()
+	{
+		if (m_retryButton.leftClicked())
+		{
+			AudioService::get().playOneShot(AudioService::Sound::SE_Button, AudioService::VOLUME_BUTTON);
+			changeScene(ToSceneString(SceneName::InGame));
+		}
+
+		if (m_mapButton.leftClicked())
+		{
+			AudioService::get().playOneShot(AudioService::Sound::SE_Button, AudioService::VOLUME_BUTTON);
+			Jam::Foundation::CoreManager::Instance().setNextStagePressed(false);
+			if (m_isClear)
+				changeScene(ToSceneString(SceneName::Story));
+			else
+				changeScene(ToSceneString(SceneName::Select));
+		}
+
+		if (m_nextStageButton.leftClicked())
+		{
+			AudioService::get().playOneShot(AudioService::Sound::SE_Button, AudioService::VOLUME_BUTTON);
+			if (m_isClear)
+			{
+				Jam::Foundation::CoreManager::Instance().setNextStagePressed(true);
+				changeScene(ToSceneString(SceneName::Story));
+			}
+			else
+			{
+				changeScene(ToSceneString(SceneName::Select));
+			}
+		}
+
+		const double targetWidth = m_retryButton.w;
+		const double speed = targetWidth * 4.0;
+
+		if (m_retryButton.mouseOver())
+			m_retryBarWidth = std::min(m_retryBarWidth + Scene::DeltaTime() * speed, targetWidth);
+		else
+			m_retryBarWidth = std::max(m_retryBarWidth - Scene::DeltaTime() * speed, 0.0);
+
+		if (m_mapButton.mouseOver())
+			m_mapBarWidth = std::min(m_mapBarWidth + Scene::DeltaTime() * speed, targetWidth);
+		else
+			m_mapBarWidth = std::max(m_mapBarWidth - Scene::DeltaTime() * speed, 0.0);
+
+		if (m_nextStageButton.mouseOver())
+			m_nextStageBarWidth = std::min(m_nextStageBarWidth + Scene::DeltaTime() * speed, targetWidth);
+		else
+			m_nextStageBarWidth = std::max(m_nextStageBarWidth - Scene::DeltaTime() * speed, 0.0);
+
+		if (KeyEscape.down())
+			Jam::Foundation::CoreManager::Instance().setPause(!Jam::Foundation::CoreManager::Instance().getPause());
+
+		if (Jam::Foundation::CoreManager::Instance().getPause())
+		{
+			Jam::Presentation::SettingManager::Instance().update();
+			return;
+		}
+	}
+	void ResultScene::draw() const
+	{
+		const double baseWidth = 1920.0;
+		const double baseHeight = 1080.0;
+		double statBottomY = 0.0;
+
+		m_background.scaled(Max(Scene::Size().x / (double)m_background.width(), Scene::Size().y / (double)m_background.height()))
+			.draw(0, 0, ColorF(0.8));
+
+		const Vec2 titleCenter = Scene::Center().movedBy(0, Scene::Height() * (-200.0 / baseHeight));
+
+		if (m_isClear)
+		{
+			if (m_titleClear)
+				m_titleClear.drawAt(titleCenter, ColorF(Palette::White));
+			else
+				m_titleFont(U"CLEAR").drawAt(titleCenter, ColorF(Palette::White));
+		}
+		else
+		{
+			if (m_titleGameOver)
+				m_titleGameOver.drawAt(titleCenter, ColorF(Palette::White));
+			else
+				m_titleFont(U"GAME OVER").drawAt(titleCenter, ColorF(Palette::White));
+		}
+
+		const double leftStatX = Scene::Width() * (50.0 / baseWidth);
+		const double labelYOffset = Scene::Height() * (-20.0 / baseHeight);
+		const double statYOffset = Scene::Height() * (200.0 / baseHeight);
+		const double blockSpacing = Scene::Height() * (170.0 / baseHeight);
+		const double numberVerticalAdjustment = Scene::Height() * (20.0 / baseHeight);
+		const double statNumberOffsetX = Scene::Width() * (20.0 / baseWidth);
+		const double numberScaleY = 0.7;
+		const double numberScaleX = 1.0;
+		const Vec2 numberScale = Vec2(numberScaleX, numberScaleY);
+
+		double currentY = statYOffset + Scene::Height() * (250.0 / baseHeight);
+
+		if (m_titleMemory) m_titleMemory.draw(leftStatX, currentY + labelYOffset);
+		{
+			const Vec2 drawPos = Vec2(leftStatX + statNumberOffsetX, currentY + labelYOffset + numberVerticalAdjustment + m_titleMemory.height());
+			const Mat3x2 jam_matrix = Mat3x2::Scale(numberScale) * Mat3x2::Translate(drawPos);
+			const Transformer2D jam_scaler(jam_matrix);
+			m_statValueFont(U"{}/{}"_fmt(m_flagmentAmount, m_maxFlagment)).draw(Vec2(0, 0), m_statColor);
+		}
+
+		currentY += blockSpacing;
+
+		if (m_titleTime) m_titleTime.draw(leftStatX, currentY + labelYOffset);
+		{
+			const Vec2 drawPos = Vec2(leftStatX + statNumberOffsetX, currentY + labelYOffset + numberVerticalAdjustment + m_titleTime.height());
+			const Mat3x2 jam_matrix = Mat3x2::Scale(numberScale) * Mat3x2::Translate(drawPos);
+			const Transformer2D jam_scaler(jam_matrix);
+			m_statValueFont(FormatTime(SecondsF(m_time), U"mm:ss")).draw(Vec2(0, 0), m_statColor);
+		}
+
+		currentY += blockSpacing;
+
+		if (m_titleKill) m_titleKill.draw(leftStatX, currentY + labelYOffset);
+		{
+			const Vec2 drawPos = Vec2(leftStatX + statNumberOffsetX, currentY + labelYOffset + numberVerticalAdjustment + m_titleKill.height());
+			const Mat3x2 jam_matrix = Mat3x2::Scale(numberScale) * Mat3x2::Translate(drawPos);
+			const Transformer2D jam_scaler(jam_matrix);
+			const auto textToDraw = m_statValueFont(Pad(m_defeatedCount, { 3, U'0' }));
+			const auto textRegion = textToDraw.region(Vec2(0, 0));
+			textToDraw.draw(Vec2(0, 0), m_statColor);
+			statBottomY = drawPos.y + (textRegion.h * numberScaleY);
+		}
+
+		if (m_stageResultTexture)
+		{
+			const double imageWidth = Scene::Width() * (400.0 / baseWidth);
+			const double scaledHeight = m_stageResultTexture.height() * (imageWidth / m_stageResultTexture.width());
+			const double marginRight = Scene::Width() * (20.0 / baseWidth);
+			const double drawX = Scene::Width() - imageWidth - marginRight;
+			const double drawY = statBottomY - scaledHeight;
+			m_stageResultTexture.resized(imageWidth).draw(drawX, drawY);
+		}
+
+		const ColorF hoverColor = ColorF(244.0 / 255.0, 49.0 / 255.0, 89.0 / 255.0, 0.5);
+		const ColorF defaultColor = ColorF(0.0, 0.0);
+
+		m_retryButton.draw(defaultColor);
+		m_mapButton.draw(defaultColor);
+		m_nextStageButton.draw(defaultColor);
+
+		const double barHeight = m_retryButton.h * 0.4;
+		const double barYOffset = Scene::Height() * (15.0 / baseHeight);
+
+		if (m_retryBarWidth > 0)
+		{
+			const double barY = m_retryButton.center().y - (barHeight / 2.0) + barYOffset;
+			RectF(m_retryButton.x, barY, m_retryBarWidth, barHeight).draw(hoverColor);
+		}
+
+		if (m_mapBarWidth > 0)
+		{
+			const double barY = m_mapButton.center().y - (barHeight / 2.0) + barYOffset;
+			RectF(m_mapButton.x, barY, m_mapBarWidth, barHeight).draw(hoverColor);
+		}
+
+		if (m_nextStageBarWidth > 0)
+		{
+			const double barY = m_nextStageButton.center().y - (barHeight / 2.0) + barYOffset;
+			RectF(m_nextStageButton.x, barY, m_nextStageBarWidth, barHeight).draw(hoverColor);
+		}
+
+		const Vec2 shadowOffset = Vec2(Scene::Width() * (2.0 / baseWidth), Scene::Height() * (5.0 / baseHeight));
+		const ColorF shadowColor = ColorF(0, 0, 0, 0.5);
+
+		m_buttonFont(U"RETRY").drawAt(m_retryButton.center() + shadowOffset, shadowColor);
+		m_buttonFont(U"RETRY").drawAt(m_retryButton.center(), Palette::White);
+
+		m_buttonFont(U"MAP").drawAt(m_mapButton.center() + shadowOffset, shadowColor);
+		m_buttonFont(U"MAP").drawAt(m_mapButton.center(), Palette::White);
+
+		m_buttonFont(U"NEXT STAGE").drawAt(m_nextStageButton.center() + shadowOffset, shadowColor);
+		m_buttonFont(U"NEXT STAGE").drawAt(m_nextStageButton.center(), Palette::White);
+
+		if (Jam::Foundation::CoreManager::Instance().getPause())
+		{
+			Jam::Presentation::SettingManager::Instance().draw();
+		}
+	}
+
+	// =====================
+	// drawFadeIn / drawFadeOut
+	// =====================
+	void ResultScene::drawFadeIn(double t) const
+	{
+		draw();
+		TransitionManager::Instance().rec.drawFadeIn(t);
+	}
+
+	void ResultScene::drawFadeOut(double t) const
+	{
+		draw();
+		TransitionManager::Instance().rec.drawFadeOut(t);
+	}
+}

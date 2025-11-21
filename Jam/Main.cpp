@@ -1,4 +1,5 @@
 ﻿#include <Siv3D.hpp> // Siv3D v0.6.16
+#include "src/Presentation/Scenes/SceneName.h"
 #include "src/Presentation/Scenes/TitleScene.h"
 #include "src/Presentation/Scenes/GameScene.h"
 #include "src/Presentation/Scenes/SelectScene.h"
@@ -63,7 +64,7 @@ void Main()
 		Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::Result));
 
 	// GameSceneから開始するように明示的に指定
-	manager.init(Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::Title));
+	manager.init(Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::InGame));
 
 	while (System::Update())
 	{

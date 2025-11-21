@@ -3,15 +3,13 @@
 #include "../Physics/IPhysicsBody.h"
 #include "../Physics/ICollisionListener.h"
 #include "../Events/GameEvents.h"
-#include "Skill/IPlayerSkill.h"
 #include "../ITakeDamageable.h"
 #include "../../Foundation/CoroutineUtil.h"
 #include "../../Presentation/FadeManager.h"
 
 namespace Jam::Domain::Player
 {
-	class IPlayerSkill;
-	enum class PlayerSkillType;
+	class ChokerSkill;
 
 	struct PlayerStats
 	{
@@ -23,7 +21,6 @@ namespace Jam::Domain::Player
 	};
 
 	// プレイヤーキャラクターを表すクラス
-	// 他クラスに依存しない
 	class Player : public Jam::Domain::Physics::ICollisionListener, public Jam::Domain::ITakeDamageable
 	{
 	public:
@@ -34,8 +31,8 @@ namespace Jam::Domain::Player
 		void draw() const;
 
 		// 移動・操作
-		void moveLeft();
-		void moveRight();
+		void moveLeft(double dt);
+		void moveRight(double dt);
 		void startDash();
 		void endDash();
 		void jump();
@@ -48,17 +45,15 @@ namespace Jam::Domain::Player
 
 		bool getIsChokering()const { return m_isChokering; }
 
-		// 攻撃・スキル
-		void skillPush();
-		void skillReleased();
-		void changeSkill(int direction);
+		// チョーカー操作
+		void chokerPush();
+		void chokerReleased();
 
 		// 情報取得
 		double getMaxHp() { return m_maxHp; }
 		s3d::Vec2 getPosition() const;
 		bool isFacingRight() const;
 		std::shared_ptr<Domain::Physics::IPhysicsBody> getPhysicsBody() { return m_body; }
-		double getHookedSpeedMultiplier() const;
 
 		// ステータス操作
 		void setHp(double h) { m_stats.hp = h; }
@@ -69,6 +64,7 @@ namespace Jam::Domain::Player
 
 		double getHp() { return m_stats.hp; }
 		bool getGrounded() const { return m_isGrounded; }
+		bool getDashing() const { return m_isDashing; }
 
 		void resetJumpState() {
 			m_isGrounded = true;
@@ -89,7 +85,9 @@ namespace Jam::Domain::Player
 		void onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 
 		using DamageCallback = std::function<void(void)>;
-		void setOnDamagedCallback(DamageCallback callback);	//InGameUIに通知する用
+
+		std::vector<DamageCallback> m_onDamagedCallbacks;
+		void addOnDamagedCallback(DamageCallback callback);
 
 	private:
 		// 基本情報
@@ -105,17 +103,15 @@ namespace Jam::Domain::Player
 		bool m_isDashing = false;
 		bool m_isChokering = false;
 		bool m_isPressingDown = false;
-		double dashMagnification = 2.0;
 		double m_fallLimitY = 0;
 		int m_jumpCount = 0;
 		const int maxJumpCount = 2;
 
-		// スキル
-		std::vector<std::shared_ptr<IPlayerSkill>> m_skills;
-		std::shared_ptr<IPlayerSkill> m_currentSkill;
+		// チョーカー
+		std::shared_ptr<ChokerSkill> m_choker;
 
 		// 生存・ダメージ
-		bool m_isAlive = true; // 生存フラグ
+		bool m_isAlive = true;
 		bool m_isRespawning = false;
 		bool m_isInvincible = false;
 		void onDamaged(const DamageInfo& info);
@@ -123,8 +119,5 @@ namespace Jam::Domain::Player
 		Jam::Util::Task respawn();
 
 		DamageCallback m_onDamaged;
-
-		// 内部処理
-		void updateState();
 	};
 }
