@@ -1,11 +1,23 @@
 ﻿#pragma once
-#include "ITransition.h" 
-
+#include <Siv3D.hpp>  
+#include "ITransitionable.h"
 namespace Jam::Presentation::Scenes
 {
 	//四角形がスライドするトランジション
-	class RectSlide : public ITransition 
+	class RectSlide : public ITransitionable
 	{
+	public:
+		RectSlide(Size s, int32 amount = 30);
+
+		void init(int32 amount) override;
+
+		//フェードアウト（左から右に画面を覆う）アニメーションを描画
+		void drawFadeOut(double t) const override;
+
+
+		//フェードイン（画面を覆っていたものが消える）アニメーションを描画
+		void drawFadeIn(double t) const override;
+
 	private:
 		// init()での高さ分割の最小・最大比率
 		static constexpr double MinSplitRatio = 0.2;
@@ -23,20 +35,6 @@ namespace Jam::Presentation::Scenes
 
 		//ランダムに色を設定
 		ColorF randomcol() const; 
-
-	public:
-		RectSlide(Size s, int32 amount = 30); 
-
-		void init(int32 amount) override; 
-
-		/**
-		 * フェードアウト（左から右に画面を覆う）アニメーションを描画
-		 */
-		void drawFadeOut(double t) const override; 
-
-		/**
-		 * フェードイン（画面を覆っていたものが消える）アニメーションを描画
-		 */
-		void drawFadeIn(double t) const override;
+	
 	};
 }

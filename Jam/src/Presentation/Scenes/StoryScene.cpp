@@ -1,5 +1,6 @@
 ﻿#include "StoryScene.h"
 #include "../SettingManager.h"
+#include "../../Presentation/Scenes/Transition/TransitionManager.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -19,7 +20,7 @@ namespace Jam::Presentation::Scenes
 		{
 			if (storyManager.isEnd())
 			{
-				TransitionManager::Instance().rec.init(30);
+				Jam::Presentation::Scenes::TransitionManager::Instance().reset(30);
 				handleStoryEnd();
 				return;
 			}
@@ -60,13 +61,13 @@ namespace Jam::Presentation::Scenes
 	void StoryScene::drawFadeIn(double t) const
 	{
 		draw();
-		TransitionManager::Instance().rec.drawFadeIn(t);
+		TransitionManager::Instance().drawFadeIn(t);
 	}
 
 	void StoryScene::drawFadeOut(double t) const
 	{
 		draw();
-		TransitionManager::Instance().rec.drawFadeOut(t);
+		TransitionManager::Instance().drawFadeOut(t);
 	}
 
 	void StoryScene::playStoryBGM()

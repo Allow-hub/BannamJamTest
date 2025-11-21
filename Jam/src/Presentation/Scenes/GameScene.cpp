@@ -1,5 +1,5 @@
 ﻿#include "GameScene.h"
-
+#include "../../Presentation/Scenes/Transition/TransitionManager.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -363,13 +363,13 @@ namespace Jam::Presentation::Scenes
 	void GameScene::drawFadeIn(double t) const
 	{
 		draw();
-		TransitionManager::Instance().rec.drawFadeIn(t);
+		TransitionManager::Instance().drawFadeIn(t);
 	}
 
 	void GameScene::drawFadeOut(double t) const
 	{
 		draw();
-		TransitionManager::Instance().rec.drawFadeOut(t);
+		TransitionManager::Instance().drawFadeOut(t);
 	}
 
 	void GameScene::resetScene()

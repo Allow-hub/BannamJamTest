@@ -3,15 +3,19 @@
 
 namespace Jam::Presentation::Scenes
 {
-	/**
-	 シーン遷移アニメーションのインターフェース（抽象クラス）
-	 */
-	class ITransition
+	enum class TransitionType
+	{
+		RectSlide,
+	};
+
+	//シーン遷移アニメーションのインターフェース（抽象クラス）
+	class ITransitionable
 	{
 	public:
-		virtual ~ITransition() = default;
+		virtual ~ITransitionable() = default;
 		virtual void init(int32 amount) = 0;
 		virtual void drawFadeOut(double t) const = 0;
 		virtual void drawFadeIn(double t) const = 0;
 	};
+
 }
