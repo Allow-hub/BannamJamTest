@@ -20,10 +20,6 @@ namespace Jam::Presentation::Scenes
 		{
 			if (storyManager.isEnd())
 			{
-				Jam::Presentation::Scenes::TransitionManager::Instance().reset(
-					Jam::Presentation::Scenes::TransitionType::RectSlide,
-					30
-				);
 				handleStoryEnd();
 				return;
 			}

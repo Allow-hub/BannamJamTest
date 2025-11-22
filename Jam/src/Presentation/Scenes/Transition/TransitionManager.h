@@ -20,6 +20,10 @@ namespace Jam::Presentation::Scenes
 		}
 
 		// --- publicな操作メソッド ---
+		void refresh(TransitionType type)
+		{
+			getTransition(type)->refresh();
+		}
 
 		//共有エフェクトの FADE OUT 描画
 		// t 進行度 (0.0 ～ 1.0)
@@ -37,18 +41,14 @@ namespace Jam::Presentation::Scenes
 			getTransition(type)->drawFadeIn(t);
 		}
 
-		//指定したエフェクトをリセット（再初期化）
-		//amount 分割数など要素数
-		void reset(TransitionType type, int32 amount = 30)
-		{
-			getTransition(type)->init(amount);
-		}
-
 	private:
 		std::unordered_map<TransitionType, std::unique_ptr<ITransitionable>> m_instances;
 
 		TransitionManager() = default;
 		~TransitionManager() = default;
+
+		TransitionManager(const TransitionManager&) = delete;
+		TransitionManager& operator=(const TransitionManager&) = delete;
 
 		ITransitionable* getTransition(TransitionType type)
 		{
@@ -68,16 +68,11 @@ namespace Jam::Presentation::Scenes
 			switch (type)
 			{
 			case TransitionType::RectSlide:
-				return std::make_unique<RectSlide>(Scene::Size());
+				return std::make_unique<RectSlide>(Scene::Size(), 30);
 
 			default:
-				return std::make_unique<RectSlide>(Scene::Size());
+				return std::make_unique<RectSlide>(Scene::Size(), 30);
 			}
 		}
-
-		TransitionManager(const TransitionManager&) = delete;
-		TransitionManager& operator=(const TransitionManager&) = delete;
-		TransitionManager(TransitionManager&&) = delete;
-		TransitionManager& operator=(TransitionManager&&) = delete;
 	};
 }

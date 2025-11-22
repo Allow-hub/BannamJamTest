@@ -9,7 +9,7 @@ namespace Jam::Presentation::Scenes
 	public:
 		RectSlide(Size s, int32 amount = 30);
 
-		void init(int32 amount) override;
+		void refresh() override;
 
 		//フェードアウト（左から右に画面を覆う）アニメーションを描画
 		void drawFadeOut(double t) const override;
@@ -29,12 +29,13 @@ namespace Jam::Presentation::Scenes
 		// draw()での各長方形のアニメーション速度
 		static constexpr double AnimationSpeed = 2.5;
 
-		Size area; //シーンの大きさ
-		Array<Rect> rects;	//長方形たち
-		Array<ColorF> colors; // 長方形の色
+		Size m_area;         // 画面サイズ
+		int32 m_splitAmount; // 分割数（設定値）
+
+		Array<Rect> m_rects;    // 生成された長方形
+		Array<ColorF> m_colors; // 生成された色
 
 		//ランダムに色を設定
-		ColorF randomcol() const; 
-	
+		ColorF generateRandomColor() const;
 	};
 }

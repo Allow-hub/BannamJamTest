@@ -13,7 +13,7 @@ namespace Jam::Presentation::Scenes
 	{
 	public:
 		virtual ~ITransitionable() = default;
-		virtual void init(int32 amount) = 0;
+		virtual void refresh() = 0;
 		virtual void drawFadeOut(double t) const = 0;
 		virtual void drawFadeIn(double t) const = 0;
 	};

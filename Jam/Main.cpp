@@ -46,9 +46,8 @@ void Main()
 	audioService.setSEVolume(core.audioSetting.seVolume); 
 
 	// === シーン遷移エフェクトの初期化 ===
-	Jam::Presentation::Scenes::TransitionManager::Instance().reset(
-	Jam::Presentation::Scenes::TransitionType::RectSlide, 
-	30
+	Jam::Presentation::Scenes::TransitionManager::Instance().refresh(
+	Jam::Presentation::Scenes::TransitionType::RectSlide
 	);
 
 	App manager;

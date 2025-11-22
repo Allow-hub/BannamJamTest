@@ -1,16 +1,20 @@
-﻿#include <Siv3D.hpp>       
-#include "RectSlide.h" 
+﻿#include "RectSlide.h" 
 
 namespace Jam::Presentation::Scenes
 {
 	// コンストラクタ
-	RectSlide::RectSlide(Size s, int32 amount)
-		: area(s) // メンバ初期化子リスト
+	RectSlide::RectSlide(Size size, int32 amount)
+		: m_area(size)
+		, m_splitAmount(amount)
 	{
-		init(amount); 
+		m_rects.reserve(m_splitAmount * 2);
+		m_colors.reserve(m_splitAmount * 2);
+
+		// 初回の生成
+		refresh();
 	}
 
-	ColorF RectSlide::randomcol() const
+	ColorF RectSlide::generateRandomColor() const
 	{
 		double hue = Random(270.0, 330.0);
 		double saturation = Random(0.5, 1.0);
@@ -18,51 +22,76 @@ namespace Jam::Presentation::Scenes
 		return ColorF{ HSV{ hue, saturation, value } };
 	}
 
-	void RectSlide::init(int32 amount)
+	void RectSlide::refresh()
 	{
-		rects.clear();
-		colors.clear();
+		m_rects.clear();
+		m_colors.clear();
 
+		// 分割ロジック
 		Array<int32> heightPartitions;
-		heightPartitions << area.y;
+		heightPartitions << m_area.y;
 
-		for (int32 i = 0; i < amount; ++i)
+		// 指定された回数だけ分割
+		for (int32 i = 0; i < m_splitAmount; ++i)
 		{
+			if (heightPartitions.isEmpty()) break;
+
 			int32 currentHeight = heightPartitions[0];
 			heightPartitions.remove_at(0);
 
+			// 分割しすぎないように
+			if (currentHeight <= 1)
+			{
+				heightPartitions << currentHeight;
+				continue;
+			}
+
 			int32 num = static_cast<int32>(currentHeight * Random(MinSplitRatio, MaxSplitRatio));
+			// 最低1ピクセルは確保
+			num = Max(1, num);
+
 			heightPartitions << num << (currentHeight - num);
 		}
 
+		// RectとColorの生成
 		int32 posy = 0;
-		for (auto height : heightPartitions)
+		for (const auto& height : heightPartitions)
 		{
-			rects << Rect{ -area.x, posy, area.x, height };
+			m_rects << Rect{ -m_area.x, posy, m_area.x, height };
+			m_colors << generateRandomColor();
 			posy += height;
-			colors << randomcol();
 		}
 
-		rects.shuffle();
+		// 順番をシャッフルすることで毎回違う動きに見せる
+		m_rects.shuffle();
 	}
 
 	// フェードアウト
 	void RectSlide::drawFadeOut(double t) const
 	{
-		for (const auto& [i, rect] : Indexed(rects))
+		if (m_rects.isEmpty()) return;
+
+		const size_t count = m_rects.size();
+		for (size_t i = 0; i < count; ++i)
 		{
-			const double nt = Clamp((t - (double)i * StaggerDuration / rects.size()) * AnimationSpeed, 0.0, 1.0);
-			rect.movedBy(EaseInExpo(nt) * area.x, 0).draw(colors[i]);
+			const double progress = Clamp((t - (double)i * StaggerDuration / count) * AnimationSpeed, 0.0, 1.0);
+
+			m_rects[i].movedBy(EaseInExpo(progress) * m_area.x, 0).draw(m_colors[i]);
 		}
 	}
 
 	// フェードイン
 	void RectSlide::drawFadeIn(double t) const
 	{
-		for (const auto& [i, rect] : Indexed(rects))
+		if (m_rects.isEmpty()) return;
+
+		const size_t count = m_rects.size();
+		for (size_t i = 0; i < count; ++i)
 		{
-			const double nt = Clamp((t - (double)i * StaggerDuration / rects.size()) * AnimationSpeed, 0.0, 1.0);
-			rect.movedBy(area.x + EaseOutExpo(nt) * area.x, 0).draw(colors[i]);
+			const double progress = Clamp((t - (double)i * StaggerDuration / count) * AnimationSpeed, 0.0, 1.0);
+			
+			// 画面を覆った状態からさらに右へ抜ける
+			m_rects[i].movedBy(m_area.x + EaseOutExpo(progress) * m_area.x, 0).draw(m_colors[i]);
 		}
 	}
 }
