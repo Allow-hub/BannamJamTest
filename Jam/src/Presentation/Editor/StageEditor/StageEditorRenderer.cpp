@@ -433,11 +433,39 @@ namespace Jam::Presentation::Editor
         const double viewHeight = Scene::Height() / scale;
         const RectF viewRect{center.x - viewWidth / 2, center.y - viewHeight / 2, viewWidth, viewHeight};
         
-        const Vec2 playerSpawnPos{0, 0};
+        // プレイヤースポーン位置を描画
+        const Vec2 playerSpawnPos = this->m_service->getPlayerSpawnPosition();
         const double playerRadius = 20.0;
-        Circle{playerSpawnPos, playerRadius}.draw(ColorF{0.0, 1.0, 1.0, 0.5});
-        Circle{playerSpawnPos, playerRadius}.drawFrame(2.0, ColorF{0.0, 1.0, 1.0});
+        
+        // 選択状態やドラッグ中で色を変える
+        ColorF spawnColor = ColorF{0.0, 1.0, 1.0, 0.5};  // デフォルト: シアン
+        ColorF borderColor = ColorF{0.0, 1.0, 1.0};
+        
+        if (this->m_service->isSpawnSelected())
+        {
+            spawnColor = ColorF{1.0, 1.0, 0.0, 0.6};  // 選択中: 黄色
+            borderColor = ColorF{1.0, 1.0, 0.0};
+        }
+        
+        Circle{playerSpawnPos, playerRadius}.draw(spawnColor);
+        Circle{playerSpawnPos, playerRadius}.drawFrame(this->m_service->isSpawnSelected() ? 3.0 : 2.0, borderColor);
         Circle{playerSpawnPos, 5.0}.draw(ColorF{1.0, 1.0, 1.0});
+        
+        // マウスオーバー時にハイライト
+        if (this->m_service->isMouseOverSpawn(Cursor::PosF()))
+        {
+            Circle{playerSpawnPos, playerRadius + 5.0}.drawFrame(2.0, ColorF{1.0, 1.0, 1.0, 0.5});
+        }
+        
+        // ゴール位置を描画
+        const Vec2 goalPos = this->m_service->getGoalPosition();
+        const Vec2 goalSize = this->m_service->getGoalSize();
+        const RectF goalRect{goalPos, goalSize};
+        goalRect.draw(ColorF{1.0, 0.84, 0.0, 0.5});  // 金色
+        goalRect.drawFrame(3.0, ColorF{1.0, 0.84, 0.0});
+        
+        // "GOAL"テキストを表示
+        this->m_font(U"GOAL").drawAt(goalRect.center(), ColorF{1.0, 1.0, 1.0});
         
         for (const auto& obj : objects)
         {

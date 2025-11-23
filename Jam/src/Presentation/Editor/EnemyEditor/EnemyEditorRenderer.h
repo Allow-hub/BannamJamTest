@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../Base/EditorRendererBase.h"
 #include "../../../UseCase/Editor/EnemyEditor/EnemyEditorService.h"
+#include "../../../Domain/Editor/StageEditor/StageEditorManager.h"
 
 namespace Jam::Presentation::Editor
 {
@@ -9,8 +10,15 @@ namespace Jam::Presentation::Editor
     private:
         mutable bool m_isEnemyTypeDropdownOpen = false;
         mutable bool m_switchToStageEditor = false;
+        const Domain::Editor::StageEditorManager* m_stageManager = nullptr;
         
     public:
+        // StageEditorManagerへの参照を設定
+        void setStageManager(const Domain::Editor::StageEditorManager* manager)
+        {
+            m_stageManager = manager;
+        }
+        
         void drawView() const override
         {
             const auto& camera = this->m_service->getCamera();
@@ -19,10 +27,17 @@ namespace Jam::Presentation::Editor
             // グリッド描画
             this->drawGrid(camera, this->m_service->getSettings().getGridSize());
             
-            const Vec2 playerSpawnPos{0, 0};
+            // StageEditorManagerからスポーン位置を取得
+            Vec2 playerSpawnPos{0, 0};
+            if (m_stageManager)
+            {
+                playerSpawnPos = m_stageManager->getPlayerSpawnPosition();
+            }
+            
             const double playerRadius = 20.0;
             Circle{playerSpawnPos, playerRadius}.draw(ColorF{0.0, 1.0, 1.0, 0.5});
             Circle{playerSpawnPos, playerRadius}.drawFrame(2.0, ColorF{0.0, 1.0, 1.0});
+            Circle{playerSpawnPos, 5.0}.draw(ColorF{1.0, 1.0, 1.0});
             
             for (const auto& enemy : this->m_service->getManager().getAllObjects())
             {

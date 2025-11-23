@@ -284,8 +284,37 @@ namespace Jam::Presentation::Scenes
 			}
 
 			// === Goal 初期化 ===
+			Vec2 goalPosition = core.getCurrentStageData().goalData.position;
+			Vec2 goalSize = core.getCurrentStageData().goalData.size;
+			
+			// エディタモードの場合、JSONからゴール位置を読み込み
+			if (core.isEditorMode())
+			{
+				const JSON stageJson = JSON::Load(U"Assets/Stage/stage_edited.json");
+				if (stageJson && stageJson.hasElement(U"goal"))
+				{
+					const auto& goalJson = stageJson[U"goal"];
+					if (goalJson.hasElement(U"position") && goalJson[U"position"].isArray())
+					{
+						const auto& posArray = goalJson[U"position"];
+						if (posArray.size() >= 2)
+						{
+							goalPosition = Vec2(posArray[0].get<double>(), posArray[1].get<double>());
+						}
+					}
+					if (goalJson.hasElement(U"size") && goalJson[U"size"].isArray())
+					{
+						const auto& sizeArray = goalJson[U"size"];
+						if (sizeArray.size() >= 2)
+						{
+							goalSize = Vec2(sizeArray[0].get<double>(), sizeArray[1].get<double>());
+						}
+					}
+				}
+			}
+			
 			auto goalBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
-				.getPhysicsFactory()->createRectSensor(core.getCurrentStageData().goalData.position,core.getCurrentStageData().goalData.size);
+				.getPhysicsFactory()->createRectSensor(goalPosition, goalSize);
 			auto goal = std::make_shared<Jam::Domain::GoalArea>(goalBody, [this]() { this->nextScene(); });
 			goalBody->setCollisionListener(goal);
 			Jam::Infrastructure::IndependentObjectFactory::instance().registerObject(goal);

@@ -37,6 +37,9 @@ namespace Jam::Presentation::Scenes
             m_stageRenderer.init(&m_stageEditorService);
             m_enemyRenderer.init(&m_enemyEditorService);
             
+            // EnemyEditorRendererにStageEditorManagerへの参照を渡す
+            m_enemyRenderer.setStageManager(&m_stageEditorService.getManager());
+            
             // エディタ起動時にリソースを事前ロード（テストプレイ時の待ち時間短縮）
             preloadGameResources();
             
@@ -193,29 +196,59 @@ namespace Jam::Presentation::Scenes
             {
                 Vec2 mousePos = m_stageEditorService.screenToWorld(Cursor::Pos());
                 
-                switch (m_stageEditorService.getMode())
+                // プレイヤースポーン位置のドラッグ処理（選択モードのみ）
+                if (m_stageEditorService.getMode() == UseCase::Editor::EditorMode::Select)
                 {
-                case UseCase::Editor::EditorMode::Place:
-                    if (MouseL.down() || MouseL.pressed() || MouseL.up())
+                    if (MouseL.down())
                     {
-                        m_stageEditorService.handlePlacement(mousePos);
-                        // 配置後、テクスチャを事前読み込み
-                        preloadTextures();
+                        if (m_stageEditorService.isMouseOverSpawn(mousePos))
+                        {
+                            m_stageEditorService.startDraggingSpawn(mousePos);
+                        }
+                        else
+                        {
+                            m_stageEditorService.deselectSpawn();
+                        }
                     }
-                    break;
                     
-                case UseCase::Editor::EditorMode::Select:
-                    if (MouseL.down() || MouseL.pressed() || MouseL.up())
+                    if (MouseL.pressed() && m_stageEditorService.isDraggingSpawn())
                     {
-                        m_stageEditorService.handleSelection(mousePos);
+                        m_stageEditorService.updateSpawnDrag(mousePos);
                     }
-                    break;
-                case UseCase::Editor::EditorMode::Delete:
-                    if (MouseL.down() || MouseL.pressed())
+                    
+                    if (MouseL.up() && m_stageEditorService.isDraggingSpawn())
                     {
-                        m_stageEditorService.handleDeletion(mousePos);
+                        m_stageEditorService.endSpawnDrag();
                     }
-                    break;
+                }
+                
+                // スポーンドラッグ中でない場合のみ通常の処理を実行
+                if (!m_stageEditorService.isDraggingSpawn())
+                {
+                    switch (m_stageEditorService.getMode())
+                    {
+                    case UseCase::Editor::EditorMode::Place:
+                        if (MouseL.down() || MouseL.pressed() || MouseL.up())
+                        {
+                            m_stageEditorService.handlePlacement(mousePos);
+                            // 配置後、テクスチャを事前読み込み
+                            preloadTextures();
+                        }
+                        break;
+                        
+                    case UseCase::Editor::EditorMode::Select:
+                        if (MouseL.down() || MouseL.pressed() || MouseL.up())
+                        {
+                            m_stageEditorService.handleSelection(mousePos);
+                        }
+                        break;
+                    case UseCase::Editor::EditorMode::Delete:
+                        if (MouseL.down() || MouseL.pressed())
+                        {
+                            m_stageEditorService.handleDeletion(mousePos);
+                        }
+                        break;
+                    }
                 }
             }
             

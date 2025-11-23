@@ -18,7 +18,7 @@ namespace Jam::UseCase::Editor
         bool loopMovement = true;
         double damageAmount = 10.0;
         String metadata = U"普通の床";
-        String texturePath = U"";  // テクスチャファイルのパス
+        String texturePath = U"Assets/Stage/normal_stage.png";  // テクスチャファイルのパス（デフォルト値を設定）
         bool autoCalculateDistance = true;  // 移動距離を自動計算するか
     };
     
@@ -34,6 +34,11 @@ namespace Jam::UseCase::Editor
         // 選択モード用のドラッグ
         Optional<Vec2> m_selectDragStart;
         Optional<Vec2> m_selectDragCurrent;
+        
+        // プレイヤースポーン位置のドラッグ
+        bool m_isSpawnSelected = false;
+        bool m_isDraggingSpawn = false;
+        Optional<Vec2> m_spawnDragStart;
         
     public:
         StageEditorService() = default;
@@ -66,6 +71,26 @@ namespace Jam::UseCase::Editor
         const String& getMetadata() const { return m_state.metadata; }
         const String& getTexturePath() const { return m_state.texturePath; }
         bool getAutoCalculateDistance() const { return m_state.autoCalculateDistance; }
+        
+        // ===== ゴール・スポーン位置 =====
+        Vec2 getPlayerSpawnPosition() const { return m_manager.getPlayerSpawnPosition(); }
+        void setPlayerSpawnPosition(const Vec2& pos) { m_manager.setPlayerSpawnPosition(pos); }
+        
+        Vec2 getGoalPosition() const { return m_manager.getGoalPosition(); }
+        void setGoalPosition(const Vec2& pos) { m_manager.setGoalPosition(pos); }
+        
+        Vec2 getGoalSize() const { return m_manager.getGoalSize(); }
+        void setGoalSize(const Vec2& size) { m_manager.setGoalSize(size); }
+        
+        // ===== スポーン位置選択・ドラッグ =====
+        bool isSpawnSelected() const { return m_isSpawnSelected; }
+        bool isDraggingSpawn() const { return m_isDraggingSpawn; }
+        void selectSpawn() { m_isSpawnSelected = true; }
+        void deselectSpawn() { m_isSpawnSelected = false; }
+        void startDraggingSpawn(const Vec2& mousePos);
+        void updateSpawnDrag(const Vec2& mousePos);
+        void endSpawnDrag();
+        bool isMouseOverSpawn(const Vec2& mousePos, double radius = 20.0) const;
         
         // ===== グリッドスナップ =====
         Vec2 snapToGrid(const Vec2& pos) const;

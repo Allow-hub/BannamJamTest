@@ -135,11 +135,34 @@ namespace Jam::Domain::Editor
         JSON json;
         Array<JSON> objectsArray;
         
+        // ゴール位置を検出（Goal.pngテクスチャを持つオブジェクト）
+        Vec2 detectedGoalPos = m_goalPosition;
+        Vec2 detectedGoalSize = m_goalSize;
+        bool goalFound = false;
+        
         for (const auto& obj : mergedObjects) {
+            // Goal.pngを持つオブジェクトをゴールとして認識
+            if (obj.texturePath.includes(U"Goal.png") || obj.texturePath.includes(U"goal.png"))
+            {
+                detectedGoalPos = obj.rect.pos;
+                detectedGoalSize = obj.rect.size;
+                goalFound = true;
+                // ゴールオブジェクトは通常のobjectsには含めない
+                continue;
+            }
             objectsArray.push_back(stageObjectToJSON(obj));
         }
         
         json[U"objects"] = objectsArray;
+        
+        // ゴール情報を保存
+        json[U"goal"] = JSON::Object();
+        json[U"goal"][U"position"] = JSON::Array({ detectedGoalPos.x, detectedGoalPos.y });
+        json[U"goal"][U"size"] = JSON::Array({ detectedGoalSize.x, detectedGoalSize.y });
+        
+        // プレイヤースポーン位置を保存
+        json[U"playerSpawn"] = JSON::Array({ m_playerSpawnPosition.x, m_playerSpawnPosition.y });
+        
         json.save(path);
     }
     
@@ -155,6 +178,31 @@ namespace Jam::Domain::Editor
         for (const auto& objJson : json[U"objects"].arrayView()) {
             if (auto obj = jsonToStageObject(objJson)) {
                 addObject(*obj);
+            }
+        }
+        
+        // ゴール情報を読み込み
+        if (json.hasElement(U"goal")) {
+            const auto& goalJson = json[U"goal"];
+            if (goalJson.hasElement(U"position") && goalJson[U"position"].isArray()) {
+                const auto& posArray = goalJson[U"position"];
+                if (posArray.size() >= 2) {
+                    m_goalPosition = Vec2(posArray[0].get<double>(), posArray[1].get<double>());
+                }
+            }
+            if (goalJson.hasElement(U"size") && goalJson[U"size"].isArray()) {
+                const auto& sizeArray = goalJson[U"size"];
+                if (sizeArray.size() >= 2) {
+                    m_goalSize = Vec2(sizeArray[0].get<double>(), sizeArray[1].get<double>());
+                }
+            }
+        }
+        
+        // プレイヤースポーン位置を読み込み
+        if (json.hasElement(U"playerSpawn") && json[U"playerSpawn"].isArray()) {
+            const auto& spawnArray = json[U"playerSpawn"];
+            if (spawnArray.size() >= 2) {
+                m_playerSpawnPosition = Vec2(spawnArray[0].get<double>(), spawnArray[1].get<double>());
             }
         }
         

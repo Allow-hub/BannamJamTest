@@ -268,4 +268,46 @@ namespace Jam::UseCase::Editor
             break;
         }
     }
+    
+    // ===== スポーン位置のドラッグ処理 =====
+    
+    bool StageEditorService::isMouseOverSpawn(const Vec2& mousePos, double radius) const
+    {
+        const Vec2 spawnPos = getPlayerSpawnPosition();
+        return Circle{spawnPos, radius}.contains(mousePos);
+    }
+    
+    void StageEditorService::startDraggingSpawn(const Vec2& mousePos)
+    {
+        if (isMouseOverSpawn(mousePos))
+        {
+            m_isDraggingSpawn = true;
+            m_isSpawnSelected = true;
+            m_spawnDragStart = mousePos;
+        }
+    }
+    
+    void StageEditorService::updateSpawnDrag(const Vec2& mousePos)
+    {
+        if (m_isDraggingSpawn && m_spawnDragStart)
+        {
+            Vec2 offset = mousePos - *m_spawnDragStart;
+            Vec2 newPos = getPlayerSpawnPosition() + offset;
+            
+            // グリッドスナップ
+            if (m_settings.isSnapToGrid())
+            {
+                newPos = snapToGrid(newPos);
+            }
+            
+            setPlayerSpawnPosition(newPos);
+            m_spawnDragStart = mousePos;
+        }
+    }
+    
+    void StageEditorService::endSpawnDrag()
+    {
+        m_isDraggingSpawn = false;
+        m_spawnDragStart.reset();
+    }
 }

@@ -30,7 +30,22 @@ namespace Jam::Domain::Editor
     private:
         using Base = EditorManagerBase<StageEditorObjectNew, StageEditorCommandNew>;
         
+        Vec2 m_playerSpawnPosition = Vec2(50, -5);
+        Vec2 m_goalPosition = Vec2(20650, 0);
+        Vec2 m_goalSize = Vec2(200, 200);
+        
     public:
+        // ===== ゴール・スポーン位置 =====
+        
+        Vec2 getPlayerSpawnPosition() const { return m_playerSpawnPosition; }
+        void setPlayerSpawnPosition(const Vec2& pos) { m_playerSpawnPosition = pos; }
+        
+        Vec2 getGoalPosition() const { return m_goalPosition; }
+        void setGoalPosition(const Vec2& pos) { m_goalPosition = pos; }
+        
+        Vec2 getGoalSize() const { return m_goalSize; }
+        void setGoalSize(const Vec2& size) { m_goalSize = size; }
+        
         // ===== オブジェクト操作 =====
         
         size_t addObject(const Stage::StageObject& obj) override;
