@@ -3,6 +3,12 @@
 #include "EnemyAI/ChaseAI.h"
 #include "EnemyAI/AttackAI.h"
 
+#include "../../Infrastructure/FactoryServiceLocator.h"
+#include "../../Infrastructure/IPhysicsBodyFactory.h"
+#include "../../Infrastructure/PhysicsFilterManager.h"
+#include "../../Infrastructure/IndependentObjectFactory.h"
+#include "FireBall.h"
+
 namespace Jam::Domain::Enemy
 {
 	GothicLolitaDoll::GothicLolitaDoll(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Physics::PhysicsBodyID playerId
@@ -27,24 +33,92 @@ namespace Jam::Domain::Enemy
 
 	void GothicLolitaDoll::onAIEvent(EnemyAIEvent e)
 	{
-		//switch (e)
-		//{
-		//case EnemyAIEvent::PlayerFound:
-		//	break;
-
-		//case EnemyAIEvent::PlayerLost:
-		//	break;
-
-		//default:
-		//	break;
-		//}
+		switch (e)
+		{
+		case Jam::Domain::Enemy::EnemyAIEvent::PlayerFound:
+			changeAI(AIType::Chase);
+			break;
+		case Jam::Domain::Enemy::EnemyAIEvent::PlayerLost:
+			changeAI(AIType::Patrol);
+			break;
+		case Jam::Domain::Enemy::EnemyAIEvent::ReachedGoal:
+			changeAI(AIType::Attack);
+			break;
+		default:
+			break;
+		}
 	}
 
-	void GothicLolitaDoll::onPatrolEnter()
+	void GothicLolitaDoll::onAttackEnter()
 	{
 	}
+	void GothicLolitaDoll::onAttackUpdate(double deltaTime)
+	{
+		// プレイヤーへの方向を計算
+		Vec2 playerPos = getPlayerPos();
+		Vec2 myPos = m_body->getPosition();
+		Vec2 direction = (playerPos - myPos).normalized();
 
-	void GothicLolitaDoll::onChaseEnter()
+		// 速度(スカラ)を決める
+		double speed = 70.0;
+
+		// 渡すためのベクトルを作成 (方向 × 速さ)
+		Vec2 throwVelocity = direction * speed;
+		switch (m_attackStatus)
+		{
+		case Jam::Domain::Enemy::GothicLolitaDoll::m_AttackStatus::IsAttackStart:
+		{
+			// 次の状態へ移行
+			m_attackStatus = m_AttackStatus::IsFireBallLaunch;
+		}
+		break;
+		case Jam::Domain::Enemy::GothicLolitaDoll::m_AttackStatus::IsFireBallLaunch:
+		{
+			// ボディ作成
+			Vec2 size = { 40, 40 };
+			auto physicsFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getPhysicsFactory();
+			auto fireballBody = physicsFactory->createBody(
+				myPos + direction * 40.0, // 少し自分より前から出す
+				size,
+				s3d::P2BodyType::Dynamic,
+				{ 0.1, 0.0, 1.0 }, // 密度(軽めにする), 摩擦, 反発
+				Jam::Domain::Physics::PhysicsShape::Circle
+			);
+
+			// Fireball生成 (throwVelocity を渡す)
+			auto fireball = std::make_shared<Jam::Domain::Enemy::Fireball>(
+				fireballBody,
+				m_playerId,
+				m_eventQueue,
+				m_status.attackPower,
+				3.0,
+				size,
+				throwVelocity // ← 計算したベクトルを渡す
+			);
+			fireball->init(); // ここで applyImpulse が呼ばれて飛び出す
+			Jam::Infrastructure::IndependentObjectFactory::instance().registerObject(fireball);
+			m_attackStatus = m_AttackStatus::IsAttackEnd;
+		}
+		break;
+		case Jam::Domain::Enemy::GothicLolitaDoll::m_AttackStatus::IsAttackEnd:
+		{
+			if (AttackWaitTime >= 400)
+			{
+				AttackWaitTime = 0;
+				m_attackStatus = m_AttackStatus::IsAttackStart;
+				changeAI(AIType::Chase);
+			}
+			else
+			{
+				AttackWaitTime++;
+			}
+		}
+		break;
+		default:
+			break;
+		}
+	}
+	void GothicLolitaDoll::onAttackExit()
 	{
 	}
 
@@ -52,6 +126,26 @@ namespace Jam::Domain::Enemy
 	void GothicLolitaDoll::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{
 		EnemyBase::onCollisionEnter(other);
+		switch (other->getLayer())
+		{
+		case Physics::PhysicsLayer::Player:
+			m_eventQueue.push(Events::PlayerDamagedEvent{
+				m_body->getID(),
+				m_playerId,
+				DamageInfo {
+				m_status.attackPower,
+				m_body->getPosition(),
+				(getPlayerPos() - m_body->getPosition()).normalized(),
+				true,
+				false
+				}
+				,0.0
+				,0.3
+				,15.0
+			});
+			m_body->setVelocity({ 0,0 });
+			break;
+		}
 	}
 
 	void GothicLolitaDoll::onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) {}

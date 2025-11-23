@@ -42,6 +42,7 @@
     <ClCompile Include="src\Presentation\Scenes\SelectScene.cpp" />
     <ClCompile Include="src\Presentation\Scenes\ResultScene.cpp" />
     <ClCompile Include="src\Presentation\InGameUIManager.cpp" />
+    <ClCompile Include="src\Domain\Enemy\FireBall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
@@ -143,6 +144,7 @@
     <ClInclude Include="src\Domain\Player\Choker\ChokerStates\HookedEnemyState.h" />
     <ClInclude Include="src\Presentation\Scenes\SceneName.h" />
     <ClInclude Include="src\Domain\Player\Choker\ChokerStates\CustomDistanceJoint.h" />
+    <ClInclude Include="src\Domain\Enemy\FireBall.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />
@@ -202,7 +204,6 @@
     <Image Include="App\icon.ico" />
     <Image Include="App\Assets\Cursor\GameCursor.png" />
     <Image Include="App\Assets\Enemy\LittleDevil\idle_0.png" />
-    <Image Include="App\Assets\Enemy\GothicLolitaDoll\idle_1.png" />
     <Image Include="App\Assets\Player\Skill\Bomb\Bomb.png" />
     <Image Include="App\Assets\Stage\White_Test.png" />
     <Image Include="App\Assets\Story\background_stage1_1_clear.png" />
@@ -425,6 +426,7 @@
     <Image Include="App\Assets\Player\Damage\damage_27.png" />
     <Image Include="App\Assets\Player\Damage\damage_28.png" />
     <Image Include="App\Assets\Player\Damage\damage_29.png" />
+    <Image Include="App\Assets\Item\fireBall.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />

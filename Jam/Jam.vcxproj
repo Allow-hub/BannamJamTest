@@ -119,6 +119,7 @@
     <ClCompile Include="src\Domain\Enemy\Clown.cpp" />
     <ClCompile Include="src\Domain\Enemy\EnemyBase.cpp" />
     <ClCompile Include="src\Domain\Enemy\Eye.cpp" />
+    <ClCompile Include="src\Domain\Enemy\FireBall.cpp" />
     <ClCompile Include="src\Domain\Enemy\GothicLolitaDoll.cpp" />
     <ClCompile Include="src\Domain\Enemy\LittleDevil.cpp" />
     <ClCompile Include="src\Domain\Enemy\Missile.cpp" />
@@ -159,6 +160,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="App\Assets\Item\fireBall.png" />
     <Image Include="App\Assets\Item\Missile.png" />
     <Image Include="App\Assets\Player\ChokerThrow\choker_throw_00.png" />
     <Image Include="App\Assets\Player\ChokerThrow\choker_throw_01.png" />
@@ -290,7 +292,6 @@
     <Image Include="App\Assets\Enemy\Eye\idle_1.png" />
     <Image Include="App\Assets\Enemy\GothicLolitaDoll\idle_0.png" />
     <Image Include="App\Assets\Enemy\LittleDevil\idle_0.png" />
-    <Image Include="App\Assets\Enemy\GothicLolitaDoll\idle_1.png" />
     <Image Include="App\Assets\Enemy\Ribbon\idle_0.png" />
     <Image Include="App\Assets\Enemy\Spider\idle_0.png" />
     <Image Include="Assets\Enemy\Spider\idle_1.png" />
@@ -647,6 +648,7 @@
     <ClInclude Include="src\Domain\Enemy\EnemyType.h" />
     <ClInclude Include="src\Domain\Enemy\Eye.h" />
     <ClInclude Include="src\Domain\Enemy\EyeBeam.h" />
+    <ClInclude Include="src\Domain\Enemy\FireBall.h" />
     <ClInclude Include="src\Domain\Enemy\GothicLolitaDoll.h" />
     <ClInclude Include="src\Domain\Enemy\LittleDevil.h" />
     <ClInclude Include="src\Domain\Enemy\Missile.h" />
