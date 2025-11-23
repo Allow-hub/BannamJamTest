@@ -2,128 +2,727 @@
   "objects": [
     {
       "groundSide": "all",
-      "metadata": "普通の床",
+      "metadata": "初期地点",
       "rect": [
-        -250,
-        150,
-        550,
+        -100,
+        50,
+        2600,
+        3000
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "初期段差01",
+      "rect": [
+        900,
+        -50,
+        1600,
         100
       ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "初期段差01",
+      "rect": [
+        -200,
+        -3000,
+        100,
+        5000
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "初期段差02",
+      "rect": [
+        1500,
+        -150,
+        1000,
+        100
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "初期エリア対岸",
+      "rect": [
+        3200,
+        -150,
+        500,
+        3000
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "ジョイント01",
+      "rect": [
+        2700,
+        -700,
+        300,
+        50
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "対岸下床",
+      "rect": [
+        3700,
+        200,
+        1700,
+        200
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "圧迫壁",
+      "rect": [
+        4500,
+        -1500,
+        500,
+        1400
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "ただの床01",
+      "rect": [
+        5400,
+        300,
+        500,
+        200
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "空中足場01",
+      "rect": [
+        5800,
+        -400,
+        300,
+        100
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "ただの床03",
+      "rect": [
+        5700,
+        500,
+        1000,
+        100
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "空中足場02",
+      "rect": [
+        7100,
+        -600,
+        300,
+        100
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "空中足場02",
+      "rect": [
+        7100,
+        400,
+        300,
+        100
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
       "type": "normal"
     },
     {
       "groundSide": "all",
       "loopMovement": true,
-      "metadata": "動く床",
+      "metadata": "回転床01",
+      "movementDistance": 250,
+      "movementSpeed": 100,
+      "movementType": "circular",
+      "rect": [
+        7200,
+        0,
+        300,
+        30
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "moving_platform"
+    },
+    {
+      "groundSide": "all",
+      "loopMovement": true,
+      "metadata": "回転床01",
+      "movementDistance": 250,
+      "movementSpeed": 100,
+      "movementType": "circular",
+      "rect": [
+        6500,
+        -500,
+        300,
+        30
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "moving_platform"
+    },
+    {
+      "groundSide": "all",
+      "loopMovement": true,
+      "metadata": "回転床01",
+      "movementDistance": 200,
+      "movementSpeed": 100,
+      "movementType": "circular",
+      "rect": [
+        5200,
+        -150,
+        300,
+        30
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "moving_platform"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "ジャンプ床01",
+      "rect": [
+        7800,
+        0,
+        300,
+        3000
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "ジャンプ床02上",
+      "rect": [
+        8900,
+        0,
+        300,
+        300
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "ジャンプ床02下",
+      "rect": [
+        8900,
+        700,
+        300,
+        3000
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "ジョイント01",
+      "rect": [
+        8350,
+        -600,
+        300,
+        50
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "ジョイント01",
+      "rect": [
+        9300,
+        -1500,
+        300,
+        1000
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "ジャンプ床02下",
+      "rect": [
+        9700,
+        0,
+        300,
+        3000
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "対岸02",
+      "rect": [
+        10000,
+        150,
+        2400,
+        3000
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "loopMovement": true,
+      "metadata": "回転床01",
       "movementDistance": 100,
       "movementSpeed": 100,
-      "movementType": "horizontal",
-      "rect": [
-        250,
-        50,
-        50,
-        50
-      ],
-      "type": "moving_platform"
-    },
-    {
-      "groundSide": "all",
-      "loopMovement": true,
-      "metadata": "動く床",
-      "movementDistance": 300,
-      "movementSpeed": 222,
-      "movementType": "vertical",
-      "rect": [
-        300,
-        -250,
-        50,
-        150
-      ],
-      "type": "moving_platform"
-    },
-    {
-      "groundSide": "all",
-      "loopMovement": true,
-      "metadata": "動く床",
-      "movementDistance": 50,
-      "movementSpeed": 222,
       "movementType": "circular",
       "rect": [
-        -350,
-        -350,
-        50,
-        50
+        11600,
+        -100,
+        200,
+        30
       ],
+      "texturePath": "Assets/Stage/normal_stage.png",
       "type": "moving_platform"
     },
     {
       "groundSide": "all",
       "loopMovement": true,
-      "metadata": "動く床",
-      "movementDistance": 50,
-      "movementSpeed": 222,
+      "metadata": "回転床02",
+      "movementDistance": -200,
+      "movementSpeed": 100,
       "movementType": "circular",
       "rect": [
-        -50,
-        -200,
-        50,
-        50
-      ],
-      "type": "moving_platform"
-    },
-    {
-      "groundSide": "all",
-      "loopMovement": true,
-      "metadata": "動く床",
-      "movementDistance": 50,
-      "movementSpeed": 222,
-      "movementType": "circular",
-      "rect": [
-        50,
-        -150,
-        50,
-        50
-      ],
-      "type": "moving_platform"
-    },
-    {
-      "groundSide": "all",
-      "loopMovement": true,
-      "metadata": "動く床",
-      "movementDistance": 100,
-      "movementSpeed": 222,
-      "movementType": "circular",
-      "rect": [
-        0,
+        10900,
         -400,
-        100,
-        150
+        200,
+        30
       ],
+      "texturePath": "Assets/Stage/normal_stage.png",
       "type": "moving_platform"
     },
     {
-      "damageAmount": 10,
-      "groundSide": "none",
-      "metadata": "ダメージ床",
+      "groundSide": "all",
+      "loopMovement": true,
+      "metadata": "回転床01",
+      "movementDistance": 200,
+      "movementSpeed": 100,
+      "movementType": "circular",
       "rect": [
-        450,
+        10600,
+        -450,
+        200,
+        30
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "moving_platform"
+    },
+    {
+      "groundSide": "all",
+      "loopMovement": true,
+      "metadata": "回転床02",
+      "movementDistance": -300,
+      "movementSpeed": 100,
+      "movementType": "circular",
+      "rect": [
+        12000,
+        -380,
+        200,
+        30
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "moving_platform"
+    },
+    {
+      "groundSide": "up",
+      "metadata": "ジョイント01",
+      "rect": [
+        12300,
+        -800,
+        200,
+        50
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "oneway_platform"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "ジャンプ床02下",
+      "rect": [
+        12800,
+        300,
+        300,
+        500
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "ジャンプ床02下",
+      "rect": [
+        12900,
+        -3500,
+        1500,
+        3000
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "大壁",
+      "rect": [
+        12600,
+        -800,
+        300,
+        100
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "ジャンプ床02下",
+      "rect": [
+        13500,
+        -500,
+        600,
+        300
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "ジャンプ床02下",
+      "rect": [
+        14100,
+        -1200,
+        800,
+        1150
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "ジャンプ床02下",
+      "rect": [
+        14200,
+        900,
+        300,
+        3000
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "ジャンプ床02下",
+      "rect": [
+        14900,
+        -300,
+        500,
+        800
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "でっぱり壁",
+      "rect": [
+        14900,
+        1200,
+        1200,
+        100
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "ジャンプ床02下",
+      "rect": [
+        15400,
+        300,
+        200,
+        100
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "ジャンプ床02下",
+      "rect": [
+        15400,
+        -300,
+        200,
+        100
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "ジャンプ床02下",
+      "rect": [
+        15700,
         0,
-        100,
+        200,
+        100
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "ジャンプ床02下",
+      "rect": [
+        14900,
+        800,
+        1200,
+        100
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "ジャンプ床02下",
+      "rect": [
+        16300,
+        1300,
+        1200,
+        100
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "でっぱり壁",
+      "rect": [
+        13500,
+        400,
+        300,
         200
       ],
-      "type": "damage_platform"
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
     },
     {
-      "damageAmount": 10,
-      "groundSide": "none",
-      "metadata": "ダメージ床",
+      "groundSide": "all",
+      "metadata": "登り壁",
       "rect": [
-        -500,
-        -150,
-        200,
-        400
+        15900,
+        -800,
+        1300,
+        1300
       ],
-      "type": "damage_platform"
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "登り壁",
+      "rect": [
+        17200,
+        -800,
+        300,
+        1500
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "登り壁",
+      "rect": [
+        17500,
+        -800,
+        4500,
+        300
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "登り壁",
+      "rect": [
+        19100,
+        800,
+        2500,
+        600
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "up",
+      "metadata": "すり抜け床010",
+      "rect": [
+        18700,
+        1200,
+        400,
+        30
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "oneway_platform"
+    },
+    {
+      "groundSide": "up",
+      "metadata": "すり抜け床010",
+      "rect": [
+        18700,
+        1000,
+        400,
+        30
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "oneway_platform"
+    },
+    {
+      "groundSide": "up",
+      "metadata": "すり抜け床010",
+      "rect": [
+        18700,
+        800,
+        400,
+        30
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "oneway_platform"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "登り壁",
+      "rect": [
+        18500,
+        1400,
+        600,
+        3000
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "登り壁",
+      "rect": [
+        18000,
+        600,
+        200,
+        200
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "登り壁",
+      "rect": [
+        15300,
+        -1100,
+        100,
+        800
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "登り壁",
+      "rect": [
+        15300,
+        -900,
+        800,
+        100
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "登り壁",
+      "rect": [
+        16000,
+        -1400,
+        800,
+        100
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "登り壁",
+      "rect": [
+        16000,
+        -1400,
+        800,
+        100
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "ゴール壁",
+      "rect": [
+        21000,
+        -1400,
+        100,
+        2800
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "登り壁",
+      "rect": [
+        19500,
+        600,
+        300,
+        200
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "登り壁",
+      "rect": [
+        20500,
+        100,
+        300,
+        300
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
     }
   ]
 }

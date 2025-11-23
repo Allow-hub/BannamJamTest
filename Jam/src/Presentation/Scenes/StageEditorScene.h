@@ -58,6 +58,9 @@ namespace Jam::Presentation::Scenes
             
             m_stageEditorService.load(*stagePath);
             
+            // 読み込み後、テクスチャを事前読み込み
+            preloadTextures();
+            
             // 次に敵ファイルを選択（同名ファイルが存在する場合はデフォルトで選択）
             FilePath defaultEnemyPath = FileSystem::ParentPath(*stagePath) + U"../Enemy/" + FileSystem::FileName(*stagePath);
             
@@ -94,6 +97,26 @@ namespace Jam::Presentation::Scenes
             // その他のリソースも必要に応じてロード可能
             // ResourceManager::loadGroup(ResourceGroup::Enemy);
             // ResourceManager::loadGroup(ResourceGroup::Stage);
+        }
+        
+        // ステージテクスチャの事前ロード（Presentation層で実施）
+        void preloadTextures()
+        {
+            const auto& objects = m_stageEditorService.getManager().getAllObjects();
+            for (const auto& obj : objects)
+            {
+                if (!obj.data.texturePath.isEmpty())
+                {
+                    try
+                    {
+                        TextureManager::Load(obj.data.texturePath);
+                    }
+                    catch (...)
+                    {
+                        // 読み込み失敗は無視
+                    }
+                }
+            }
         }
         
         void update() override
@@ -138,6 +161,7 @@ namespace Jam::Presentation::Scenes
             if (KeyControl.pressed() && KeyP.down())
             {
                 m_stageEditorService.save(U"Assets/Stage/stage_edited.json");
+                m_enemyEditorService.save(U"Assets/Enemy/enemy_edited.json");
                 
                 auto& core = Jam::Foundation::CoreManager::Instance();
                 core.stageInfo.stageName = Jam::Foundation::StageName::Stage1_1;
@@ -175,6 +199,8 @@ namespace Jam::Presentation::Scenes
                     if (MouseL.down() || MouseL.pressed() || MouseL.up())
                     {
                         m_stageEditorService.handlePlacement(mousePos);
+                        // 配置後、テクスチャを事前読み込み
+                        preloadTextures();
                     }
                     break;
                     
@@ -229,6 +255,9 @@ namespace Jam::Presentation::Scenes
                 if (const auto path = Dialog::OpenFile({ FileFilter::JSON() }, U"Assets/Stage/"))
                 {
                     m_stageEditorService.load(*path);
+                    
+                    // 読み込み後、テクスチャを事前読み込み
+                    preloadTextures();
                     
                     // 同じフォルダの敵ファイルも自動的にロード
                     FilePath enemyPath = FileSystem::ParentPath(*path) + U"../Enemy/" + FileSystem::FileName(*path);

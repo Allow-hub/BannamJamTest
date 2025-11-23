@@ -466,7 +466,8 @@ namespace Jam::Presentation::Editor
                 const auto& texture = TextureManager::Load(obj.data.texturePath);
                 if (texture)
                 {
-                    texture.resized(rect.size).draw(rect.pos);
+                    const ScopedRenderStates2D sampler{ SamplerState::RepeatLinear };
+                    texture.mapped(rect.size).draw(rect.pos);
                     hasTexture = true;
                 }
             }

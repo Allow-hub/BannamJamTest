@@ -366,6 +366,10 @@ namespace Jam::Domain::Editor
         if (json.hasElement(U"texturePath")) {
             obj.texturePath = json[U"texturePath"].getString();
         }
+        else {
+            // texturePathがない場合はデフォルト値を設定
+            obj.texturePath = U"Assets/Stage/normal_stage.png";
+        }
         
         if (json.hasElement(U"movementType")) {
             obj.movementType = Stage::stringToMovementType(json[U"movementType"].getString());
