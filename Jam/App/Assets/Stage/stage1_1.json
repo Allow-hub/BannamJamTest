@@ -393,8 +393,10 @@
       "groundSide": "All",
       "metadata": "登り壁"
     }
-
-
-
-  ]
+  ],
+  "goal": {
+    "position": [20650, 0],
+    "size": [200, 200]
+  },
+  "playerSpawn": [50, -5]
 }

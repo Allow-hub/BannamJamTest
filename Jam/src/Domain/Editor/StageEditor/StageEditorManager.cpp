@@ -4,6 +4,12 @@ namespace Jam::Domain::Editor
 {
     size_t StageEditorManager::addObject(const Stage::StageObject& obj)
     {
+        // ゴールオブジェクトを追加する場合、既存のゴールを削除
+        if (obj.texturePath.includes(U"Goal.png") || obj.texturePath.includes(U"goal.png"))
+        {
+            removeExistingGoal();
+        }
+        
         StageEditorObjectNew editorObj(obj);
         editorObj.id = getNextId();
         
@@ -128,6 +134,27 @@ namespace Jam::Domain::Editor
         return false;
     }
     
+    Optional<size_t> StageEditorManager::findGoalObject() const
+    {
+        for (const auto& obj : m_objects) {
+            if (obj.id && (obj.data.texturePath.includes(U"Goal.png") || obj.data.texturePath.includes(U"goal.png"))) {
+                return obj.id;
+            }
+        }
+        return none;
+    }
+    
+    void StageEditorManager::removeExistingGoal()
+    {
+        if (auto goalId = findGoalObject()) {
+            // 履歴に追加せずに削除（ゴールは1つのみなので、旧ゴールの復元は不要）
+            bool wasExecuting = m_isExecutingCommand;
+            m_isExecutingCommand = true;
+            removeObject(*goalId);
+            m_isExecutingCommand = wasExecuting;
+        }
+    }
+    
     void StageEditorManager::saveToJSON(const FilePath& path) const
     {
         Array<Stage::StageObject> mergedObjects = mergeAdjacentObjects();
@@ -156,12 +183,13 @@ namespace Jam::Domain::Editor
         json[U"objects"] = objectsArray;
         
         // ゴール情報を保存
-        json[U"goal"] = JSON::Object();
-        json[U"goal"][U"position"] = JSON::Array({ detectedGoalPos.x, detectedGoalPos.y });
-        json[U"goal"][U"size"] = JSON::Array({ detectedGoalSize.x, detectedGoalSize.y });
+        JSON goalJson;
+        goalJson[U"position"] = Array<double>{ detectedGoalPos.x, detectedGoalPos.y };
+        goalJson[U"size"] = Array<double>{ detectedGoalSize.x, detectedGoalSize.y };
+        json[U"goal"] = goalJson;
         
         // プレイヤースポーン位置を保存
-        json[U"playerSpawn"] = JSON::Array({ m_playerSpawnPosition.x, m_playerSpawnPosition.y });
+        json[U"playerSpawn"] = Array<double>{ m_playerSpawnPosition.x, m_playerSpawnPosition.y };
         
         json.save(path);
     }
@@ -196,6 +224,15 @@ namespace Jam::Domain::Editor
                     m_goalSize = Vec2(sizeArray[0].get<double>(), sizeArray[1].get<double>());
                 }
             }
+            
+            // ゴールオブジェクトを作成して追加（エディタ上で表示・編集可能にする）
+            Stage::StageObject goalObj;
+            goalObj.rect = RectF{m_goalPosition, m_goalSize};
+            goalObj.type = Stage::StageType::Normal;
+            goalObj.groundSide = Stage::GroundSide::All;
+            goalObj.metadata = U"ゴール";
+            goalObj.texturePath = U"Assets/Stage/Goal.png";
+            addObject(goalObj);
         }
         
         // プレイヤースポーン位置を読み込み

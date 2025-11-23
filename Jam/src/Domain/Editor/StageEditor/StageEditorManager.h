@@ -63,6 +63,8 @@ namespace Jam::Domain::Editor
         Optional<size_t> findObjectAt(const Vec2& pos) const;
         bool hasObjectAtExactPosition(const RectF& rect) const;
         bool hasOverlappingObject(const RectF& rect) const;
+        Optional<size_t> findGoalObject() const;  // ゴールオブジェクトを検索
+        void removeExistingGoal();  // 既存のゴールを削除
         
         // ===== ファイルI/O =====
         

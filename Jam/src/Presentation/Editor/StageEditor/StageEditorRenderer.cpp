@@ -451,22 +451,6 @@ namespace Jam::Presentation::Editor
         Circle{playerSpawnPos, playerRadius}.drawFrame(this->m_service->isSpawnSelected() ? 3.0 : 2.0, borderColor);
         Circle{playerSpawnPos, 5.0}.draw(ColorF{1.0, 1.0, 1.0});
         
-        // マウスオーバー時にハイライト
-        if (this->m_service->isMouseOverSpawn(Cursor::PosF()))
-        {
-            Circle{playerSpawnPos, playerRadius + 5.0}.drawFrame(2.0, ColorF{1.0, 1.0, 1.0, 0.5});
-        }
-        
-        // ゴール位置を描画
-        const Vec2 goalPos = this->m_service->getGoalPosition();
-        const Vec2 goalSize = this->m_service->getGoalSize();
-        const RectF goalRect{goalPos, goalSize};
-        goalRect.draw(ColorF{1.0, 0.84, 0.0, 0.5});  // 金色
-        goalRect.drawFrame(3.0, ColorF{1.0, 0.84, 0.0});
-        
-        // "GOAL"テキストを表示
-        this->m_font(U"GOAL").drawAt(goalRect.center(), ColorF{1.0, 1.0, 1.0});
-        
         for (const auto& obj : objects)
         {
             if (obj.data.rect.intersects(viewRect))
@@ -494,8 +478,17 @@ namespace Jam::Presentation::Editor
                 const auto& texture = TextureManager::Load(obj.data.texturePath);
                 if (texture)
                 {
-                    const ScopedRenderStates2D sampler{ SamplerState::RepeatLinear };
-                    texture.mapped(rect.size).draw(rect.pos);
+                    // ゴールテクスチャの場合は矩形サイズに合わせて拡大縮小
+                    if (obj.data.texturePath.includes(U"Goal.png") || obj.data.texturePath.includes(U"goal.png"))
+                    {
+                        texture.resized(rect.size).draw(rect.pos);
+                    }
+                    else
+                    {
+                        // その他のテクスチャはタイル表示
+                        const ScopedRenderStates2D sampler{ SamplerState::RepeatLinear };
+                        texture.mapped(rect.size).draw(rect.pos);
+                    }
                     hasTexture = true;
                 }
             }

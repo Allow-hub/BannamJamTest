@@ -1,4 +1,14 @@
 ﻿{
+  "goal": {
+    "position": [
+      350.0,
+      -450.0
+    ],
+    "size": [
+      500.0,
+      450.0
+    ]
+  },
   "objects": [
     {
       "groundSide": "all",
@@ -724,5 +734,9 @@
       "texturePath": "Assets/Stage/normal_stage.png",
       "type": "normal"
     }
+  ],
+  "playerSpawn": [
+    50.0,
+    -5.0
   ]
 }
