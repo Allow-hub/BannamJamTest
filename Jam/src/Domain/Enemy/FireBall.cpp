@@ -35,7 +35,7 @@ namespace Jam::Domain::Enemy
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::EnemyWeapon);
 		m_body->setLayer(Jam::Domain::Physics::PhysicsLayer::Enemy);
 
-		m_texture = Texture(Resource(U"Assets/Item/fireBall.png"));
+		fbTex = Texture(Image(U"Assets/Item/fireBall.png"));	//Resourceだとうまく読み込めなっかたので、一時的にImageに変更しています。
 	}
 
 	void Fireball::init()
@@ -80,19 +80,8 @@ namespace Jam::Domain::Enemy
 	{
 		if (!m_body) return;
 
-		// テクスチャ未読み込み時は明示的に目印を描画（黄色いサークル）
-		if (!m_texture)
-		{
-			Circle(m_body->getPosition(), 12).draw(Palette::Yellow);
-			return;
-		}
-
-		// テクスチャ実サイズを取得してスケールを計算（m_size は表示したいピクセルサイズ）
-		const Vec2 texSize = m_texture.size();
-		if (texSize.x <= 0 || texSize.y <= 0) return;
-
-		const Vec2 scale = m_size / texSize;
-		m_texture.scaled(scale).drawAt(m_body->getPosition());
+		fbTex.scaled(m_size * m_scaled)
+			.drawAt(m_body->getPosition());
 	}
 	void Fireball::onCollisionEnter(std::shared_ptr<IPhysicsBody> other)
 	{
@@ -113,11 +102,11 @@ namespace Jam::Domain::Enemy
 				},
 				0.0,
 				0.3,
-				10.0 // ノックバック力
+				10.0
 			});
 
 			m_isHit = true;
-			m_isDead = true; // 自身は消滅
+			m_isDead = true;
 		}
 		// 壁や地面に当たった場合も消滅させる
 		else if (other->getLayer() == Jam::Domain::Physics::PhysicsLayer::Ground ||

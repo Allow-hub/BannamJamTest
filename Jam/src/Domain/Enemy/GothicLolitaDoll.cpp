@@ -59,7 +59,6 @@ namespace Jam::Domain::Enemy
 		Vec2 myPos = m_body->getPosition();
 		Vec2 direction = (playerPos - myPos).normalized();
 
-		// 速度(スカラ)を決める
 		double speed = 10.0;
 
 		// 渡すためのベクトルを作成 (方向 × 速さ)
@@ -68,7 +67,6 @@ namespace Jam::Domain::Enemy
 		{
 		case Jam::Domain::Enemy::GothicLolitaDoll::m_AttackStatus::IsAttackStart:
 		{
-			// 次の状態へ移行
 			m_attackStatus = m_AttackStatus::IsFireBallLaunch;
 		}
 		break;
@@ -80,7 +78,6 @@ namespace Jam::Domain::Enemy
 
 				shootFireball(toPlayer);
 
-				// カウントアップとタイマーリセット
 				m_shotCount++;
 				AttackWaitTime = 0;
 			}
@@ -100,7 +97,7 @@ namespace Jam::Domain::Enemy
 		break;
 		case Jam::Domain::Enemy::GothicLolitaDoll::m_AttackStatus::IsAttackEnd:
 		{
-			if (AttackWaitTime >= 800)
+			if (AttackWaitTime >= 660)
 			{
 				AttackWaitTime = 0;
 				m_attackStatus = m_AttackStatus::IsAttackStart;
@@ -154,9 +151,9 @@ namespace Jam::Domain::Enemy
 
 	void GothicLolitaDoll::shootFireball(const Vec2& direction)
 	{
-		Vec2 startPos = m_body->getPosition() + direction * 40.0; // 少し前から出す
+		Vec2 startPos = m_body->getPosition() + direction * 40.0;
 		Vec2 size = { 40, 40 };
-		double speed = 400.0; // 弾速
+		double speed = 400.0;
 
 		auto physicsFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getPhysicsFactory();
 
@@ -168,7 +165,6 @@ namespace Jam::Domain::Enemy
 			Jam::Domain::Physics::PhysicsShape::Circle
 		);
 
-		// コンストラクタに速度ベクトル（方向×速さ）を渡す
 		auto fireball = std::make_shared<Jam::Domain::Enemy::Fireball>(
 			fireballBody,
 			m_playerId,

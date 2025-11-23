@@ -7,12 +7,14 @@
 
 namespace Jam::Domain::Enemy
 {
+	// 鬼火
+	// ゴスロリ人形が放つプレイヤーに向かって直進する弾
 	class Fireball : public Jam::Domain::IIndependentObject
 		, public Jam::Domain::Physics::ICollisionListener
 		, public std::enable_shared_from_this<Fireball>
 	{
 	private:
-		Texture m_texture;
+		Texture fbTex;
 
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_body;
 		Jam::Domain::Events::GameEventQueue& m_eventQueue;
@@ -22,10 +24,11 @@ namespace Jam::Domain::Enemy
 		double m_lifetime;
 		double m_timer;
 
-		// 移動用パラメータ
-		Vec2 m_Velocity;
 		Vec2 m_size;
-		Vec2 m_scaled = Vec2{ 0.1 ,0.1 };
+		Vec2 m_scaled = Vec2{ 0.0015 ,0.0015 };
+
+		Vec2 m_Velocity;
+		
 		bool m_isHit = false;
 
 	public:
