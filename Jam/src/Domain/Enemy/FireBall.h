@@ -12,20 +12,19 @@ namespace Jam::Domain::Enemy
 		, public std::enable_shared_from_this<Fireball>
 	{
 	private:
-		// 見た目（テクスチャなど）
-		Texture m_texture; // 必要に応じてAsset名などを変更
+		Texture m_texture;
 
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_body;
 		Jam::Domain::Events::GameEventQueue& m_eventQueue;
 		Jam::Domain::Physics::PhysicsBodyID m_playerId;
 
 		double m_damage;
-		double m_lifetime; // 画面外にずっと残らないようにするための寿命
+		double m_lifetime;
 		double m_timer;
 
 		// 移動用パラメータ
-		double flySpeed = 10.0;
-		Vec2 m_initialVelocity;
+		Vec2 m_Velocity;
+		Vec2 m_size;
 		Vec2 m_scaled = Vec2{ 0.1 ,0.1 };
 		bool m_isHit = false;
 
@@ -37,7 +36,7 @@ namespace Jam::Domain::Enemy
 			double damage,
 			double lifetime,
 			Vec2 size,
-			Vec2 initialVelocity
+			Vec2 Velocity
 		);
 		~Fireball();
 

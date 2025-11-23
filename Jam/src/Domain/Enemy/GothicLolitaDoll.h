@@ -32,8 +32,13 @@ namespace Jam::Domain::Enemy
 		void onAttackExit()override;
 
 	private:
+		void shootFireball(const Vec2& direction);
+
 		double m_patrolTimer = 0.0;
+
 		int AttackWaitTime = 0;
+		int m_shotCount = 0;
+
 		enum class m_AttackStatus
 		{
 			IsAttackStart = 0,

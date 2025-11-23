@@ -16,7 +16,7 @@ namespace Jam::Domain::Enemy
 		double damage,
 		double lifetime,
 		Vec2 size,
-		Vec2 initialVelocity
+		Vec2 Velocity
 	)
 		: m_body(body)
 		, m_playerId(playerId)
@@ -24,7 +24,7 @@ namespace Jam::Domain::Enemy
 		, m_damage(damage)
 		, m_lifetime(lifetime)
 		, m_size(size)
-		, m_initialVelocity(initialVelocity)
+		, m_Velocity(Velocity)
 	{
 		m_timer = 0.0;
 
@@ -41,7 +41,6 @@ namespace Jam::Domain::Enemy
 	void Fireball::init()
 	{
 		m_body->setCollisionListener(shared_from_this());
-		m_body->applyImpulse(m_initialVelocity);
 	}
 
 	Fireball::~Fireball()
@@ -58,7 +57,7 @@ namespace Jam::Domain::Enemy
 	{
 		m_timer += dt;
 
-		m_body->applyForce(m_initialVelocity * flySpeed);
+		m_body->applyForce(m_Velocity);
 
 		// 一定時間経過したら自然消滅
 		if (m_timer >= m_lifetime)
@@ -108,7 +107,7 @@ namespace Jam::Domain::Enemy
 				DamageInfo {
 					m_damage,
 					m_body->getPosition(),
-					m_initialVelocity.normalized(),
+					m_Velocity.normalized(),
 					true,
 					false
 				},
