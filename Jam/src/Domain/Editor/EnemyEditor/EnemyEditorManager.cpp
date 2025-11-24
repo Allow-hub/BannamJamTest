@@ -4,14 +4,15 @@ namespace Jam::Domain::Editor
 {
     size_t EnemyEditorManager::addObject(const EnemyObject& enemy)
     {
-        EnemyEditorObjectNew editorEnemy(enemy);
+        EnemyEditorObject editorEnemy(enemy);
         
         size_t newIndex = m_objects.size();
         m_objects.push_back(editorEnemy);
         
-        if (!m_isExecutingCommand) {
-            EnemyEditorCommandNew cmd;
-            cmd.type = EnemyEditorCommandNew::Type::Add;
+        if (!m_isExecutingCommand)
+        {
+            EnemyEditorCommand cmd;
+            cmd.type = EnemyEditorCommand::Type::Add;
             cmd.object = editorEnemy;
             addToHistory(cmd);
         }
@@ -21,10 +22,12 @@ namespace Jam::Domain::Editor
     
     void EnemyEditorManager::removeObject(size_t index)
     {
-        if (index < m_objects.size()) {
-            if (!m_isExecutingCommand) {
-                EnemyEditorCommandNew cmd;
-                cmd.type = EnemyEditorCommandNew::Type::Delete;
+        if (index < m_objects.size())
+        {
+            if (!m_isExecutingCommand)
+            {
+                EnemyEditorCommand cmd;
+                cmd.type = EnemyEditorCommand::Type::Delete;
                 cmd.object = m_objects[index];
                 addToHistory(cmd);
             }
@@ -35,10 +38,12 @@ namespace Jam::Domain::Editor
     
     void EnemyEditorManager::modifyObject(size_t index, const EnemyObject& newEnemy)
     {
-        if (auto* obj = findObjectByIndex(index)) {
-            if (!m_isExecutingCommand) {
-                EnemyEditorCommandNew cmd;
-                cmd.type = EnemyEditorCommandNew::Type::Modify;
+        if (auto* obj = findObjectByIndex(index))
+        {
+            if (!m_isExecutingCommand)
+            {
+                EnemyEditorCommand cmd;
+                cmd.type = EnemyEditorCommand::Type::Modify;
                 cmd.object = *obj;
                 cmd.oldData = obj->data;
                 cmd.newData = newEnemy;
@@ -53,8 +58,10 @@ namespace Jam::Domain::Editor
     {
         constexpr double clickRadius = 20.0;
         
-        for (size_t i = m_objects.size(); i-- > 0;) {
-            if (pos.distanceFrom(m_objects[i].data.position) < clickRadius) {
+        for (size_t i = m_objects.size(); i-- > 0;)
+        {
+            if (pos.distanceFrom(m_objects[i].data.position) < clickRadius)
+            {
                 return i;
             }
         }
@@ -63,8 +70,10 @@ namespace Jam::Domain::Editor
     
     bool EnemyEditorManager::hasOverlappingEnemy(const Vec2& pos, double minDistance) const
     {
-        for (const auto& enemy : m_objects) {
-            if (pos.distanceFrom(enemy.data.position) < minDistance) {
+        for (const auto& enemy : m_objects)
+        {
+            if (pos.distanceFrom(enemy.data.position) < minDistance)
+            {
                 return true;
             }
         }
@@ -75,7 +84,8 @@ namespace Jam::Domain::Editor
     {
         Array<JSON> enemiesArray;
         
-        for (const auto& enemy : m_objects) {
+        for (const auto& enemy : m_objects)
+        {
             enemiesArray.push_back(enemyObjectToJSON(enemy.data));
         }
         
@@ -94,8 +104,10 @@ namespace Jam::Domain::Editor
         
         m_isExecutingCommand = true;
         
-        for (const auto& enemyJson : json.arrayView()) {
-            if (auto enemy = jsonToEnemyObject(enemyJson)) {
+        for (const auto& enemyJson : json.arrayView())
+        {
+            if (auto enemy = jsonToEnemyObject(enemyJson))
+            {
                 addObject(*enemy);
             }
         }
@@ -103,23 +115,28 @@ namespace Jam::Domain::Editor
         m_isExecutingCommand = false;
     }
     
-    void EnemyEditorManager::executeUndoCommand(const EnemyEditorCommandNew& cmd)
+    void EnemyEditorManager::executeUndoCommand(const EnemyEditorCommand& cmd)
     {
-        switch (cmd.type) {
-        case EnemyEditorCommandNew::Type::Add:
-            if (!m_objects.isEmpty()) {
+        switch (cmd.type)
+        {
+        case EnemyEditorCommand::Type::Add:
+            if (!m_objects.isEmpty())
+            {
                 m_objects.pop_back();
             }
             break;
             
-        case EnemyEditorCommandNew::Type::Delete:
+        case EnemyEditorCommand::Type::Delete:
             m_objects.push_back(cmd.object);
             break;
             
-        case EnemyEditorCommandNew::Type::Modify:
-            if (cmd.oldData) {
-                for (auto& obj : m_objects) {
-                    if (obj.data.position == cmd.object.data.position) {
+        case EnemyEditorCommand::Type::Modify:
+            if (cmd.oldData)
+            {
+                for (auto& obj : m_objects)
+                {
+                    if (obj.data.position == cmd.object.data.position)
+                    {
                         obj.data = *cmd.oldData;
                         break;
                     }
@@ -129,26 +146,32 @@ namespace Jam::Domain::Editor
         }
     }
     
-    void EnemyEditorManager::executeRedoCommand(const EnemyEditorCommandNew& cmd)
+    void EnemyEditorManager::executeRedoCommand(const EnemyEditorCommand& cmd)
     {
-        switch (cmd.type) {
-        case EnemyEditorCommandNew::Type::Add:
+        switch (cmd.type)
+        {
+        case EnemyEditorCommand::Type::Add:
             m_objects.push_back(cmd.object);
             break;
             
-        case EnemyEditorCommandNew::Type::Delete:
-            for (size_t i = 0; i < m_objects.size(); ++i) {
-                if (m_objects[i].data.position == cmd.object.data.position) {
+        case EnemyEditorCommand::Type::Delete:
+            for (size_t i = 0; i < m_objects.size(); ++i)
+            {
+                if (m_objects[i].data.position == cmd.object.data.position)
+                {
                     removeObjectDirect(i);
                     break;
                 }
             }
             break;
             
-        case EnemyEditorCommandNew::Type::Modify:
-            if (cmd.newData) {
-                for (auto& obj : m_objects) {
-                    if (obj.data.position == cmd.object.data.position) {
+        case EnemyEditorCommand::Type::Modify:
+            if (cmd.newData)
+            {
+                for (auto& obj : m_objects)
+                {
+                    if (obj.data.position == cmd.object.data.position)
+                    {
                         obj.data = *cmd.newData;
                         break;
                     }
@@ -169,13 +192,15 @@ namespace Jam::Domain::Editor
         posJson[U"y"] = static_cast<int>(enemy.position.y);
         json[U"position"] = posJson;
         
-        if (!enemy.isBoss()) {
+        if (!enemy.isBoss())
+        {
             JSON extraJson;
             JSON aiJson;
             JSON patrolJson;
             
             Array<JSON> patrolPointsArray;
-            for (const auto& point : enemy.patrol.patrolPoints) {
+            for (const auto& point : enemy.patrol.patrolPoints)
+            {
                 JSON pointJson;
                 pointJson[U"x"] = static_cast<int>(point.position.x);
                 pointJson[U"y"] = static_cast<int>(point.position.y);
@@ -188,7 +213,8 @@ namespace Jam::Domain::Editor
             patrolJson[U"foundDistance"] = enemy.patrol.foundDistance;
             aiJson[U"patrol"] = patrolJson;
             
-            if (enemy.chase) {
+            if (enemy.chase)
+            {
                 JSON chaseJson;
                 
                 chaseJson[U"attackRange"] = enemy.chase->attackRange;
@@ -211,19 +237,24 @@ namespace Jam::Domain::Editor
         if (!json.hasElement(U"type")) return none;
         enemy.type = stringToEnemyType(json[U"type"].getString());
         
-        if (json.hasElement(U"position")) {
+        if (json.hasElement(U"position"))
+        {
             enemy.position.x = json[U"position"][U"x"].get<double>();
             enemy.position.y = json[U"position"][U"y"].get<double>();
         }
         
-        if (!enemy.isBoss() && json.hasElement(U"extra")) {
+        if (!enemy.isBoss() && json.hasElement(U"extra"))
+        {
             const auto& aiJson = json[U"extra"][U"ai"];
             
-            if (aiJson.hasElement(U"patrol")) {
+            if (aiJson.hasElement(U"patrol"))
+            {
                 const auto& patrolJson = aiJson[U"patrol"];
                 
-                if (patrolJson.hasElement(U"patrolPoints")) {
-                    for (const auto& pointJson : patrolJson[U"patrolPoints"].arrayView()) {
+                if (patrolJson.hasElement(U"patrolPoints"))
+                {
+                    for (const auto& pointJson : patrolJson[U"patrolPoints"].arrayView())
+                    {
                         PatrolPoint point;
                         point.position.x = pointJson[U"x"].get<double>();
                         point.position.y = pointJson[U"y"].get<double>();
@@ -231,28 +262,35 @@ namespace Jam::Domain::Editor
                     }
                 }
                 
-                if (patrolJson.hasElement(U"loop")) {
+                if (patrolJson.hasElement(U"loop"))
+                {
                     enemy.patrol.loop = patrolJson[U"loop"].get<bool>();
                 }
-                if (patrolJson.hasElement(U"waitTime")) {
+                if (patrolJson.hasElement(U"waitTime"))
+                {
                     enemy.patrol.waitTime = patrolJson[U"waitTime"].get<double>();
                 }
-                if (patrolJson.hasElement(U"foundDistance")) {
+                if (patrolJson.hasElement(U"foundDistance"))
+                {
                     enemy.patrol.foundDistance = patrolJson[U"foundDistance"].get<double>();
                 }
             }
             
-            if (enemy.hasChaseAI() && aiJson.hasElement(U"chase")) {
+            if (enemy.hasChaseAI() && aiJson.hasElement(U"chase"))
+            {
                 ChaseAI chase;
                 const auto& chaseJson = aiJson[U"chase"];
                 
-                if (chaseJson.hasElement(U"attackRange")) {
+                if (chaseJson.hasElement(U"attackRange"))
+                {
                     chase.attackRange = chaseJson[U"attackRange"].get<double>();
                 }
-                if (chaseJson.hasElement(U"loseRange")) {
+                if (chaseJson.hasElement(U"loseRange"))
+                {
                     chase.loseRange = chaseJson[U"loseRange"].get<double>();
                 }
-                if (chaseJson.hasElement(U"moveSpeedFactor")) {
+                if (chaseJson.hasElement(U"moveSpeedFactor"))
+                {
                     chase.moveSpeedFactor = chaseJson[U"moveSpeedFactor"].get<double>();
                 }
                 

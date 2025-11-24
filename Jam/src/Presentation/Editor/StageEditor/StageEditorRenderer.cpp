@@ -159,26 +159,6 @@ namespace Jam::Presentation::Editor
         }
         y += 40;
         
-        // 記憶のかけらボタン（実装中のためコメントアウト）
-        /*
-        const bool isFlagmentSelected = (currentOtherType == UseCase::Editor::OtherObjectType::FlagmentMemory);
-        
-        if (SimpleGUI::Button(U"記憶のかけら", Vec2{this->getPanelX() + 10, y}, 270))
-        {
-            if (isFlagmentSelected)
-            {
-                // 既に選択されている場合は解除
-                this->m_service->setOtherObjectType(UseCase::Editor::OtherObjectType::None);
-            }
-            else
-            {
-                // 選択状態にする
-                this->m_service->setOtherObjectType(UseCase::Editor::OtherObjectType::FlagmentMemory);
-            }
-        }
-        y += 40;
-        */
-        
         y += this->getSmallSpacing();
         return y;
     }
@@ -406,7 +386,7 @@ namespace Jam::Presentation::Editor
     
     int StageEditorRenderer::drawSelectionInfo(int y) const
     {
-        const Array<const Domain::Editor::StageEditorObjectNew*> selectedObjects = this->m_service->getManager().getSelectedObjects();
+        const Array<const Domain::Editor::StageEditorObject*> selectedObjects = this->m_service->getManager().getSelectedObjects();
         if (selectedObjects.isEmpty())
             return y;
             
@@ -432,7 +412,7 @@ namespace Jam::Presentation::Editor
         return y;
     }
     
-    void StageEditorRenderer::drawObjects(const Camera2D& camera, const Array<Domain::Editor::StageEditorObjectNew>& objects) const
+    void StageEditorRenderer::drawObjects(const Camera2D& camera, const Array<Domain::Editor::StageEditorObject>& objects) const
     {
         const Vec2 center = camera.getCenter();
         const double scale = camera.getScale();
@@ -472,7 +452,7 @@ namespace Jam::Presentation::Editor
         }
     }
     
-    void StageEditorRenderer::drawObject(const Domain::Editor::StageEditorObjectNew& obj, bool isSelected) const
+    void StageEditorRenderer::drawObject(const Domain::Editor::StageEditorObject& obj, bool isSelected) const
     {
         const RectF& rect = obj.data.rect;
         

@@ -4,33 +4,25 @@
 
 namespace Jam::Domain::Editor
 {
-    enum class StageEditorMode {
+    // エディタモード
+    enum class StageEditorMode
+    {
         Select,
         Place,
         Delete
     };
 
-    struct StageEditorObject {
-        Stage::StageObject stageObject;
-        bool isSelected = false;
-        Optional<size_t> id;
-    };
-
-    struct StageEditorConfig {
+    // エディタ設定
+    struct StageEditorConfig
+    {
         int gridSize = 50;
         bool snapToGrid = true;
         bool showGrid = true;
         double cameraSpeed = 5.0;
     };
 
-    struct StageEditorCommand {
-        enum class Type { Add, Delete, Move, Modify };
-        Type type;
-        StageEditorObject object;
-        Vec2 oldPos;
-        Vec2 newPos;
-    };
-
+    // エディタ設定管理クラス
+    // Note: 本来はApplication層に置くべきだが、後方互換性のため一旦ここに残す
     class StageEditorSettings
     {
     private:

@@ -10,14 +10,15 @@ namespace Jam::Domain::Editor
             removeExistingGoal();
         }
         
-        StageEditorObjectNew editorObj(obj);
+        StageEditorObject editorObj(obj);
         
         size_t newIndex = m_objects.size();
         m_objects.push_back(editorObj);
         
-        if (!m_isExecutingCommand) {
-            StageEditorCommandNew cmd;
-            cmd.type = StageEditorCommandNew::Type::Add;
+        if (!m_isExecutingCommand)
+        {
+            StageEditorCommand cmd;
+            cmd.type = StageEditorCommand::Type::Add;
             cmd.object = editorObj;
             addToHistory(cmd);
         }
@@ -27,10 +28,12 @@ namespace Jam::Domain::Editor
     
     void StageEditorManager::removeObject(size_t index)
     {
-        if (index < m_objects.size()) {
-            if (!m_isExecutingCommand) {
-                StageEditorCommandNew cmd;
-                cmd.type = StageEditorCommandNew::Type::Delete;
+        if (index < m_objects.size())
+        {
+            if (!m_isExecutingCommand)
+            {
+                StageEditorCommand cmd;
+                cmd.type = StageEditorCommand::Type::Delete;
                 cmd.object = m_objects[index];
                 addToHistory(cmd);
             }
@@ -41,10 +44,12 @@ namespace Jam::Domain::Editor
     
     void StageEditorManager::moveObject(size_t index, const Vec2& newPos)
     {
-        if (auto* obj = findObjectByIndex(index)) {
-            if (!m_isExecutingCommand) {
-                StageEditorCommandNew cmd;
-                cmd.type = StageEditorCommandNew::Type::Move;
+        if (auto* obj = findObjectByIndex(index))
+        {
+            if (!m_isExecutingCommand)
+            {
+                StageEditorCommand cmd;
+                cmd.type = StageEditorCommand::Type::Move;
                 cmd.object = *obj;
                 cmd.oldPos = obj->data.rect.pos;
                 cmd.newPos = newPos;
@@ -57,10 +62,12 @@ namespace Jam::Domain::Editor
     
     void StageEditorManager::modifyObject(size_t index, const Stage::StageObject& newObj)
     {
-        if (auto* obj = findObjectByIndex(index)) {
-            if (!m_isExecutingCommand) {
-                StageEditorCommandNew cmd;
-                cmd.type = StageEditorCommandNew::Type::Modify;
+        if (auto* obj = findObjectByIndex(index))
+        {
+            if (!m_isExecutingCommand)
+            {
+                StageEditorCommand cmd;
+                cmd.type = StageEditorCommand::Type::Modify;
                 cmd.object = *obj;
                 cmd.oldData = obj->data;
                 cmd.newData = newObj;
@@ -73,10 +80,13 @@ namespace Jam::Domain::Editor
     
     void StageEditorManager::updateSelectedObjectsMovement(double distance, double speed, Stage::MovementType type)
     {
-        for (size_t i = 0; i < m_objects.size(); ++i) {
-            if (m_selectedIndices.contains(i)) {
+        for (size_t i = 0; i < m_objects.size(); ++i)
+        {
+            if (m_selectedIndices.contains(i))
+            {
                 if (m_objects[i].data.type == Stage::StageType::MovingPlatform ||
-                    m_objects[i].data.type == Stage::StageType::MovingDamagePlatform) {
+                    m_objects[i].data.type == Stage::StageType::MovingDamagePlatform)
+                {
                     m_objects[i].data.movementDistance = distance;
                     m_objects[i].data.movementSpeed = speed;
                     m_objects[i].data.movementType = type;
@@ -87,10 +97,13 @@ namespace Jam::Domain::Editor
     
     void StageEditorManager::updateSelectedObjectsDamage(double damage)
     {
-        for (size_t i = 0; i < m_objects.size(); ++i) {
-            if (m_selectedIndices.contains(i)) {
+        for (size_t i = 0; i < m_objects.size(); ++i)
+        {
+            if (m_selectedIndices.contains(i))
+            {
                 if (m_objects[i].data.type == Stage::StageType::DamagePlatform ||
-                    m_objects[i].data.type == Stage::StageType::MovingDamagePlatform) {
+                    m_objects[i].data.type == Stage::StageType::MovingDamagePlatform)
+                {
                     m_objects[i].data.damageAmount = damage;
                 }
             }
@@ -99,8 +112,10 @@ namespace Jam::Domain::Editor
     
     Optional<size_t> StageEditorManager::findObjectAt(const Vec2& pos) const
     {
-        for (size_t i = m_objects.size(); i-- > 0;) {
-            if (m_objects[i].data.rect.contains(pos)) {
+        for (size_t i = m_objects.size(); i-- > 0;)
+        {
+            if (m_objects[i].data.rect.contains(pos))
+            {
                 return i;
             }
         }
@@ -109,11 +124,13 @@ namespace Jam::Domain::Editor
     
     bool StageEditorManager::hasObjectAtExactPosition(const RectF& rect) const
     {
-        for (const auto& obj : m_objects) {
+        for (const auto& obj : m_objects)
+        {
             if (obj.data.rect.x == rect.x &&
                 obj.data.rect.y == rect.y &&
                 obj.data.rect.w == rect.w &&
-                obj.data.rect.h == rect.h) {
+                obj.data.rect.h == rect.h)
+            {
                 return true;
             }
         }
@@ -122,8 +139,10 @@ namespace Jam::Domain::Editor
     
     bool StageEditorManager::hasOverlappingObject(const RectF& rect) const
     {
-        for (const auto& obj : m_objects) {
-            if (obj.data.rect.intersects(rect)) {
+        for (const auto& obj : m_objects)
+        {
+            if (obj.data.rect.intersects(rect))
+            {
                 return true;
             }
         }
@@ -132,8 +151,11 @@ namespace Jam::Domain::Editor
     
     Optional<size_t> StageEditorManager::findGoalObject() const
     {
-        for (size_t i = 0; i < m_objects.size(); ++i) {
-            if (m_objects[i].data.texturePath.includes(U"Goal.png") || m_objects[i].data.texturePath.includes(U"goal.png")) {
+        for (size_t i = 0; i < m_objects.size(); ++i)
+        {
+            if (m_objects[i].data.texturePath.includes(U"Goal.png") || 
+                m_objects[i].data.texturePath.includes(U"goal.png"))
+            {
                 return i;
             }
         }
@@ -142,7 +164,8 @@ namespace Jam::Domain::Editor
     
     void StageEditorManager::removeExistingGoal()
     {
-        if (auto goalIndex = findGoalObject()) {
+        if (auto goalIndex = findGoalObject())
+        {
             // 履歴に追加せずに削除（ゴールは1つのみなので、旧ゴールの復元は不要）
             bool wasExecuting = m_isExecutingCommand;
             m_isExecutingCommand = true;
@@ -163,7 +186,8 @@ namespace Jam::Domain::Editor
         Vec2 detectedGoalSize = m_goalSize;
         bool goalFound = false;
         
-        for (const auto& obj : mergedObjects) {
+        for (const auto& obj : mergedObjects)
+        {
             // Goal.pngを持つオブジェクトをゴールとして認識
             if (obj.texturePath.includes(U"Goal.png") || obj.texturePath.includes(U"goal.png"))
             {
@@ -199,24 +223,31 @@ namespace Jam::Domain::Editor
         
         m_isExecutingCommand = true;
         
-        for (const auto& objJson : json[U"objects"].arrayView()) {
-            if (auto obj = jsonToStageObject(objJson)) {
+        for (const auto& objJson : json[U"objects"].arrayView())
+        {
+            if (auto obj = jsonToStageObject(objJson))
+            {
                 addObject(*obj);
             }
         }
         
         // ゴール情報を読み込み
-        if (json.hasElement(U"goal")) {
+        if (json.hasElement(U"goal"))
+        {
             const auto& goalJson = json[U"goal"];
-            if (goalJson.hasElement(U"position") && goalJson[U"position"].isArray()) {
+            if (goalJson.hasElement(U"position") && goalJson[U"position"].isArray())
+            {
                 const auto& posArray = goalJson[U"position"];
-                if (posArray.size() >= 2) {
+                if (posArray.size() >= 2)
+                {
                     m_goalPosition = Vec2(posArray[0].get<double>(), posArray[1].get<double>());
                 }
             }
-            if (goalJson.hasElement(U"size") && goalJson[U"size"].isArray()) {
+            if (goalJson.hasElement(U"size") && goalJson[U"size"].isArray())
+            {
                 const auto& sizeArray = goalJson[U"size"];
-                if (sizeArray.size() >= 2) {
+                if (sizeArray.size() >= 2)
+                {
                     m_goalSize = Vec2(sizeArray[0].get<double>(), sizeArray[1].get<double>());
                 }
             }
@@ -232,9 +263,11 @@ namespace Jam::Domain::Editor
         }
         
         // プレイヤースポーン位置を読み込み
-        if (json.hasElement(U"playerSpawn") && json[U"playerSpawn"].isArray()) {
+        if (json.hasElement(U"playerSpawn") && json[U"playerSpawn"].isArray())
+        {
             const auto& spawnArray = json[U"playerSpawn"];
-            if (spawnArray.size() >= 2) {
+            if (spawnArray.size() >= 2)
+            {
                 m_playerSpawnPosition = Vec2(spawnArray[0].get<double>(), spawnArray[1].get<double>());
             }
         }
@@ -242,27 +275,29 @@ namespace Jam::Domain::Editor
         m_isExecutingCommand = false;
     }
     
-    void StageEditorManager::executeUndoCommand(const StageEditorCommandNew& cmd)
+    void StageEditorManager::executeUndoCommand(const StageEditorCommand& cmd)
     {
-        switch (cmd.type) {
-        case StageEditorCommandNew::Type::Add:
+        switch (cmd.type)
+        {
+        case StageEditorCommand::Type::Add:
             // 最後に追加されたオブジェクトを削除
-            // Note: Add時のインデックスを保存していないため、コマンド記録時のobjectと同じデータを持つ最後のオブジェクトを削除
-            if (!m_objects.isEmpty()) {
+            if (!m_objects.isEmpty())
+            {
                 m_objects.pop_back();
             }
             break;
             
-        case StageEditorCommandNew::Type::Delete:
+        case StageEditorCommand::Type::Delete:
             m_objects.push_back(cmd.object);
             break;
             
-        case StageEditorCommandNew::Type::Move:
-            // Move/Modifyは現在のインデックスでは元のオブジェクトを特定できないため、
-            // データで検索（完全なUndoには追加の設計変更が必要）
-            if (cmd.oldPos) {
-                for (auto& obj : m_objects) {
-                    if (obj.data.rect.pos == *cmd.newPos) {
+        case StageEditorCommand::Type::Move:
+            if (cmd.oldPos)
+            {
+                for (auto& obj : m_objects)
+                {
+                    if (obj.data.rect.pos == *cmd.newPos)
+                    {
                         obj.data.rect.setPos(*cmd.oldPos);
                         break;
                     }
@@ -270,10 +305,13 @@ namespace Jam::Domain::Editor
             }
             break;
             
-        case StageEditorCommandNew::Type::Modify:
-            if (cmd.oldData && cmd.newData) {
-                for (auto& obj : m_objects) {
-                    if (obj.data.rect == cmd.newData->rect) {
+        case StageEditorCommand::Type::Modify:
+            if (cmd.oldData && cmd.newData)
+            {
+                for (auto& obj : m_objects)
+                {
+                    if (obj.data.rect == cmd.newData->rect)
+                    {
                         obj.data = *cmd.oldData;
                         break;
                     }
@@ -283,27 +321,33 @@ namespace Jam::Domain::Editor
         }
     }
     
-    void StageEditorManager::executeRedoCommand(const StageEditorCommandNew& cmd)
+    void StageEditorManager::executeRedoCommand(const StageEditorCommand& cmd)
     {
-        switch (cmd.type) {
-        case StageEditorCommandNew::Type::Add:
+        switch (cmd.type)
+        {
+        case StageEditorCommand::Type::Add:
             m_objects.push_back(cmd.object);
             break;
             
-        case StageEditorCommandNew::Type::Delete:
+        case StageEditorCommand::Type::Delete:
             // Delete時もインデックスが不明なため、データで検索
-            for (size_t i = 0; i < m_objects.size(); ++i) {
-                if (m_objects[i].data.rect == cmd.object.data.rect) {
+            for (size_t i = 0; i < m_objects.size(); ++i)
+            {
+                if (m_objects[i].data.rect == cmd.object.data.rect)
+                {
                     removeObjectDirect(i);
                     break;
                 }
             }
             break;
             
-        case StageEditorCommandNew::Type::Move:
-            if (cmd.newPos) {
-                for (auto& obj : m_objects) {
-                    if (cmd.oldPos && obj.data.rect.pos == *cmd.oldPos) {
+        case StageEditorCommand::Type::Move:
+            if (cmd.newPos)
+            {
+                for (auto& obj : m_objects)
+                {
+                    if (cmd.oldPos && obj.data.rect.pos == *cmd.oldPos)
+                    {
                         obj.data.rect.setPos(*cmd.newPos);
                         break;
                     }
@@ -311,10 +355,13 @@ namespace Jam::Domain::Editor
             }
             break;
             
-        case StageEditorCommandNew::Type::Modify:
-            if (cmd.oldData && cmd.newData) {
-                for (auto& obj : m_objects) {
-                    if (obj.data.rect == cmd.oldData->rect) {
+        case StageEditorCommand::Type::Modify:
+            if (cmd.oldData && cmd.newData)
+            {
+                for (auto& obj : m_objects)
+                {
+                    if (obj.data.rect == cmd.oldData->rect)
+                    {
                         obj.data = *cmd.newData;
                         break;
                     }
@@ -330,7 +377,8 @@ namespace Jam::Domain::Editor
         HashSet<size_t> merged;
         constexpr double epsilon = 0.5;
         
-        for (size_t i = 0; i < m_objects.size(); ++i) {
+        for (size_t i = 0; i < m_objects.size(); ++i)
+        {
             if (merged.contains(i)) continue;
             
             const auto& obj = m_objects[i].data;
@@ -338,10 +386,12 @@ namespace Jam::Domain::Editor
             merged.insert(i);
             
             bool foundMerge = true;
-            while (foundMerge) {
+            while (foundMerge)
+            {
                 foundMerge = false;
                 
-                for (size_t j = 0; j < m_objects.size(); ++j) {
+                for (size_t j = 0; j < m_objects.size(); ++j)
+                {
                     if (merged.contains(j)) continue;
                     
                     const auto& other = m_objects[j].data;
@@ -351,20 +401,24 @@ namespace Jam::Domain::Editor
                         obj.movementType != other.movementType ||
                         Math::Abs(obj.movementSpeed - other.movementSpeed) > epsilon ||
                         Math::Abs(obj.movementDistance - other.movementDistance) > epsilon ||
-                        Math::Abs(obj.damageAmount - other.damageAmount) > epsilon) {
+                        Math::Abs(obj.damageAmount - other.damageAmount) > epsilon)
+                    {
                         continue;
                     }
                     
                     const RectF otherRect = other.rect;
                     
                     if (Math::Abs(mergedRect.y - otherRect.y) < epsilon && 
-                        Math::Abs(mergedRect.h - otherRect.h) < epsilon) {
-                        if (Math::Abs((mergedRect.x + mergedRect.w) - otherRect.x) < epsilon) {
+                        Math::Abs(mergedRect.h - otherRect.h) < epsilon)
+                    {
+                        if (Math::Abs((mergedRect.x + mergedRect.w) - otherRect.x) < epsilon)
+                        {
                             mergedRect.w = otherRect.x + otherRect.w - mergedRect.x;
                             merged.insert(j);
                             foundMerge = true;
                         }
-                        else if (Math::Abs((otherRect.x + otherRect.w) - mergedRect.x) < epsilon) {
+                        else if (Math::Abs((otherRect.x + otherRect.w) - mergedRect.x) < epsilon)
+                        {
                             double rightEdge = mergedRect.x + mergedRect.w;
                             mergedRect.x = otherRect.x;
                             mergedRect.w = rightEdge - otherRect.x;
@@ -373,13 +427,16 @@ namespace Jam::Domain::Editor
                         }
                     }
                     else if (Math::Abs(mergedRect.x - otherRect.x) < epsilon && 
-                             Math::Abs(mergedRect.w - otherRect.w) < epsilon) {
-                        if (Math::Abs((mergedRect.y + mergedRect.h) - otherRect.y) < epsilon) {
+                             Math::Abs(mergedRect.w - otherRect.w) < epsilon)
+                    {
+                        if (Math::Abs((mergedRect.y + mergedRect.h) - otherRect.y) < epsilon)
+                        {
                             mergedRect.h = otherRect.y + otherRect.h - mergedRect.y;
                             merged.insert(j);
                             foundMerge = true;
                         }
-                        else if (Math::Abs((otherRect.y + otherRect.h) - mergedRect.y) < epsilon) {
+                        else if (Math::Abs((otherRect.y + otherRect.h) - mergedRect.y) < epsilon)
+                        {
                             double bottomEdge = mergedRect.y + mergedRect.h;
                             mergedRect.y = otherRect.y;
                             mergedRect.h = bottomEdge - otherRect.y;
@@ -415,12 +472,14 @@ namespace Jam::Domain::Editor
         json[U"metadata"] = obj.metadata;
         
         // テクスチャ情報を保存（空でない場合のみ）
-        if (!obj.texturePath.isEmpty()) {
+        if (!obj.texturePath.isEmpty())
+        {
             json[U"texturePath"] = obj.texturePath;
         }
         
         if (obj.type == Stage::StageType::MovingPlatform ||
-            obj.type == Stage::StageType::MovingDamagePlatform) {
+            obj.type == Stage::StageType::MovingDamagePlatform)
+        {
             json[U"movementType"] = Stage::movementTypeToString(obj.movementType);
             json[U"movementSpeed"] = static_cast<int>(obj.movementSpeed);
             json[U"movementDistance"] = static_cast<int>(obj.movementDistance);
@@ -428,7 +487,8 @@ namespace Jam::Domain::Editor
         }
         
         if (obj.type == Stage::StageType::DamagePlatform ||
-            obj.type == Stage::StageType::MovingDamagePlatform) {
+            obj.type == Stage::StageType::MovingDamagePlatform)
+        {
             json[U"damageAmount"] = static_cast<int>(obj.damageAmount);
         }
         
@@ -439,7 +499,8 @@ namespace Jam::Domain::Editor
     {
         Stage::StageObject obj;
         
-        if (!json.hasElement(U"rect") || !json[U"rect"].isArray()) {
+        if (!json.hasElement(U"rect") || !json[U"rect"].isArray())
+        {
             return none;
         }
         
@@ -453,39 +514,49 @@ namespace Jam::Domain::Editor
             rectArray[3].get<double>()
         };
         
-        if (json.hasElement(U"type")) {
+        if (json.hasElement(U"type"))
+        {
             obj.type = Stage::stringToCollisionType(json[U"type"].getString());
         }
-        if (json.hasElement(U"groundSide")) {
+        if (json.hasElement(U"groundSide"))
+        {
             obj.groundSide = Stage::stringToGroundSide(json[U"groundSide"].getString());
         }
-        if (json.hasElement(U"metadata")) {
+        if (json.hasElement(U"metadata"))
+        {
             obj.metadata = json[U"metadata"].getString();
         }
         
         // テクスチャ情報を読み込み
-        if (json.hasElement(U"texturePath")) {
+        if (json.hasElement(U"texturePath"))
+        {
             obj.texturePath = json[U"texturePath"].getString();
         }
-        else {
+        else
+        {
             // texturePathがない場合はデフォルト値を設定
             obj.texturePath = U"Assets/Stage/normal_stage.png";
         }
         
-        if (json.hasElement(U"movementType")) {
+        if (json.hasElement(U"movementType"))
+        {
             obj.movementType = Stage::stringToMovementType(json[U"movementType"].getString());
         }
-        if (json.hasElement(U"movementSpeed")) {
+        if (json.hasElement(U"movementSpeed"))
+        {
             obj.movementSpeed = json[U"movementSpeed"].get<double>();
         }
-        if (json.hasElement(U"movementDistance")) {
+        if (json.hasElement(U"movementDistance"))
+        {
             obj.movementDistance = json[U"movementDistance"].get<double>();
         }
-        if (json.hasElement(U"loopMovement")) {
+        if (json.hasElement(U"loopMovement"))
+        {
             obj.loopMovement = json[U"loopMovement"].get<bool>();
         }
         
-        if (json.hasElement(U"damageAmount")) {
+        if (json.hasElement(U"damageAmount"))
+        {
             obj.damageAmount = json[U"damageAmount"].get<double>();
         }
         

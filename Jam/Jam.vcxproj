@@ -132,6 +132,7 @@
     <ClCompile Include="src\Infrastructure\StageFactory.cpp" />
     <ClCompile Include="src\Presentation\Editor\EnemyEditor\EnemyEditorRenderer.cpp" />
     <ClCompile Include="src\Presentation\Editor\StageEditor\StageEditorRenderer.cpp" />
+    <ClCompile Include="src\Presentation\Scenes\StageEditorScene.cpp" />
     <ClCompile Include="src\UseCase\Editor\EnemyEditor\EnemyEditorService.cpp" />
     <ClCompile Include="src\UseCase\Editor\StageEditor\StageEditorService.cpp" />
     <ClCompile Include="src\UseCase\EnemyFactory.cpp" />

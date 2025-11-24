@@ -3,46 +3,51 @@
 
 namespace Jam::Domain::Editor
 {
-    // コマンドの基底
+    // コマンドの基底クラス
+    // TObject: エディタオブジェクト型（EditorObjectBaseを継承したもの）
     template<typename TObject>
     struct EditorCommandBase
     {
         enum class Type { Add, Delete, Move, Modify };
-        Type type;
-        TObject object;
         
-        // Move用（オプション）
+        Type type;
+        TObject object;  // 操作対象のオブジェクト
+        
+        // Move用（移動前後の位置）
         Optional<Vec2> oldPos;
         Optional<Vec2> newPos;
         
-        // Modify用（変更前後のデータを保存）
+        // Modify用（変更前後のデータ）
         Optional<typename TObject::DataType> oldData;
         Optional<typename TObject::DataType> newData;
     };
     
-    // エディタオブジェクトの基底
+    // エディタオブジェクトの基底クラス
+    // TData: 実際のデータ型（例: EnemyObject, StageObject）
     template<typename TData>
     struct EditorObjectBase
     {
         using DataType = TData;
         
-        TData data;
-        bool isSelected = false;
+        TData data;              // 実際のデータ
+        bool isSelected = false; // 選択状態
         
         EditorObjectBase() = default;
         explicit EditorObjectBase(const TData& d) : data(d) {}
     };
     
-    // Manager基底クラス
+    // エディタマネージャーの基底クラス
+    // TEditorObject: エディタオブジェクト型
+    // TCommand: コマンド型
     template<typename TEditorObject, typename TCommand>
     class EditorManagerBase
     {
     protected:
-        Array<TEditorObject> m_objects;
-        Array<TCommand> m_commandHistory;
-        size_t m_historyIndex = 0;
-        HashSet<size_t> m_selectedIndices;
-        bool m_isExecutingCommand = false;
+        Array<TEditorObject> m_objects;           // 管理対象のオブジェクト一覧
+        Array<TCommand> m_commandHistory;         // コマンド履歴
+        size_t m_historyIndex = 0;                // 現在の履歴位置
+        HashSet<size_t> m_selectedIndices;        // 選択中のオブジェクトインデックス
+        bool m_isExecutingCommand = false;        // コマンド実行中フラグ（履歴の二重記録防止）
         
         static constexpr size_t MAX_HISTORY_SIZE = 100;
         
@@ -51,54 +56,66 @@ namespace Jam::Domain::Editor
         
         // ===== 共通インターフェース =====
         
-        // アクセサ
+        // オブジェクトへのアクセス
         const Array<TEditorObject>& getAllObjects() const { return m_objects; }
         const HashSet<size_t>& getSelectedIndices() const { return m_selectedIndices; }
         
+        // 選択中のオブジェクトを取得
         Array<const TEditorObject*> getSelectedObjects() const
         {
             Array<const TEditorObject*> result;
             result.reserve(m_selectedIndices.size());
             
-            for (size_t idx : m_selectedIndices) {
-                if (idx < m_objects.size()) {
+            for (size_t idx : m_selectedIndices)
+            {
+                if (idx < m_objects.size())
+                {
                     result.push_back(&m_objects[idx]);
                 }
             }
             return result;
         }
         
-        // 選択操作
+        // ===== 選択操作 =====
+        
+        // オブジェクトを選択
         void selectObject(size_t index, bool additive = false)
         {
-            if (!additive) {
+            if (!additive)
+            {
                 m_selectedIndices.clear();
             }
             
-            if (index < m_objects.size()) {
+            if (index < m_objects.size())
+            {
                 m_selectedIndices.insert(index);
                 updateSelectionStates();
             }
         }
         
+        // オブジェクトの選択を解除
         void deselectObject(size_t index)
         {
             m_selectedIndices.erase(index);
             
-            if (index < m_objects.size()) {
+            if (index < m_objects.size())
+            {
                 m_objects[index].isSelected = false;
             }
         }
         
+        // すべての選択を解除
         void clearSelection()
         {
             m_selectedIndices.clear();
-            for (auto& obj : m_objects) {
+            for (auto& obj : m_objects)
+            {
                 obj.isSelected = false;
             }
         }
         
-        // Undo/Redo
+        // ===== Undo/Redo =====
+        
         bool canUndo() const { return m_historyIndex > 0; }
         bool canRedo() const { return m_historyIndex < m_commandHistory.size(); }
         
@@ -127,7 +144,8 @@ namespace Jam::Domain::Editor
             m_isExecutingCommand = false;
         }
         
-        // クリア
+        // ===== クリア =====
+        
         void clear()
         {
             m_objects.clear();
@@ -149,33 +167,41 @@ namespace Jam::Domain::Editor
     protected:
         // ===== 派生クラス用のユーティリティ =====
         
+        // コマンド履歴に追加
         void addToHistory(const TCommand& cmd)
         {
             if (m_isExecutingCommand) return;
             
-            // 現在位置以降の履歴を削除
+            // 現在位置以降の履歴を削除（新しい分岐を作成）
             m_commandHistory.resize(m_historyIndex);
             m_commandHistory.push_back(cmd);
             m_historyIndex++;
             
             // 履歴サイズ制限
-            if (m_commandHistory.size() > MAX_HISTORY_SIZE) {
+            if (m_commandHistory.size() > MAX_HISTORY_SIZE)
+            {
                 m_commandHistory.erase(m_commandHistory.begin());
                 m_historyIndex--;
             }
         }
         
+        // オブジェクトを直接削除（履歴に記録しない）
         void removeObjectDirect(size_t index)
         {
-            if (index < m_objects.size()) {
+            if (index < m_objects.size())
+            {
                 m_objects.erase(m_objects.begin() + index);
                 
-                // 削除後、インデックスを更新
+                // 選択インデックスを更新
                 HashSet<size_t> newSelectedIndices;
-                for (size_t selectedIdx : m_selectedIndices) {
-                    if (selectedIdx < index) {
+                for (size_t selectedIdx : m_selectedIndices)
+                {
+                    if (selectedIdx < index)
+                    {
                         newSelectedIndices.insert(selectedIdx);
-                    } else if (selectedIdx > index) {
+                    }
+                    else if (selectedIdx > index)
+                    {
                         newSelectedIndices.insert(selectedIdx - 1);
                     }
                 }
@@ -183,9 +209,11 @@ namespace Jam::Domain::Editor
             }
         }
         
+        // インデックスでオブジェクトを検索
         TEditorObject* findObjectByIndex(size_t index)
         {
-            if (index < m_objects.size()) {
+            if (index < m_objects.size())
+            {
                 return &m_objects[index];
             }
             return nullptr;
@@ -193,20 +221,24 @@ namespace Jam::Domain::Editor
         
         const TEditorObject* findObjectByIndex(size_t index) const
         {
-            if (index < m_objects.size()) {
+            if (index < m_objects.size())
+            {
                 return &m_objects[index];
             }
             return nullptr;
         }
         
+        // 選択状態を更新
         void updateSelectionStates()
         {
-            for (size_t i = 0; i < m_objects.size(); ++i) {
+            for (size_t i = 0; i < m_objects.size(); ++i)
+            {
                 m_objects[i].isSelected = m_selectedIndices.contains(i);
             }
         }
         
         // ===== 派生クラスで実装すべきコマンド実行 =====
+        
         virtual void executeUndoCommand(const TCommand& cmd) = 0;
         virtual void executeRedoCommand(const TCommand& cmd) = 0;
     };

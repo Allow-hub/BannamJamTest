@@ -1,5 +1,6 @@
 ﻿// ========================================
-// StageEditorManager.h・医Μ繝輔ぃ繧ｯ繧ｿ繝ｪ繝ｳ繧ｰ迚・- Modify謾ｹ蝟・ｼ・
+// StageEditorManager.h - リファクタリング版
+// ステージエディタのドメインロジック管理
 // ========================================
 #pragma once
 #include "../Base/EditorManagerBase.h"
@@ -8,27 +9,27 @@
 
 namespace Jam::Domain::Editor
 {
-    // ステージ用のエディタオブジェクト（新基底クラス対応）
-    struct StageEditorObjectNew : EditorObjectBase<Stage::StageObject>
+    // ステージ用のエディタオブジェクト
+    struct StageEditorObject : EditorObjectBase<Stage::StageObject>
     {
         using DataType = Stage::StageObject;
         
-        StageEditorObjectNew() = default;
-        explicit StageEditorObjectNew(const Stage::StageObject& obj) 
+        StageEditorObject() = default;
+        explicit StageEditorObject(const Stage::StageObject& obj) 
             : EditorObjectBase<Stage::StageObject>(obj) {}
     };
     
-    // ステージ用のコマンド（Modify改善版）
-    struct StageEditorCommandNew : EditorCommandBase<StageEditorObjectNew>
+    // ステージ用のコマンド
+    struct StageEditorCommand : EditorCommandBase<StageEditorObject>
     {
         // 基底クラスのoldData/newDataを使用
     };
     
     // ステージエディタマネージャー
-    class StageEditorManager : public EditorManagerBase<StageEditorObjectNew, StageEditorCommandNew>
+    class StageEditorManager : public EditorManagerBase<StageEditorObject, StageEditorCommand>
     {
     private:
-        using Base = EditorManagerBase<StageEditorObjectNew, StageEditorCommandNew>;
+        using Base = EditorManagerBase<StageEditorObject, StageEditorCommand>;
         
         Vec2 m_playerSpawnPosition = Vec2(50, -5);
         Vec2 m_goalPosition = Vec2(20650, 0);
@@ -53,7 +54,7 @@ namespace Jam::Domain::Editor
         void moveObject(size_t index, const Vec2& newPos);
         void modifyObject(size_t index, const Stage::StageObject& newObj);
         
-        // ===== 驕ｸ謚槭が繝悶ず繧ｧ繧ｯ繝医・荳諡ｬ譖ｴ譁ｰ =====
+        // ===== 選択オブジェクトの一括更新 =====
         
         void updateSelectedObjectsMovement(double distance, double speed, Stage::MovementType type);
         void updateSelectedObjectsDamage(double damage);
@@ -63,8 +64,8 @@ namespace Jam::Domain::Editor
         Optional<size_t> findObjectAt(const Vec2& pos) const;
         bool hasObjectAtExactPosition(const RectF& rect) const;
         bool hasOverlappingObject(const RectF& rect) const;
-        Optional<size_t> findGoalObject() const;  // ゴールオブジェクトを検索
-        void removeExistingGoal();  // 既存のゴールを削除
+        Optional<size_t> findGoalObject() const;
+        void removeExistingGoal();
         
         // ===== ファイルI/O =====
         
@@ -72,10 +73,10 @@ namespace Jam::Domain::Editor
         void loadFromJSON(const FilePath& path) override;
         
     protected:
-        // ===== コマンド実行（Modify改善版） =====
+        // ===== コマンド実行 =====
         
-        void executeUndoCommand(const StageEditorCommandNew& cmd) override;
-        void executeRedoCommand(const StageEditorCommandNew& cmd) override;
+        void executeUndoCommand(const StageEditorCommand& cmd) override;
+        void executeRedoCommand(const StageEditorCommand& cmd) override;
         
     private:
         // ===== ユーティリティ =====

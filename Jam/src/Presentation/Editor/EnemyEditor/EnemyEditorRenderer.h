@@ -5,6 +5,7 @@
 
 namespace Jam::Presentation::Editor
 {
+    // 敵エディタレンダラー
     class EnemyEditorRenderer : public EditorRendererBase<UseCase::Editor::EnemyEditorService>
     {
     private:
@@ -98,7 +99,7 @@ namespace Jam::Presentation::Editor
         }
         
         // StageEditorSceneから呼び出すためpublicに
-        void drawEnemy(const Domain::Editor::EnemyEditorObjectNew& enemy, bool isSelected) const;
+        void drawEnemy(const Domain::Editor::EnemyEditorObject& enemy, bool isSelected) const;
         void drawPatrolRange(const Domain::Editor::EnemyObject& enemy) const;
         
     private:

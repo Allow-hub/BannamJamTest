@@ -1,5 +1,6 @@
 ﻿// ========================================
-// StageEditorRenderer.h（リファクタリング版）
+// StageEditorRenderer.h - リファクタリング版
+// ステージエディタの描画ロジック
 // ========================================
 #pragma once
 #include "../Base/EditorRendererBase.h"
@@ -7,6 +8,7 @@
 
 namespace Jam::Presentation::Editor
 {
+    // ステージエディタレンダラー
     class StageEditorRenderer : public EditorRendererBase<UseCase::Editor::StageEditorService>
     {
     private:
@@ -99,7 +101,7 @@ namespace Jam::Presentation::Editor
         }
         
         // StageEditorSceneから呼び出すためpublicに
-        void drawObject(const Domain::Editor::StageEditorObjectNew& obj, bool isSelected) const;
+        void drawObject(const Domain::Editor::StageEditorObject& obj, bool isSelected) const;
         
     private:
         int drawCurrentMode(int y) const;
@@ -111,7 +113,7 @@ namespace Jam::Presentation::Editor
         int drawMetadataEdit(int y) const;
         int drawSelectionInfo(int y) const;
         
-        void drawObjects(const Camera2D& camera, const Array<Domain::Editor::StageEditorObjectNew>& objects) const;
+        void drawObjects(const Camera2D& camera, const Array<Domain::Editor::StageEditorObject>& objects) const;
         void drawMovementGuide(const Domain::Stage::StageObject& obj) const;
         
         ColorF getGroundSideColor(Domain::Stage::GroundSide side) const;

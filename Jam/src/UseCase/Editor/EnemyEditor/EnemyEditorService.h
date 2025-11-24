@@ -1,5 +1,6 @@
 ﻿// ========================================
-// EnemyEditorService.h・医Μ繝輔ぃ繧ｯ繧ｿ繝ｪ繝ｳ繧ｰ迚茨ｼ・
+// EnemyEditorService.h - リファクタリング版
+// 敵エディタのアプリケーションロジック
 // ========================================
 #pragma once
 #include "../Base/EditorServiceBase.h"
@@ -8,6 +9,7 @@
 
 namespace Jam::UseCase::Editor
 {
+    // 敵エディタの状態
     struct EnemyEditorState
     {
         Domain::Editor::EnemyType enemyType = Domain::Editor::EnemyType::LittleDevil;
@@ -19,6 +21,7 @@ namespace Jam::UseCase::Editor
         double moveSpeedFactor = 1.2;
     };
     
+    // 敵エディタサービス
     class EnemyEditorService : public EditorServiceBase<Domain::Editor::EnemyEditorManager>
     {
     private:
@@ -28,15 +31,18 @@ namespace Jam::UseCase::Editor
     public:
         EnemyEditorService() = default;
         
-        // ===== 險ｭ螳壹い繧ｯ繧ｻ繧ｹ =====
+        // ===== 設定アクセス =====
+        
         const Domain::Editor::StageEditorSettings& getSettings() const { return m_settings; }
         Domain::Editor::StageEditorSettings& getSettings() { return m_settings; }
         
-        // ===== 謨ｵ繧ｿ繧､繝苓ｨｭ螳・=====
+        // ===== 敵タイプ設定 =====
+        
         void setEnemyType(Domain::Editor::EnemyType type) { m_state.enemyType = type; }
         Domain::Editor::EnemyType getEnemyType() const { return m_state.enemyType; }
         
-        // ===== AI險ｭ螳・=====
+        // ===== AI設定 =====
+        
         void setPatrolDistance(double distance) { m_state.patrolDistance = distance; }
         void setPatrolWaitTime(double time) { m_state.patrolWaitTime = time; }
         void setFoundDistance(double distance) { m_state.foundDistance = distance; }
@@ -51,7 +57,8 @@ namespace Jam::UseCase::Editor
         double getLoseRange() const { return m_state.loseRange; }
         double getMoveSpeedFactor() const { return m_state.moveSpeedFactor; }
         
-        // ===== 蜈･蜉帛・逅・ｼ医が繝ｼ繝舌・繝ｩ繧､繝会ｼ・=====
+        // ===== 入力処理（オーバーライド） =====
+        
         void handlePlacement(const Vec2& mousePos) override;
         void handleSelection(const Vec2& mousePos) override;
         void handleDeletion(const Vec2& mousePos) override;

@@ -224,6 +224,18 @@
       ],
       "texturePath": "Assets/Stage/moving_platform.png",
       "type": "moving_platform"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "普通の床",
+      "rect": [
+        100,
+        -100,
+        50,
+        50
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
     }
   ],
   "playerSpawn": [

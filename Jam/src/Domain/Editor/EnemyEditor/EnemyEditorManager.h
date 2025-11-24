@@ -1,5 +1,6 @@
 ﻿// ========================================
-// EnemyEditorManager.h・医Μ繝輔ぃ繧ｯ繧ｿ繝ｪ繝ｳ繧ｰ迚・- Modify謾ｹ蝟・ｼ・
+// EnemyEditorManager.h - リファクタリング版
+// 敵エディタのドメインロジック管理
 // ========================================
 #pragma once
 #include "../Base/EditorManagerBase.h"
@@ -7,27 +8,27 @@
 
 namespace Jam::Domain::Editor
 {
-    // 謨ｵ逕ｨ縺ｮ繧ｨ繝・ぅ繧ｿ繧ｪ繝悶ず繧ｧ繧ｯ繝茨ｼ域眠蝓ｺ蠎輔け繝ｩ繧ｹ蟇ｾ蠢懶ｼ・
-    struct EnemyEditorObjectNew : EditorObjectBase<EnemyObject>
+    // 敵用のエディタオブジェクト
+    struct EnemyEditorObject : EditorObjectBase<EnemyObject>
     {
         using DataType = EnemyObject;
         
-        EnemyEditorObjectNew() = default;
-        explicit EnemyEditorObjectNew(const EnemyObject& obj)
+        EnemyEditorObject() = default;
+        explicit EnemyEditorObject(const EnemyObject& obj)
             : EditorObjectBase<EnemyObject>(obj) {}
     };
     
-    // 謨ｵ逕ｨ縺ｮ繧ｳ繝槭Φ繝会ｼ・odify謾ｹ蝟・沿・・
-    struct EnemyEditorCommandNew : EditorCommandBase<EnemyEditorObjectNew>
+    // 敵用のコマンド
+    struct EnemyEditorCommand : EditorCommandBase<EnemyEditorObject>
     {
-        // 蝓ｺ蠎輔け繝ｩ繧ｹ縺ｮoldData/newData繧剃ｽｿ逕ｨ
+        // 基底クラスのoldData/newDataを使用
     };
     
-    // 謨ｵ繧ｨ繝・ぅ繧ｿ繝槭ロ繝ｼ繧ｸ繝｣
-    class EnemyEditorManager : public EditorManagerBase<EnemyEditorObjectNew, EnemyEditorCommandNew>
+    // 敵エディタマネージャー
+    class EnemyEditorManager : public EditorManagerBase<EnemyEditorObject, EnemyEditorCommand>
     {
     private:
-        using Base = EditorManagerBase<EnemyEditorObjectNew, EnemyEditorCommandNew>;
+        using Base = EditorManagerBase<EnemyEditorObject, EnemyEditorCommand>;
         
     public:
         // ===== オブジェクト操作 =====
@@ -47,10 +48,10 @@ namespace Jam::Domain::Editor
         void loadFromJSON(const FilePath& path) override;
         
     protected:
-        // ===== コマンド実行（Modify改善版） =====
+        // ===== コマンド実行 =====
         
-        void executeUndoCommand(const EnemyEditorCommandNew& cmd) override;
-        void executeRedoCommand(const EnemyEditorCommandNew& cmd) override;
+        void executeUndoCommand(const EnemyEditorCommand& cmd) override;
+        void executeRedoCommand(const EnemyEditorCommand& cmd) override;
         
     private:
         // ===== JSON変換 =====

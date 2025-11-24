@@ -360,7 +360,7 @@ namespace Jam::Presentation::Editor
         }
     }
     
-    void EnemyEditorRenderer::drawEnemy(const Domain::Editor::EnemyEditorObjectNew& enemy, bool isSelected) const
+    void EnemyEditorRenderer::drawEnemy(const Domain::Editor::EnemyEditorObject& enemy, bool isSelected) const
     {
         const ColorF color = getEnemyColor(enemy.data.type);
         const double radius = enemy.data.isBoss() ? 50.0 : 30.0;
