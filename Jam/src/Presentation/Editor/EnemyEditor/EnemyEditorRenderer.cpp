@@ -4,8 +4,7 @@ namespace Jam::Presentation::Editor
 {
     int EnemyEditorRenderer::drawCurrentMode(int y) const
     {
-        SimpleGUI::Headline(U"現在のモード", Vec2{this->getPanelX() + 10, y});
-        y += 35;
+        y = this->drawSectionHeader(U"現在のモード", y);
         
         String modeName;
         ColorF modeColor;
@@ -28,13 +27,13 @@ namespace Jam::Presentation::Editor
         this->m_font(modeName).draw(this->getPanelX() + 15, y, modeColor);
         y += 45;
         
+        y += this->getItemSpacing();
         return y;
     }
     
     int EnemyEditorRenderer::drawEnemyTypeSelector(int y) const
     {
-        SimpleGUI::Headline(U"敵タイプ", Vec2{this->getPanelX() + 10, y});
-        y += 40;
+        y = this->drawSectionHeader(U"敵タイプ", y);
         
         String currentTypeName = getEnemyTypeName(this->m_service->getEnemyType());
         if (SimpleGUI::Button(currentTypeName, Vec2{this->getPanelX() + 10, y}, 280))
@@ -66,6 +65,7 @@ namespace Jam::Presentation::Editor
             y += 10;
         }
         
+        y += this->getSmallSpacing();
         return y;
     }
     
@@ -74,8 +74,7 @@ namespace Jam::Presentation::Editor
         if (this->m_service->getEnemyType() == Domain::Editor::EnemyType::Boss1_3)
             return y;
             
-        SimpleGUI::Headline(U"巡回設定", Vec2{this->getPanelX() + 10, y});
-        y += 40;
+        y = this->drawSectionHeader(U"巡回設定", y);
         
         double patrolDistance = this->m_service->getPatrolDistance();
         if (SimpleGUI::Slider(U"距離: {:.0f}"_fmt(patrolDistance), patrolDistance, 50.0, 500.0, Vec2{this->getPanelX() + 10, y}, 100, 160))
@@ -96,8 +95,9 @@ namespace Jam::Presentation::Editor
         {
             this->m_service->setFoundDistance(foundDistance);
         }
-        y += 45;
+        y += 40;
         
+        y += this->getSmallSpacing();
         return y;
     }
     
@@ -107,8 +107,7 @@ namespace Jam::Presentation::Editor
             this->m_service->getEnemyType() == Domain::Editor::EnemyType::LittleDevil)
             return y;
             
-        SimpleGUI::Headline(U"追跡設定", Vec2{this->getPanelX() + 10, y});
-        y += 40;
+        y = this->drawSectionHeader(U"追跡設定", y);
         
         double attackRange = this->m_service->getAttackRange();
         if (SimpleGUI::Slider(U"攻撃範囲: {:.0f}"_fmt(attackRange), attackRange, 300.0, 1000.0, Vec2{this->getPanelX() + 10, y}, 100, 160))
@@ -129,8 +128,9 @@ namespace Jam::Presentation::Editor
         {
             this->m_service->setMoveSpeedFactor(speedFactor);
         }
-        y += 45;
+        y += 40;
         
+        y += this->getSmallSpacing();
         return y;
     }
     

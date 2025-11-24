@@ -71,7 +71,6 @@ namespace Jam::Presentation::Editor
                 y += 45;
                 
                 y = this->drawCameraSettings(y);
-                y = this->drawModeDisplay(y);
                 y = drawCurrentMode(y);
                 y = drawEnemyTypeSelector(y);
                 y = drawPatrolSettings(y);

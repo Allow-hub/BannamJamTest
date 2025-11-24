@@ -132,6 +132,40 @@ namespace Jam::Presentation::Editor
             m_smallFont(U"モード: " + modeName).draw(x, y, Palette::Yellow);
         }
         
+        // 見出しを描画（ユーザーが触れない部分）
+        int drawSectionHeader(const String& text, int y) const
+        {
+            const int panelX = getPanelX();
+            const int panelWidth = PANEL_WIDTH;
+            
+            // 背景を描画
+            RectF{panelX + 5, y, panelWidth - 10, 30}.draw(ColorF{0.25, 0.35, 0.45, 0.8});
+            
+            // テキストを中央揃えで描画
+            m_font(text).drawAt(panelX + panelWidth / 2, y + 15, ColorF{0.9, 0.95, 1.0});
+            
+            return y + 40;  // 見出しの高さ + 下間隔
+        }
+        
+        // サブ見出しを描画（少し小さめ）
+        int drawSubHeader(const String& text, int y) const
+        {
+            const int panelX = getPanelX();
+            m_smallFont(text).draw(panelX + 10, y, ColorF{0.7, 0.8, 0.9});
+            return y + 25;
+        }
+        
+        // 項目間の間隔を取得（画面サイズに応じて調整）
+        int getItemSpacing() const
+        {
+            return Max(30, Scene::Height() / 30);  // 最低30px、画面高さに応じて増加
+        }
+        
+        int getSmallSpacing() const
+        {
+            return Max(20, Scene::Height() / 40);
+        }
+        
         // グリッド描画（StageEditor用）
         void drawGrid(const Camera2D& camera, int gridSize) const
         {

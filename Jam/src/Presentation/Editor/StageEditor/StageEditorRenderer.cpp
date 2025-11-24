@@ -5,8 +5,7 @@ namespace Jam::Presentation::Editor
 {
     int StageEditorRenderer::drawCurrentMode(int y) const
     {
-        SimpleGUI::Headline(U"現在のモード", Vec2{this->getPanelX() + 10, y});
-        y += 35;
+        y = this->drawSectionHeader(U"現在のモード", y);
         
         String modeName;
         ColorF modeColor;
@@ -27,15 +26,14 @@ namespace Jam::Presentation::Editor
         }
         
         this->m_font(modeName).draw(this->getPanelX() + 15, y, modeColor);
-        y += 45;
+        y += this->getItemSpacing();
         
         return y;
     }
     
     int StageEditorRenderer::drawStageTypeSelector(int y) const
     {
-        SimpleGUI::Headline(U"ステージタイプ", Vec2{this->getPanelX() + 10, y});
-        y += 30;
+        y = this->drawSectionHeader(U"ステージタイプ", y);
         
         const String currentTypeName = getStageTypeName(this->m_service->getCurrentStageType());
         if (SimpleGUI::Button(currentTypeName, Vec2{this->getPanelX() + 10, y}, 270))
@@ -65,24 +63,40 @@ namespace Jam::Presentation::Editor
             y += 10;
         }
         
+        y += this->getSmallSpacing();
         return y;
     }
     
     int StageEditorRenderer::drawTextureSelector(int y) const
     {
-        SimpleGUI::Headline(U"テクスチャ", Vec2{this->getPanelX() + 10, y});
-        y += 30;
+        y = this->drawSectionHeader(U"テクスチャ", y);
         
-        // 利用可能なテクスチャのリスト（Assets/Stageフォルダ内の画像ファイル）
-        const Array<std::pair<String, String>> textures = {
-            {U"なし", U""},
-            {U"通常ステージ", U"Assets/Stage/normal_stage.png"},
-            {U"通常ステージ2", U"Assets/Stage/normal_stage2.png"},
-            {U"動く床", U"Assets/Stage/moving_platform.png"},
-            {U"ダメージ床", U"Assets/Stage/damage_Stage.jpg"},
-            {U"ゴール", U"Assets/Stage/Goal.png"},
-            {U"記憶のかけら", U"Assets/FlagmentMemory.png"}
-        };
+        // 現在のStageTypeを取得
+        const auto currentStageType = this->m_service->getCurrentStageType();
+        
+        // StageTypeに応じて利用可能なテクスチャをフィルタリング
+        Array<std::pair<String, String>> textures;
+        textures.push_back({U"なし", U""});
+        
+        switch (currentStageType) {
+            case Domain::Stage::StageType::Normal:
+            case Domain::Stage::StageType::OneWayPlatform:
+                textures.push_back({U"通常ステージ", U"Assets/Stage/normal_stage.png"});
+                textures.push_back({U"通常ステージ2", U"Assets/Stage/normal_stage2.png"});
+                break;
+                
+            case Domain::Stage::StageType::MovingPlatform:
+                textures.push_back({U"動く床", U"Assets/Stage/moving_platform.png"});
+                break;
+                
+            case Domain::Stage::StageType::DamagePlatform:
+            case Domain::Stage::StageType::MovingDamagePlatform:
+                textures.push_back({U"ダメージ床", U"Assets/Stage/damage_Stage.jpg"});
+                break;
+                
+            default:
+                break;
+        }
         
         String currentTextureName = U"なし";
         const String& currentPath = this->m_service->getTexturePath();
@@ -128,6 +142,38 @@ namespace Jam::Presentation::Editor
             y += 40;
         }
         
+        y += this->getSmallSpacing();
+        return y;
+    }
+    
+    int StageEditorRenderer::drawOtherObjectsSelector(int y) const
+    {
+        y = this->drawSectionHeader(U"その他のオブジェクト", y);
+        
+        if (SimpleGUI::Button(U"ゴールを配置", Vec2{this->getPanelX() + 10, y}, 270))
+        {
+            // ゴールを配置（カメラ中心に）
+            Vec2 goalPos = this->m_service->getCamera().getCenter();
+            this->m_service->setGoalPosition(goalPos);
+            this->m_service->setGoalSize(Vec2{50, 50});
+        }
+        y += 35;
+        
+        if (SimpleGUI::Button(U"記憶のかけらを配置", Vec2{this->getPanelX() + 10, y}, 270))
+        {
+            // 記憶のかけらを配置（カメラ中心に）
+            Vec2 flagmentPos = this->m_service->getCamera().getCenter();
+            Domain::Stage::StageObject flagmentObj;
+            flagmentObj.rect = RectF{flagmentPos.x - 25, flagmentPos.y - 25, 50, 50};
+            flagmentObj.type = Domain::Stage::StageType::Normal;
+            flagmentObj.metadata = U"記憶のかけら";
+            flagmentObj.texturePath = U"Assets/FlagmentMemory.png";
+            flagmentObj.groundSide = Domain::Stage::GroundSide::None;
+            this->m_service->getManager().addObject(flagmentObj);
+        }
+        y += 35;
+        
+        y += this->getSmallSpacing();
         return y;
     }
     
@@ -163,8 +209,7 @@ namespace Jam::Presentation::Editor
         if (this->m_service->getCurrentStageType() != Domain::Stage::StageType::MovingPlatform)
             return y;
             
-        SimpleGUI::Headline(U"移動設定", Vec2{this->getPanelX() + 10, y});
-        y += 40;
+        y = this->drawSectionHeader(U"移動設定", y);
         
         const Array<String> movementTypes = {U"横移動", U"縦移動", U"円運動"};
         const String currentMovementTypeName = movementTypes[static_cast<size_t>(this->m_service->getMovementType())];
@@ -315,8 +360,9 @@ namespace Jam::Presentation::Editor
         {
             this->m_service->setLoopMovement(loopMovement);
         }
-        y += 45;
+        y += 40;
         
+        y += this->getSmallSpacing();
         return y;
     }
     
@@ -326,8 +372,7 @@ namespace Jam::Presentation::Editor
             this->m_service->getCurrentStageType() != Domain::Stage::StageType::MovingDamagePlatform)
             return y;
             
-        SimpleGUI::Headline(U"ダメージ設定", Vec2{this->getPanelX() + 10, y});
-        y += 40;
+        y = this->drawSectionHeader(U"ダメージ設定", y);
         
         // ダメージ設定（スライダー + テキスト入力）
         double damageAmount = this->m_service->getDamageAmount();
@@ -368,15 +413,15 @@ namespace Jam::Presentation::Editor
                 }
             }
         }
-        y += 45;
+        y += 40;
         
+        y += this->getSmallSpacing();
         return y;
     }
     
     int StageEditorRenderer::drawMetadataEdit(int y) const
     {
-        SimpleGUI::Headline(U"識別名", Vec2{this->getPanelX() + 10, y});
-        y += 40;
+        y = this->drawSectionHeader(U"識別子", y);
         
         if (m_metadataTextEdit.text != this->m_service->getMetadata())
         {
@@ -408,6 +453,7 @@ namespace Jam::Presentation::Editor
         
         y += 45;
         
+        y += this->getSmallSpacing();
         return y;
     }
     
@@ -417,8 +463,7 @@ namespace Jam::Presentation::Editor
         if (selectedObjects.isEmpty())
             return y;
             
-        SimpleGUI::Headline(U"選択中", Vec2{this->getPanelX() + 10, y});
-        y += 25;
+        y = this->drawSectionHeader(U"選択中", y);
         
         if (selectedObjects.size() == 1)
         {
