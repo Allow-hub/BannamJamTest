@@ -2,6 +2,7 @@
 #include "../Base/EditorServiceBase.h"
 #include "../../../Domain/Editor/StageEditor/StageEditorManager.h"
 #include "../../../Domain/Editor/StageEditor/StageEditorTypes.h"
+#include "../../../Domain/Editor/StageEditor/EditorSettings.h"
 
 namespace Jam::UseCase::Editor
 {
@@ -30,7 +31,7 @@ namespace Jam::UseCase::Editor
     class StageEditorService : public EditorServiceBase<Domain::Editor::StageEditorManager>
     {
     private:
-        Domain::Editor::StageEditorSettings m_settings;
+        Domain::Editor::EditorSettings m_settings;
         EditorState m_state;
         
         Optional<Vec2> m_dragStart;
@@ -49,8 +50,8 @@ namespace Jam::UseCase::Editor
         StageEditorService() = default;
         
         // ===== 設定アクセス =====
-        const Domain::Editor::StageEditorSettings& getSettings() const { return m_settings; }
-        Domain::Editor::StageEditorSettings& getSettings() { return m_settings; }
+        const Domain::Editor::EditorSettings& getSettings() const { return m_settings; }
+        Domain::Editor::EditorSettings& getSettings() { return m_settings; }
         
         // ===== ステージタイプ設定 =====
         void setCurrentStageType(Domain::Stage::StageType type);

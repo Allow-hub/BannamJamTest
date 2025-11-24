@@ -1,11 +1,10 @@
 ﻿#pragma once
 #include "../Base/EditorServiceBase.h"
 #include "../../../Domain/Editor/EnemyEditor/EnemyEditorManager.h"
-#include "../../../Domain/Editor/StageEditor/StageEditorTypes.h"
+#include "../../../Domain/Editor/StageEditor/EditorSettings.h"
 
 namespace Jam::UseCase::Editor
 {
-    // 敵エディタの状態
     struct EnemyEditorState
     {
         Domain::Editor::EnemyType enemyType = Domain::Editor::EnemyType::LittleDevil;
@@ -17,28 +16,24 @@ namespace Jam::UseCase::Editor
         double moveSpeedFactor = 1.2;
     };
     
-    // 敵エディタサービス
     class EnemyEditorService : public EditorServiceBase<Domain::Editor::EnemyEditorManager>
     {
     private:
-        Domain::Editor::StageEditorSettings m_settings;
+        Domain::Editor::EditorSettings m_settings;
         EnemyEditorState m_state;
         
     public:
         EnemyEditorService() = default;
         
-        // ===== 設定アクセス =====
+        // ===== 險ｭ螳壹い繧ｯ繧ｻ繧ｹ =====
+        const Domain::Editor::EditorSettings& getSettings() const { return m_settings; }
+        Domain::Editor::EditorSettings& getSettings() { return m_settings; }
         
-        const Domain::Editor::StageEditorSettings& getSettings() const { return m_settings; }
-        Domain::Editor::StageEditorSettings& getSettings() { return m_settings; }
-        
-        // ===== 敵タイプ設定 =====
-        
+        // ===== 謨ｵ繧ｿ繧､繝苓ｨｭ螳・=====
         void setEnemyType(Domain::Editor::EnemyType type) { m_state.enemyType = type; }
         Domain::Editor::EnemyType getEnemyType() const { return m_state.enemyType; }
         
-        // ===== AI設定 =====
-        
+        // ===== AI險ｭ螳・=====
         void setPatrolDistance(double distance) { m_state.patrolDistance = distance; }
         void setPatrolWaitTime(double time) { m_state.patrolWaitTime = time; }
         void setFoundDistance(double distance) { m_state.foundDistance = distance; }
@@ -53,8 +48,7 @@ namespace Jam::UseCase::Editor
         double getLoseRange() const { return m_state.loseRange; }
         double getMoveSpeedFactor() const { return m_state.moveSpeedFactor; }
         
-        // ===== 入力処理（オーバーライド） =====
-        
+        // ===== 蜈･蜉帛・逅・ｼ医が繝ｼ繝舌・繝ｩ繧､繝会ｼ・=====
         void handlePlacement(const Vec2& mousePos) override;
         void handleSelection(const Vec2& mousePos) override;
         void handleDeletion(const Vec2& mousePos) override;

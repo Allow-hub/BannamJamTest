@@ -1,5 +1,6 @@
 ﻿#include "StageEditorRenderer.h"
 #include "../../TextureManager.h"
+#include "../Utilities/EditorTextInputUtil.h"
 
 namespace Jam::Presentation::Editor
 {
@@ -159,6 +160,26 @@ namespace Jam::Presentation::Editor
         }
         y += 40;
         
+        // 記憶のかけらボタン（実装中のためコメントアウト）
+        /*
+        const bool isFlagmentSelected = (currentOtherType == UseCase::Editor::OtherObjectType::FlagmentMemory);
+        
+        if (SimpleGUI::Button(U"記憶のかけら", Vec2{this->getPanelX() + 10, y}, 270))
+        {
+            if (isFlagmentSelected)
+            {
+                // 既に選択されている場合は解除
+                this->m_service->setOtherObjectType(UseCase::Editor::OtherObjectType::None);
+            }
+            else
+            {
+                // 選択状態にする
+                this->m_service->setOtherObjectType(UseCase::Editor::OtherObjectType::FlagmentMemory);
+            }
+        }
+        y += 40;
+        */
+        
         y += this->getSmallSpacing();
         return y;
     }
@@ -232,87 +253,31 @@ namespace Jam::Presentation::Editor
             y += 40;
         }
         
-        // 距離設定（スライダー + テキスト入力）
+        // 距離設定 - EditorTextInputUtilを使用
         double distance = this->m_service->getMovementDistance();
-        if (SimpleGUI::Slider(U"距離: {:.0f}"_fmt(distance), distance, 50.0, 1000.0, Vec2{this->getPanelX() + 10, y}, 100, 160))
-        {
-            this->m_service->setMovementDistance(distance);
-            m_distanceTextEdit.text = Format(static_cast<int>(distance));
-        }
-        y += 35;
+        int distanceInt = static_cast<int>(distance);
+        y = EditorTextInputUtil::drawIntSlider(
+            U"距離",
+            distanceInt,
+            50, 1000,
+            Vec2{this->getPanelX() + 10, static_cast<double>(y)},
+            m_distanceTextEdit
+        );
+        this->m_service->setMovementDistance(static_cast<double>(distanceInt));
         
-        // テキスト入力フィールド
-        if (m_distanceTextEdit.text.isEmpty() || !m_distanceTextEdit.active)
-        {
-            m_distanceTextEdit.text = Format(static_cast<int>(this->m_service->getMovementDistance()));
-        }
         
-        const int distanceTextY = y;
-        if (SimpleGUI::TextBox(m_distanceTextEdit, Vec2{this->getPanelX() + 10, y}, 120))
-        {
-            if (auto value = ParseOpt<double>(m_distanceTextEdit.text))
-            {
-                this->m_service->setMovementDistance(Clamp(*value, 50.0, 1000.0));
-            }
-        }
-        
-        if (m_distanceTextEdit.active)
-        {
-            if (KeyEnter.down() || KeyEscape.down())
-            {
-                m_distanceTextEdit.active = false;
-            }
-            else if (MouseL.down())
-            {
-                const RectF textBoxRect(this->getPanelX() + 10, distanceTextY, 120, 36);
-                if (!textBoxRect.contains(Cursor::Pos()))
-                {
-                    m_distanceTextEdit.active = false;
-                }
-            }
-        }
-        y += 40;
-        
-        // 速度設定（スライダー + テキスト入力）
+        // 速度設定 - EditorTextInputUtilを使用
         double speed = this->m_service->getMovementSpeed();
-        if (SimpleGUI::Slider(U"速度: {:.0f}"_fmt(speed), speed, 10.0, 500.0, Vec2{this->getPanelX() + 10, y}, 100, 160))
-        {
-            this->m_service->setMovementSpeed(speed);
-            m_speedTextEdit.text = Format(static_cast<int>(speed));
-        }
-        y += 35;
+        int speedInt = static_cast<int>(speed);
+        y = EditorTextInputUtil::drawIntSlider(
+            U"速度",
+            speedInt,
+            10, 500,
+            Vec2{this->getPanelX() + 10, static_cast<double>(y)},
+            m_speedTextEdit
+        );
+        this->m_service->setMovementSpeed(static_cast<double>(speedInt));
         
-        // テキスト入力フィールド
-        if (m_speedTextEdit.text.isEmpty() || !m_speedTextEdit.active)
-        {
-            m_speedTextEdit.text = Format(static_cast<int>(this->m_service->getMovementSpeed()));
-        }
-        
-        const int speedTextY = y;
-        if (SimpleGUI::TextBox(m_speedTextEdit, Vec2{this->getPanelX() + 10, y}, 120))
-        {
-            if (auto value = ParseOpt<double>(m_speedTextEdit.text))
-            {
-                this->m_service->setMovementSpeed(Clamp(*value, 10.0, 500.0));
-            }
-        }
-        
-        if (m_speedTextEdit.active)
-        {
-            if (KeyEnter.down() || KeyEscape.down())
-            {
-                m_speedTextEdit.active = false;
-            }
-            else if (MouseL.down())
-            {
-                const RectF textBoxRect(this->getPanelX() + 10, speedTextY, 120, 36);
-                if (!textBoxRect.contains(Cursor::Pos()))
-                {
-                    m_speedTextEdit.active = false;
-                }
-            }
-        }
-        y += 40;
         
         bool loopMovement = this->m_service->getLoopMovement();
         if (SimpleGUI::CheckBox(loopMovement, U"ループ移動", Vec2{this->getPanelX() + 10, y}, 270))
@@ -333,46 +298,18 @@ namespace Jam::Presentation::Editor
             
         y = this->drawSectionHeader(U"ダメージ設定", y);
         
-        // ダメージ設定（スライダー + テキスト入力）
+        // ダメージ設定 - EditorTextInputUtilを使用
         double damageAmount = this->m_service->getDamageAmount();
-        if (SimpleGUI::Slider(U"ダメージ: {:.0f}"_fmt(damageAmount), damageAmount, 1.0, 50.0, Vec2{this->getPanelX() + 10, y}, 100, 160))
-        {
-            this->m_service->setDamageAmount(Math::Round(damageAmount));
-            m_damageTextEdit.text = Format(static_cast<int>(damageAmount));
-        }
-        y += 35;
+        int damageInt = static_cast<int>(damageAmount);
+        y = EditorTextInputUtil::drawIntSlider(
+            U"ダメージ",
+            damageInt,
+            1, 50,
+            Vec2{this->getPanelX() + 10, static_cast<double>(y)},
+            m_damageTextEdit
+        );
+        this->m_service->setDamageAmount(Math::Round(static_cast<double>(damageInt)));
         
-        // テキスト入力フィールド
-        if (m_damageTextEdit.text.isEmpty() || !m_damageTextEdit.active)
-        {
-            m_damageTextEdit.text = Format(static_cast<int>(this->m_service->getDamageAmount()));
-        }
-        
-        const int damageTextY = y;
-        if (SimpleGUI::TextBox(m_damageTextEdit, Vec2{this->getPanelX() + 10, y}, 120))
-        {
-            if (auto value = ParseOpt<double>(m_damageTextEdit.text))
-            {
-                this->m_service->setDamageAmount(Math::Round(Clamp(*value, 1.0, 50.0)));
-            }
-        }
-        
-        if (m_damageTextEdit.active)
-        {
-            if (KeyEnter.down() || KeyEscape.down())
-            {
-                m_damageTextEdit.active = false;
-            }
-            else if (MouseL.down())
-            {
-                const RectF textBoxRect(this->getPanelX() + 10, damageTextY, 120, 36);
-                if (!textBoxRect.contains(Cursor::Pos()))
-                {
-                    m_damageTextEdit.active = false;
-                }
-            }
-        }
-        y += 40;
         
         y += this->getSmallSpacing();
         return y;
@@ -380,7 +317,6 @@ namespace Jam::Presentation::Editor
     
     int StageEditorRenderer::drawMetadataEdit(int y) const
     {
-        // 識別子機能は削除されました
         return y;
     }
     
