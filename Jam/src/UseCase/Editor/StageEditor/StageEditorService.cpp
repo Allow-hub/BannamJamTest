@@ -5,8 +5,32 @@ namespace Jam::UseCase::Editor
     void StageEditorService::setCurrentStageType(Domain::Stage::StageType type)
     {
         m_state.stageType = type;
+        m_state.otherObjectType = OtherObjectType::None;  // ステージタイプを選択したらその他オブジェクトの選択を解除
         updateGroundSideForType(type);
         updateMetadataForType(type);
+    }
+    
+    void StageEditorService::setOtherObjectType(OtherObjectType type)
+    {
+        m_state.otherObjectType = type;
+        
+        // その他オブジェクトを選択したらステージタイプをNormalに戻す（配置用の一時的な設定）
+        if (type != OtherObjectType::None)
+        {
+            m_state.stageType = Domain::Stage::StageType::Normal;
+            m_state.groundSide = Domain::Stage::GroundSide::None;
+            
+            if (type == OtherObjectType::Goal)
+            {
+                m_state.metadata = U"goal";
+                m_state.texturePath = U"Assets/Stage/goal.png";
+            }
+            else if (type == OtherObjectType::FlagmentMemory)
+            {
+                m_state.metadata = U"flagment";
+                m_state.texturePath = U"Assets/FlagmentMemory.png";
+            }
+        }
     }
     
     void StageEditorService::setMovementDistance(double distance)
@@ -77,6 +101,56 @@ namespace Jam::UseCase::Editor
         const int gridSize = m_settings.getGridSize();
         Vec2 snappedPos = snapToGrid(mousePos);
         
+        // ゴールまたは記憶のかけらの場合はクリックで固定サイズ配置
+        if (m_state.otherObjectType == OtherObjectType::Goal || 
+            m_state.otherObjectType == OtherObjectType::FlagmentMemory)
+        {
+            if (MouseL.down())
+            {
+                // 固定サイズで配置
+                RectF rect;
+                if (m_state.otherObjectType == OtherObjectType::Goal)
+                {
+                    // ゴールのサイズ: 200x200
+                    rect = RectF{snappedPos.x - 100, snappedPos.y - 100, 200, 200};
+                }
+                else // FlagmentMemory
+                {
+                    // 記憶のかけらのサイズ: 150x150
+                    rect = RectF{snappedPos.x - 75, snappedPos.y - 75, 150, 150};
+                }
+                
+                if (!m_manager.hasOverlappingObject(rect))
+                {
+                    auto obj = createStageObjectFromCurrent(rect);
+                    
+                    // 記憶のかけらの配置数制限（3つまで）
+                    if (m_state.otherObjectType == OtherObjectType::FlagmentMemory)
+                    {
+                        // 既存の記憶のかけらを検索
+                        Array<size_t> flagmentIds;
+                        for (const auto& existingObj : m_manager.getAllObjects())
+                        {
+                            if (existingObj.id && existingObj.data.metadata == U"flagment")
+                            {
+                                flagmentIds.push_back(*existingObj.id);
+                            }
+                        }
+                        
+                        // 3つ以上ある場合は最も古い（最初の）ものを削除
+                        if (flagmentIds.size() >= 3)
+                        {
+                            m_manager.removeObject(flagmentIds[0]);
+                        }
+                    }
+                    
+                    m_manager.addObject(obj);
+                }
+            }
+            return;
+        }
+        
+        // 通常のステージオブジェクトの場合はドラッグで配置
         if (MouseL.down()) {
             m_dragStart = snappedPos;
             m_currentDragPos = snappedPos;

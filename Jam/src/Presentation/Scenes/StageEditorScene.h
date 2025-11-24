@@ -277,6 +277,19 @@ namespace Jam::Presentation::Scenes
                 }
             }
             
+            // Ctrl+Aで全選択
+            if (KeyControl.pressed() && KeyA.down())
+            {
+                m_stageEditorService.getManager().clearSelection();
+                for (const auto& obj : m_stageEditorService.getManager().getAllObjects())
+                {
+                    if (obj.id)
+                    {
+                        m_stageEditorService.getManager().selectObject(*obj.id, true);
+                    }
+                }
+            }
+            
             if (KeyControl.pressed() && KeyS.down())
             {
                 if (const auto path = Dialog::SaveFile({ FileFilter::JSON() }, U"Assets/Stage/"))
@@ -382,6 +395,19 @@ namespace Jam::Presentation::Scenes
                 for (auto selectedId : selectedIds)
                 {
                     m_enemyEditorService.getManager().removeObject(selectedId);
+                }
+            }
+            
+            // Ctrl+Aで全選択
+            if (KeyControl.pressed() && KeyA.down())
+            {
+                m_enemyEditorService.getManager().clearSelection();
+                for (const auto& obj : m_enemyEditorService.getManager().getAllObjects())
+                {
+                    if (obj.id)
+                    {
+                        m_enemyEditorService.getManager().selectObject(*obj.id, true);
+                    }
                 }
             }
             

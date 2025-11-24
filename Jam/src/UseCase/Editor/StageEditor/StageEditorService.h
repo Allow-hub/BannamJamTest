@@ -8,6 +8,13 @@
 
 namespace Jam::UseCase::Editor
 {
+    enum class OtherObjectType
+    {
+        None,
+        Goal,
+        FlagmentMemory
+    };
+    
     struct EditorState
     {
         Domain::Stage::StageType stageType = Domain::Stage::StageType::Normal;
@@ -20,6 +27,7 @@ namespace Jam::UseCase::Editor
         String metadata = U"普通の床";
         String texturePath = U"Assets/Stage/normal_stage.png";  // テクスチャファイルのパス（デフォルト値を設定）
         bool autoCalculateDistance = true;  // 移動距離を自動計算するか
+        OtherObjectType otherObjectType = OtherObjectType::None;  // その他のオブジェクトの種類
     };
     
     class StageEditorService : public EditorServiceBase<Domain::Editor::StageEditorManager>
@@ -71,6 +79,10 @@ namespace Jam::UseCase::Editor
         const String& getMetadata() const { return m_state.metadata; }
         const String& getTexturePath() const { return m_state.texturePath; }
         bool getAutoCalculateDistance() const { return m_state.autoCalculateDistance; }
+        
+        // ===== その他のオブジェクト設定 =====
+        void setOtherObjectType(OtherObjectType type);
+        OtherObjectType getOtherObjectType() const { return m_state.otherObjectType; }
         
         // ===== テクスチャ操作 =====
         void applyTextureToSelected(const String& texturePath);

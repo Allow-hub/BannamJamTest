@@ -35,7 +35,9 @@ namespace Jam::Presentation::Editor
     {
         y = this->drawSectionHeader(U"ステージタイプ", y);
         
-        const String currentTypeName = getStageTypeName(this->m_service->getCurrentStageType());
+        const auto currentStageType = this->m_service->getCurrentStageType();
+        
+        const String currentTypeName = getStageTypeName(currentStageType);
         if (SimpleGUI::Button(currentTypeName, Vec2{this->getPanelX() + 10, y}, 270))
         {
             m_isStageTypeDropdownOpen = !m_isStageTypeDropdownOpen;
@@ -76,7 +78,6 @@ namespace Jam::Presentation::Editor
         
         // StageTypeに応じて利用可能なテクスチャをフィルタリング
         Array<std::pair<String, String>> textures;
-        textures.push_back({U"なし", U""});
         
         switch (currentStageType) {
             case Domain::Stage::StageType::Normal:
@@ -98,7 +99,8 @@ namespace Jam::Presentation::Editor
                 break;
         }
         
-        String currentTextureName = U"なし";
+        // デフォルトテクスチャ名を設定（最初のテクスチャまたは空）
+        String currentTextureName = textures.empty() ? U"テクスチャなし" : textures[0].first;
         const String& currentPath = this->m_service->getTexturePath();
         for (const auto& [name, path] : textures)
         {
@@ -150,28 +152,43 @@ namespace Jam::Presentation::Editor
     {
         y = this->drawSectionHeader(U"その他のオブジェクト", y);
         
-        if (SimpleGUI::Button(U"ゴールを配置", Vec2{this->getPanelX() + 10, y}, 270))
-        {
-            // ゴールを配置（カメラ中心に）
-            Vec2 goalPos = this->m_service->getCamera().getCenter();
-            this->m_service->setGoalPosition(goalPos);
-            this->m_service->setGoalSize(Vec2{50, 50});
-        }
-        y += 35;
+        const auto currentOtherType = this->m_service->getOtherObjectType();
         
-        if (SimpleGUI::Button(U"記憶のかけらを配置", Vec2{this->getPanelX() + 10, y}, 270))
+        // ゴールボタン
+        const bool isGoalSelected = (currentOtherType == UseCase::Editor::OtherObjectType::Goal);
+        
+        if (SimpleGUI::Button(U"ゴール", Vec2{this->getPanelX() + 10, y}, 270))
         {
-            // 記憶のかけらを配置（カメラ中心に）
-            Vec2 flagmentPos = this->m_service->getCamera().getCenter();
-            Domain::Stage::StageObject flagmentObj;
-            flagmentObj.rect = RectF{flagmentPos.x - 25, flagmentPos.y - 25, 50, 50};
-            flagmentObj.type = Domain::Stage::StageType::Normal;
-            flagmentObj.metadata = U"記憶のかけら";
-            flagmentObj.texturePath = U"Assets/FlagmentMemory.png";
-            flagmentObj.groundSide = Domain::Stage::GroundSide::None;
-            this->m_service->getManager().addObject(flagmentObj);
+            if (isGoalSelected)
+            {
+                // 既に選択されている場合は解除
+                this->m_service->setOtherObjectType(UseCase::Editor::OtherObjectType::None);
+            }
+            else
+            {
+                // 選択状態にする
+                this->m_service->setOtherObjectType(UseCase::Editor::OtherObjectType::Goal);
+            }
         }
-        y += 35;
+        y += 40;
+        
+        // 記憶のかけらボタン
+        const bool isFlagmentSelected = (currentOtherType == UseCase::Editor::OtherObjectType::FlagmentMemory);
+        
+        if (SimpleGUI::Button(U"記憶のかけら", Vec2{this->getPanelX() + 10, y}, 270))
+        {
+            if (isFlagmentSelected)
+            {
+                // 既に選択されている場合は解除
+                this->m_service->setOtherObjectType(UseCase::Editor::OtherObjectType::None);
+            }
+            else
+            {
+                // 選択状態にする
+                this->m_service->setOtherObjectType(UseCase::Editor::OtherObjectType::FlagmentMemory);
+            }
+        }
+        y += 40;
         
         y += this->getSmallSpacing();
         return y;
