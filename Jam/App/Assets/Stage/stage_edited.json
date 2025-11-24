@@ -236,6 +236,18 @@
       ],
       "texturePath": "Assets/Stage/normal_stage.png",
       "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "普通の床",
+      "rect": [
+        50,
+        0,
+        100,
+        100
+      ],
+      "texturePath": "Assets/Stage/normal_stage2.png",
+      "type": "normal"
     }
   ],
   "playerSpawn": [

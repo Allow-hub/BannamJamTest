@@ -1,91 +1,34 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
 #include <unordered_map>
+#include <memory>
 #include "../Domain/Enemy/EnemyBase.h"
 #include "Animator.h"
-#include "AnimatorLoader.h"
 
 namespace Jam::Presentation
 {
+	/// @brief 敵オブジェクトとアニメーターを管理するクラス
 	class EnemyManager
 	{
 	public:
+		/// @brief 敵を追加する
+		/// @param enemy 追加するEnemyオブジェクト
+		/// @param animJsonPath アニメーター設定JSONパス
+		/// @return 割り当てられたID
 		int AddEnemy(const std::shared_ptr<Jam::Domain::Enemy::EnemyBase>& enemy,
-					 const s3d::FilePath& animJsonPath)
-		{
-			int id = m_nextID++;
-			m_enemies[id] = enemy;
+					 const s3d::FilePath& animJsonPath);
 
-			Animator animator;
-			if (!AnimatorLoader::LoadAnimatorFromJSON(animator, animJsonPath))
-			{
-				//Print << U"[EnemyManager] ⚠ Failed to load animator for enemy ID " << id;
-			}
-			m_animators[id] = animator;
+		/// @brief 全敵の状態を更新する
+		/// @param deltaTime フレーム間の経過時間
+		void update(double deltaTime);
 
-			// :small_blue_diamond: Enemy → Animator イベント接続
-			enemy->setOnAnimationChange([this, id](const s3d::String& animName) {
-				auto it = m_animators.find(id);
-				if (it != m_animators.end())
-				{
-					it->second.SetBoolExclusive(animName);
-				}
-			});
-			return id;
-		}
+		/// @brief 全敵を描画する
+		void draw();
 
-		void update(double deltaTime)
-		{
-			for (auto& [id, enemy] : m_enemies)
-			{
-				if (!enemy->isAlive()) continue;
-				enemy->update(deltaTime);
-
-				auto it = m_animators.find(id);
-				if (it != m_animators.end())
-				{
-					it->second.Update(deltaTime);
-				}
-			}
-		}
-
-		void draw()
-		{
-			for (auto& [id, enemy] : m_enemies)
-			{
-				if (!enemy->isAlive())
-				{
-					continue;
-				}
-				//Animationはイベントを送る形をとるが敵のアイテム系はそれぞれが描画
-				enemy->draw();//単体オブジェクトは他に描画を任せたが移植が住んでない→Eyeのビーム
-				auto body = enemy->getPhysicsBody();
-				//body->drawFrame(2.0, Palette::Red);
-				if (!body)
-				{
-					continue;
-				}
-
-				auto pos = body->getPosition();
-
-				auto it = m_animators.find(id);
-				if (it != m_animators.end())
-				{
-					it->second.SetFacingLeft(enemy->isFaceLeft());
-					it->second.Draw(pos);
-				}
-				else
-				{
-					Console << U"[EnemyManager] ⚠ No animator found for enemy " << id;
-					// フォールバック: 赤い円を描画
-					Circle(pos, 25).draw(Palette::Red);
-				}
-			}
-		}
-
-		Animator& getAnimator(int id) {
-			return m_animators.at(id);
-		}
+		/// @brief 指定IDのAnimatorを取得
+		/// @param id 敵ID
+		/// Animatorへの参照
+		Animator& getAnimator(int id);
 
 	private:
 		int m_nextID = 0;
