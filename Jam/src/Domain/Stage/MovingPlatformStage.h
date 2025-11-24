@@ -3,19 +3,19 @@
 
 namespace Jam::Domain::Stage {
     /**
-     * 蜍輔￥蠎・
-     * 讓ｪ遘ｻ蜍輔∫ｸｦ遘ｻ蜍輔∝・驕句虚縺ｮ3遞ｮ鬘槭・蜍穂ｽ懊ヱ繧ｿ繝ｼ繝ｳ繧呈戟縺､
+     * 動く床
+     * 横移動、縦移動、円運動の3種類の動作パターンを持つ
      */
     class MovingPlatformStage : public IStage {
     private:
-        RectF m_baseRect;              // 蝓ｺ貅也洸蠖｢
-        Vec2 m_baseCenter;             // 蝓ｺ貅紋ｸｭ蠢・ｽ咲ｽｮ
-        Vec2 m_currentOffset;          // 迴ｾ蝨ｨ縺ｮ繧ｪ繝輔そ繝・ヨ
-        MovementType m_movementType;   // 遘ｻ蜍輔ち繧､繝・
-        double m_movementSpeed;        // 遘ｻ蜍暮溷ｺｦ・医ヴ繧ｯ繧ｻ繝ｫ/遘抵ｼ・
-        double m_movementDistance;     // 遘ｻ蜍戊ｷ晞屬縺ｾ縺溘・蜊雁ｾ・
-        bool m_loopMovement;           // 繝ｫ繝ｼ繝励☆繧九°
-        double m_elapsedTime;          // 邨碁℃譎る俣
+        RectF m_baseRect;              // 基準矩形
+        Vec2 m_baseCenter;             // 基準中心位置
+        Vec2 m_currentOffset;          // 現在のオフセット
+        MovementType m_movementType;   // 移動タイプ
+        double m_movementSpeed;        // 移動速度(ピクセル/秒)
+        double m_movementDistance;     // 移動距離または半径
+        bool m_loopMovement;           // ループするか
+        double m_elapsedTime;          // 経過時間
         
     public:
         MovingPlatformStage(const StageObject& obj)
@@ -46,7 +46,10 @@ namespace Jam::Domain::Stage {
         }
         
         RectF getRenderRect() const override {
-            return RectF(m_baseRect.pos + m_currentOffset, m_baseRect.size);
+            // 🔧 修正: 中心基準でオフセットを適用してから、左上座標に変換
+            Vec2 currentCenter = m_baseCenter + m_currentOffset;
+            Vec2 topLeft = currentCenter - m_baseRect.size / 2.0;
+            return RectF(topLeft, m_baseRect.size);
         }
         
         StageType getType() const override {
@@ -58,7 +61,7 @@ namespace Jam::Domain::Stage {
         }
         
     private:
-        // 讓ｪ遘ｻ蜍輔・譖ｴ譁ｰ
+        // 横移動の更新
         void updateHorizontal(double deltaTime) {
             double progress = (m_movementSpeed * m_elapsedTime) / m_movementDistance;
             
@@ -75,7 +78,7 @@ namespace Jam::Domain::Stage {
             m_currentOffset.y = 0;
         }
         
-        // 邵ｦ遘ｻ蜍輔・譖ｴ譁ｰ
+        // 縦移動の更新
         void updateVertical(double deltaTime) {
             double progress = (m_movementSpeed * m_elapsedTime) / m_movementDistance;
             
@@ -92,7 +95,7 @@ namespace Jam::Domain::Stage {
             m_currentOffset.y = progress * m_movementDistance;
         }
         
-        // 蜀・°蜍輔・譖ｴ譁ｰ
+        // 円運動の更新
         void updateCircular(double deltaTime) {
             double circumference = 2.0 * Math::Pi * m_movementDistance;
             double angle = (m_movementSpeed * m_elapsedTime / circumference) * 2.0 * Math::Pi;

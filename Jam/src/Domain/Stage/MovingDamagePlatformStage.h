@@ -93,7 +93,9 @@ namespace Jam::Domain::Stage {
         }
         
         RectF getRenderRect() const override {
-            return RectF(m_baseRect.pos + m_currentOffset, m_baseRect.size);
+            Vec2 currentCenter = m_baseRect.center() + m_currentOffset;
+            Vec2 topLeft = currentCenter - m_baseRect.size / 2.0;
+            return RectF(topLeft, m_baseRect.size);
         }
         
         StageType getType() const override {

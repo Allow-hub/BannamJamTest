@@ -142,7 +142,8 @@ namespace Jam::Presentation::Editor
         
         const auto currentOtherType = this->m_service->getOtherObjectType();
         
-        // ゴールボタン
+        // ゴールボタン（実装中のためコメントアウト）
+        /*
         const bool isGoalSelected = (currentOtherType == UseCase::Editor::OtherObjectType::Goal);
         
         if (SimpleGUI::Button(U"ゴール", Vec2{this->getPanelX() + 10, y}, 270))
@@ -159,6 +160,7 @@ namespace Jam::Presentation::Editor
             }
         }
         y += 40;
+        */
         
         // 記憶のかけらボタン（実装中のためコメントアウト）
         /*
