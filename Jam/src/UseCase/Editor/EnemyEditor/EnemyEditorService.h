@@ -25,15 +25,15 @@ namespace Jam::UseCase::Editor
     public:
         EnemyEditorService() = default;
         
-        // ===== 險ｭ螳壹い繧ｯ繧ｻ繧ｹ =====
+        // ===== 設定アクセス =====
         const Domain::Editor::EditorSettings& getSettings() const { return m_settings; }
         Domain::Editor::EditorSettings& getSettings() { return m_settings; }
         
-        // ===== 謨ｵ繧ｿ繧､繝苓ｨｭ螳・=====
+        // ===== 敵タイプ設定 =====
         void setEnemyType(Domain::Editor::EnemyType type) { m_state.enemyType = type; }
         Domain::Editor::EnemyType getEnemyType() const { return m_state.enemyType; }
         
-        // ===== AI險ｭ螳・=====
+        // ===== AI設定 =====
         void setPatrolDistance(double distance) { m_state.patrolDistance = distance; }
         void setPatrolWaitTime(double time) { m_state.patrolWaitTime = time; }
         void setFoundDistance(double distance) { m_state.foundDistance = distance; }
@@ -48,7 +48,7 @@ namespace Jam::UseCase::Editor
         double getLoseRange() const { return m_state.loseRange; }
         double getMoveSpeedFactor() const { return m_state.moveSpeedFactor; }
         
-        // ===== 蜈･蜉帛・逅・ｼ医が繝ｼ繝舌・繝ｩ繧､繝会ｼ・=====
+        // ===== 入力処理（オーバーライド） =====
         void handlePlacement(const Vec2& mousePos) override;
         void handleSelection(const Vec2& mousePos) override;
         void handleDeletion(const Vec2& mousePos) override;

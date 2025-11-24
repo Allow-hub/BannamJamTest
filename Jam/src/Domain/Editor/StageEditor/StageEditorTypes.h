@@ -9,11 +9,4 @@ namespace Jam::Domain::Editor
         Place,
         Delete
     };
-
-    struct StageEditorConfig {
-        int gridSize = 50;
-        bool snapToGrid = true;
-        bool showGrid = true;
-        double cameraSpeed = 5.0;
-    };
 }

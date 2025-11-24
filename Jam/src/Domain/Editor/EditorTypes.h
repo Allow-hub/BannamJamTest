@@ -2,7 +2,7 @@
 
 namespace Jam::Domain::Editor
 {
-    enum class EditorTarget
+    enum class EditorType
     {
         Stage,
         Enemy

@@ -165,35 +165,5 @@ namespace Jam::Presentation::Editor
         {
             return Max(20, Scene::Height() / 40);
         }
-        
-        // グリッド描画（StageEditor用）
-        void drawGrid(const Camera2D& camera, int gridSize) const
-        {
-            const Vec2 center = camera.getCenter();
-            const double scale = camera.getScale();
-            const double viewWidth = Scene::Width() / scale;
-            const double viewHeight = Scene::Height() / scale;
-            
-            const int startX = static_cast<int>((center.x - viewWidth / 2) / gridSize) - 1;
-            const int endX = static_cast<int>((center.x + viewWidth / 2) / gridSize) + 1;
-            const int startY = static_cast<int>((center.y - viewHeight / 2) / gridSize) - 1;
-            const int endY = static_cast<int>((center.y + viewHeight / 2) / gridSize) + 1;
-            
-            const ColorF gridColor{0.3, 0.3, 0.3, 0.5};
-            
-            for (int x = startX; x <= endX; ++x) {
-                double xPos = x * gridSize;
-                Line{xPos, startY * gridSize, xPos, endY * gridSize}.draw(0.5, gridColor);
-            }
-            
-            for (int y = startY; y <= endY; ++y) {
-                double yPos = y * gridSize;
-                Line{startX * gridSize, yPos, endX * gridSize, yPos}.draw(0.5, gridColor);
-            }
-            
-            // 原点の軸
-            Line{0, startY * gridSize, 0, endY * gridSize}.draw(2.0, Palette::Red);
-            Line{startX * gridSize, 0, endX * gridSize, 0}.draw(2.0, Palette::Green);
-        }
     };
 }

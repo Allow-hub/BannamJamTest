@@ -2,6 +2,7 @@
 #include "../Base/EditorRendererBase.h"
 #include "../../../UseCase/Editor/EnemyEditor/EnemyEditorService.h"
 #include "../../../Domain/Editor/StageEditor/StageEditorManager.h"
+#include "../Utilities/EditorGridUtil.h"
 
 namespace Jam::Presentation::Editor
 {
@@ -34,7 +35,7 @@ namespace Jam::Presentation::Editor
             auto transformer = camera.createTransformer();
             
             // グリッド描画
-            this->drawGrid(camera, this->m_service->getSettings().getGridSize());
+            EditorGridUtil::drawGridWithAxes(camera, this->m_service->getSettings().getGridSize());
             
             // StageEditorManagerからスポーン位置を取得
             Vec2 playerSpawnPos{0, 0};

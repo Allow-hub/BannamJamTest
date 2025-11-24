@@ -15,7 +15,7 @@ namespace Jam::Presentation::Scenes
     class StageEditorScene : public App::Scene
     {
     private:
-        Domain::Editor::EditorTarget m_editorTarget = Domain::Editor::EditorTarget::Stage;
+        Domain::Editor::EditorType m_editorTarget = Domain::Editor::EditorType::Stage;
         
         // 共有カメラコントローラ
         UseCase::Editor::EditorCameraController m_sharedCamera;

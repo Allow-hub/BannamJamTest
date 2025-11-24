@@ -108,24 +108,24 @@ namespace Jam::Presentation::Scenes
         // Editor Target切り替え (Tab or GUI Button)
         if (KeyTab.down())
         {
-            m_editorTarget = (m_editorTarget == Domain::Editor::EditorTarget::Stage) 
-                ? Domain::Editor::EditorTarget::Enemy 
-                : Domain::Editor::EditorTarget::Stage;
+            m_editorTarget = (m_editorTarget == Domain::Editor::EditorType::Stage) 
+                ? Domain::Editor::EditorType::Enemy 
+                : Domain::Editor::EditorType::Stage;
         }
         
         // GUIボタンからの切り替え
-        if (m_editorTarget == Domain::Editor::EditorTarget::Stage && m_stageRenderer.isEditorSwitchRequested())
+        if (m_editorTarget == Domain::Editor::EditorType::Stage && m_stageRenderer.isEditorSwitchRequested())
         {
-            m_editorTarget = Domain::Editor::EditorTarget::Enemy;
+            m_editorTarget = Domain::Editor::EditorType::Enemy;
             m_stageRenderer.resetEditorSwitchRequest();
         }
-        else if (m_editorTarget == Domain::Editor::EditorTarget::Enemy && m_enemyRenderer.isEditorSwitchRequested())
+        else if (m_editorTarget == Domain::Editor::EditorType::Enemy && m_enemyRenderer.isEditorSwitchRequested())
         {
-            m_editorTarget = Domain::Editor::EditorTarget::Stage;
+            m_editorTarget = Domain::Editor::EditorType::Stage;
             m_enemyRenderer.resetEditorSwitchRequest();
         }
         
-        if (m_editorTarget == Domain::Editor::EditorTarget::Stage)
+        if (m_editorTarget == Domain::Editor::EditorType::Stage)
         {
             updateStageEditor();
         }
@@ -430,7 +430,7 @@ namespace Jam::Presentation::Scenes
         Scene::SetBackground(ColorF{0.1, 0.15, 0.25});
         
         // アクティブなエディタのビューとGUIパネルを描画
-        if (m_editorTarget == Domain::Editor::EditorTarget::Stage)
+        if (m_editorTarget == Domain::Editor::EditorType::Stage)
         {
             // ステージエディタの場合、ステージエディタのカメラでグリッド・ステージ・敵を描画
             {

@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../Base/EditorRendererBase.h"
 #include "../../../UseCase/Editor/StageEditor/StageEditorService.h"
+#include "../Utilities/EditorGridUtil.h"
 
 namespace Jam::Presentation::Editor
 {
@@ -25,7 +26,7 @@ namespace Jam::Presentation::Editor
             auto transformer = camera.createTransformer();
             
             // グリッドは常に表示
-            this->drawGrid(camera, this->m_service->getSettings().getGridSize());
+            EditorGridUtil::drawGridWithAxes(camera, this->m_service->getSettings().getGridSize());
             
             drawObjects(camera, this->m_service->getManager().getAllObjects());
             
