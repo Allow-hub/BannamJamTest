@@ -583,18 +583,18 @@ namespace Jam::Presentation::Editor
         const ColorF guideColor = obj.loopMovement ? ColorF{1.0, 0.5, 0.0, 0.8} : ColorF{0.0, 1.0, 1.0, 0.8};
         const double arrowSize = 15.0;
         
-        // ゲーム側の実装に合わせて、基準矩形の左上から移動距離分を計算
+        // ゲーム側の実装に合わせて、床の中心の移動範囲を表示
         // MovingPlatformStageでは m_currentOffset = progress * m_movementDistance (progress: 0.0~1.0)
-        // つまり、baseRect.posから distance分移動する
-        Vec2 basePos = obj.rect.pos;
+        // 実際の床の中心位置 = baseRect.center() + offset
+        // つまり、床の中心が center から center + (distance, 0) または (0, distance) まで移動
         Vec2 startPos, endPos;
         
         switch (obj.movementType)
         {
         case Domain::Stage::MovementType::Horizontal:
-            // 横移動: X座標が basePos.x から basePos.x + distance まで
-            startPos = Vec2{basePos.x, center.y};
-            endPos = Vec2{basePos.x + distance, center.y};
+            // 横移動: 床の中心X座標が center.x から center.x + distance まで
+            startPos = Vec2{center.x, center.y};
+            endPos = Vec2{center.x + distance, center.y};
             
             Line{startPos, endPos}.draw(3.0, guideColor);
             
@@ -615,9 +615,9 @@ namespace Jam::Presentation::Editor
             break;
             
         case Domain::Stage::MovementType::Vertical:
-            // 縦移動: Y座標が basePos.y から basePos.y + distance まで
-            startPos = Vec2{center.x, basePos.y};
-            endPos = Vec2{center.x, basePos.y + distance};
+            // 縦移動: 床の中心Y座標が center.y から center.y + distance まで
+            startPos = Vec2{center.x, center.y};
+            endPos = Vec2{center.x, center.y + distance};
             
             Line{startPos, endPos}.draw(3.0, guideColor);
             
@@ -638,18 +638,18 @@ namespace Jam::Presentation::Editor
             break;
             
         case Domain::Stage::MovementType::Circular:
-            // 円運動: ゲーム側は baseRect.pos を中心に回転
+            // 円運動: 床の中心が center を中心に distance の半径で回転
             // offset = (Cos(angle) * distance, Sin(angle) * distance)
-            // つまり、床の左上座標(basePos)を中心に円運動する
+            // 床の中心位置 = center + offset
             if (obj.loopMovement)
             {
-                Circle{basePos, distance}.drawFrame(2.0, guideColor);
+                Circle{center, distance}.drawFrame(2.0, guideColor);
             }
             else
             {
-                Circle{basePos, distance}.drawFrame(2.0, 0.0, guideColor.withAlpha(0.5));
+                Circle{center, distance}.drawFrame(2.0, 0.0, guideColor.withAlpha(0.5));
                 // 非ループを示すマーカー(初期位置: 右方向)
-                Circle{basePos.movedBy(distance, 0), 5.0}.drawFrame(2.0, guideColor);
+                Circle{center.movedBy(distance, 0), 5.0}.drawFrame(2.0, guideColor);
             }
             break;
         }
