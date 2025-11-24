@@ -270,10 +270,13 @@ namespace Jam::Presentation::Scenes
             // Deleteキーで選択中のオブジェクトを削除
             if (KeyDelete.down())
             {
-                auto selectedIds = m_stageEditorService.getManager().getSelectedIds();
-                for (auto selectedId : selectedIds)
+                auto selectedIndices = m_stageEditorService.getManager().getSelectedIndices();
+                // インデックスを降順にソートして削除（後ろから削除）
+                Array<size_t> indices(selectedIndices.begin(), selectedIndices.end());
+                indices.rsort();
+                for (auto index : indices)
                 {
-                    m_stageEditorService.getManager().removeObject(selectedId);
+                    m_stageEditorService.getManager().removeObject(index);
                 }
             }
             
@@ -281,12 +284,10 @@ namespace Jam::Presentation::Scenes
             if (KeyControl.pressed() && KeyA.down())
             {
                 m_stageEditorService.getManager().clearSelection();
-                for (const auto& obj : m_stageEditorService.getManager().getAllObjects())
+                const auto& objects = m_stageEditorService.getManager().getAllObjects();
+                for (size_t i = 0; i < objects.size(); ++i)
                 {
-                    if (obj.id)
-                    {
-                        m_stageEditorService.getManager().selectObject(*obj.id, true);
-                    }
+                    m_stageEditorService.getManager().selectObject(i, true);
                 }
             }
             
@@ -335,7 +336,11 @@ namespace Jam::Presentation::Scenes
                 return;
             }
             
-            m_enemyEditorService.updateCamera();
+            // テキスト入力中でない場合のみカメラ更新
+            if (!m_enemyRenderer.isTextInputActive())
+            {
+                m_enemyEditorService.updateCamera();
+            }
             
             // Alt押下中はモード切り替えしない（Alt+Tabなどのシステムショートカット対策）
             if (!KeyAlt.pressed())
@@ -391,10 +396,13 @@ namespace Jam::Presentation::Scenes
             // Deleteキーで選択中のオブジェクトを削除
             if (KeyDelete.down())
             {
-                auto selectedIds = m_enemyEditorService.getManager().getSelectedIds();
-                for (auto selectedId : selectedIds)
+                auto selectedIndices = m_enemyEditorService.getManager().getSelectedIndices();
+                // インデックスを降順にソートして削除（後ろから削除）
+                Array<size_t> indices(selectedIndices.begin(), selectedIndices.end());
+                indices.rsort();
+                for (auto index : indices)
                 {
-                    m_enemyEditorService.getManager().removeObject(selectedId);
+                    m_enemyEditorService.getManager().removeObject(index);
                 }
             }
             
@@ -402,12 +410,10 @@ namespace Jam::Presentation::Scenes
             if (KeyControl.pressed() && KeyA.down())
             {
                 m_enemyEditorService.getManager().clearSelection();
-                for (const auto& obj : m_enemyEditorService.getManager().getAllObjects())
+                const auto& objects = m_enemyEditorService.getManager().getAllObjects();
+                for (size_t i = 0; i < objects.size(); ++i)
                 {
-                    if (obj.id)
-                    {
-                        m_enemyEditorService.getManager().selectObject(*obj.id, true);
-                    }
+                    m_enemyEditorService.getManager().selectObject(i, true);
                 }
             }
             

@@ -14,14 +14,14 @@ namespace Jam::UseCase::Editor
     
     void EnemyEditorService::handleSelection(const Vec2& mousePos)
     {
-        auto id = m_manager.findObjectAt(mousePos);
+        auto index = m_manager.findObjectAt(mousePos);
         bool isAdditiveSelect = KeyControl.pressed() || KeyShift.pressed();
         
-        if (id) {
-            if (KeyControl.pressed() && m_manager.getSelectedIds().contains(*id)) {
-                m_manager.deselectObject(*id);
+        if (index) {
+            if (KeyControl.pressed() && m_manager.getSelectedIndices().contains(*index)) {
+                m_manager.deselectObject(*index);
             } else {
-                m_manager.selectObject(*id, isAdditiveSelect);
+                m_manager.selectObject(*index, isAdditiveSelect);
             }
         } else {
             if (!isAdditiveSelect) {

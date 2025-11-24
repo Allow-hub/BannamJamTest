@@ -8,6 +8,25 @@ namespace Jam::UseCase::Editor
         m_state.otherObjectType = OtherObjectType::None;  // ステージタイプを選択したらその他オブジェクトの選択を解除
         updateGroundSideForType(type);
         updateMetadataForType(type);
+        
+        // ステージタイプに応じてデフォルトテクスチャを設定
+        switch (type)
+        {
+        case Domain::Stage::StageType::Normal:
+        case Domain::Stage::StageType::OneWayPlatform:
+            m_state.texturePath = U"Assets/Stage/normal_stage.png";
+            break;
+        case Domain::Stage::StageType::MovingPlatform:
+            m_state.texturePath = U"Assets/Stage/moving_platform.png";
+            break;
+        case Domain::Stage::StageType::DamagePlatform:
+        case Domain::Stage::StageType::MovingDamagePlatform:
+            m_state.texturePath = U"Assets/Stage/damage_Stage.jpg";
+            break;
+        default:
+            m_state.texturePath = U"Assets/Stage/normal_stage.png";
+            break;
+        }
     }
     
     void StageEditorService::setOtherObjectType(OtherObjectType type)
@@ -128,19 +147,20 @@ namespace Jam::UseCase::Editor
                     if (m_state.otherObjectType == OtherObjectType::FlagmentMemory)
                     {
                         // 既存の記憶のかけらを検索
-                        Array<size_t> flagmentIds;
-                        for (const auto& existingObj : m_manager.getAllObjects())
+                        Array<size_t> flagmentIndices;
+                        const auto& objects = m_manager.getAllObjects();
+                        for (size_t i = 0; i < objects.size(); ++i)
                         {
-                            if (existingObj.id && existingObj.data.metadata == U"flagment")
+                            if (objects[i].data.metadata == U"flagment")
                             {
-                                flagmentIds.push_back(*existingObj.id);
+                                flagmentIndices.push_back(i);
                             }
                         }
                         
                         // 3つ以上ある場合は最も古い（最初の）ものを削除
-                        if (flagmentIds.size() >= 3)
+                        if (flagmentIndices.size() >= 3)
                         {
-                            m_manager.removeObject(flagmentIds[0]);
+                            m_manager.removeObject(flagmentIndices[0]);
                         }
                     }
                     
@@ -235,13 +255,13 @@ namespace Jam::UseCase::Editor
             if (dragDistance < 5.0)
             {
                 // クリック選択
-                auto id = m_manager.findObjectAt(mousePos);
+                auto index = m_manager.findObjectAt(mousePos);
                 
-                if (id) {
-                    if (KeyControl.pressed() && m_manager.getSelectedIds().contains(*id)) {
-                        m_manager.deselectObject(*id);
+                if (index) {
+                    if (KeyControl.pressed() && m_manager.getSelectedIndices().contains(*index)) {
+                        m_manager.deselectObject(*index);
                     } else {
-                        m_manager.selectObject(*id, isAdditiveSelect);
+                        m_manager.selectObject(*index, isAdditiveSelect);
                     }
                 } else {
                     if (!isAdditiveSelect) {
@@ -260,11 +280,12 @@ namespace Jam::UseCase::Editor
                     }
                     
                     // 矩形内のオブジェクトをすべて選択
-                    for (const auto& obj : m_manager.getAllObjects())
+                    const auto& objects = m_manager.getAllObjects();
+                    for (size_t i = 0; i < objects.size(); ++i)
                     {
-                        if (obj.id && rect->intersects(obj.data.rect))
+                        if (rect->intersects(objects[i].data.rect))
                         {
-                            m_manager.selectObject(*obj.id, true);
+                            m_manager.selectObject(i, true);
                         }
                     }
                 }
@@ -282,9 +303,12 @@ namespace Jam::UseCase::Editor
             return;
         }
         
-        auto selectedIds = m_manager.getSelectedIds();
-        for (auto selectedId : selectedIds) {
-            m_manager.removeObject(selectedId);
+        auto selectedIndices = m_manager.getSelectedIndices();
+        // インデックスを降順にソートして後ろから削除
+        Array<size_t> indices(selectedIndices.begin(), selectedIndices.end());
+        indices.rsort();
+        for (auto index : indices) {
+            m_manager.removeObject(index);
         }
     }
     
@@ -387,14 +411,15 @@ namespace Jam::UseCase::Editor
     
     void StageEditorService::applyTextureToSelected(const String& texturePath)
     {
-        const auto& selectedIds = m_manager.getSelectedIds();
-        for (const auto& obj : m_manager.getAllObjects())
+        const auto& selectedIndices = m_manager.getSelectedIndices();
+        const auto& objects = m_manager.getAllObjects();
+        for (size_t i = 0; i < objects.size(); ++i)
         {
-            if (obj.id && selectedIds.contains(*obj.id))
+            if (selectedIndices.contains(i))
             {
-                auto newObj = obj.data;
+                auto newObj = objects[i].data;
                 newObj.texturePath = texturePath;
-                m_manager.modifyObject(*obj.id, newObj);
+                m_manager.modifyObject(i, newObj);
             }
         }
     }

@@ -5,8 +5,8 @@ namespace Jam::Domain::Editor
     size_t EnemyEditorManager::addObject(const EnemyObject& enemy)
     {
         EnemyEditorObjectNew editorEnemy(enemy);
-        editorEnemy.id = getNextId();
         
+        size_t newIndex = m_objects.size();
         m_objects.push_back(editorEnemy);
         
         if (!m_isExecutingCommand) {
@@ -16,30 +16,26 @@ namespace Jam::Domain::Editor
             addToHistory(cmd);
         }
         
-        return *editorEnemy.id;
+        return newIndex;
     }
     
-    void EnemyEditorManager::removeObject(size_t id)
+    void EnemyEditorManager::removeObject(size_t index)
     {
-        for (auto it = m_objects.begin(); it != m_objects.end(); ++it) {
-            if (it->id == id) {
-                if (!m_isExecutingCommand) {
-                    EnemyEditorCommandNew cmd;
-                    cmd.type = EnemyEditorCommandNew::Type::Delete;
-                    cmd.object = *it;
-                    addToHistory(cmd);
-                }
-                
-                m_objects.erase(it);
-                m_selectedIds.erase(id);
-                break;
+        if (index < m_objects.size()) {
+            if (!m_isExecutingCommand) {
+                EnemyEditorCommandNew cmd;
+                cmd.type = EnemyEditorCommandNew::Type::Delete;
+                cmd.object = m_objects[index];
+                addToHistory(cmd);
             }
+            
+            removeObjectDirect(index);
         }
     }
     
-    void EnemyEditorManager::modifyObject(size_t id, const EnemyObject& newEnemy)
+    void EnemyEditorManager::modifyObject(size_t index, const EnemyObject& newEnemy)
     {
-        if (auto* obj = findObjectById(id)) {
+        if (auto* obj = findObjectByIndex(index)) {
             if (!m_isExecutingCommand) {
                 EnemyEditorCommandNew cmd;
                 cmd.type = EnemyEditorCommandNew::Type::Modify;
@@ -57,9 +53,9 @@ namespace Jam::Domain::Editor
     {
         constexpr double clickRadius = 20.0;
         
-        for (auto it = m_objects.rbegin(); it != m_objects.rend(); ++it) {
-            if (pos.distanceFrom(it->data.position) < clickRadius) {
-                return it->id;
+        for (size_t i = m_objects.size(); i-- > 0;) {
+            if (pos.distanceFrom(m_objects[i].data.position) < clickRadius) {
+                return i;
             }
         }
         return none;
@@ -111,8 +107,8 @@ namespace Jam::Domain::Editor
     {
         switch (cmd.type) {
         case EnemyEditorCommandNew::Type::Add:
-            if (cmd.object.id) {
-                removeObjectDirect(*cmd.object.id);
+            if (!m_objects.isEmpty()) {
+                m_objects.pop_back();
             }
             break;
             
@@ -121,9 +117,12 @@ namespace Jam::Domain::Editor
             break;
             
         case EnemyEditorCommandNew::Type::Modify:
-            if (cmd.object.id && cmd.oldData) {
-                if (auto* obj = findObjectById(*cmd.object.id)) {
-                    obj->data = *cmd.oldData;
+            if (cmd.oldData) {
+                for (auto& obj : m_objects) {
+                    if (obj.data.position == cmd.object.data.position) {
+                        obj.data = *cmd.oldData;
+                        break;
+                    }
                 }
             }
             break;
@@ -138,15 +137,21 @@ namespace Jam::Domain::Editor
             break;
             
         case EnemyEditorCommandNew::Type::Delete:
-            if (cmd.object.id) {
-                removeObjectDirect(*cmd.object.id);
+            for (size_t i = 0; i < m_objects.size(); ++i) {
+                if (m_objects[i].data.position == cmd.object.data.position) {
+                    removeObjectDirect(i);
+                    break;
+                }
             }
             break;
             
         case EnemyEditorCommandNew::Type::Modify:
-            if (cmd.object.id && cmd.newData) {
-                if (auto* obj = findObjectById(*cmd.object.id)) {
-                    obj->data = *cmd.newData;
+            if (cmd.newData) {
+                for (auto& obj : m_objects) {
+                    if (obj.data.position == cmd.object.data.position) {
+                        obj.data = *cmd.newData;
+                        break;
+                    }
                 }
             }
             break;

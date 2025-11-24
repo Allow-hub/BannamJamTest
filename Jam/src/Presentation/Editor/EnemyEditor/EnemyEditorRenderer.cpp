@@ -76,26 +76,125 @@ namespace Jam::Presentation::Editor
             
         y = this->drawSectionHeader(U"巡回設定", y);
         
+        // 巡回距離
         double patrolDistance = this->m_service->getPatrolDistance();
         if (SimpleGUI::Slider(U"距離: {:.0f}"_fmt(patrolDistance), patrolDistance, 50.0, 500.0, Vec2{this->getPanelX() + 10, y}, 100, 160))
         {
             this->m_service->setPatrolDistance(patrolDistance);
+            m_patrolDistanceTextEdit.text = Format(static_cast<int>(patrolDistance));
         }
-        y += 40;
+        y += 35;
         
+        if (m_patrolDistanceTextEdit.text.isEmpty() || !m_patrolDistanceTextEdit.active)
+        {
+            m_patrolDistanceTextEdit.text = Format(static_cast<int>(this->m_service->getPatrolDistance()));
+        }
+        
+        const int patrolDistanceTextY = y;
+        if (SimpleGUI::TextBox(m_patrolDistanceTextEdit, Vec2{this->getPanelX() + 10, y}, 120))
+        {
+            if (auto value = ParseOpt<double>(m_patrolDistanceTextEdit.text))
+            {
+                this->m_service->setPatrolDistance(Clamp(*value, 50.0, 500.0));
+            }
+        }
+        
+        if (m_patrolDistanceTextEdit.active)
+        {
+            if (KeyEnter.down() || KeyEscape.down())
+            {
+                m_patrolDistanceTextEdit.active = false;
+            }
+            else if (MouseL.down())
+            {
+                const RectF textBoxRect(this->getPanelX() + 10, patrolDistanceTextY, 120, 36);
+                if (!textBoxRect.contains(Cursor::Pos()))
+                {
+                    m_patrolDistanceTextEdit.active = false;
+                }
+            }
+        }
+        y += 45;
+        
+        // 待機時間
         double waitTime = this->m_service->getPatrolWaitTime();
         if (SimpleGUI::Slider(U"待機: {:.1f}s"_fmt(waitTime), waitTime, 0.5, 5.0, Vec2{this->getPanelX() + 10, y}, 100, 160))
         {
             this->m_service->setPatrolWaitTime(waitTime);
+            m_waitTimeTextEdit.text = Format(waitTime, 1);
         }
-        y += 40;
+        y += 35;
         
+        if (m_waitTimeTextEdit.text.isEmpty() || !m_waitTimeTextEdit.active)
+        {
+            m_waitTimeTextEdit.text = Format(this->m_service->getPatrolWaitTime(), 1);
+        }
+        
+        const int waitTimeTextY = y;
+        if (SimpleGUI::TextBox(m_waitTimeTextEdit, Vec2{this->getPanelX() + 10, y}, 120))
+        {
+            if (auto value = ParseOpt<double>(m_waitTimeTextEdit.text))
+            {
+                this->m_service->setPatrolWaitTime(Clamp(*value, 0.5, 5.0));
+            }
+        }
+        
+        if (m_waitTimeTextEdit.active)
+        {
+            if (KeyEnter.down() || KeyEscape.down())
+            {
+                m_waitTimeTextEdit.active = false;
+            }
+            else if (MouseL.down())
+            {
+                const RectF textBoxRect(this->getPanelX() + 10, waitTimeTextY, 120, 36);
+                if (!textBoxRect.contains(Cursor::Pos()))
+                {
+                    m_waitTimeTextEdit.active = false;
+                }
+            }
+        }
+        y += 45;
+        
+        // 発見距離
         double foundDistance = this->m_service->getFoundDistance();
         if (SimpleGUI::Slider(U"発見: {:.0f}"_fmt(foundDistance), foundDistance, 300.0, 1000.0, Vec2{this->getPanelX() + 10, y}, 100, 160))
         {
             this->m_service->setFoundDistance(foundDistance);
+            m_foundDistanceTextEdit.text = Format(static_cast<int>(foundDistance));
         }
-        y += 40;
+        y += 35;
+        
+        if (m_foundDistanceTextEdit.text.isEmpty() || !m_foundDistanceTextEdit.active)
+        {
+            m_foundDistanceTextEdit.text = Format(static_cast<int>(this->m_service->getFoundDistance()));
+        }
+        
+        const int foundDistanceTextY = y;
+        if (SimpleGUI::TextBox(m_foundDistanceTextEdit, Vec2{this->getPanelX() + 10, y}, 120))
+        {
+            if (auto value = ParseOpt<double>(m_foundDistanceTextEdit.text))
+            {
+                this->m_service->setFoundDistance(Clamp(*value, 300.0, 1000.0));
+            }
+        }
+        
+        if (m_foundDistanceTextEdit.active)
+        {
+            if (KeyEnter.down() || KeyEscape.down())
+            {
+                m_foundDistanceTextEdit.active = false;
+            }
+            else if (MouseL.down())
+            {
+                const RectF textBoxRect(this->getPanelX() + 10, foundDistanceTextY, 120, 36);
+                if (!textBoxRect.contains(Cursor::Pos()))
+                {
+                    m_foundDistanceTextEdit.active = false;
+                }
+            }
+        }
+        y += 45;
         
         y += this->getSmallSpacing();
         return y;
@@ -109,26 +208,125 @@ namespace Jam::Presentation::Editor
             
         y = this->drawSectionHeader(U"追跡設定", y);
         
+        // 攻撃範囲
         double attackRange = this->m_service->getAttackRange();
         if (SimpleGUI::Slider(U"攻撃範囲: {:.0f}"_fmt(attackRange), attackRange, 300.0, 1000.0, Vec2{this->getPanelX() + 10, y}, 100, 160))
         {
             this->m_service->setAttackRange(attackRange);
+            m_attackRangeTextEdit.text = Format(static_cast<int>(attackRange));
         }
-        y += 40;
+        y += 35;
         
+        if (m_attackRangeTextEdit.text.isEmpty() || !m_attackRangeTextEdit.active)
+        {
+            m_attackRangeTextEdit.text = Format(static_cast<int>(this->m_service->getAttackRange()));
+        }
+        
+        const int attackRangeTextY = y;
+        if (SimpleGUI::TextBox(m_attackRangeTextEdit, Vec2{this->getPanelX() + 10, y}, 120))
+        {
+            if (auto value = ParseOpt<double>(m_attackRangeTextEdit.text))
+            {
+                this->m_service->setAttackRange(Clamp(*value, 300.0, 1000.0));
+            }
+        }
+        
+        if (m_attackRangeTextEdit.active)
+        {
+            if (KeyEnter.down() || KeyEscape.down())
+            {
+                m_attackRangeTextEdit.active = false;
+            }
+            else if (MouseL.down())
+            {
+                const RectF textBoxRect(this->getPanelX() + 10, attackRangeTextY, 120, 36);
+                if (!textBoxRect.contains(Cursor::Pos()))
+                {
+                    m_attackRangeTextEdit.active = false;
+                }
+            }
+        }
+        y += 45;
+        
+        // 見失い範囲
         double loseRange = this->m_service->getLoseRange();
         if (SimpleGUI::Slider(U"見失い範囲: {:.0f}"_fmt(loseRange), loseRange, 500.0, 1500.0, Vec2{this->getPanelX() + 10, y}, 100, 160))
         {
             this->m_service->setLoseRange(loseRange);
+            m_loseRangeTextEdit.text = Format(static_cast<int>(loseRange));
         }
-        y += 40;
+        y += 35;
         
+        if (m_loseRangeTextEdit.text.isEmpty() || !m_loseRangeTextEdit.active)
+        {
+            m_loseRangeTextEdit.text = Format(static_cast<int>(this->m_service->getLoseRange()));
+        }
+        
+        const int loseRangeTextY = y;
+        if (SimpleGUI::TextBox(m_loseRangeTextEdit, Vec2{this->getPanelX() + 10, y}, 120))
+        {
+            if (auto value = ParseOpt<double>(m_loseRangeTextEdit.text))
+            {
+                this->m_service->setLoseRange(Clamp(*value, 500.0, 1500.0));
+            }
+        }
+        
+        if (m_loseRangeTextEdit.active)
+        {
+            if (KeyEnter.down() || KeyEscape.down())
+            {
+                m_loseRangeTextEdit.active = false;
+            }
+            else if (MouseL.down())
+            {
+                const RectF textBoxRect(this->getPanelX() + 10, loseRangeTextY, 120, 36);
+                if (!textBoxRect.contains(Cursor::Pos()))
+                {
+                    m_loseRangeTextEdit.active = false;
+                }
+            }
+        }
+        y += 45;
+        
+        // 速度倍率
         double speedFactor = this->m_service->getMoveSpeedFactor();
         if (SimpleGUI::Slider(U"速度倍率: {:.1f}"_fmt(speedFactor), speedFactor, 1.0, 2.0, Vec2{this->getPanelX() + 10, y}, 100, 160))
         {
             this->m_service->setMoveSpeedFactor(speedFactor);
+            m_speedFactorTextEdit.text = Format(speedFactor, 1);
         }
-        y += 40;
+        y += 35;
+        
+        if (m_speedFactorTextEdit.text.isEmpty() || !m_speedFactorTextEdit.active)
+        {
+            m_speedFactorTextEdit.text = Format(this->m_service->getMoveSpeedFactor(), 1);
+        }
+        
+        const int speedFactorTextY = y;
+        if (SimpleGUI::TextBox(m_speedFactorTextEdit, Vec2{this->getPanelX() + 10, y}, 120))
+        {
+            if (auto value = ParseOpt<double>(m_speedFactorTextEdit.text))
+            {
+                this->m_service->setMoveSpeedFactor(Clamp(*value, 1.0, 2.0));
+            }
+        }
+        
+        if (m_speedFactorTextEdit.active)
+        {
+            if (KeyEnter.down() || KeyEscape.down())
+            {
+                m_speedFactorTextEdit.active = false;
+            }
+            else if (MouseL.down())
+            {
+                const RectF textBoxRect(this->getPanelX() + 10, speedFactorTextY, 120, 36);
+                if (!textBoxRect.contains(Cursor::Pos()))
+                {
+                    m_speedFactorTextEdit.active = false;
+                }
+            }
+        }
+        y += 45;
         
         y += this->getSmallSpacing();
         return y;

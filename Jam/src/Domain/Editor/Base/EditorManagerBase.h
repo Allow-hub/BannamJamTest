@@ -26,7 +26,6 @@ namespace Jam::Domain::Editor
     {
         using DataType = TData;
         
-        Optional<size_t> id;
         TData data;
         bool isSelected = false;
         
@@ -42,8 +41,7 @@ namespace Jam::Domain::Editor
         Array<TEditorObject> m_objects;
         Array<TCommand> m_commandHistory;
         size_t m_historyIndex = 0;
-        size_t m_nextId = 0;
-        HashSet<size_t> m_selectedIds;
+        HashSet<size_t> m_selectedIndices;
         bool m_isExecutingCommand = false;
         
         static constexpr size_t MAX_HISTORY_SIZE = 100;
@@ -55,47 +53,46 @@ namespace Jam::Domain::Editor
         
         // アクセサ
         const Array<TEditorObject>& getAllObjects() const { return m_objects; }
-        const HashSet<size_t>& getSelectedIds() const { return m_selectedIds; }
+        const HashSet<size_t>& getSelectedIndices() const { return m_selectedIndices; }
         
         Array<const TEditorObject*> getSelectedObjects() const
         {
             Array<const TEditorObject*> result;
-            result.reserve(m_selectedIds.size());
+            result.reserve(m_selectedIndices.size());
             
-            for (const auto& obj : m_objects) {
-                if (obj.id && m_selectedIds.contains(*obj.id)) {
-                    result.push_back(&obj);
+            for (size_t idx : m_selectedIndices) {
+                if (idx < m_objects.size()) {
+                    result.push_back(&m_objects[idx]);
                 }
             }
             return result;
         }
         
         // 選択操作
-        void selectObject(size_t id, bool additive = false)
+        void selectObject(size_t index, bool additive = false)
         {
             if (!additive) {
-                m_selectedIds.clear();
+                m_selectedIndices.clear();
             }
             
-            m_selectedIds.insert(id);
-            updateSelectionStates();
+            if (index < m_objects.size()) {
+                m_selectedIndices.insert(index);
+                updateSelectionStates();
+            }
         }
         
-        void deselectObject(size_t id)
+        void deselectObject(size_t index)
         {
-            m_selectedIds.erase(id);
+            m_selectedIndices.erase(index);
             
-            for (auto& obj : m_objects) {
-                if (obj.id == id) {
-                    obj.isSelected = false;
-                    break;
-                }
+            if (index < m_objects.size()) {
+                m_objects[index].isSelected = false;
             }
         }
         
         void clearSelection()
         {
-            m_selectedIds.clear();
+            m_selectedIndices.clear();
             for (auto& obj : m_objects) {
                 obj.isSelected = false;
             }
@@ -136,15 +133,14 @@ namespace Jam::Domain::Editor
             m_objects.clear();
             m_commandHistory.clear();
             m_historyIndex = 0;
-            m_nextId = 0;
-            m_selectedIds.clear();
+            m_selectedIndices.clear();
         }
         
         // ===== 派生クラスで実装する純粋仮想関数 =====
         
         // オブジェクト操作
         virtual size_t addObject(const typename TEditorObject::DataType& data) = 0;
-        virtual void removeObject(size_t id) = 0;
+        virtual void removeObject(size_t index) = 0;
         
         // ファイルI/O
         virtual void saveToJSON(const FilePath& path) const = 0;
@@ -152,8 +148,6 @@ namespace Jam::Domain::Editor
         
     protected:
         // ===== 派生クラス用のユーティリティ =====
-        
-        size_t getNextId() { return m_nextId++; }
         
         void addToHistory(const TCommand& cmd)
         {
@@ -171,37 +165,44 @@ namespace Jam::Domain::Editor
             }
         }
         
-        void removeObjectDirect(size_t id)
+        void removeObjectDirect(size_t index)
         {
-            for (auto it = m_objects.begin(); it != m_objects.end(); ++it) {
-                if (it->id == id) {
-                    m_objects.erase(it);
-                    m_selectedIds.erase(id);
-                    break;
+            if (index < m_objects.size()) {
+                m_objects.erase(m_objects.begin() + index);
+                
+                // 削除後、インデックスを更新
+                HashSet<size_t> newSelectedIndices;
+                for (size_t selectedIdx : m_selectedIndices) {
+                    if (selectedIdx < index) {
+                        newSelectedIndices.insert(selectedIdx);
+                    } else if (selectedIdx > index) {
+                        newSelectedIndices.insert(selectedIdx - 1);
+                    }
                 }
+                m_selectedIndices = newSelectedIndices;
             }
         }
         
-        TEditorObject* findObjectById(size_t id)
+        TEditorObject* findObjectByIndex(size_t index)
         {
-            for (auto& obj : m_objects) {
-                if (obj.id == id) return &obj;
+            if (index < m_objects.size()) {
+                return &m_objects[index];
             }
             return nullptr;
         }
         
-        const TEditorObject* findObjectById(size_t id) const
+        const TEditorObject* findObjectByIndex(size_t index) const
         {
-            for (const auto& obj : m_objects) {
-                if (obj.id == id) return &obj;
+            if (index < m_objects.size()) {
+                return &m_objects[index];
             }
             return nullptr;
         }
         
         void updateSelectionStates()
         {
-            for (auto& obj : m_objects) {
-                obj.isSelected = obj.id && m_selectedIds.contains(*obj.id);
+            for (size_t i = 0; i < m_objects.size(); ++i) {
+                m_objects[i].isSelected = m_selectedIndices.contains(i);
             }
         }
         

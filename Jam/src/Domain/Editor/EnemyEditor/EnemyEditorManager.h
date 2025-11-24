@@ -33,8 +33,8 @@ namespace Jam::Domain::Editor
         // ===== オブジェクト操作 =====
         
         size_t addObject(const EnemyObject& enemy) override;
-        void removeObject(size_t id) override;
-        void modifyObject(size_t id, const EnemyObject& newEnemy);
+        void removeObject(size_t index) override;
+        void modifyObject(size_t index, const EnemyObject& newEnemy);
         
         // ===== 検索 =====
         

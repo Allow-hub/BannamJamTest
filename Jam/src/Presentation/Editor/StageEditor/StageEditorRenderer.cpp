@@ -131,19 +131,6 @@ namespace Jam::Presentation::Editor
             y += 10;
         }
         
-        // 選択中のオブジェクトがある場合、テクスチャを適用するボタンを表示
-        const auto selectedIds = this->m_service->getManager().getSelectedIds();
-        if (!selectedIds.empty() && !currentPath.isEmpty())
-        {
-            const int selectedCount = static_cast<int>(selectedIds.size());
-            if (SimpleGUI::Button(Format(U"選択中({})に適用", selectedCount), Vec2{this->getPanelX() + 10, y}, 270))
-            {
-                // 選択中の全オブジェクトにテクスチャを適用
-                this->m_service->applyTextureToSelected(currentPath);
-            }
-            y += 40;
-        }
-        
         y += this->getSmallSpacing();
         return y;
     }
@@ -172,7 +159,8 @@ namespace Jam::Presentation::Editor
         }
         y += 40;
         
-        // 記憶のかけらボタン
+        // 記憶のかけらボタン（実装中のためコメントアウト）
+        /*
         const bool isFlagmentSelected = (currentOtherType == UseCase::Editor::OtherObjectType::FlagmentMemory);
         
         if (SimpleGUI::Button(U"記憶のかけら", Vec2{this->getPanelX() + 10, y}, 270))
@@ -189,35 +177,9 @@ namespace Jam::Presentation::Editor
             }
         }
         y += 40;
+        */
         
         y += this->getSmallSpacing();
-        return y;
-    }
-    
-    int StageEditorRenderer::drawGroundSideInfo(int y) const
-    {
-        SimpleGUI::Headline(U"接地面設定", Vec2{this->getPanelX() + 10, y});
-        y += 40;
-        
-        const auto currentType = this->m_service->getCurrentStageType();
-        String groundSideText;
-        if (currentType == Domain::Stage::StageType::Normal || 
-            currentType == Domain::Stage::StageType::MovingPlatform)
-        {
-            groundSideText = U"上下の接地判定";
-        }
-        else if (currentType == Domain::Stage::StageType::OneWayPlatform)
-        {
-            groundSideText = U"上のみの接地判定";
-        }
-        else
-        {
-            groundSideText = U"接地判定なし";
-        }
-        
-        this->m_smallFont(groundSideText).draw(this->getPanelX() + 15, y, ColorF{0.0, 1.0, 0.0});
-        y += 55;
-        
         return y;
     }
     
@@ -438,39 +400,7 @@ namespace Jam::Presentation::Editor
     
     int StageEditorRenderer::drawMetadataEdit(int y) const
     {
-        y = this->drawSectionHeader(U"識別子", y);
-        
-        if (m_metadataTextEdit.text != this->m_service->getMetadata())
-        {
-            m_metadataTextEdit.text = this->m_service->getMetadata();
-        }
-        
-        if (SimpleGUI::TextBox(m_metadataTextEdit, Vec2{this->getPanelX() + 10, y}, 270, 20))
-        {
-            this->m_service->setMetadata(m_metadataTextEdit.text);
-        }
-        
-        // Enterキー、Escキー、またはテキストボックス外をクリックでフォーカスを外す
-        if (m_metadataTextEdit.active)
-        {
-            if (KeyEnter.down() || KeyEscape.down())
-            {
-                m_metadataTextEdit.active = false;
-            }
-            // テキストボックス外をクリックした場合もフォーカスを外す
-            else if (MouseL.down())
-            {
-                const RectF textBoxRect(this->getPanelX() + 10, y, 270, 36);
-                if (!textBoxRect.contains(Cursor::Pos()))
-                {
-                    m_metadataTextEdit.active = false;
-                }
-            }
-        }
-        
-        y += 45;
-        
-        y += this->getSmallSpacing();
+        // 識別子機能は削除されました
         return y;
     }
     
@@ -653,13 +583,18 @@ namespace Jam::Presentation::Editor
         const ColorF guideColor = obj.loopMovement ? ColorF{1.0, 0.5, 0.0, 0.8} : ColorF{0.0, 1.0, 1.0, 0.8};
         const double arrowSize = 15.0;
         
+        // ゲーム側の実装に合わせて、基準矩形の左上から移動距離分を計算
+        // MovingPlatformStageでは m_currentOffset = progress * m_movementDistance (progress: 0.0~1.0)
+        // つまり、baseRect.posから distance分移動する
+        Vec2 basePos = obj.rect.pos;
         Vec2 startPos, endPos;
         
         switch (obj.movementType)
         {
         case Domain::Stage::MovementType::Horizontal:
-            startPos = Vec2{center.x - distance / 2, center.y};
-            endPos = Vec2{center.x + distance / 2, center.y};
+            // 横移動: X座標が basePos.x から basePos.x + distance まで
+            startPos = Vec2{basePos.x, center.y};
+            endPos = Vec2{basePos.x + distance, center.y};
             
             Line{startPos, endPos}.draw(3.0, guideColor);
             
@@ -680,8 +615,9 @@ namespace Jam::Presentation::Editor
             break;
             
         case Domain::Stage::MovementType::Vertical:
-            startPos = Vec2{center.x, center.y - distance / 2};
-            endPos = Vec2{center.x, center.y + distance / 2};
+            // 縦移動: Y座標が basePos.y から basePos.y + distance まで
+            startPos = Vec2{center.x, basePos.y};
+            endPos = Vec2{center.x, basePos.y + distance};
             
             Line{startPos, endPos}.draw(3.0, guideColor);
             
@@ -702,16 +638,18 @@ namespace Jam::Presentation::Editor
             break;
             
         case Domain::Stage::MovementType::Circular:
-            // 円運動の場合、ループ表示は異なる方法で
+            // 円運動: ゲーム側は baseRect.pos を中心に回転
+            // offset = (Cos(angle) * distance, Sin(angle) * distance)
+            // つまり、床の左上座標(basePos)を中心に円運動する
             if (obj.loopMovement)
             {
-                Circle{center, distance}.drawFrame(2.0, guideColor);
+                Circle{basePos, distance}.drawFrame(2.0, guideColor);
             }
             else
             {
-                Circle{center, distance}.drawFrame(2.0, 0.0, guideColor.withAlpha(0.5));
-                // 非ループを示すマーカー
-                Circle{center.movedBy(distance, 0), 5.0}.drawFrame(2.0, guideColor);
+                Circle{basePos, distance}.drawFrame(2.0, 0.0, guideColor.withAlpha(0.5));
+                // 非ループを示すマーカー(初期位置: 右方向)
+                Circle{basePos.movedBy(distance, 0), 5.0}.drawFrame(2.0, guideColor);
             }
             break;
         }

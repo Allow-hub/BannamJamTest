@@ -1,15 +1,231 @@
 ﻿{
   "goal": {
     "position": [
-      150.0,
-      -400.0
+      4900.0,
+      -300.0
     ],
     "size": [
       200.0,
       200.0
     ]
   },
-  "objects": [],
+  "objects": [
+    {
+      "groundSide": "all",
+      "metadata": "普通の床",
+      "rect": [
+        -100,
+        100,
+        5350,
+        200
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "普通の床",
+      "rect": [
+        -300,
+        -1100,
+        200,
+        1400
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "普通の床",
+      "rect": [
+        -100,
+        -1100,
+        4750,
+        100
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "up",
+      "metadata": "すり抜け床",
+      "rect": [
+        950,
+        -400,
+        750,
+        100
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "oneway_platform"
+    },
+    {
+      "groundSide": "all",
+      "metadata": "普通の床",
+      "rect": [
+        2000,
+        -200,
+        600,
+        50
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "normal"
+    },
+    {
+      "groundSide": "all",
+      "loopMovement": true,
+      "metadata": "動く床",
+      "movementDistance": 600,
+      "movementSpeed": 500,
+      "movementType": "horizontal",
+      "rect": [
+        2900,
+        -350,
+        300,
+        50
+      ],
+      "texturePath": "Assets/Stage/moving_platform.png",
+      "type": "moving_platform"
+    },
+    {
+      "groundSide": "all",
+      "loopMovement": true,
+      "metadata": "動く床",
+      "movementDistance": 1000,
+      "movementSpeed": 500,
+      "movementType": "circular",
+      "rect": [
+        4250,
+        -500,
+        100,
+        150
+      ],
+      "texturePath": "Assets/Stage/moving_platform.png",
+      "type": "moving_platform"
+    },
+    {
+      "groundSide": "up",
+      "metadata": "すり抜け床",
+      "rect": [
+        0,
+        -250,
+        200,
+        50
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "oneway_platform"
+    },
+    {
+      "groundSide": "up",
+      "metadata": "すり抜け床",
+      "rect": [
+        0,
+        -550,
+        250,
+        50
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "oneway_platform"
+    },
+    {
+      "groundSide": "up",
+      "metadata": "すり抜け床",
+      "rect": [
+        0,
+        -800,
+        250,
+        50
+      ],
+      "texturePath": "Assets/Stage/normal_stage.png",
+      "type": "oneway_platform"
+    },
+    {
+      "damageAmount": 1,
+      "groundSide": "none",
+      "metadata": "ダメージ床",
+      "rect": [
+        800,
+        0,
+        100,
+        100
+      ],
+      "texturePath": "Assets/Stage/damage_Stage.jpg",
+      "type": "damage_platform"
+    },
+    {
+      "damageAmount": 22,
+      "groundSide": "none",
+      "metadata": "ダメージ床",
+      "rect": [
+        1050,
+        0,
+        150,
+        100
+      ],
+      "texturePath": "Assets/Stage/damage_Stage.jpg",
+      "type": "damage_platform"
+    },
+    {
+      "damageAmount": 50,
+      "groundSide": "none",
+      "metadata": "ダメージ床",
+      "rect": [
+        1350,
+        0,
+        100,
+        100
+      ],
+      "texturePath": "Assets/Stage/damage_Stage.jpg",
+      "type": "damage_platform"
+    },
+    {
+      "groundSide": "all",
+      "loopMovement": true,
+      "metadata": "動く床",
+      "movementDistance": 200,
+      "movementSpeed": 100,
+      "movementType": "horizontal",
+      "rect": [
+        50,
+        -200,
+        50,
+        50
+      ],
+      "texturePath": "Assets/Stage/moving_platform.png",
+      "type": "moving_platform"
+    },
+    {
+      "groundSide": "all",
+      "loopMovement": true,
+      "metadata": "動く床",
+      "movementDistance": 439,
+      "movementSpeed": 100,
+      "movementType": "circular",
+      "rect": [
+        600,
+        -150,
+        50,
+        50
+      ],
+      "texturePath": "Assets/Stage/moving_platform.png",
+      "type": "moving_platform"
+    },
+    {
+      "groundSide": "all",
+      "loopMovement": true,
+      "metadata": "動く床",
+      "movementDistance": 200,
+      "movementSpeed": 100,
+      "movementType": "vertical",
+      "rect": [
+        300,
+        -50,
+        50,
+        50
+      ],
+      "texturePath": "Assets/Stage/moving_platform.png",
+      "type": "moving_platform"
+    }
+  ],
   "playerSpawn": [
     50.0,
     -5.0

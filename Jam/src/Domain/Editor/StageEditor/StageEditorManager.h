@@ -49,9 +49,9 @@ namespace Jam::Domain::Editor
         // ===== オブジェクト操作 =====
         
         size_t addObject(const Stage::StageObject& obj) override;
-        void removeObject(size_t id) override;
-        void moveObject(size_t id, const Vec2& newPos);
-        void modifyObject(size_t id, const Stage::StageObject& newObj);
+        void removeObject(size_t index) override;
+        void moveObject(size_t index, const Vec2& newPos);
+        void modifyObject(size_t index, const Stage::StageObject& newObj);
         
         // ===== 驕ｸ謚槭が繝悶ず繧ｧ繧ｯ繝医・荳諡ｬ譖ｴ譁ｰ =====
         

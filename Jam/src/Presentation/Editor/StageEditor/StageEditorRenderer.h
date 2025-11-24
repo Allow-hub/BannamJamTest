@@ -69,10 +69,9 @@ namespace Jam::Presentation::Editor
                 
                 y = this->drawCameraSettings(y);
                 y = drawCurrentMode(y);
+                y = drawOtherObjectsSelector(y);
                 y = drawStageTypeSelector(y);
                 y = drawTextureSelector(y);
-                y = drawOtherObjectsSelector(y);
-                y = drawGroundSideInfo(y);
                 y = drawMovementSettings(y);
                 y = drawDamageSettings(y);
                 y = drawMetadataEdit(y);
@@ -107,7 +106,6 @@ namespace Jam::Presentation::Editor
         int drawStageTypeSelector(int y) const;
         int drawTextureSelector(int y) const;
         int drawOtherObjectsSelector(int y) const;
-        int drawGroundSideInfo(int y) const;
         int drawMovementSettings(int y) const;
         int drawDamageSettings(int y) const;
         int drawMetadataEdit(int y) const;

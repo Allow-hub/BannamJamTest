@@ -12,6 +12,14 @@ namespace Jam::Presentation::Editor
         mutable bool m_switchToStageEditor = false;
         const Domain::Editor::StageEditorManager* m_stageManager = nullptr;
         
+        // テキスト入力フィールド
+        mutable TextEditState m_patrolDistanceTextEdit;
+        mutable TextEditState m_waitTimeTextEdit;
+        mutable TextEditState m_foundDistanceTextEdit;
+        mutable TextEditState m_attackRangeTextEdit;
+        mutable TextEditState m_loseRangeTextEdit;
+        mutable TextEditState m_speedFactorTextEdit;
+        
     public:
         // StageEditorManagerへの参照を設定
         void setStageManager(const Domain::Editor::StageEditorManager* manager)
@@ -80,6 +88,14 @@ namespace Jam::Presentation::Editor
         
         bool isEditorSwitchRequested() const { return m_switchToStageEditor; }
         void resetEditorSwitchRequest() const { m_switchToStageEditor = false; }
+        
+        // テキスト入力中かどうかを判定
+        bool isTextInputActive() const
+        {
+            return m_patrolDistanceTextEdit.active || m_waitTimeTextEdit.active ||
+                   m_foundDistanceTextEdit.active || m_attackRangeTextEdit.active ||
+                   m_loseRangeTextEdit.active || m_speedFactorTextEdit.active;
+        }
         
         // StageEditorSceneから呼び出すためpublicに
         void drawEnemy(const Domain::Editor::EnemyEditorObjectNew& enemy, bool isSelected) const;

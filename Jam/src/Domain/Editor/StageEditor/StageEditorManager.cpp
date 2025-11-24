@@ -11,8 +11,8 @@ namespace Jam::Domain::Editor
         }
         
         StageEditorObjectNew editorObj(obj);
-        editorObj.id = getNextId();
         
+        size_t newIndex = m_objects.size();
         m_objects.push_back(editorObj);
         
         if (!m_isExecutingCommand) {
@@ -22,30 +22,26 @@ namespace Jam::Domain::Editor
             addToHistory(cmd);
         }
         
-        return *editorObj.id;
+        return newIndex;
     }
     
-    void StageEditorManager::removeObject(size_t id)
+    void StageEditorManager::removeObject(size_t index)
     {
-        for (auto it = m_objects.begin(); it != m_objects.end(); ++it) {
-            if (it->id == id) {
-                if (!m_isExecutingCommand) {
-                    StageEditorCommandNew cmd;
-                    cmd.type = StageEditorCommandNew::Type::Delete;
-                    cmd.object = *it;
-                    addToHistory(cmd);
-                }
-                
-                m_objects.erase(it);
-                m_selectedIds.erase(id);
-                break;
+        if (index < m_objects.size()) {
+            if (!m_isExecutingCommand) {
+                StageEditorCommandNew cmd;
+                cmd.type = StageEditorCommandNew::Type::Delete;
+                cmd.object = m_objects[index];
+                addToHistory(cmd);
             }
+            
+            removeObjectDirect(index);
         }
     }
     
-    void StageEditorManager::moveObject(size_t id, const Vec2& newPos)
+    void StageEditorManager::moveObject(size_t index, const Vec2& newPos)
     {
-        if (auto* obj = findObjectById(id)) {
+        if (auto* obj = findObjectByIndex(index)) {
             if (!m_isExecutingCommand) {
                 StageEditorCommandNew cmd;
                 cmd.type = StageEditorCommandNew::Type::Move;
@@ -59,9 +55,9 @@ namespace Jam::Domain::Editor
         }
     }
     
-    void StageEditorManager::modifyObject(size_t id, const Stage::StageObject& newObj)
+    void StageEditorManager::modifyObject(size_t index, const Stage::StageObject& newObj)
     {
-        if (auto* obj = findObjectById(id)) {
+        if (auto* obj = findObjectByIndex(index)) {
             if (!m_isExecutingCommand) {
                 StageEditorCommandNew cmd;
                 cmd.type = StageEditorCommandNew::Type::Modify;
@@ -77,13 +73,13 @@ namespace Jam::Domain::Editor
     
     void StageEditorManager::updateSelectedObjectsMovement(double distance, double speed, Stage::MovementType type)
     {
-        for (auto& obj : m_objects) {
-            if (obj.id && m_selectedIds.contains(*obj.id)) {
-                if (obj.data.type == Stage::StageType::MovingPlatform ||
-                    obj.data.type == Stage::StageType::MovingDamagePlatform) {
-                    obj.data.movementDistance = distance;
-                    obj.data.movementSpeed = speed;
-                    obj.data.movementType = type;
+        for (size_t i = 0; i < m_objects.size(); ++i) {
+            if (m_selectedIndices.contains(i)) {
+                if (m_objects[i].data.type == Stage::StageType::MovingPlatform ||
+                    m_objects[i].data.type == Stage::StageType::MovingDamagePlatform) {
+                    m_objects[i].data.movementDistance = distance;
+                    m_objects[i].data.movementSpeed = speed;
+                    m_objects[i].data.movementType = type;
                 }
             }
         }
@@ -91,11 +87,11 @@ namespace Jam::Domain::Editor
     
     void StageEditorManager::updateSelectedObjectsDamage(double damage)
     {
-        for (auto& obj : m_objects) {
-            if (obj.id && m_selectedIds.contains(*obj.id)) {
-                if (obj.data.type == Stage::StageType::DamagePlatform ||
-                    obj.data.type == Stage::StageType::MovingDamagePlatform) {
-                    obj.data.damageAmount = damage;
+        for (size_t i = 0; i < m_objects.size(); ++i) {
+            if (m_selectedIndices.contains(i)) {
+                if (m_objects[i].data.type == Stage::StageType::DamagePlatform ||
+                    m_objects[i].data.type == Stage::StageType::MovingDamagePlatform) {
+                    m_objects[i].data.damageAmount = damage;
                 }
             }
         }
@@ -103,9 +99,9 @@ namespace Jam::Domain::Editor
     
     Optional<size_t> StageEditorManager::findObjectAt(const Vec2& pos) const
     {
-        for (auto it = m_objects.rbegin(); it != m_objects.rend(); ++it) {
-            if (it->data.rect.contains(pos)) {
-                return it->id;
+        for (size_t i = m_objects.size(); i-- > 0;) {
+            if (m_objects[i].data.rect.contains(pos)) {
+                return i;
             }
         }
         return none;
@@ -136,9 +132,9 @@ namespace Jam::Domain::Editor
     
     Optional<size_t> StageEditorManager::findGoalObject() const
     {
-        for (const auto& obj : m_objects) {
-            if (obj.id && (obj.data.texturePath.includes(U"Goal.png") || obj.data.texturePath.includes(U"goal.png"))) {
-                return obj.id;
+        for (size_t i = 0; i < m_objects.size(); ++i) {
+            if (m_objects[i].data.texturePath.includes(U"Goal.png") || m_objects[i].data.texturePath.includes(U"goal.png")) {
+                return i;
             }
         }
         return none;
@@ -146,11 +142,11 @@ namespace Jam::Domain::Editor
     
     void StageEditorManager::removeExistingGoal()
     {
-        if (auto goalId = findGoalObject()) {
+        if (auto goalIndex = findGoalObject()) {
             // 履歴に追加せずに削除（ゴールは1つのみなので、旧ゴールの復元は不要）
             bool wasExecuting = m_isExecutingCommand;
             m_isExecutingCommand = true;
-            removeObject(*goalId);
+            removeObject(*goalIndex);
             m_isExecutingCommand = wasExecuting;
         }
     }
@@ -250,8 +246,10 @@ namespace Jam::Domain::Editor
     {
         switch (cmd.type) {
         case StageEditorCommandNew::Type::Add:
-            if (cmd.object.id) {
-                removeObjectDirect(*cmd.object.id);
+            // 最後に追加されたオブジェクトを削除
+            // Note: Add時のインデックスを保存していないため、コマンド記録時のobjectと同じデータを持つ最後のオブジェクトを削除
+            if (!m_objects.isEmpty()) {
+                m_objects.pop_back();
             }
             break;
             
@@ -260,17 +258,25 @@ namespace Jam::Domain::Editor
             break;
             
         case StageEditorCommandNew::Type::Move:
-            if (cmd.object.id && cmd.oldPos) {
-                if (auto* obj = findObjectById(*cmd.object.id)) {
-                    obj->data.rect.setPos(*cmd.oldPos);
+            // Move/Modifyは現在のインデックスでは元のオブジェクトを特定できないため、
+            // データで検索（完全なUndoには追加の設計変更が必要）
+            if (cmd.oldPos) {
+                for (auto& obj : m_objects) {
+                    if (obj.data.rect.pos == *cmd.newPos) {
+                        obj.data.rect.setPos(*cmd.oldPos);
+                        break;
+                    }
                 }
             }
             break;
             
         case StageEditorCommandNew::Type::Modify:
-            if (cmd.object.id && cmd.oldData) {
-                if (auto* obj = findObjectById(*cmd.object.id)) {
-                    obj->data = *cmd.oldData;
+            if (cmd.oldData && cmd.newData) {
+                for (auto& obj : m_objects) {
+                    if (obj.data.rect == cmd.newData->rect) {
+                        obj.data = *cmd.oldData;
+                        break;
+                    }
                 }
             }
             break;
@@ -285,23 +291,33 @@ namespace Jam::Domain::Editor
             break;
             
         case StageEditorCommandNew::Type::Delete:
-            if (cmd.object.id) {
-                removeObjectDirect(*cmd.object.id);
+            // Delete時もインデックスが不明なため、データで検索
+            for (size_t i = 0; i < m_objects.size(); ++i) {
+                if (m_objects[i].data.rect == cmd.object.data.rect) {
+                    removeObjectDirect(i);
+                    break;
+                }
             }
             break;
             
         case StageEditorCommandNew::Type::Move:
-            if (cmd.object.id && cmd.newPos) {
-                if (auto* obj = findObjectById(*cmd.object.id)) {
-                    obj->data.rect.setPos(*cmd.newPos);
+            if (cmd.newPos) {
+                for (auto& obj : m_objects) {
+                    if (cmd.oldPos && obj.data.rect.pos == *cmd.oldPos) {
+                        obj.data.rect.setPos(*cmd.newPos);
+                        break;
+                    }
                 }
             }
             break;
             
         case StageEditorCommandNew::Type::Modify:
-            if (cmd.object.id && cmd.newData) {
-                if (auto* obj = findObjectById(*cmd.object.id)) {
-                    obj->data = *cmd.newData;
+            if (cmd.oldData && cmd.newData) {
+                for (auto& obj : m_objects) {
+                    if (obj.data.rect == cmd.oldData->rect) {
+                        obj.data = *cmd.newData;
+                        break;
+                    }
                 }
             }
             break;
