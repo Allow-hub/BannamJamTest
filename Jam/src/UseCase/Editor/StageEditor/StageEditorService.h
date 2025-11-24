@@ -2,7 +2,7 @@
 #include "../Base/EditorServiceBase.h"
 #include "../../../Domain/Editor/StageEditor/StageEditorManager.h"
 #include "../../../Domain/Editor/StageEditor/StageEditorTypes.h"
-#include "../../../Domain/Editor/StageEditor/EditorSettings.h"
+#include "../../../Domain/Editor/Base/EditorSettings.h"
 
 namespace Jam::UseCase::Editor
 {
