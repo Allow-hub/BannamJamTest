@@ -35,7 +35,7 @@ namespace Jam::Domain::Enemy
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::EnemyWeapon);
 		m_body->setLayer(Jam::Domain::Physics::PhysicsLayer::Enemy);
 
-		fbTex = Texture(Image(U"Assets/Item/fireBall.png"));	//Resourceだとうまく読み込めなっかたので、一時的にImageに変更しています。
+		fbTex = Texture(Resource(U"Assets/Item/fireBall.png"));
 	}
 
 	void Fireball::init()

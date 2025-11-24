@@ -230,6 +230,7 @@ Resource(Assets/Result/result_title-MEMORY.png)
 
 Resource(Assets/Item/bomb.png)
 Resource(Assets/Item/Missile.png)
+Resource(Assets/Item/fireBall.png)
 Resource(Assets/Cursor/cursor_orange.png)
 Resource(Assets/Cursor/cursor_yellow.png)
 Resource(Assets/Cursor/cursor_green.png)
