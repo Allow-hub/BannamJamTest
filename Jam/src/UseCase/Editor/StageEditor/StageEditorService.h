@@ -1,7 +1,4 @@
-﻿// ========================================
-// StageEditorService.h（リファクタリング版）
-// ========================================
-#pragma once
+﻿#pragma once
 #include "../Base/EditorServiceBase.h"
 #include "../../../Domain/Editor/StageEditor/StageEditorManager.h"
 #include "../../../Domain/Editor/StageEditor/StageEditorTypes.h"

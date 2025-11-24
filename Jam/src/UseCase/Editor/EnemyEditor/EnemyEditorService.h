@@ -1,8 +1,4 @@
-﻿// ========================================
-// EnemyEditorService.h - リファクタリング版
-// 敵エディタのアプリケーションロジック
-// ========================================
-#pragma once
+﻿#pragma once
 #include "../Base/EditorServiceBase.h"
 #include "../../../Domain/Editor/EnemyEditor/EnemyEditorManager.h"
 #include "../../../Domain/Editor/StageEditor/StageEditorTypes.h"

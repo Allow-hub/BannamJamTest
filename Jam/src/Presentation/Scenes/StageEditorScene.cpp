@@ -1,5 +1,7 @@
-#include "StageEditorScene.h"
+﻿#include "StageEditorScene.h"
 #include "../../Foundation/CoreManager.h"
+#include "../ResourceManager.h"
+#include "../Editor/Utilities/EditorGridUtil.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -60,6 +62,8 @@ namespace Jam::Presentation::Scenes
     void StageEditorScene::preloadGameResources()
     {
         // プレイヤーアニメーションを事前ロード
+        using namespace Jam::Foundation;
+        
         ResourceManager::initPlayerIdle();
         ResourceManager::initPlayerWalk();
         ResourceManager::initPlayerJump();
@@ -82,7 +86,7 @@ namespace Jam::Presentation::Scenes
             {
                 try
                 {
-                    TextureManager::Load(obj.data.texturePath);
+                    Jam::Presentation::TextureManager::Load(obj.data.texturePath);
                 }
                 catch (...)
                 {
@@ -138,8 +142,9 @@ namespace Jam::Presentation::Scenes
             m_stageEditorService.save(U"Assets/Stage/stage_edited.json");
             m_enemyEditorService.save(U"Assets/Enemy/enemy_edited.json");
             
-            auto& core = Jam::Foundation::CoreManager::Instance();
-            core.stageInfo.stageName = Jam::Foundation::StageName::Stage1_1;
+            using namespace Jam::Foundation;
+            auto& core = CoreManager::Instance();
+            core.stageInfo.stageName = StageName::Stage1_1;
             
             changeScene(ToSceneString(SceneName::InGame));
             return;
@@ -301,8 +306,9 @@ namespace Jam::Presentation::Scenes
             m_stageEditorService.save(U"Assets/Stage/stage_edited.json");
             m_enemyEditorService.save(U"Assets/Enemy/enemy_edited.json");
             
-            auto& core = Jam::Foundation::CoreManager::Instance();
-            core.stageInfo.stageName = Jam::Foundation::StageName::Stage1_1;
+            using namespace Jam::Foundation;
+            auto& core = CoreManager::Instance();
+            core.stageInfo.stageName = StageName::Stage1_1;
             
             changeScene(ToSceneString(SceneName::InGame));
             return;
@@ -431,8 +437,9 @@ namespace Jam::Presentation::Scenes
                 const auto& camera = m_stageEditorService.getCamera();
                 auto transformer = camera.createTransformer();
                 
-                // グリッド描画
-                drawGridForStageEditor(camera);
+                // グリッド描画 - EditorGridUtilを使用
+                const int gridSize = m_stageEditorService.getSettings().getGridSize();
+                Editor::EditorGridUtil::drawGridWithAxes(camera, gridSize);
                 
                 // プレイヤーのスポーン位置を描画
                 drawPlayerSpawnPosition();
@@ -467,8 +474,9 @@ namespace Jam::Presentation::Scenes
                 const auto& camera = m_enemyEditorService.getCamera();
                 auto transformer = camera.createTransformer();
                 
-                // グリッド描画
-                drawGridForEnemyEditor(camera);
+                // グリッド描画 - EditorGridUtilを使用
+                const int gridSize = m_enemyEditorService.getSettings().getGridSize();
+                Editor::EditorGridUtil::drawGridWithAxes(camera, gridSize);
                 
                 // ステージを背景として描画（カメラ変換は既に適用済み）
                 drawStageBackground();
@@ -480,70 +488,6 @@ namespace Jam::Presentation::Scenes
             // GUIパネルは変換なしで描画
             m_enemyRenderer.drawGUIPanel();
         }
-    }
-    
-    void StageEditorScene::drawGridForStageEditor(const Camera2D& camera) const
-    {
-        const int gridSize = m_stageEditorService.getSettings().getGridSize();
-        const Vec2 center = camera.getCenter();
-        const double scale = camera.getScale();
-        const double viewWidth = Scene::Width() / scale;
-        const double viewHeight = Scene::Height() / scale;
-        
-        const int startX = static_cast<int>((center.x - viewWidth / 2) / gridSize) - 1;
-        const int endX = static_cast<int>((center.x + viewWidth / 2) / gridSize) + 1;
-        const int startY = static_cast<int>((center.y - viewHeight / 2) / gridSize) - 1;
-        const int endY = static_cast<int>((center.y + viewHeight / 2) / gridSize) + 1;
-        
-        const ColorF gridColor{0.3, 0.3, 0.3, 0.5};
-        
-        for (int x = startX; x <= endX; ++x)
-        {
-            double xPos = x * gridSize;
-            Line{xPos, startY * gridSize, xPos, endY * gridSize}.draw(0.5, gridColor);
-        }
-        
-        for (int y = startY; y <= endY; ++y)
-        {
-            double yPos = y * gridSize;
-            Line{startX * gridSize, yPos, endX * gridSize, yPos}.draw(0.5, gridColor);
-        }
-        
-        // 原点の軸
-        Line{0, startY * gridSize, 0, endY * gridSize}.draw(2.0, Palette::Red);
-        Line{startX * gridSize, 0, endX * gridSize, 0}.draw(2.0, Palette::Green);
-    }
-    
-    void StageEditorScene::drawGridForEnemyEditor(const Camera2D& camera) const
-    {
-        const int gridSize = m_enemyEditorService.getSettings().getGridSize();
-        const Vec2 center = camera.getCenter();
-        const double scale = camera.getScale();
-        const double viewWidth = Scene::Width() / scale;
-        const double viewHeight = Scene::Height() / scale;
-        
-        const int startX = static_cast<int>((center.x - viewWidth / 2) / gridSize) - 1;
-        const int endX = static_cast<int>((center.x + viewWidth / 2) / gridSize) + 1;
-        const int startY = static_cast<int>((center.y - viewHeight / 2) / gridSize) - 1;
-        const int endY = static_cast<int>((center.y + viewHeight / 2) / gridSize) + 1;
-        
-        const ColorF gridColor{0.3, 0.3, 0.3, 0.5};
-        
-        for (int x = startX; x <= endX; ++x)
-        {
-            double xPos = x * gridSize;
-            Line{xPos, startY * gridSize, xPos, endY * gridSize}.draw(0.5, gridColor);
-        }
-        
-        for (int y = startY; y <= endY; ++y)
-        {
-            double yPos = y * gridSize;
-            Line{startX * gridSize, yPos, endX * gridSize, yPos}.draw(0.5, gridColor);
-        }
-        
-        // 原点の軸
-        Line{0, startY * gridSize, 0, endY * gridSize}.draw(2.0, Palette::Red);
-        Line{startX * gridSize, 0, endX * gridSize, 0}.draw(2.0, Palette::Green);
     }
     
     void StageEditorScene::drawStageBackground() const

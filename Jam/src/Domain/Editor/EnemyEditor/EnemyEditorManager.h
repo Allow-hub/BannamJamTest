@@ -1,8 +1,4 @@
-﻿// ========================================
-// EnemyEditorManager.h - リファクタリング版
-// 敵エディタのドメインロジック管理
-// ========================================
-#pragma once
+﻿#pragma once
 #include "../Base/EditorManagerBase.h"
 #include "EnemyEditorTypes.h"
 

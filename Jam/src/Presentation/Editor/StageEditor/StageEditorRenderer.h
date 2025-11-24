@@ -1,8 +1,4 @@
-﻿// ========================================
-// StageEditorRenderer.h - リファクタリング版
-// ステージエディタの描画ロジック
-// ========================================
-#pragma once
+﻿#pragma once
 #include "../Base/EditorRendererBase.h"
 #include "../../../UseCase/Editor/StageEditor/StageEditorService.h"
 

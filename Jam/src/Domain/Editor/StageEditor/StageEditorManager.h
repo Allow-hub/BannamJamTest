@@ -1,8 +1,4 @@
-﻿// ========================================
-// StageEditorManager.h - リファクタリング版
-// ステージエディタのドメインロジック管理
-// ========================================
-#pragma once
+﻿#pragma once
 #include "../Base/EditorManagerBase.h"
 #include "StageEditorTypes.h"
 #include "../../Stage/StageTypes.h"

@@ -4,14 +4,6 @@
 
 namespace Jam::Domain::Editor
 {
-    // エディタモード
-    enum class StageEditorMode
-    {
-        Select,
-        Place,
-        Delete
-    };
-
     // エディタ設定
     struct StageEditorConfig
     {
@@ -22,7 +14,7 @@ namespace Jam::Domain::Editor
     };
 
     // エディタ設定管理クラス
-    // Note: 本来はApplication層に置くべきだが、後方互換性のため一旦ここに残す
+	    // Note: 本来はApplication層に置くべきだが、後方互換性のため一旦ここに残す
     class StageEditorSettings
     {
     private:

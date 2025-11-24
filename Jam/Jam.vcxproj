@@ -130,6 +130,7 @@
     <ClCompile Include="src\Domain\Editor\EnemyEditor\EnemyEditorManager.cpp" />
     <ClCompile Include="src\Domain\Editor\StageEditor\StageEditorManager.cpp" />
     <ClCompile Include="src\Infrastructure\StageFactory.cpp" />
+    <ClCompile Include="src\Presentation\Editor\Utilities\EditorGridUtil.cpp" />
     <ClCompile Include="src\Presentation\Editor\EnemyEditor\EnemyEditorRenderer.cpp" />
     <ClCompile Include="src\Presentation\Editor\StageEditor\StageEditorRenderer.cpp" />
     <ClCompile Include="src\Presentation\Scenes\StageEditorScene.cpp" />
@@ -683,7 +684,7 @@
     <ClInclude Include="src\Presentation\AnimatorLoader.h" />
     <ClInclude Include="src\Presentation\AudioService.h" />
     <ClInclude Include="src\Presentation\CameraManager.h" />
-    <ClInclude Include="src\Presentation\Editor\Base\EditorRendererBase.h" />
+    <ClInclude Include="src\Presentation\Editor\Utilities\EditorGridUtil.h" />
     <ClInclude Include="src\Presentation\Editor\EnemyEditor\EnemyEditorRenderer.h" />
     <ClInclude Include="src\Presentation\Editor\StageEditor\StageEditorRenderer.h" />
     <ClInclude Include="src\Presentation\EffectManager.h" />
