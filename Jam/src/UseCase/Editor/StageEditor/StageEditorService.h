@@ -72,6 +72,9 @@ namespace Jam::UseCase::Editor
         const String& getTexturePath() const { return m_state.texturePath; }
         bool getAutoCalculateDistance() const { return m_state.autoCalculateDistance; }
         
+        // ===== テクスチャ操作 =====
+        void applyTextureToSelected(const String& texturePath);
+        
         // ===== ゴール・スポーン位置 =====
         Vec2 getPlayerSpawnPosition() const { return m_manager.getPlayerSpawnPosition(); }
         void setPlayerSpawnPosition(const Vec2& pos) { m_manager.setPlayerSpawnPosition(pos); }

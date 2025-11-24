@@ -176,6 +176,7 @@ Resource(Assets/Stage/damage_Stage.jpg)
 Resource(Assets/Stage/Goal.png)
 Resource(Assets/Stage/moving_platform.png)
 Resource(Assets/Stage/normal_stage.png)
+Resource(Assets/Stage/normal_stage2.png)
 
 Resource(Assets/Story/background_stage1_1_start.png)
 Resource(Assets/Story/background_stage1_2_start.png)

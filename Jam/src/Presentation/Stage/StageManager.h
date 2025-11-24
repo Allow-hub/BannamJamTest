@@ -1,7 +1,9 @@
 ﻿#pragma once
 #include "../../UseCase/StageService.h"
 #include "../../Domain/Stage/StageTypes.h"
+#include "../../Domain/Stage/NormalStage.h"
 #include "../../Infrastructure/TextureLoader.h"
+#include "../TextureManager.h"
 
 namespace Jam::Presentation::Stage {
     /**
@@ -51,7 +53,20 @@ namespace Jam::Presentation::Stage {
 			const Vec2 roundedPos = rect.pos.asPoint();
 			const Size roundedSize = rect.size.asPoint();
 
-			Texture texture = Infrastructure::TextureLoader::getStageTexture(type);
+			Texture texture;
+			
+			// NormalStageの場合、texturePathを取得して使用
+			if (type == Domain::Stage::StageType::Normal) {
+				const auto* normalStage = dynamic_cast<const Domain::Stage::NormalStage*>(stage);
+				if (normalStage && !normalStage->getTexturePath().isEmpty()) {
+					texture = TextureManager::Load(normalStage->getTexturePath());
+				}
+			}
+			
+			if (!texture) {
+				texture = Infrastructure::TextureLoader::getStageTexture(type);
+			}
+			
 			if (!texture) return;
 
 			//  テクスチャアドレスモードをスコープ内だけ Repeat にする

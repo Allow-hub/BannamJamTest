@@ -13,7 +13,6 @@ namespace Jam::Infrastructure {
 		static Texture getStageTexture(Jam::Domain::Stage::StageType type);
 		static void preloadStageTextures();
 		static void clearTextureCache();
-		static bool loadCustomTexture(Jam::Domain::Stage::StageType type, const FilePath& resourcePath);
 
 		// 背景テクスチャ関連（名前ベース）
 		static Optional<Texture> getTexture(const String& textureName);
@@ -81,17 +80,6 @@ namespace Jam::Infrastructure {
 		s_initialized = false;
 	}
 
-	// カスタムテクスチャ（Resource限定）
-	bool TextureLoader::loadCustomTexture(Jam::Domain::Stage::StageType type, const FilePath& resourcePath) {
-		Texture texture(Resource(resourcePath));
-		if (!texture) {
-			Console << U"[TextureLoader] Custom Resource load failed: " << resourcePath;
-			return false;
-		}
-		s_stageTextures[type] = texture;
-		return true;
-	}
-
 	// デフォルトのステージパス
 	FilePath TextureLoader::getDefaultTexturePath(Jam::Domain::Stage::StageType type) {
 		const FilePath basePath = U"Assets/Stage/";
@@ -129,7 +117,6 @@ namespace Jam::Infrastructure {
 			s_backgroundTextures[textureName] = texture;
 			return texture;
 		}
-		//Console << U"[TextureLoader] Background Resource not found: " << resourcePath;
 		return none;
 	}
 
@@ -143,7 +130,6 @@ namespace Jam::Infrastructure {
 	bool TextureLoader::loadBackgroundTexture(const String& name, const FilePath& resourcePath) {
 		Texture texture(Resource(resourcePath));
 		if (!texture) {
-			//Console << U"[TextureLoader] Failed to load background Resource: " << resourcePath;
 			return false;
 		}
 		s_backgroundTextures[name] = texture;

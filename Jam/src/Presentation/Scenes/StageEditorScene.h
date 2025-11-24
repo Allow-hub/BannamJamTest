@@ -192,6 +192,12 @@ namespace Jam::Presentation::Scenes
             // パネルが折りたたまれている場合は、折りたたみボタン部分のみをGUI領域とする
             const bool isMouseOverGUI = m_stageRenderer.isMouseOverPanel();
             
+            // ビュー領域をクリックしたらテキスト入力を無効化
+            if (MouseL.down() && !isMouseOverGUI)
+            {
+                m_stageRenderer.clearTextInputFocus();
+            }
+            
             if (hasMouseInput && !isMouseOverGUI)
             {
                 Vec2 mousePos = m_stageEditorService.screenToWorld(Cursor::Pos());

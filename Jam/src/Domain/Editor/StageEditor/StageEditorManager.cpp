@@ -398,7 +398,7 @@ namespace Jam::Domain::Editor
         json[U"groundSide"] = Stage::groundSideToString(obj.groundSide);
         json[U"metadata"] = obj.metadata;
         
-        // テクスチャ情報を保存
+        // テクスチャ情報を保存（空でない場合のみ）
         if (!obj.texturePath.isEmpty()) {
             json[U"texturePath"] = obj.texturePath;
         }

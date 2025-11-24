@@ -46,10 +46,10 @@ namespace Jam::UseCase::Editor
             }
             
             Vec2 movement{0, 0};
-            if (KeyW.pressed()) movement.y -= m_speed;
-            if (KeyS.pressed()) movement.y += m_speed;
-            if (KeyA.pressed()) movement.x -= m_speed;
-            if (KeyD.pressed()) movement.x += m_speed;
+            if (KeyW.pressed() || KeyUp.pressed()) movement.y -= m_speed;
+            if (KeyS.pressed() || KeyDown.pressed()) movement.y += m_speed;
+            if (KeyA.pressed() || KeyLeft.pressed()) movement.x -= m_speed;
+            if (KeyD.pressed() || KeyRight.pressed()) movement.x += m_speed;
             
             if (movement != Vec2{0, 0}) {
                 m_camera.setCenter(m_camera.getCenter() + movement);

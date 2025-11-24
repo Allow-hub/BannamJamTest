@@ -77,9 +77,11 @@ namespace Jam::Presentation::Editor
         const Array<std::pair<String, String>> textures = {
             {U"なし", U""},
             {U"通常ステージ", U"Assets/Stage/normal_stage.png"},
+            {U"通常ステージ2", U"Assets/Stage/normal_stage2.png"},
             {U"動く床", U"Assets/Stage/moving_platform.png"},
             {U"ダメージ床", U"Assets/Stage/damage_Stage.jpg"},
-            {U"ゴール", U"Assets/Stage/Goal.png"}
+            {U"ゴール", U"Assets/Stage/Goal.png"},
+            {U"記憶のかけら", U"Assets/FlagmentMemory.png"}
         };
         
         String currentTextureName = U"なし";
@@ -111,6 +113,19 @@ namespace Jam::Presentation::Editor
                 y += 30;
             }
             y += 10;
+        }
+        
+        // 選択中のオブジェクトがある場合、テクスチャを適用するボタンを表示
+        const auto selectedIds = this->m_service->getManager().getSelectedIds();
+        if (!selectedIds.empty() && !currentPath.isEmpty())
+        {
+            const int selectedCount = static_cast<int>(selectedIds.size());
+            if (SimpleGUI::Button(Format(U"選択中({})に適用", selectedCount), Vec2{this->getPanelX() + 10, y}, 270))
+            {
+                // 選択中の全オブジェクトにテクスチャを適用
+                this->m_service->applyTextureToSelected(currentPath);
+            }
+            y += 40;
         }
         
         return y;
@@ -478,8 +493,9 @@ namespace Jam::Presentation::Editor
                 const auto& texture = TextureManager::Load(obj.data.texturePath);
                 if (texture)
                 {
-                    // ゴールテクスチャの場合は矩形サイズに合わせて拡大縮小
-                    if (obj.data.texturePath.includes(U"Goal.png") || obj.data.texturePath.includes(U"goal.png"))
+                    // ゴールテクスチャとフラグメントテクスチャの場合は矩形サイズに合わせて拡大縮小
+                    if (obj.data.texturePath.includes(U"Goal.png") || obj.data.texturePath.includes(U"goal.png") ||
+                        obj.data.texturePath.includes(U"FlagmentMemory.png"))
                     {
                         texture.resized(rect.size).draw(rect.pos);
                     }
@@ -491,10 +507,16 @@ namespace Jam::Presentation::Editor
                     }
                     hasTexture = true;
                 }
+                else
+                {
+                    // テクスチャが読み込めなかった
+                    Console << U"[StageEditor] Texture not loaded: " << obj.data.texturePath;
+                }
             }
-            catch (...)
+            catch (const std::exception& e)
             {
                 // テクスチャロードに失敗した場合は通常描画にフォールバック
+                Console << U"[StageEditor] Failed to load texture: " << obj.data.texturePath;
             }
         }
         

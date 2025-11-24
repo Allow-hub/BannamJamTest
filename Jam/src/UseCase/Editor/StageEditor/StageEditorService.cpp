@@ -310,4 +310,18 @@ namespace Jam::UseCase::Editor
         m_isDraggingSpawn = false;
         m_spawnDragStart.reset();
     }
+    
+    void StageEditorService::applyTextureToSelected(const String& texturePath)
+    {
+        const auto& selectedIds = m_manager.getSelectedIds();
+        for (const auto& obj : m_manager.getAllObjects())
+        {
+            if (obj.id && selectedIds.contains(*obj.id))
+            {
+                auto newObj = obj.data;
+                newObj.texturePath = texturePath;
+                m_manager.modifyObject(*obj.id, newObj);
+            }
+        }
+    }
 }

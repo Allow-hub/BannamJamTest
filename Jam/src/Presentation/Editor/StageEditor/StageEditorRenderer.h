@@ -90,6 +90,15 @@ namespace Jam::Presentation::Editor
                    m_speedTextEdit.active || m_damageTextEdit.active;
         }
         
+        // テキスト入力を全て無効化
+        void clearTextInputFocus() const
+        {
+            m_metadataTextEdit.active = false;
+            m_distanceTextEdit.active = false;
+            m_speedTextEdit.active = false;
+            m_damageTextEdit.active = false;
+        }
+        
         // StageEditorSceneから呼び出すためpublicに
         void drawObject(const Domain::Editor::StageEditorObjectNew& obj, bool isSelected) const;
         
