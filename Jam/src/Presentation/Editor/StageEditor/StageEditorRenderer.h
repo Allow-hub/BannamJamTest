@@ -9,6 +9,9 @@ namespace Jam::Presentation::Editor
     class StageEditorRenderer : public EditorRendererBase<UseCase::Editor::StageEditorService>
     {
     private:
+        static constexpr double FRAME_THICKNESS = 2.0;
+        static constexpr double PLAYER_SPAWN_RADIUS = 20.0;
+        
         mutable bool m_isStageTypeDropdownOpen = false;
         mutable bool m_isMovementTypeDropdownOpen = false;
         mutable bool m_isTextureDropdownOpen = false;
@@ -33,15 +36,15 @@ namespace Jam::Presentation::Editor
             // 配置モードのドラッグ矩形
             if (auto dragRect = this->m_service->getDragRect())
             {
-                dragRect->draw(ColorF{0.0, 1.0, 0.0, 0.3});
-                dragRect->drawFrame(2.0, ColorF{0.0, 1.0, 0.0, 0.8});
+                dragRect->draw(Palette::Lime.withAlpha(0.3));
+                dragRect->drawFrame(FRAME_THICKNESS, Palette::Lime.withAlpha(0.8));
             }
             
             // 選択モードのドラッグ矩形
             if (auto selectionRect = this->m_service->getSelectionDragRect())
             {
-                selectionRect->draw(ColorF{0.0, 0.5, 1.0, 0.2});
-                selectionRect->drawFrame(2.0, ColorF{0.0, 0.5, 1.0, 0.8});
+                selectionRect->draw(Palette::Deepskyblue.withAlpha(0.2));
+                selectionRect->drawFrame(FRAME_THICKNESS, Palette::Deepskyblue.withAlpha(0.8));
             }
         }
         

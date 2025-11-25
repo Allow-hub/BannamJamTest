@@ -453,15 +453,15 @@ namespace Jam::Presentation::Scenes
                 // ドラッグ矩形を描画
                 if (auto dragRect = m_stageEditorService.getDragRect())
                 {
-                    dragRect->draw(ColorF{0.0, 1.0, 0.0, 0.3});
-                    dragRect->drawFrame(2.0, ColorF{0.0, 1.0, 0.0, 0.8});
+                    dragRect->draw(Palette::Lime.withAlpha(0.3));
+                    dragRect->drawFrame(2.0, Palette::Lime.withAlpha(0.8));
                 }
                 
                 // 選択モードのドラッグ矩形
                 if (auto selectionRect = m_stageEditorService.getSelectionDragRect())
                 {
-                    selectionRect->draw(ColorF{0.0, 0.5, 1.0, 0.2});
-                    selectionRect->drawFrame(2.0, ColorF{0.0, 0.5, 1.0, 0.8});
+                    selectionRect->draw(Palette::Deepskyblue.withAlpha(0.2));
+                    selectionRect->drawFrame(2.0, Palette::Deepskyblue.withAlpha(0.8));
                 }
             }
             
@@ -514,9 +514,9 @@ namespace Jam::Presentation::Scenes
     {
         const Vec2 playerSpawnPos{0, 0};
         const double playerRadius = 20.0;
-        Circle{playerSpawnPos, playerRadius}.draw(ColorF{0.0, 1.0, 1.0, 0.5});
-        Circle{playerSpawnPos, playerRadius}.drawFrame(2.0, ColorF{0.0, 1.0, 1.0});
-        Circle{playerSpawnPos, 5.0}.draw(ColorF{1.0, 1.0, 1.0});
+        Circle{playerSpawnPos, playerRadius}.draw(Palette::Cyan.withAlpha(0.5));
+        Circle{playerSpawnPos, playerRadius}.drawFrame(2.0, Palette::Cyan);
+        Circle{playerSpawnPos, 5.0}.draw(Palette::White);
     }
     
     void StageEditorScene::drawStageObjects() const
@@ -538,8 +538,8 @@ namespace Jam::Presentation::Scenes
     {
         const Vec2 playerSpawnPos{0, 0};
         const double playerRadius = 20.0;
-        Circle{playerSpawnPos, playerRadius}.draw(ColorF{0.0, 1.0, 1.0, 0.5});
-        Circle{playerSpawnPos, playerRadius}.drawFrame(2.0, ColorF{0.0, 1.0, 1.0});
+        Circle{playerSpawnPos, playerRadius}.draw(Palette::Cyan.withAlpha(0.5));
+        Circle{playerSpawnPos, playerRadius}.drawFrame(2.0, Palette::Cyan);
         
         for (const auto& enemy : m_enemyEditorService.getManager().getAllObjects())
         {
@@ -556,7 +556,7 @@ namespace Jam::Presentation::Scenes
         const Vec2 center = obj.rect.center();
         const double distance = obj.movementDistance;
         // ループのオン/オフで色を変える（オレンジ：ループ、シアン：往復）
-        const ColorF guideColor = obj.loopMovement ? ColorF{1.0, 0.5, 0.0, 0.8} : ColorF{0.0, 1.0, 1.0, 0.8};
+        const ColorF guideColor = obj.loopMovement ? Palette::Orange.withAlpha(0.8) : Palette::Cyan.withAlpha(0.8);
         
         Vec2 startPos, endPos;
         

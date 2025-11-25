@@ -25,10 +25,9 @@ namespace Jam::Presentation::Editor
             break;
         }
         
-        this->m_font(modeName).draw(this->getPanelX() + 15, y, modeColor);
-        y += 45;
+        this->m_font(modeName).draw(this->getPanelX() + GUI_PADDING_15, y, modeColor);
+        y += GUI_SPACING_45;
         
-        y += this->getItemSpacing();
         return y;
     }
     
@@ -37,11 +36,11 @@ namespace Jam::Presentation::Editor
         y = this->drawSectionHeader(U"敵タイプ", y);
         
         String currentTypeName = getEnemyTypeName(this->m_service->getEnemyType());
-        if (SimpleGUI::Button(currentTypeName, Vec2{this->getPanelX() + 10, y}, 280))
+        if (SimpleGUI::Button(currentTypeName, Vec2{this->getPanelX() + GUI_PADDING, y}, GUI_BUTTON_WIDTH_WIDE))
         {
             m_isEnemyTypeDropdownOpen = !m_isEnemyTypeDropdownOpen;
         }
-        y += 40;
+        y += GUI_SPACING_40;
         
         if (m_isEnemyTypeDropdownOpen)
         {
@@ -56,14 +55,14 @@ namespace Jam::Presentation::Editor
             
             for (const auto& type : types)
             {
-                if (SimpleGUI::Button(getEnemyTypeName(type), Vec2{this->getPanelX() + 15, y}, 265))
+                if (SimpleGUI::Button(getEnemyTypeName(type), Vec2{this->getPanelX() + GUI_PADDING_15, y}, GUI_DROPDOWN_BUTTON_WIDTH + 5))
                 {
                     this->m_service->setEnemyType(type);
                     m_isEnemyTypeDropdownOpen = false;
                 }
-                y += 35;
+                y += GUI_SPACING_35;
             }
-            y += 10;
+            y += GUI_PADDING;
         }
         
         y += this->getSmallSpacing();
@@ -84,7 +83,7 @@ namespace Jam::Presentation::Editor
             U"距離",
             patrolDistanceInt,
             50, 500,
-            Vec2{this->getPanelX() + 10, static_cast<double>(y)},
+            Vec2{this->getPanelX() + GUI_PADDING, static_cast<double>(y)},
             m_patrolDistanceTextEdit
         );
         this->m_service->setPatrolDistance(static_cast<double>(patrolDistanceInt));
@@ -95,7 +94,7 @@ namespace Jam::Presentation::Editor
             U"待機",
             waitTime,
             0.5, 5.0,
-            Vec2{this->getPanelX() + 10, static_cast<double>(y)},
+            Vec2{this->getPanelX() + GUI_PADDING, static_cast<double>(y)},
             m_waitTimeTextEdit,
             1  // 小数点1桁
         );
@@ -108,7 +107,7 @@ namespace Jam::Presentation::Editor
             U"発見",
             foundDistanceInt,
             300, 1000,
-            Vec2{this->getPanelX() + 10, static_cast<double>(y)},
+            Vec2{this->getPanelX() + GUI_PADDING, static_cast<double>(y)},
             m_foundDistanceTextEdit
         );
         this->m_service->setFoundDistance(static_cast<double>(foundDistanceInt));
@@ -132,7 +131,7 @@ namespace Jam::Presentation::Editor
             U"攻撃範囲",
             attackRangeInt,
             300, 1000,
-            Vec2{this->getPanelX() + 10, static_cast<double>(y)},
+            Vec2{this->getPanelX() + GUI_PADDING, static_cast<double>(y)},
             m_attackRangeTextEdit
         );
         this->m_service->setAttackRange(static_cast<double>(attackRangeInt));
@@ -144,7 +143,7 @@ namespace Jam::Presentation::Editor
             U"見失い範囲",
             loseRangeInt,
             500, 1500,
-            Vec2{this->getPanelX() + 10, static_cast<double>(y)},
+            Vec2{this->getPanelX() + GUI_PADDING, static_cast<double>(y)},
             m_loseRangeTextEdit
         );
         this->m_service->setLoseRange(static_cast<double>(loseRangeInt));
@@ -155,7 +154,7 @@ namespace Jam::Presentation::Editor
             U"速度倍率",
             speedFactor,
             1.0, 2.0,
-            Vec2{this->getPanelX() + 10, static_cast<double>(y)},
+            Vec2{this->getPanelX() + GUI_PADDING, static_cast<double>(y)},
             m_speedFactorTextEdit,
             1  // 小数点1桁
         );

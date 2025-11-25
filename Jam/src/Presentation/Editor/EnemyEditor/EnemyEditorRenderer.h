@@ -10,6 +10,10 @@ namespace Jam::Presentation::Editor
     class EnemyEditorRenderer : public EditorRendererBase<UseCase::Editor::EnemyEditorService>
     {
     private:
+        static constexpr double PLAYER_SPAWN_RADIUS = 20.0;
+        static constexpr double PLAYER_SPAWN_CENTER_RADIUS = 5.0;
+        static constexpr double FRAME_THICKNESS = 2.0;
+        
         mutable bool m_isEnemyTypeDropdownOpen = false;
         mutable bool m_switchToStageEditor = false;
         const Domain::Editor::StageEditorManager* m_stageManager = nullptr;
@@ -44,10 +48,10 @@ namespace Jam::Presentation::Editor
                 playerSpawnPos = m_stageManager->getPlayerSpawnPosition();
             }
             
-            const double playerRadius = 20.0;
-            Circle{playerSpawnPos, playerRadius}.draw(ColorF{0.0, 1.0, 1.0, 0.5});
-            Circle{playerSpawnPos, playerRadius}.drawFrame(2.0, ColorF{0.0, 1.0, 1.0});
-            Circle{playerSpawnPos, 5.0}.draw(ColorF{1.0, 1.0, 1.0});
+            const double playerRadius = PLAYER_SPAWN_RADIUS;
+            Circle{playerSpawnPos, playerRadius}.draw(Palette::Cyan.withAlpha(0.5));
+            Circle{playerSpawnPos, playerRadius}.drawFrame(FRAME_THICKNESS, Palette::Cyan);
+            Circle{playerSpawnPos, PLAYER_SPAWN_CENTER_RADIUS}.draw(Palette::White);
             
             for (const auto& enemy : this->m_service->getManager().getAllObjects())
             {

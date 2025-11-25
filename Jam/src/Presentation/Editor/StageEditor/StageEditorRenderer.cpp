@@ -26,8 +26,8 @@ namespace Jam::Presentation::Editor
             break;
         }
         
-        this->m_font(modeName).draw(this->getPanelX() + 15, y, modeColor);
-        y += this->getItemSpacing();
+        this->m_font(modeName).draw(this->getPanelX() + GUI_PADDING_15, y, modeColor);
+        y += GUI_SPACING_45;
         
         return y;
     }
@@ -39,11 +39,11 @@ namespace Jam::Presentation::Editor
         const auto currentStageType = this->m_service->getCurrentStageType();
         
         const String currentTypeName = getStageTypeName(currentStageType);
-        if (SimpleGUI::Button(currentTypeName, Vec2{this->getPanelX() + 10, y}, 270))
+        if (SimpleGUI::Button(currentTypeName, Vec2{this->getPanelX() + GUI_PADDING, y}, GUI_BUTTON_WIDTH))
         {
             m_isStageTypeDropdownOpen = !m_isStageTypeDropdownOpen;
         }
-        y += 35;
+        y += GUI_SPACING_35;
         
         if (m_isStageTypeDropdownOpen)
         {
@@ -56,14 +56,14 @@ namespace Jam::Presentation::Editor
             
             for (const auto& [name, type] : types)
             {
-                if (SimpleGUI::Button(name, Vec2{this->getPanelX() + 15, y}, 260))
+                if (SimpleGUI::Button(name, Vec2{this->getPanelX() + GUI_PADDING_15, y}, GUI_DROPDOWN_BUTTON_WIDTH))
                 {
                     this->m_service->setCurrentStageType(type);
                     m_isStageTypeDropdownOpen = false;
                 }
-                y += 30;
+                y += GUI_SPACING_30;
             }
-            y += 10;
+            y += GUI_PADDING;
         }
         
         y += this->getSmallSpacing();
@@ -112,24 +112,24 @@ namespace Jam::Presentation::Editor
             }
         }
         
-        if (SimpleGUI::Button(currentTextureName, Vec2{this->getPanelX() + 10, y}, 270))
+        if (SimpleGUI::Button(currentTextureName, Vec2{this->getPanelX() + GUI_PADDING, y}, GUI_BUTTON_WIDTH))
         {
             m_isTextureDropdownOpen = !m_isTextureDropdownOpen;
         }
-        y += 35;
+        y += GUI_SPACING_35;
         
         if (m_isTextureDropdownOpen)
         {
             for (const auto& [name, path] : textures)
             {
-                if (SimpleGUI::Button(name, Vec2{this->getPanelX() + 15, y}, 260))
+                if (SimpleGUI::Button(name, Vec2{this->getPanelX() + GUI_PADDING_15, y}, GUI_DROPDOWN_BUTTON_WIDTH))
                 {
                     this->m_service->setTexturePath(path);
                     m_isTextureDropdownOpen = false;
                 }
-                y += 30;
+                y += GUI_SPACING_30;
             }
-            y += 10;
+            y += GUI_PADDING;
         }
         
         y += this->getSmallSpacing();
@@ -195,33 +195,33 @@ namespace Jam::Presentation::Editor
         
         const Array<String> movementTypes = {U"横移動", U"縦移動", U"円運動"};
         const String currentMovementTypeName = movementTypes[static_cast<size_t>(this->m_service->getMovementType())];
-        if (SimpleGUI::Button(currentMovementTypeName, Vec2{this->getPanelX() + 10, y}, 270))
+        if (SimpleGUI::Button(currentMovementTypeName, Vec2{this->getPanelX() + GUI_PADDING, y}, GUI_BUTTON_WIDTH))
         {
             m_isMovementTypeDropdownOpen = !m_isMovementTypeDropdownOpen;
         }
-        y += 40;
+        y += GUI_SPACING_40;
         
         if (m_isMovementTypeDropdownOpen)
         {
             for (size_t i = 0; i < movementTypes.size(); ++i)
             {
-                if (SimpleGUI::Button(movementTypes[i], Vec2{this->getPanelX() + 15, y}, 260))
+                if (SimpleGUI::Button(movementTypes[i], Vec2{this->getPanelX() + GUI_PADDING_15, y}, GUI_DROPDOWN_BUTTON_WIDTH))
                 {
                     this->m_service->setMovementType(static_cast<Domain::Stage::MovementType>(i));
                     m_isMovementTypeDropdownOpen = false;
                 }
-                y += 30;
+                y += GUI_SPACING_30;
             }
-            y += 15;
+            y += GUI_PADDING_15;
         }
         
         // 自動計算チェックボックス
         bool autoCalc = this->m_service->getAutoCalculateDistance();
-        if (SimpleGUI::CheckBox(autoCalc, U"サイズから自動計算", Vec2{this->getPanelX() + 10, y}, 270))
+        if (SimpleGUI::CheckBox(autoCalc, U"サイズから自動計算", Vec2{this->getPanelX() + GUI_PADDING, y}, GUI_BUTTON_WIDTH))
         {
             this->m_service->setAutoCalculateDistance(autoCalc);
         }
-        y += 35;
+        y += GUI_SPACING_35;
         
         // 選択中のオブジェクトがあれば、サイズに基づいた推奨距離を表示
         const auto selectedObjects = this->m_service->getManager().getSelectedObjects();
@@ -245,14 +245,14 @@ namespace Jam::Presentation::Editor
             }
             
             this->m_smallFont(U"推奨距離: {:.0f}"_fmt(suggestedDistance))
-                .draw(this->getPanelX() + 15, y, ColorF{0.5, 1.0, 0.5});
-            y += 25;
+                .draw(this->getPanelX() + GUI_PADDING_15, y, Palette::Lightgreen);
+            y += GUI_SPACING_25;
             
-            if (SimpleGUI::Button(U"サイズに合わせる", Vec2{this->getPanelX() + 10, y}, 130))
+            if (SimpleGUI::Button(U"サイズに合わせる", Vec2{this->getPanelX() + GUI_PADDING, y}, GUI_SMALL_BUTTON_WIDTH))
             {
                 this->m_service->setMovementDistance(suggestedDistance);
             }
-            y += 40;
+            y += GUI_SPACING_40;
         }
         
         // 距離設定 - EditorTextInputUtilを使用
@@ -262,7 +262,7 @@ namespace Jam::Presentation::Editor
             U"距離",
             distanceInt,
             50, 1000,
-            Vec2{this->getPanelX() + 10, static_cast<double>(y)},
+            Vec2{this->getPanelX() + GUI_PADDING, static_cast<double>(y)},
             m_distanceTextEdit
         );
         this->m_service->setMovementDistance(static_cast<double>(distanceInt));
@@ -275,18 +275,18 @@ namespace Jam::Presentation::Editor
             U"速度",
             speedInt,
             10, 500,
-            Vec2{this->getPanelX() + 10, static_cast<double>(y)},
+            Vec2{this->getPanelX() + GUI_PADDING, static_cast<double>(y)},
             m_speedTextEdit
         );
         this->m_service->setMovementSpeed(static_cast<double>(speedInt));
         
         
         bool loopMovement = this->m_service->getLoopMovement();
-        if (SimpleGUI::CheckBox(loopMovement, U"ループ移動", Vec2{this->getPanelX() + 10, y}, 270))
+        if (SimpleGUI::CheckBox(loopMovement, U"ループ移動", Vec2{this->getPanelX() + GUI_PADDING, y}, GUI_BUTTON_WIDTH))
         {
             this->m_service->setLoopMovement(loopMovement);
         }
-        y += 40;
+        y += GUI_SPACING_40;
         
         y += this->getSmallSpacing();
         return y;
@@ -307,7 +307,7 @@ namespace Jam::Presentation::Editor
             U"ダメージ",
             damageInt,
             1, 50,
-            Vec2{this->getPanelX() + 10, static_cast<double>(y)},
+            Vec2{this->getPanelX() + GUI_PADDING, static_cast<double>(y)},
             m_damageTextEdit
         );
         this->m_service->setDamageAmount(Math::Round(static_cast<double>(damageInt)));
@@ -334,17 +334,17 @@ namespace Jam::Presentation::Editor
         {
             const auto* selected = selectedObjects[0];
             this->m_smallFont(U"位置: ({:.0f}, {:.0f})"_fmt(selected->data.rect.x, selected->data.rect.y))
-                .draw(this->getPanelX() + 15, y, Palette::White);
-            y += 20;
+                .draw(this->getPanelX() + GUI_PADDING_15, y, Palette::White);
+            y += GUI_SPACING_20;
             this->m_smallFont(U"サイズ: ({:.0f}, {:.0f})"_fmt(selected->data.rect.w, selected->data.rect.h))
-                .draw(this->getPanelX() + 15, y, Palette::White);
-            y += 30;
+                .draw(this->getPanelX() + GUI_PADDING_15, y, Palette::White);
+            y += GUI_SPACING_30;
         }
         else
         {
             this->m_smallFont(U"{} 個のオブジェクトを選択中"_fmt(selectedObjects.size()))
-                .draw(this->getPanelX() + 15, y, Palette::White);
-            y += 30;
+                .draw(this->getPanelX() + GUI_PADDING_15, y, Palette::White);
+            y += GUI_SPACING_30;
         }
         
         return y;
@@ -360,21 +360,21 @@ namespace Jam::Presentation::Editor
         
         // プレイヤースポーン位置を描画
         const Vec2 playerSpawnPos = this->m_service->getPlayerSpawnPosition();
-        const double playerRadius = 20.0;
+        const double playerRadius = PLAYER_SPAWN_RADIUS;
         
         // 選択状態やドラッグ中で色を変える
-        ColorF spawnColor = ColorF{0.0, 1.0, 1.0, 0.5};  // デフォルト: シアン
-        ColorF borderColor = ColorF{0.0, 1.0, 1.0};
+        ColorF spawnColor = Palette::Cyan.withAlpha(0.5);  // デフォルト: シアン
+        ColorF borderColor = Palette::Cyan;
         
         if (this->m_service->isSpawnSelected())
         {
-            spawnColor = ColorF{1.0, 1.0, 0.0, 0.6};  // 選択中: 黄色
-            borderColor = ColorF{1.0, 1.0, 0.0};
+            spawnColor = Palette::Yellow.withAlpha(0.6);  // 選択中: 黄色
+            borderColor = Palette::Yellow;
         }
         
         Circle{playerSpawnPos, playerRadius}.draw(spawnColor);
-        Circle{playerSpawnPos, playerRadius}.drawFrame(this->m_service->isSpawnSelected() ? 3.0 : 2.0, borderColor);
-        Circle{playerSpawnPos, 5.0}.draw(ColorF{1.0, 1.0, 1.0});
+        Circle{playerSpawnPos, playerRadius}.drawFrame(this->m_service->isSpawnSelected() ? 3.0 : FRAME_THICKNESS, borderColor);
+        Circle{playerSpawnPos, 5.0}.draw(Palette::White);
         
         for (const auto& obj : objects)
         {
