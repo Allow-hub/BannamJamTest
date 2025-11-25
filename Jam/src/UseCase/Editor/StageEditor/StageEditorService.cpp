@@ -9,7 +9,6 @@ namespace Jam::UseCase::Editor
         m_state.stageType = type;
         m_state.otherObjectType = OtherObjectType::None;  // ステージタイプを選択したらその他オブジェクトの選択を解除
         updateGroundSideForType(type);
-        updateMetadataForType(type);
         
         // ステージタイプに応じてデフォルトテクスチャを設定
         switch (type)
@@ -224,26 +223,7 @@ namespace Jam::UseCase::Editor
         }
     }
     
-    void StageEditorService::updateMetadataForType(Domain::Stage::StageType type)
-    {
-        switch (type) {
-        case Domain::Stage::StageType::Normal:
-            m_state.metadata = U"普通の床";
-            break;
-        case Domain::Stage::StageType::MovingPlatform:
-            m_state.metadata = U"動く床";
-            break;
-        case Domain::Stage::StageType::OneWayPlatform:
-            m_state.metadata = U"すり抜け床";
-            break;
-        case Domain::Stage::StageType::DamagePlatform:
-            m_state.metadata = U"ダメージ床";
-            break;
-        case Domain::Stage::StageType::MovingDamagePlatform:
-            m_state.metadata = U"動くダメージ床";
-            break;
-        }
-    }
+
 
     #pragma endregion
 

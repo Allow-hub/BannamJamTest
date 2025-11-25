@@ -22,7 +22,7 @@ namespace Jam::UseCase::Editor
         double movementSpeed = 100.0;
         bool loopMovement = true;
         double damageAmount = 10.0;
-        String metadata = U"普通の床";
+        String metadata = U"";  // TODO:現在は一時的に記憶のかけらの識別用で使用しているが、今後OtherObjectTypeフィールドをStageObjectに追加して型安全な管理に移行する
         String texturePath = U"Assets/Stage/normal_stage.png";  // テクスチャファイルのパス（デフォルト値を設定）
         bool autoCalculateDistance = true;  // 移動距離を自動計算するか
         OtherObjectType otherObjectType = OtherObjectType::None;  // その他のオブジェクトの種類
@@ -120,7 +120,6 @@ namespace Jam::UseCase::Editor
     private:
         Domain::Stage::StageObject createStageObjectFromCurrent(const RectF& rect) const;
         void updateGroundSideForType(Domain::Stage::StageType type);
-        void updateMetadataForType(Domain::Stage::StageType type);
         
         // ===== 配置ヘルパー関数 =====
         void handleOtherObjectPlacement(const Vec2& snappedPos);
