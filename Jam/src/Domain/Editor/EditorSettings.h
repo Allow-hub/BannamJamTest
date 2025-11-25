@@ -3,12 +3,11 @@
 
 namespace Jam::Domain::Editor
 {
-	static constexpr int DEFAULT_GRID_SIZE = 50;
-	static constexpr double DEFAULT_CAMERA_SPEED = 5.0;
-	static constexpr double MIN_CAMERA_SPEED = 1.0;
-	
 	struct EditorConfig
 	{
+		static constexpr int DEFAULT_GRID_SIZE = 50;
+		static constexpr double DEFAULT_CAMERA_SPEED = 5.0;
+
 		int gridSize = DEFAULT_GRID_SIZE;
 		bool snapToGrid = true;
 		bool showGrid = true;
@@ -23,6 +22,8 @@ namespace Jam::Domain::Editor
 
 	public:
 		EditorSettings() = default;
+
+		static constexpr double MIN_CAMERA_SPEED = 1.0;
 
 		// ===== グリッド設定 =====
 		int getGridSize() const { return m_config.gridSize; }
