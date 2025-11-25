@@ -157,16 +157,12 @@ namespace Jam::UseCase::Editor
                         for (size_t i = 0; i < objects.size(); ++i)
                         {
                             if (objects[i].data.metadata == U"flagment")
-                            {
                                 flagmentIndices.push_back(i);
-                            }
                         }
                         
                         // MAX_FLAGMENTS以上ある場合は最も古い（最初の）ものを削除
                         if (flagmentIndices.size() >= MAX_FLAGMENTS)
-                        {
                             m_manager.removeObject(flagmentIndices[0]);
-                        }
                     }
                     
                     m_manager.addObject(obj);

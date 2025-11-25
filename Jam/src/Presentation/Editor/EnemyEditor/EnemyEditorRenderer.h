@@ -44,9 +44,7 @@ namespace Jam::Presentation::Editor
             // StageEditorManagerからスポーン位置を取得
             Vec2 playerSpawnPos{0, 0};
             if (m_stageManager)
-            {
                 playerSpawnPos = m_stageManager->getPlayerSpawnPosition();
-            }
             
             const double playerRadius = PLAYER_SPAWN_RADIUS;
             Circle{playerSpawnPos, playerRadius}.draw(Palette::Cyan.withAlpha(0.5));
@@ -79,9 +77,7 @@ namespace Jam::Presentation::Editor
                 int y = this->getContentStartY();
                 
                 if (SimpleGUI::Button(U"ステージエディタに切り替え", Vec2{this->getPanelX() + 10, y}, 280))
-                {
                     m_switchToStageEditor = true;
-                }
                 y += 45;
                 
                 y = this->drawCameraSettings(y);

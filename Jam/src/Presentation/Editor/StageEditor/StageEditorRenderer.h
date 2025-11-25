@@ -64,9 +64,7 @@ namespace Jam::Presentation::Editor
                 int y = this->getContentStartY();
                 
                 if (SimpleGUI::Button(U"敵エディタに切り替え", Vec2{this->getPanelX() + 10, y}, 280))
-                {
                     m_switchToEnemyEditor = true;
-                }
                 y += 45;
                 
                 y = this->drawCameraSettings(y);
