@@ -51,6 +51,7 @@
     <ClCompile Include="src\Presentation\Scenes\SelectScene.cpp" />
     <ClCompile Include="src\Presentation\Scenes\ResultScene.cpp" />
     <ClCompile Include="src\Presentation\InGameUIManager.cpp" />
+    <ClCompile Include="src\Domain\Editor\EditorCameraController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
@@ -166,6 +167,7 @@
     <ClInclude Include="src\Domain\Player\Choker\ChokerStates\HookedEnemyState.h" />
     <ClInclude Include="src\Presentation\Scenes\SceneName.h" />
     <ClInclude Include="src\Domain\Player\Choker\ChokerStates\CustomDistanceJoint.h" />
+    <ClInclude Include="src\Domain\Editor\EditorCameraController.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />

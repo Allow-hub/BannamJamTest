@@ -1,77 +1,11 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
+#include "../../../Domain/Editor/EditorCameraController.h"
 
 namespace Jam::UseCase::Editor
 {
-    // エディタカメラコントローラ
-    class EditorCameraController
-    {
-    private:
-        Camera2D m_camera{Vec2{0, 0}, 1.0};
-        double m_speed = 5.0;
-        
-        static constexpr double MIN_SCALE = 0.1;
-        static constexpr double MAX_SCALE = 4.0;
-        static constexpr double ZOOM_FACTOR = 1.1;
-        
-    public:
-        void update()
-        {
-            if (KeyControl.pressed() || KeyAlt.pressed()) {
-                return;
-            }
-            
-            updateMovement();
-            updateZoom();
-        }
-        
-        Vec2 screenToWorld(const Vec2& screenPos) const
-        {
-            const Vec2 screenCenter(Scene::Width() * 0.5, Scene::Height() * 0.5);
-            return m_camera.getCenter() + (screenPos - screenCenter) / m_camera.getScale();
-        }
-        
-        auto createTransformer() const { return m_camera.createTransformer(); }
-        const Camera2D& getCamera() const { return m_camera; }
-        
-        void setSpeed(double speed) { m_speed = Max(1.0, speed); }
-        double getSpeed() const { return m_speed; }
-        
-    private:
-        void updateMovement()
-        {
-            // テキスト入力中はカメラ移動しない
-            if (TextInput::GetEditingText()) {
-                return;
-            }
-            
-            Vec2 movement{0, 0};
-            if (KeyW.pressed() || KeyUp.pressed()) movement.y -= m_speed;
-            if (KeyS.pressed() || KeyDown.pressed()) movement.y += m_speed;
-            if (KeyA.pressed() || KeyLeft.pressed()) movement.x -= m_speed;
-            if (KeyD.pressed() || KeyRight.pressed()) movement.x += m_speed;
-            
-            if (movement != Vec2{0, 0}) {
-                m_camera.setCenter(m_camera.getCenter() + movement);
-            }
-        }
-        
-        void updateZoom()
-        {
-            // GUIパネル上ではズームしない
-            const int panelX = Scene::Width() - 300;
-            if (Cursor::Pos().x >= panelX) {
-                return;
-            }
-            
-            const int wheel = Mouse::Wheel();
-            if (wheel > 0) {
-                m_camera.setScale(Max(MIN_SCALE, m_camera.getScale() / ZOOM_FACTOR));
-            } else if (wheel < 0) {
-                m_camera.setScale(Min(MAX_SCALE, m_camera.getScale() * ZOOM_FACTOR));
-            }
-        }
-    };
+    // エディタモードの前方宣言を使用
+    using Jam::Domain::Editor::EditorCameraController;
     
     // エディタモード
     enum class EditorMode

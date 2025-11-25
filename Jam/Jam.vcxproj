@@ -114,6 +114,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="src\Domain\Editor\EditorCameraController.cpp" />
     <ClCompile Include="src\Domain\Enemy\Bomb.cpp" />
     <ClCompile Include="src\Domain\Enemy\Boss1_3.cpp" />
     <ClCompile Include="src\Domain\Enemy\Clown.cpp" />
@@ -645,6 +646,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Domain\Editor\Base\EditorManagerBase.h" />
+    <ClInclude Include="src\Domain\Editor\EditorCameraController.h" />
     <ClInclude Include="src\Domain\Editor\EnemyEditor\EnemyEditorManager.h" />
     <ClInclude Include="src\Domain\Editor\EnemyEditor\EnemyEditorTypes.h" />
     <ClInclude Include="src\Domain\Editor\EditorSettings.h" />
