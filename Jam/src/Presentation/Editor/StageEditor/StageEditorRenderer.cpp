@@ -396,36 +396,27 @@ namespace Jam::Presentation::Editor
         bool hasTexture = false;
         if (!obj.data.texturePath.isEmpty())
         {
-            try
+            const auto& texture = TextureManager::Load(obj.data.texturePath);
+            
+            // テクスチャが読み込めたか明示的にチェック
+            if (texture)
             {
-                const auto& texture = TextureManager::Load(obj.data.texturePath);
-                if (texture)
+                // ゴールテクスチャとフラグメントテクスチャの場合は矩形サイズに合わせて拡大縮小
+                if (obj.data.texturePath.includes(U"Goal.png") || obj.data.texturePath.includes(U"goal.png") ||
+                    obj.data.texturePath.includes(U"FlagmentMemory.png"))
                 {
-                    // ゴールテクスチャとフラグメントテクスチャの場合は矩形サイズに合わせて拡大縮小
-                    if (obj.data.texturePath.includes(U"Goal.png") || obj.data.texturePath.includes(U"goal.png") ||
-                        obj.data.texturePath.includes(U"FlagmentMemory.png"))
-                    {
-                        texture.resized(rect.size).draw(rect.pos);
-                    }
-                    else
-                    {
-                        // その他のテクスチャはタイル表示
-                        const ScopedRenderStates2D sampler{ SamplerState::RepeatLinear };
-                        texture.mapped(rect.size).draw(rect.pos);
-                    }
-                    hasTexture = true;
+                    texture.resized(rect.size).draw(rect.pos);
                 }
                 else
                 {
-                    // テクスチャが読み込めなかった
-                    Console << U"[StageEditor] Texture not loaded: " << obj.data.texturePath;
+                    // その他のテクスチャはタイル表示
+                    const ScopedRenderStates2D sampler{ SamplerState::RepeatLinear };
+                    texture.mapped(rect.size).draw(rect.pos);
                 }
+                hasTexture = true;
             }
-            catch (const std::exception& e)
-            {
-                // テクスチャロードに失敗した場合は通常描画にフォールバック
-                Console << U"[StageEditor] Failed to load texture: " << obj.data.texturePath;
-            }
+            else
+                assert(false && "Failed to load texture. Check if the texture file exists.");
         }
         
         // テクスチャがない場合は通常の色で描画

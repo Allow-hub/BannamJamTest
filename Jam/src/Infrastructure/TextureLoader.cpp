@@ -17,13 +17,16 @@ namespace Jam::Infrastructure {
 		const FilePath resourcePath = getDefaultTexturePath(type);
 		Texture texture(Resource(resourcePath));
 
-		if (texture) {
+		if (texture)
+		{
 			s_stageTextures[type] = texture;
 			return texture;
 		}
-
-		Console << U"[TextureLoader] Failed to load Resource: " << resourcePath;
-		return Texture{};
+		else
+		{
+			assert(false && "Failed to load stage texture. Check if the texture file exists.");
+			return Texture{};
+		}
 	}
 
 	void TextureLoader::preloadStageTextures() {
@@ -46,12 +49,17 @@ namespace Jam::Infrastructure {
 
 	bool TextureLoader::loadCustomTexture(Jam::Domain::Stage::StageType type, const FilePath& resourcePath) {
 		Texture texture(Resource(resourcePath));
-		if (!texture) {
-			Console << U"[TextureLoader] Custom Resource load failed: " << resourcePath;
+		
+		if (texture)
+		{
+			s_stageTextures[type] = texture;
+			return true;
+		}
+		else
+		{
+			assert(false && "Failed to load custom texture. Check if the texture file exists.");
 			return false;
 		}
-		s_stageTextures[type] = texture;
-		return true;
 	}
 
 	FilePath TextureLoader::getDefaultTexturePath(Jam::Domain::Stage::StageType type) {
@@ -73,11 +81,17 @@ namespace Jam::Infrastructure {
 
 		const FilePath resourcePath = getDefaultBackgroundTexturePath(textureName);
 		Texture texture(Resource(resourcePath));
-		if (texture) {
+		
+		if (texture)
+		{
 			s_backgroundTextures[textureName] = texture;
 			return texture;
 		}
-		return none;
+		else
+		{
+			assert(false && "Failed to load background texture. Check if the texture file exists.");
+			return none;
+		}
 	}
 
 	void TextureLoader::preloadBackgroundTextures() {
@@ -87,10 +101,17 @@ namespace Jam::Infrastructure {
 
 	bool TextureLoader::loadBackgroundTexture(const String& name, const FilePath& resourcePath) {
 		Texture texture(Resource(resourcePath));
-		if (!texture) return false;
-
-		s_backgroundTextures[name] = texture;
-		return true;
+		
+		if (texture)
+		{
+			s_backgroundTextures[name] = texture;
+			return true;
+		}
+		else
+		{
+			assert(false && "Failed to load background texture. Check if the texture file exists.");
+			return false;
+		}
 	}
 
 	FilePath TextureLoader::getDefaultBackgroundTexturePath(const String& textureName) {

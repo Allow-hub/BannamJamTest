@@ -84,14 +84,10 @@ namespace Jam::Presentation::Scenes
         {
             if (!obj.data.texturePath.isEmpty())
             {
-                try
-                {
-                    Jam::Presentation::TextureManager::Load(obj.data.texturePath);
-                }
-                catch (...)
-                {
-                    // 読み込み失敗は無視
-                }
+                const auto& texture = Jam::Presentation::TextureManager::Load(obj.data.texturePath);
+                
+                if (!texture)
+                    assert(false && "Failed to preload texture. Check if the texture file exists.");
             }
         }
     }
