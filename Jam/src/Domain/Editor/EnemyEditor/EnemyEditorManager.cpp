@@ -2,6 +2,7 @@
 
 namespace Jam::Domain::Editor
 {
+    // 敵オブジェクトを追加
     size_t EnemyEditorManager::addObject(const EnemyObject& enemy)
     {
         EnemyEditorObject editorEnemy(enemy);
@@ -20,6 +21,7 @@ namespace Jam::Domain::Editor
         return newIndex;
     }
     
+    // 敵オブジェクトを削除
     void EnemyEditorManager::removeObject(size_t index)
     {
         if (index < m_objects.size())
@@ -36,6 +38,7 @@ namespace Jam::Domain::Editor
         }
     }
     
+    // 敵オブジェクトの情報を変更
     void EnemyEditorManager::modifyObject(size_t index, const EnemyObject& newEnemy)
     {
         if (auto* obj = findObjectByIndex(index))
@@ -54,6 +57,7 @@ namespace Jam::Domain::Editor
         }
     }
     
+    // 指定座標にある敵オブジェクトを検索
     Optional<size_t> EnemyEditorManager::findObjectAt(const Vec2& pos) const
     {
         static constexpr double CLICK_RADIUS = 20.0;
@@ -66,6 +70,7 @@ namespace Jam::Domain::Editor
         return none;
     }
     
+    // 指定位置に既存の敵が重なっているかチェック
     bool EnemyEditorManager::hasOverlappingEnemy(const Vec2& pos, double minDistance) const
     {
         for (const auto& enemy : m_objects)
@@ -76,6 +81,7 @@ namespace Jam::Domain::Editor
         return false;
     }
     
+    // 敵配置データをJSONファイルに保存
     void EnemyEditorManager::saveToJSON(const FilePath& path) const
     {
         Array<JSON> enemiesArray;
@@ -89,6 +95,7 @@ namespace Jam::Domain::Editor
         json.save(path);
     }
     
+    // JSONファイルから敵配置データを読み込み
     void EnemyEditorManager::loadFromJSON(const FilePath& path)
     {
         clear();
@@ -109,6 +116,7 @@ namespace Jam::Domain::Editor
         m_isExecutingCommand = false;
     }
     
+    // Undo操作を実行
     void EnemyEditorManager::executeUndoCommand(const EnemyEditorCommand& cmd)
     {
         switch (cmd.type)
@@ -138,6 +146,7 @@ namespace Jam::Domain::Editor
         }
     }
     
+    // Redo操作を実行
     void EnemyEditorManager::executeRedoCommand(const EnemyEditorCommand& cmd)
     {
         switch (cmd.type)
@@ -173,6 +182,7 @@ namespace Jam::Domain::Editor
         }
     }
     
+    // 敵オブジェクトをJSON形式に変換
     JSON EnemyEditorManager::enemyObjectToJSON(const EnemyObject& enemy) const
     {
         JSON json;
@@ -222,6 +232,7 @@ namespace Jam::Domain::Editor
         return json;
     }
     
+    // JSONデータを敵オブジェクトに変換
     Optional<EnemyObject> EnemyEditorManager::jsonToEnemyObject(const JSON& json) const
     {
         EnemyObject enemy;

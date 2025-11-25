@@ -2,6 +2,7 @@
 
 namespace Jam::UseCase::Editor
 {
+    // 敵の配置処理
     void EnemyEditorService::handlePlacement(const Vec2& mousePos)
     {
         if (MouseL.down())
@@ -14,6 +15,7 @@ namespace Jam::UseCase::Editor
         }
     }
     
+    // 敵の選択処理
     void EnemyEditorService::handleSelection(const Vec2& mousePos)
     {
         auto index = m_manager.findObjectAt(mousePos);
@@ -33,12 +35,14 @@ namespace Jam::UseCase::Editor
         }
     }
     
+    // 敵の削除処理
     void EnemyEditorService::handleDeletion(const Vec2& mousePos)
     {
         if (auto id = m_manager.findObjectAt(mousePos))
             m_manager.removeObject(*id);
     }
     
+    // 現在の設定から敵オブジェクトを生成
     Domain::Editor::EnemyObject EnemyEditorService::createEnemyFromCurrent(const Vec2& position) const
     {
         Domain::Editor::EnemyObject enemy;

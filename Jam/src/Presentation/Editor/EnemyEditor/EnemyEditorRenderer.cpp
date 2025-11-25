@@ -3,11 +3,13 @@
 
 namespace Jam::Presentation::Editor
 {
+    // StageEditorManagerへの参照を設定（プレイヤースポーン位置表示用）
     void EnemyEditorRenderer::setStageManager(const Domain::Editor::StageEditorManager* manager)
     {
         m_stageManager = manager;
     }
 
+    // 敵エディタのビューを描画（グリッド、プレイヤースポーン、敵）
     void EnemyEditorRenderer::drawView() const
     {
         const auto& camera = this->m_service->getCamera();
@@ -34,6 +36,7 @@ namespace Jam::Presentation::Editor
         }
     }
 
+    // 敵エディタのGUIパネルを描画
     void EnemyEditorRenderer::drawGUIPanel() const
     {
         this->handlePanelScroll();
@@ -51,7 +54,7 @@ namespace Jam::Presentation::Editor
             
             if (SimpleGUI::Button(U"ステージエディタに切り替え", Vec2{this->getPanelX() + GUI_PADDING, y}, GUI_BUTTON_WIDTH_WIDE))
                 m_switchToStageEditor = true;
-				
+
             y += GUI_SPACING_45;
             
             y = this->drawCameraSettings(y);
@@ -62,6 +65,7 @@ namespace Jam::Presentation::Editor
         }
     }
 
+    // テキスト入力がアクティブかチェック（カメラ操作の無効化用）
     bool EnemyEditorRenderer::isTextInputActive() const
     {
         return m_patrolDistanceTextEdit.active || m_waitTimeTextEdit.active ||
@@ -69,6 +73,7 @@ namespace Jam::Presentation::Editor
                m_loseRangeTextEdit.active || m_speedFactorTextEdit.active;
     }
 
+    // 現在のエディタモードを描画
     int EnemyEditorRenderer::drawCurrentMode(int y) const
     {
         y = this->drawSectionHeader(U"現在のモード", y);
@@ -97,6 +102,7 @@ namespace Jam::Presentation::Editor
         return y;
     }
     
+    // 敵タイプ選択UIを描画
     int EnemyEditorRenderer::drawEnemyTypeSelector(int y) const
     {
         y = this->drawSectionHeader(U"敵タイプ", y);
@@ -136,6 +142,7 @@ namespace Jam::Presentation::Editor
         return y;
     }
     
+    // 巡回設定UIを描画（距離、待機時間、発見距離）
     int EnemyEditorRenderer::drawPatrolSettings(int y) const
     {
         if (this->m_service->getEnemyType() == Domain::EnemyType::Boss1_3)
@@ -183,6 +190,7 @@ namespace Jam::Presentation::Editor
         return y;
     }
     
+    // 追跡設定UIを描画（攻撃範囲、見失い範囲、速度倍率）
     int EnemyEditorRenderer::drawChaseSettings(int y) const
     {
         if (this->m_service->getEnemyType() == Domain::EnemyType::Boss1_3 ||
@@ -231,6 +239,7 @@ namespace Jam::Presentation::Editor
         return y;
     }
     
+    // 敵タイプの表示名を取得
     String EnemyEditorRenderer::getEnemyTypeName(Domain::EnemyType type) const
     {
         switch (type)
@@ -246,6 +255,7 @@ namespace Jam::Presentation::Editor
         }
     }
     
+    // 敵タイプに応じた色を取得
     ColorF EnemyEditorRenderer::getEnemyColor(Domain::EnemyType type) const
     {
         switch (type)
@@ -261,6 +271,7 @@ namespace Jam::Presentation::Editor
         }
     }
     
+    // 敵オブジェクトを描画（円と名前）
     void EnemyEditorRenderer::drawEnemy(const Domain::Editor::EnemyEditorObject& enemy, bool isSelected) const
     {
         const ColorF color = getEnemyColor(enemy.data.type);
@@ -273,6 +284,7 @@ namespace Jam::Presentation::Editor
             .drawAt(enemy.data.position.movedBy(0, radius + 15), Palette::White);
     }
     
+    // 巡回範囲と追跡範囲を描画
     void EnemyEditorRenderer::drawPatrolRange(const Domain::Editor::EnemyObject& enemy) const
     {
         const double patrolDistance = enemy.patrol.patrolPoints.size() >= 2 ? 

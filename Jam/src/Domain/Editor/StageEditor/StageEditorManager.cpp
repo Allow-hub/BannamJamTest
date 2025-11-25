@@ -4,6 +4,7 @@ namespace Jam::Domain::Editor
 {
     #pragma region オブジェクト操作
 
+    // ステージオブジェクトを追加
     size_t StageEditorManager::addObject(const Stage::StageObject& obj)
     {
         // ゴールオブジェクトを追加する場合、既存のゴールを削除
@@ -28,6 +29,7 @@ namespace Jam::Domain::Editor
         return newIndex;
     }
     
+    // ステージオブジェクトを削除
     void StageEditorManager::removeObject(size_t index)
     {
         if (index < m_objects.size())
@@ -44,6 +46,7 @@ namespace Jam::Domain::Editor
         }
     }
     
+    // ステージオブジェクトを移動
     void StageEditorManager::moveObject(size_t index, const Vec2& newPos)
     {
         if (auto* obj = findObjectByIndex(index))
@@ -62,6 +65,7 @@ namespace Jam::Domain::Editor
         }
     }
     
+    // ステージオブジェクトの情報を変更
     void StageEditorManager::modifyObject(size_t index, const Stage::StageObject& newObj)
     {
         if (auto* obj = findObjectByIndex(index))
@@ -116,6 +120,7 @@ namespace Jam::Domain::Editor
 
     #pragma region 検索・判定
 
+    // 指定座標にあるステージオブジェクトを検索
     Optional<size_t> StageEditorManager::findObjectAt(const Vec2& pos) const
     {
         for (size_t i = m_objects.size(); i-- > 0;)
@@ -174,6 +179,7 @@ namespace Jam::Domain::Editor
 
     #pragma region ファイル入出力
 
+    // ステージデータをJSONファイルに保存
     void StageEditorManager::saveToJSON(const FilePath& path) const
     {
         Array<Stage::StageObject> mergedObjects = mergeAdjacentObjects();
@@ -214,6 +220,7 @@ namespace Jam::Domain::Editor
         json.save(path);
     }
     
+    // JSONファイルからステージデータを読み込み
     void StageEditorManager::loadFromJSON(const FilePath& path)
     {
         clear();
@@ -271,6 +278,7 @@ namespace Jam::Domain::Editor
 
     #pragma region Undo/Redo処理
 
+    // Undo操作を実行
     void StageEditorManager::executeUndoCommand(const StageEditorCommand& cmd)
     {
         switch (cmd.type)
@@ -315,6 +323,7 @@ namespace Jam::Domain::Editor
         }
     }
     
+    // Redo操作を実行
     void StageEditorManager::executeRedoCommand(const StageEditorCommand& cmd)
     {
         switch (cmd.type)
@@ -369,6 +378,7 @@ namespace Jam::Domain::Editor
 
     #pragma region ヘルパーメソッド
 
+    // 隣接する同一設定のオブジェクトをマージ（保存時の最適化）
     Array<Stage::StageObject> StageEditorManager::mergeAdjacentObjects() const
     {
         Array<Stage::StageObject> result;
@@ -453,6 +463,7 @@ namespace Jam::Domain::Editor
         return result;
     }
     
+    // ステージオブジェクトをJSON形式に変換
     JSON StageEditorManager::stageObjectToJSON(const Stage::StageObject& obj) const
     {
         JSON json;
@@ -493,6 +504,7 @@ namespace Jam::Domain::Editor
         return json;
     }
     
+    // JSONデータをステージオブジェクトに変換
     Optional<Stage::StageObject> StageEditorManager::jsonToStageObject(const JSON& json) const
     {
         Stage::StageObject obj;
