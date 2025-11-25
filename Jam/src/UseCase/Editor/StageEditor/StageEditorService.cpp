@@ -2,6 +2,8 @@
 
 namespace Jam::UseCase::Editor
 {
+    #pragma region 状態設定
+
     void StageEditorService::setCurrentStageType(Domain::Stage::StageType type)
     {
         m_state.stageType = type;
@@ -69,7 +71,11 @@ namespace Jam::UseCase::Editor
         m_state.damageAmount = amount;
         m_manager.updateSelectedObjectsDamage(amount);
     }
-    
+
+    #pragma endregion
+
+    #pragma region 座標変換
+
     Vec2 StageEditorService::snapToGrid(const Vec2& pos) const
     {
         if (!m_settings.isSnapToGrid()) return pos;
@@ -80,7 +86,11 @@ namespace Jam::UseCase::Editor
             Math::Floor(pos.y / gridSize) * gridSize
         };
     }
-    
+
+    #pragma endregion
+
+    #pragma region ドラッグ処理
+
     Optional<RectF> StageEditorService::getDragRect() const
     {
         if (!m_dragStart || !m_currentDragPos) return none;
@@ -114,7 +124,11 @@ namespace Jam::UseCase::Editor
         
         return RectF{x, y, w, h};
     }
-    
+
+    #pragma endregion
+
+    #pragma region 配置・選択・削除処理
+
     void StageEditorService::handlePlacement(const Vec2& mousePos)
     {
         const int gridSize = m_settings.getGridSize();
@@ -314,7 +328,11 @@ namespace Jam::UseCase::Editor
         for (auto index : indices)
             m_manager.removeObject(index);
     }
-    
+
+    #pragma endregion
+
+    #pragma region オブジェクト生成
+
     Domain::Stage::StageObject StageEditorService::createStageObjectFromCurrent(const RectF& rect) const
     {
         Domain::Stage::StageObject obj;
@@ -369,9 +387,11 @@ namespace Jam::UseCase::Editor
             break;
         }
     }
-    
-    // ===== スポーン位置のドラッグ処理 =====
-    
+
+    #pragma endregion
+
+    #pragma region スポーン位置ドラッグ処理
+
     bool StageEditorService::isMouseOverSpawn(const Vec2& mousePos, double radius) const
     {
         const Vec2 spawnPos = getPlayerSpawnPosition();
@@ -426,4 +446,6 @@ namespace Jam::UseCase::Editor
             }
         }
     }
+
+    #pragma endregion
 }

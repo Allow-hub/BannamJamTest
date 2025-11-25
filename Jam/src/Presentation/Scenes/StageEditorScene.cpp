@@ -5,6 +5,8 @@
 
 namespace Jam::Presentation::Scenes
 {
+    #pragma region コンストラクタ
+
     StageEditorScene::StageEditorScene(const InitData& init)
         : IScene{ init }
     {
@@ -24,8 +26,10 @@ namespace Jam::Presentation::Scenes
         // 起動時に両方のJSONファイルを開くダイアログを表示
         loadBothJsonFiles();
     }
-    
-    // ===== 初期化 =====
+
+    #pragma endregion
+
+    #pragma region 初期化
     
     void StageEditorScene::loadBothJsonFiles()
     {
@@ -91,8 +95,10 @@ namespace Jam::Presentation::Scenes
             }
         }
     }
-    
-    // ===== 更新 =====
+
+    #pragma endregion
+
+    #pragma region 更新
     
     void StageEditorScene::update()
     {
@@ -130,6 +136,10 @@ namespace Jam::Presentation::Scenes
             updateEnemyEditor();
         }
     }
+
+    #pragma endregion
+
+    #pragma region 更新 - ステージエディタ
     
     void StageEditorScene::updateStageEditor()
     {
@@ -294,6 +304,10 @@ namespace Jam::Presentation::Scenes
             }
         }
     }
+
+    #pragma endregion
+
+    #pragma region 更新 - 敵エディタ
     
     void StageEditorScene::updateEnemyEditor()
     {
@@ -418,8 +432,10 @@ namespace Jam::Presentation::Scenes
             }
         }
     }
-    
-    // ===== 描画 =====
+
+    #pragma endregion
+
+    #pragma region 描画
     
     void StageEditorScene::draw() const
     {
@@ -485,6 +501,10 @@ namespace Jam::Presentation::Scenes
             m_enemyRenderer.drawGUIPanel();
         }
     }
+
+    #pragma endregion
+
+    #pragma region 描画 - ヘルパーメソッド
     
     void StageEditorScene::drawStageBackground() const
     {
@@ -622,4 +642,6 @@ namespace Jam::Presentation::Scenes
             break;
         }
     }
+
+    #pragma endregion
 }

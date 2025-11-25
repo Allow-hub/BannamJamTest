@@ -4,6 +4,8 @@
 
 namespace Jam::Presentation::Editor
 {
+    #pragma region GUI描画 - モード表示
+
     int StageEditorRenderer::drawCurrentMode(int y) const
     {
         y = this->drawSectionHeader(U"現在のモード", y);
@@ -31,6 +33,10 @@ namespace Jam::Presentation::Editor
         
         return y;
     }
+
+    #pragma endregion
+
+    #pragma region GUI描画 - ステージ設定
     
     int StageEditorRenderer::drawStageTypeSelector(int y) const
     {
@@ -69,6 +75,10 @@ namespace Jam::Presentation::Editor
         y += this->getSmallSpacing();
         return y;
     }
+
+    #pragma endregion
+
+    #pragma region GUI描画 - テクスチャ選択
     
     int StageEditorRenderer::drawTextureSelector(int y) const
     {
@@ -135,6 +145,10 @@ namespace Jam::Presentation::Editor
         y += this->getSmallSpacing();
         return y;
     }
+
+    #pragma endregion
+
+    #pragma region GUI描画 - その他オブジェクト
     
     int StageEditorRenderer::drawOtherObjectsSelector(int y) const
     {
@@ -185,6 +199,10 @@ namespace Jam::Presentation::Editor
         y += this->getSmallSpacing();
         return y;
     }
+
+    #pragma endregion
+
+    #pragma region GUI描画 - 移動設定
     
     int StageEditorRenderer::drawMovementSettings(int y) const
     {
@@ -291,6 +309,10 @@ namespace Jam::Presentation::Editor
         y += this->getSmallSpacing();
         return y;
     }
+
+    #pragma endregion
+
+    #pragma region GUI描画 - ダメージ設定
     
     int StageEditorRenderer::drawDamageSettings(int y) const
     {
@@ -316,6 +338,10 @@ namespace Jam::Presentation::Editor
         y += this->getSmallSpacing();
         return y;
     }
+
+    #pragma endregion
+
+    #pragma region GUI描画 - 選択情報
     
     int StageEditorRenderer::drawMetadataEdit(int y) const
     {
@@ -349,6 +375,10 @@ namespace Jam::Presentation::Editor
         
         return y;
     }
+
+    #pragma endregion
+
+    #pragma region オブジェクト描画
     
     void StageEditorRenderer::drawObjects(const Camera2D& camera, const Array<Domain::Editor::StageEditorObject>& objects) const
     {
@@ -561,6 +591,10 @@ namespace Jam::Presentation::Editor
             break;
         }
     }
+
+    #pragma endregion
+
+    #pragma region ヘルパーメソッド
     
     ColorF StageEditorRenderer::getGroundSideColor(Domain::Stage::GroundSide side) const
     {
@@ -588,4 +622,6 @@ namespace Jam::Presentation::Editor
         default: return U"不明";
         }
     }
+
+    #pragma endregion
 }

@@ -2,6 +2,8 @@
 
 namespace Jam::Domain::Editor
 {
+    #pragma region オブジェクト操作
+
     size_t StageEditorManager::addObject(const Stage::StageObject& obj)
     {
         // ゴールオブジェクトを追加する場合、既存のゴールを削除
@@ -109,7 +111,11 @@ namespace Jam::Domain::Editor
             }
         }
     }
-    
+
+    #pragma endregion
+
+    #pragma region 検索・判定
+
     Optional<size_t> StageEditorManager::findObjectAt(const Vec2& pos) const
     {
         for (size_t i = m_objects.size(); i-- > 0;)
@@ -163,7 +169,11 @@ namespace Jam::Domain::Editor
             m_isExecutingCommand = wasExecuting;
         }
     }
-    
+
+    #pragma endregion
+
+    #pragma region ファイル入出力
+
     void StageEditorManager::saveToJSON(const FilePath& path) const
     {
         Array<Stage::StageObject> mergedObjects = mergeAdjacentObjects();
@@ -256,7 +266,11 @@ namespace Jam::Domain::Editor
         
         m_isExecutingCommand = false;
     }
-    
+
+    #pragma endregion
+
+    #pragma region Undo/Redo処理
+
     void StageEditorManager::executeUndoCommand(const StageEditorCommand& cmd)
     {
         switch (cmd.type)
@@ -350,7 +364,11 @@ namespace Jam::Domain::Editor
             break;
         }
     }
-    
+
+    #pragma endregion
+
+    #pragma region ヘルパーメソッド
+
     Array<Stage::StageObject> StageEditorManager::mergeAdjacentObjects() const
     {
         Array<Stage::StageObject> result;
@@ -540,4 +558,6 @@ namespace Jam::Domain::Editor
         
         return obj;
     }
+
+    #pragma endregion
 }
