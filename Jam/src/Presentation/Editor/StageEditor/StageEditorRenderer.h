@@ -5,7 +5,7 @@
 
 namespace Jam::Presentation::Editor
 {
-    // ステージエディタレンダラー
+    // ステージエディタを描画するクラス
     class StageEditorRenderer : public EditorRendererBase<UseCase::Editor::StageEditorService>
     {
     private:

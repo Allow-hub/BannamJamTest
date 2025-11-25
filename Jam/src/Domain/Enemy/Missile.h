@@ -18,23 +18,23 @@ namespace Jam::Domain::Enemy
 		Jam::Domain::Physics::PhysicsBodyID m_playerId;
 		Jam::Domain::Physics::PhysicsBodyID m_bossId;
 
-		// 繝吶ず繧ｧ譖ｲ邱壹・蛻ｶ蠕｡轤ｹ
-		Vec2 m_controlPoint0; // 髢句ｧ狗せ(繝懊せ縺ｮ逵溷ｾ後ｍ)
-		Vec2 m_controlPoint1; // 蛻ｶ蠕｡轤ｹ1(繝懊せ縺ｮ荳顔ｩｺ)
-		Vec2 m_controlPoint2; // 蛻ｶ蠕｡轤ｹ2(繝励Ξ繧､繝､繝ｼ縺ｮ荳顔ｩｺ)
-		Vec2 m_controlPoint3; // 邨ゆｺ・せ(繝励Ξ繧､繝､繝ｼ菴咲ｽｮ)
+		// ベジェ曲線の制御点
+		Vec2 m_controlPoint0; // 開始点(ボスの真後ろ)
+		Vec2 m_controlPoint1; // 制御点1(ボスの上空)
+		Vec2 m_controlPoint2; // 制御点2(プレイヤーの上空)
+		Vec2 m_controlPoint3; // 終了点(プレイヤー位置)
 
-		// 繝溘し繧､繝ｫ縺ｮ繝代Λ繝｡繝ｼ繧ｿ
+		// ミサイルのパラメータ
 		double m_damage;
-		double m_flightDuration;      // 鬟幄｡梧凾髢・遘・
-		double m_timer;                // 邨碁℃譎る俣
-		double m_radius;               // 繝溘し繧､繝ｫ縺ｮ蜊雁ｾ・
-		double m_scale;                // 謠冗判繧ｹ繧ｱ繝ｼ繝ｫ菫よ焚
-		bool m_isReflected;            // 蜿榊ｰ・＆繧後◆縺・
-		Vec2 m_reflectedDirection;     // 蜿榊ｰ・ｾ後・譁ｹ蜷・
-		double m_reflectedSpeed;       // 蜿榊ｰ・ｾ後・騾溷ｺｦ
+		double m_flightDuration;      // 飛行時間(秒)
+		double m_timer;                // 経過時間
+		double m_radius;               // ミサイルの半径
+		double m_scale;                // 描画スケール係数
+		bool m_isReflected;            // 反射されたか
+		Vec2 m_reflectedDirection;     // 反射後の方向
+		double m_reflectedSpeed;       // 反射後の速度
 
-		bool m_hasHitBoss;             // 繝懊せ縺ｫ蠖薙◆縺｣縺溘°
+		bool m_hasHitBoss;             // ボスに当たったか
 
 	public:
 		Missile(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body,
@@ -53,13 +53,13 @@ namespace Jam::Domain::Enemy
 		void update(double deltaTime) override;
 		void draw() const override;
 
-		// 繝吶ず繧ｧ譖ｲ邱壹・險育ｮ・
+		// ベジェ曲線の計算
 		Vec2 calculateBezierPoint(double t) const;
 
-		// 蜿榊ｰ・・逅・
+		// 反射の処理
 		void reflect(Vec2 direction);
 
-		// 陦晉ｪ∵､懃衍
+		// 衝突検知
 		void onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 		void onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 		void onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;

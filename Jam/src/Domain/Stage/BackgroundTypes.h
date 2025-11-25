@@ -2,29 +2,29 @@
 #include <Siv3D.hpp>
 
 /**
- * 閭梧勹繧ｷ繧ｹ繝・Β髢｢騾｣縺ｮ蝙句ｮ夂ｾｩ
- * 繝代Λ繝ｩ繝・け繧ｹ閭梧勹謠冗判逕ｨ
+ * 背景システム関連の型定義
+ * パララックス背景描画用
  */
 namespace Jam::Domain::Background {
     
-    // 繝代Λ繝ｩ繝・け繧ｹ繝ｬ繧､繝､繝ｼ螳夂ｾｩ
+    // パララックスレイヤー定義
     enum class ParallaxLayer {
-        Back = 0,    // 荳逡ｪ蠕後ｍ・磯□譎ｯ縲・≦縺・虚縺搾ｼ・
-        Middle = 1,  // 荳ｭ髢薙Ξ繧､繝､繝ｼ・井ｸｭ譎ｯ・・ 
-        Front = 2    // 荳逡ｪ謇句燕・郁ｿ第勹縲・溘＞蜍輔″・・
+        Back = 0,    // 一番後ろ(遠景、遅い動き)
+        Middle = 1,  // 中間レイヤー(中景) 
+        Front = 2    // 一番手前(近景、速い動き)
     };
 
-    // 閭梧勹繧ｪ繝悶ず繧ｧ繧ｯ繝域ｧ矩菴・
+    // 背景オブジェクト構造
     struct BackgroundObject {
-        RectF rect;                     // 菴咲ｽｮ繝ｻ繧ｵ繧､繧ｺ
-        ParallaxLayer layer;            // 繝代Λ繝ｩ繝・け繧ｹ繝ｬ繧､繝､繝ｼ
-        String textureName;             // 繝・け繧ｹ繝√Ε蜷・
-        String metadata;                // 隴伜挨逕ｨID
-        double opacity = 1.0;           // 騾乗・蠎ｦ
-        double leftExtension = 3000.0;  // 蟾ｦ蛛ｴ縺ｸ縺ｮ諡｡蠑ｵ霍晞屬・医ョ繝輔か繝ｫ繝・000px・・
-        double rightExtension = 17000.0;// 蜿ｳ蛛ｴ縺ｸ縺ｮ諡｡蠑ｵ霍晞屬・医ョ繝輔か繝ｫ繝・7000px・・
+        RectF rect;                     // 位置・サイズ
+        ParallaxLayer layer;            // パララックスレイヤー
+        String textureName;             // テクスチャ名
+        String metadata;                // 識別用ID
+        double opacity = 1.0;           // 透明度
+        double leftExtension = 3000.0;  // 左側への延長範囲(デフォルト3000px)
+        double rightExtension = 17000.0;// 右側への延長範囲(デフォルト17000px)
         
-        // 繝・ヵ繧ｩ繝ｫ繝医さ繝ｳ繧ｹ繝医Λ繧ｯ繧ｿ
+        // デフォルトコンストラクタ
         BackgroundObject() 
             : rect(0, 0, 0, 0)
             , layer(ParallaxLayer::Back)
@@ -32,21 +32,21 @@ namespace Jam::Domain::Background {
             , metadata(U"") {}
     };
 
-    // 繝代Λ繝ｩ繝・け繧ｹ繝ｬ繧､繝､繝ｼ髢｢騾｣縺ｮ螟画鋤繝ｻ蜿門ｾ鈴未謨ｰ
+    // パララックスレイヤー関連の変換・取得関数
     inline ParallaxLayer stringToParallaxLayer(const String& layerStr) {
         if (layerStr == U"back") return ParallaxLayer::Back;
         if (layerStr == U"middle") return ParallaxLayer::Middle;
         if (layerStr == U"front") return ParallaxLayer::Front;
-        return ParallaxLayer::Back; // 繝・ヵ繧ｩ繝ｫ繝医・閭梧勹繝ｬ繧､繝､繝ｼ
+        return ParallaxLayer::Back; // デフォルトは背景レイヤー
     }
 
 
 
-    // 繝代Λ繝ｩ繝・け繧ｹ騾溷ｺｦ蛟咲紫
+    // パララックス速度計算
     inline double getParallaxMultiplier(ParallaxLayer layer) {
         switch (layer) {
-        case ParallaxLayer::Back: return 0.01; // 逕ｻ蜒上′縺ｧ縺肴ｬ｡隨ｬ縺薙％縺ｮ蛟､繧定ｪｿ謨ｴ
-        case ParallaxLayer::Middle: return 0.05; // 荳願ｨ倥→蜷梧ｧ・
+        case ParallaxLayer::Back: return 0.01; // 画像が出る次第ここの値を調整
+        case ParallaxLayer::Middle: return 0.05; // 上記と同様
         case ParallaxLayer::Front: return 1.0;
         default: return 0.02;
         }

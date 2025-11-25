@@ -3,8 +3,8 @@
 
 namespace Jam::Domain::Stage {
     /**
-     * 縺吶ｊ謚懊￠繧句ｺ・
-     * 荳九°繧我ｸ翫∈縺ｮ遘ｻ蜍墓凾縺ｯ騾夐℃蜿ｯ閭ｽ縲∽ｸ翫°繧臥捩蝨ｰ蜿ｯ閭ｽ
+     * すり抜ける床
+     * 下から上への移動時は通過可能、上から着地可能
      */
     class OneWayPlatformStage : public IStage {
     private:
@@ -16,7 +16,7 @@ namespace Jam::Domain::Stage {
         {}
         
         void update(double deltaTime) override {
-            // 縺吶ｊ謚懊￠蠎翫・菴咲ｽｮ縺悟崋螳・
+            // すり抜け床は位置が固定
         }
         
         RectF getRenderRect() const override {
@@ -32,7 +32,7 @@ namespace Jam::Domain::Stage {
         }
         
         /**
-         * 蠎翫・荳企擇縺ｮY蠎ｧ讓吶ｒ蜿門ｾ・
+         * 床の上端のY座標を取得
          */
         double getTopY() const {
             return m_rect.y;
