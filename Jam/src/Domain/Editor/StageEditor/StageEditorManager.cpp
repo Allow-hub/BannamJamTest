@@ -393,67 +393,8 @@ namespace Jam::Domain::Editor
             RectF mergedRect = obj.rect;
             merged.insert(i);
             
-            bool foundMerge = true;
-            while (foundMerge)
-            {
-                foundMerge = false;
-                
-                for (size_t j = 0; j < m_objects.size(); ++j)
-                {
-                    if (merged.contains(j)) continue;
-                    
-                    const auto& other = m_objects[j].data;
-                    
-                    if (obj.type != other.type ||
-                        obj.groundSide != other.groundSide ||
-                        obj.movementType != other.movementType ||
-                        Math::Abs(obj.movementSpeed - other.movementSpeed) > epsilon ||
-                        Math::Abs(obj.movementDistance - other.movementDistance) > epsilon ||
-                        Math::Abs(obj.damageAmount - other.damageAmount) > epsilon)
-                    {
-                        continue;
-                    }
-                    
-                    const RectF otherRect = other.rect;
-                    
-                    if (Math::Abs(mergedRect.y - otherRect.y) < epsilon && 
-                        Math::Abs(mergedRect.h - otherRect.h) < epsilon)
-                    {
-                        if (Math::Abs((mergedRect.x + mergedRect.w) - otherRect.x) < epsilon)
-                        {
-                            mergedRect.w = otherRect.x + otherRect.w - mergedRect.x;
-                            merged.insert(j);
-                            foundMerge = true;
-                        }
-                        else if (Math::Abs((otherRect.x + otherRect.w) - mergedRect.x) < epsilon)
-                        {
-                            double rightEdge = mergedRect.x + mergedRect.w;
-                            mergedRect.x = otherRect.x;
-                            mergedRect.w = rightEdge - otherRect.x;
-                            merged.insert(j);
-                            foundMerge = true;
-                        }
-                    }
-                    else if (Math::Abs(mergedRect.x - otherRect.x) < epsilon && 
-                             Math::Abs(mergedRect.w - otherRect.w) < epsilon)
-                    {
-                        if (Math::Abs((mergedRect.y + mergedRect.h) - otherRect.y) < epsilon)
-                        {
-                            mergedRect.h = otherRect.y + otherRect.h - mergedRect.y;
-                            merged.insert(j);
-                            foundMerge = true;
-                        }
-                        else if (Math::Abs((otherRect.y + otherRect.h) - mergedRect.y) < epsilon)
-                        {
-                            double bottomEdge = mergedRect.y + mergedRect.h;
-                            mergedRect.y = otherRect.y;
-                            mergedRect.h = bottomEdge - otherRect.y;
-                            merged.insert(j);
-                            foundMerge = true;
-                        }
-                    }
-                }
-            }
+            // 隣接オブジェクトを繰り返しマージ
+            mergedRect = findAndMergeAdjacentObjects(obj, mergedRect, merged, epsilon);
             
             Stage::StageObject mergedObj = obj;
             mergedObj.rect = mergedRect;
@@ -569,6 +510,99 @@ namespace Jam::Domain::Editor
         }
         
         return obj;
+    }
+
+    // 隣接オブジェクトを繰り返しマージ
+    RectF StageEditorManager::findAndMergeAdjacentObjects(const Stage::StageObject& obj, RectF mergedRect, HashSet<size_t>& merged, double epsilon) const
+    {
+        bool foundMerge = true;
+        while (foundMerge)
+        {
+            foundMerge = false;
+            
+            for (size_t j = 0; j < m_objects.size(); ++j)
+            {
+                if (merged.contains(j)) continue;
+                
+                const auto& other = m_objects[j].data;
+                
+                if (!canMergeObjects(obj, other, epsilon))
+                    continue;
+                
+                if (tryMergeHorizontally(mergedRect, other.rect, merged, j, foundMerge, epsilon))
+                    continue;
+                
+                tryMergeVertically(mergedRect, other.rect, merged, j, foundMerge, epsilon);
+            }
+        }
+        return mergedRect;
+    }
+    
+    // 2つのオブジェクトがマージ可能かチェック
+    bool StageEditorManager::canMergeObjects(const Stage::StageObject& obj, const Stage::StageObject& other, double epsilon) const
+    {
+        return obj.type == other.type &&
+               obj.groundSide == other.groundSide &&
+               obj.movementType == other.movementType &&
+               Math::Abs(obj.movementSpeed - other.movementSpeed) <= epsilon &&
+               Math::Abs(obj.movementDistance - other.movementDistance) <= epsilon &&
+               Math::Abs(obj.damageAmount - other.damageAmount) <= epsilon;
+    }
+    
+    // 水平方向のマージを試行
+    bool StageEditorManager::tryMergeHorizontally(RectF& mergedRect, const RectF& otherRect, HashSet<size_t>& merged, size_t index, bool& foundMerge, double epsilon) const
+    {
+        if (Math::Abs(mergedRect.y - otherRect.y) >= epsilon || 
+            Math::Abs(mergedRect.h - otherRect.h) >= epsilon)
+            return false;
+        
+        if (Math::Abs((mergedRect.x + mergedRect.w) - otherRect.x) < epsilon)
+        {
+            mergedRect.w = otherRect.x + otherRect.w - mergedRect.x;
+            merged.insert(index);
+            foundMerge = true;
+            return true;
+        }
+        
+        if (Math::Abs((otherRect.x + otherRect.w) - mergedRect.x) < epsilon)
+        {
+            double rightEdge = mergedRect.x + mergedRect.w;
+            mergedRect.x = otherRect.x;
+            mergedRect.w = rightEdge - otherRect.x;
+            merged.insert(index);
+            foundMerge = true;
+            return true;
+        }
+        
+        return false;
+    }
+    
+    // 垂直方向のマージを試行
+    bool StageEditorManager::tryMergeVertically(RectF& mergedRect, const RectF& otherRect, HashSet<size_t>& merged, size_t index, bool& foundMerge, double epsilon) const
+    {
+        if (Math::Abs(mergedRect.x - otherRect.x) >= epsilon || 
+            Math::Abs(mergedRect.w - otherRect.w) >= epsilon)
+            return false;
+        
+        if (Math::Abs((mergedRect.y + mergedRect.h) - otherRect.y) < epsilon)
+        {
+            mergedRect.h = otherRect.y + otherRect.h - mergedRect.y;
+            merged.insert(index);
+            foundMerge = true;
+            return true;
+        }
+        
+        if (Math::Abs((otherRect.y + otherRect.h) - mergedRect.y) < epsilon)
+        {
+            double bottomEdge = mergedRect.y + mergedRect.h;
+            mergedRect.y = otherRect.y;
+            mergedRect.h = bottomEdge - otherRect.y;
+            merged.insert(index);
+            foundMerge = true;
+            return true;
+        }
+        
+        return false;
     }
 
     #pragma endregion

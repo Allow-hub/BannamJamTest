@@ -249,58 +249,58 @@ namespace Jam::Domain::Editor
         if (!enemy.isBoss() && json.hasElement(U"extra"))
         {
             const auto& aiJson = json[U"extra"][U"ai"];
-            
-            if (aiJson.hasElement(U"patrol"))
-            {
-                const auto& patrolJson = aiJson[U"patrol"];
-                
-                if (patrolJson.hasElement(U"patrolPoints"))
-                {
-                    for (const auto& pointJson : patrolJson[U"patrolPoints"].arrayView())
-                    {
-                        PatrolPoint point;
-                        point.position.x = pointJson[U"x"].get<double>();
-                        point.position.y = pointJson[U"y"].get<double>();
-                        enemy.patrol.patrolPoints.push_back(point);
-                    }
-                }
-                
-                if (patrolJson.hasElement(U"loop"))
-                {
-                    enemy.patrol.loop = patrolJson[U"loop"].get<bool>();
-                }
-                if (patrolJson.hasElement(U"waitTime"))
-                {
-                    enemy.patrol.waitTime = patrolJson[U"waitTime"].get<double>();
-                }
-                if (patrolJson.hasElement(U"foundDistance"))
-                {
-                    enemy.patrol.foundDistance = patrolJson[U"foundDistance"].get<double>();
-                }
-            }
-            
-            if (enemy.hasChaseAI() && aiJson.hasElement(U"chase"))
-            {
-                ChaseAI chase;
-                const auto& chaseJson = aiJson[U"chase"];
-                
-                if (chaseJson.hasElement(U"attackRange"))
-                {
-                    chase.attackRange = chaseJson[U"attackRange"].get<double>();
-                }
-                if (chaseJson.hasElement(U"loseRange"))
-                {
-                    chase.loseRange = chaseJson[U"loseRange"].get<double>();
-                }
-                if (chaseJson.hasElement(U"moveSpeedFactor"))
-                {
-                    chase.moveSpeedFactor = chaseJson[U"moveSpeedFactor"].get<double>();
-                }
-                
-                enemy.chase = chase;
-            }
+            parsePatrolAI(enemy, aiJson);
+            parseChaseAI(enemy, aiJson);
         }
         
         return enemy;
+    }
+    
+    // パトロールAI情報をJSONからパース
+    void EnemyEditorManager::parsePatrolAI(EnemyObject& enemy, const JSON& aiJson) const
+    {
+        if (!aiJson.hasElement(U"patrol")) return;
+        
+        const auto& patrolJson = aiJson[U"patrol"];
+        
+        if (patrolJson.hasElement(U"patrolPoints"))
+        {
+            for (const auto& pointJson : patrolJson[U"patrolPoints"].arrayView())
+            {
+                PatrolPoint point;
+                point.position.x = pointJson[U"x"].get<double>();
+                point.position.y = pointJson[U"y"].get<double>();
+                enemy.patrol.patrolPoints.push_back(point);
+            }
+        }
+        
+        if (patrolJson.hasElement(U"loop"))
+            enemy.patrol.loop = patrolJson[U"loop"].get<bool>();
+        
+        if (patrolJson.hasElement(U"waitTime"))
+            enemy.patrol.waitTime = patrolJson[U"waitTime"].get<double>();
+        
+        if (patrolJson.hasElement(U"foundDistance"))
+            enemy.patrol.foundDistance = patrolJson[U"foundDistance"].get<double>();
+    }
+    
+    // 追跡AI情報をJSONからパース
+    void EnemyEditorManager::parseChaseAI(EnemyObject& enemy, const JSON& aiJson) const
+    {
+        if (!enemy.hasChaseAI() || !aiJson.hasElement(U"chase")) return;
+        
+        ChaseAI chase;
+        const auto& chaseJson = aiJson[U"chase"];
+        
+        if (chaseJson.hasElement(U"attackRange"))
+            chase.attackRange = chaseJson[U"attackRange"].get<double>();
+        
+        if (chaseJson.hasElement(U"loseRange"))
+            chase.loseRange = chaseJson[U"loseRange"].get<double>();
+        
+        if (chaseJson.hasElement(U"moveSpeedFactor"))
+            chase.moveSpeedFactor = chaseJson[U"moveSpeedFactor"].get<double>();
+        
+        enemy.chase = chase;
     }
 }

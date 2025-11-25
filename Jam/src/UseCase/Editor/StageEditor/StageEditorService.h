@@ -121,5 +121,17 @@ namespace Jam::UseCase::Editor
         Domain::Stage::StageObject createStageObjectFromCurrent(const RectF& rect) const;
         void updateGroundSideForType(Domain::Stage::StageType type);
         void updateMetadataForType(Domain::Stage::StageType type);
+        
+        // ===== 配置ヘルパー関数 =====
+        void handleOtherObjectPlacement(const Vec2& snappedPos);
+        void limitFlagmentMemoryCount();
+        void handleNormalObjectPlacement(const Vec2& snappedPos, int gridSize);
+        void finalizePlacementDrag(const Vec2& snappedPos, int gridSize);
+        void applyAutoMovementDistance(Domain::Stage::StageObject& obj, double width, double height);
+        
+        // ===== 選択ヘルパー関数 =====
+        void handleSelectionDragEnd(const Vec2& mousePos);
+        void handleClickSelection(const Vec2& mousePos, bool isAdditiveSelect);
+        void handleRectSelection(bool isAdditiveSelect);
     };
 }

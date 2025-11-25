@@ -84,5 +84,12 @@ namespace Jam::Domain::Editor
         Array<Stage::StageObject> mergeAdjacentObjects() const;
         JSON stageObjectToJSON(const Stage::StageObject& obj) const;
         Optional<Stage::StageObject> jsonToStageObject(const JSON& json) const;
+        
+        // ===== マージヘルパー =====
+        
+        RectF findAndMergeAdjacentObjects(const Stage::StageObject& obj, RectF mergedRect, HashSet<size_t>& merged, double epsilon) const;
+        bool canMergeObjects(const Stage::StageObject& obj, const Stage::StageObject& other, double epsilon) const;
+        bool tryMergeHorizontally(RectF& mergedRect, const RectF& otherRect, HashSet<size_t>& merged, size_t index, bool& foundMerge, double epsilon) const;
+        bool tryMergeVertically(RectF& mergedRect, const RectF& otherRect, HashSet<size_t>& merged, size_t index, bool& foundMerge, double epsilon) const;
     };
 }

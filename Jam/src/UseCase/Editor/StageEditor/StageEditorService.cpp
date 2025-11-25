@@ -138,114 +138,12 @@ namespace Jam::UseCase::Editor
         if (m_state.otherObjectType == OtherObjectType::Goal || 
             m_state.otherObjectType == OtherObjectType::FlagmentMemory)
         {
-            if (MouseL.down())
-            {
-                // 固定サイズで配置
-                static constexpr double GOAL_SIZE = 200.0;
-                static constexpr double FLAGMENT_SIZE = 150.0;
-                
-                RectF rect;
-                if (m_state.otherObjectType == OtherObjectType::Goal)
-                {
-                    // ゴールのサイズ: 200x200
-                    rect = RectF{snappedPos.x - GOAL_SIZE / 2, snappedPos.y - GOAL_SIZE / 2, GOAL_SIZE, GOAL_SIZE};
-                }
-                else // FlagmentMemory
-                {
-                    // 記憶のかけらのサイズ: 150x150
-                    rect = RectF{snappedPos.x - FLAGMENT_SIZE / 2, snappedPos.y - FLAGMENT_SIZE / 2, FLAGMENT_SIZE, FLAGMENT_SIZE};
-                }
-                
-                if (!m_manager.hasOverlappingObject(rect))
-                {
-                    auto obj = createStageObjectFromCurrent(rect);
-                    
-                    // 記憶のかけらの配置数制限（MAX_FLAGMENTSつまで）
-                    if (m_state.otherObjectType == OtherObjectType::FlagmentMemory)
-                    {
-                        static constexpr size_t MAX_FLAGMENTS = 3;
-                        
-                        // 既存の記憶のかけらを検索
-                        Array<size_t> flagmentIndices;
-                        const auto& objects = m_manager.getAllObjects();
-                        for (size_t i = 0; i < objects.size(); ++i)
-                        {
-                            if (objects[i].data.metadata == U"flagment")
-                                flagmentIndices.push_back(i);
-                        }
-                        
-                        // MAX_FLAGMENTS以上ある場合は最も古い（最初の）ものを削除
-                        if (flagmentIndices.size() >= MAX_FLAGMENTS)
-                            m_manager.removeObject(flagmentIndices[0]);
-                    }
-                    
-                    m_manager.addObject(obj);
-                }
-            }
+            handleOtherObjectPlacement(snappedPos);
             return;
         }
         
         // 通常のステージオブジェクトの場合はドラッグで配置
-        if (MouseL.down())
-        {
-            m_dragStart = snappedPos;
-            m_currentDragPos = snappedPos;
-        }
-        
-        if (MouseL.pressed() && m_dragStart)
-            m_currentDragPos = snappedPos;
-        
-        if (MouseL.up() && m_dragStart) {
-            Vec2 start = *m_dragStart;
-            Vec2 end = snappedPos;
-            
-            double x = Min(start.x, end.x);
-            double y = Min(start.y, end.y);
-            double x2 = Max(start.x, end.x);
-            double y2 = Max(start.y, end.y);
-            
-            double w = x2 - x + gridSize;
-            double h = y2 - y + gridSize;
-            
-            RectF rect{x, y, w, h};
-            
-            if (!m_manager.hasOverlappingObject(rect))
-            {
-                auto obj = createStageObjectFromCurrent(rect);
-                
-                // 自動計算モードの場合のみ、サイズに基づいて距離を設定
-                if (m_state.autoCalculateDistance &&
-                    (obj.type == Domain::Stage::StageType::MovingPlatform || 
-                     obj.type == Domain::Stage::StageType::MovingDamagePlatform))
-                {
-                    static constexpr double MOVEMENT_DISTANCE_MULTIPLIER = 2.0;
-                    
-                    double suggestedDistance = m_state.movementDistance;
-                    
-                    if (obj.movementType == Domain::Stage::MovementType::Horizontal)
-                    {
-                        suggestedDistance = w * MOVEMENT_DISTANCE_MULTIPLIER;
-                    }
-                    else if (obj.movementType == Domain::Stage::MovementType::Vertical)
-                    {
-                        suggestedDistance = h * MOVEMENT_DISTANCE_MULTIPLIER;
-                    }
-                    else if (obj.movementType == Domain::Stage::MovementType::Circular)
-                    {
-                        // 円運動の半径：床の長辺を基準とする
-                        suggestedDistance = Max(w, h);
-                    }
-                    
-                    obj.movementDistance = suggestedDistance;
-                    m_state.movementDistance = suggestedDistance;
-                }
-                
-                m_manager.addObject(obj);
-            }
-            
-            m_dragStart.reset();
-            m_currentDragPos.reset();
-        }
+        handleNormalObjectPlacement(snappedPos, gridSize);
     }
     
     void StageEditorService::handleSelection(const Vec2& mousePos)
@@ -266,48 +164,7 @@ namespace Jam::UseCase::Editor
         // ドラッグ終了
         if (MouseL.up() && m_selectDragStart)
         {
-            static constexpr double CLICK_THRESHOLD = 5.0;
-            
-            const bool isAdditiveSelect = KeyControl.pressed() || KeyShift.pressed();
-            
-            // ドラッグが小さい場合はクリックとみなす
-            const double dragDistance = m_selectDragStart->distanceFrom(mousePos);
-            if (dragDistance < CLICK_THRESHOLD)
-            {
-                // クリック選択
-                auto index = m_manager.findObjectAt(mousePos);
-                
-                if (index)
-                {
-                    if (KeyControl.pressed() && m_manager.getSelectedIndices().contains(*index))
-                        m_manager.deselectObject(*index);
-                    else
-                        m_manager.selectObject(*index, isAdditiveSelect);
-                }
-                else
-                {
-                    if (!isAdditiveSelect)
-                        m_manager.clearSelection();
-                }
-            }
-            else
-            {
-                // 矩形選択
-                if (auto rect = getSelectionDragRect())
-                {
-                    if (!isAdditiveSelect)
-                        m_manager.clearSelection();
-                    
-                    // 矩形内のオブジェクトをすべて選択
-                    const auto& objects = m_manager.getAllObjects();
-                    for (size_t i = 0; i < objects.size(); ++i)
-                    {
-                        if (rect->intersects(objects[i].data.rect))
-                            m_manager.selectObject(i, true);
-                    }
-                }
-            }
-            
+            handleSelectionDragEnd(mousePos);
             m_selectDragStart.reset();
             m_selectDragCurrent.reset();
         }
@@ -444,6 +301,168 @@ namespace Jam::UseCase::Editor
                 newObj.texturePath = texturePath;
                 m_manager.modifyObject(i, newObj);
             }
+        }
+    }
+
+    #pragma endregion
+
+    #pragma region 配置ヘルパー関数
+
+    // ゴールや記憶のかけらなどのその他オブジェクトの配置処理
+    void StageEditorService::handleOtherObjectPlacement(const Vec2& snappedPos)
+    {
+        if (!MouseL.down()) return;
+        
+        static constexpr double GOAL_SIZE = 200.0;
+        static constexpr double FLAGMENT_SIZE = 150.0;
+        
+        RectF rect;
+        if (m_state.otherObjectType == OtherObjectType::Goal)
+        
+            rect = RectF{snappedPos.x - GOAL_SIZE / 2, snappedPos.y - GOAL_SIZE / 2, GOAL_SIZE, GOAL_SIZE};
+        else
+            rect = RectF{snappedPos.x - FLAGMENT_SIZE / 2, snappedPos.y - FLAGMENT_SIZE / 2, FLAGMENT_SIZE, FLAGMENT_SIZE};
+        
+        if (!m_manager.hasOverlappingObject(rect))
+        {
+            auto obj = createStageObjectFromCurrent(rect);
+            
+            // 記憶のかけらの配置数制限
+            if (m_state.otherObjectType == OtherObjectType::FlagmentMemory)
+                limitFlagmentMemoryCount();
+            
+            m_manager.addObject(obj);
+        }
+    }
+
+    // 記憶のかけらの数を制限（最大3つまで）
+    void StageEditorService::limitFlagmentMemoryCount()
+    {
+        static constexpr size_t MAX_FLAGMENTS = 3;
+        
+        Array<size_t> flagmentIndices;
+        const auto& objects = m_manager.getAllObjects();
+        for (size_t i = 0; i < objects.size(); ++i)
+        {
+            if (objects[i].data.metadata == U"flagment")
+                flagmentIndices.push_back(i);
+        }
+        
+        if (flagmentIndices.size() >= MAX_FLAGMENTS)
+            m_manager.removeObject(flagmentIndices[0]);
+    }
+
+    // 通常のステージオブジェクトの配置処理（ドラッグでサイズ決定）
+    void StageEditorService::handleNormalObjectPlacement(const Vec2& snappedPos, int gridSize)
+    {
+        if (MouseL.down())
+        {
+            m_dragStart = snappedPos;
+            m_currentDragPos = snappedPos;
+        }
+        
+        if (MouseL.pressed() && m_dragStart)
+            m_currentDragPos = snappedPos;
+        
+        if (MouseL.up() && m_dragStart)
+            finalizePlacementDrag(snappedPos, gridSize);
+    }
+
+    // ドラッグ終了時の配置処理
+    void StageEditorService::finalizePlacementDrag(const Vec2& snappedPos, int gridSize)
+    {
+        Vec2 start = *m_dragStart;
+        Vec2 end = snappedPos;
+        
+        double x = Min(start.x, end.x);
+        double y = Min(start.y, end.y);
+        double x2 = Max(start.x, end.x);
+        double y2 = Max(start.y, end.y);
+        
+        double w = x2 - x + gridSize;
+        double h = y2 - y + gridSize;
+        
+        RectF rect{x, y, w, h};
+        
+        if (!m_manager.hasOverlappingObject(rect))
+        {
+            auto obj = createStageObjectFromCurrent(rect);
+            applyAutoMovementDistance(obj, w, h);
+            m_manager.addObject(obj);
+        }
+        
+        m_dragStart.reset();
+        m_currentDragPos.reset();
+    }
+
+    // 移動床の移動距離を自動計算
+    void StageEditorService::applyAutoMovementDistance(Domain::Stage::StageObject& obj, double width, double height)
+    {
+        if (!m_state.autoCalculateDistance) return;
+        if (obj.type != Domain::Stage::StageType::MovingPlatform && 
+            obj.type != Domain::Stage::StageType::MovingDamagePlatform) return;
+        
+        static constexpr double MOVEMENT_DISTANCE_MULTIPLIER = 2.0;
+        double suggestedDistance = m_state.movementDistance;
+        
+        if (obj.movementType == Domain::Stage::MovementType::Horizontal)
+            suggestedDistance = width * MOVEMENT_DISTANCE_MULTIPLIER;
+        else if (obj.movementType == Domain::Stage::MovementType::Vertical)
+            suggestedDistance = height * MOVEMENT_DISTANCE_MULTIPLIER;
+        else if (obj.movementType == Domain::Stage::MovementType::Circular)
+            suggestedDistance = Max(width, height);
+        
+        obj.movementDistance = suggestedDistance;
+        m_state.movementDistance = suggestedDistance;
+    }
+
+    // 選択ドラッグ終了時の処理
+    void StageEditorService::handleSelectionDragEnd(const Vec2& mousePos)
+    {
+        static constexpr double CLICK_THRESHOLD = 5.0;
+        
+        const bool isAdditiveSelect = KeyControl.pressed() || KeyShift.pressed();
+        const double dragDistance = m_selectDragStart->distanceFrom(mousePos);
+        
+        if (dragDistance < CLICK_THRESHOLD)
+            handleClickSelection(mousePos, isAdditiveSelect);
+        else
+            handleRectSelection(isAdditiveSelect);
+    }
+    
+    // クリック選択の処理
+    void StageEditorService::handleClickSelection(const Vec2& mousePos, bool isAdditiveSelect)
+    {
+        auto index = m_manager.findObjectAt(mousePos);
+        
+        if (index)
+        {
+            if (KeyControl.pressed() && m_manager.getSelectedIndices().contains(*index))
+                m_manager.deselectObject(*index);
+            else
+                m_manager.selectObject(*index, isAdditiveSelect);
+        }
+        else
+        {
+            if (!isAdditiveSelect)
+                m_manager.clearSelection();
+        }
+    }
+    
+    // 矩形選択の処理
+    void StageEditorService::handleRectSelection(bool isAdditiveSelect)
+    {
+        auto rect = getSelectionDragRect();
+        if (!rect) return;
+        
+        if (!isAdditiveSelect)
+            m_manager.clearSelection();
+        
+        const auto& objects = m_manager.getAllObjects();
+        for (size_t i = 0; i < objects.size(); ++i)
+        {
+            if (rect->intersects(objects[i].data.rect))
+                m_manager.selectObject(i, true);
         }
     }
 
