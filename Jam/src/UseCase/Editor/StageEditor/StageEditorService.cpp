@@ -35,22 +35,22 @@ namespace Jam::UseCase::Editor
     {
         m_state.otherObjectType = type;
         
+        // その他オブジェクトが選択されていない場合は早期リターン
+        if (type == OtherObjectType::None) return;
+        
         // その他オブジェクトを選択したらステージタイプをNormalに戻す（配置用の一時的な設定）
-        if (type != OtherObjectType::None)
+        m_state.stageType = Domain::Stage::StageType::Normal;
+        m_state.groundSide = Domain::Stage::GroundSide::None;
+        
+        if (type == OtherObjectType::Goal)
         {
-            m_state.stageType = Domain::Stage::StageType::Normal;
-            m_state.groundSide = Domain::Stage::GroundSide::None;
-            
-            if (type == OtherObjectType::Goal)
-            {
-                m_state.metadata = U"goal";
-                m_state.texturePath = U"Assets/Stage/goal.png";
-            }
-            else if (type == OtherObjectType::FlagmentMemory)
-            {
-                m_state.metadata = U"flagment";
-                m_state.texturePath = U"Assets/FlagmentMemory.png";
-            }
+            m_state.metadata = U"goal";
+            m_state.texturePath = U"Assets/Stage/goal.png";
+        }
+        else if (type == OtherObjectType::FlagmentMemory)
+        {
+            m_state.metadata = U"flagment";
+            m_state.texturePath = U"Assets/FlagmentMemory.png";
         }
     }
     
