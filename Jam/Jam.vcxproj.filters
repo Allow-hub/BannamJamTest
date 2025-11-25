@@ -157,7 +157,7 @@
     <ClInclude Include="src\UseCase\Editor\Base\EditorServiceBase.h" />
     <ClInclude Include="src\Presentation\Editor\Utilities\EditorGridUtil.h" />
     <ClInclude Include="src\Presentation\Editor\Utilities\EditorTextInputUtil.h" />
-    <ClInclude Include="src\Domain\Editor\Base\EditorSettings.h" />
+    <ClInclude Include="src\Domain\Editor\EditorSettings.h" />
     <ClInclude Include="src\Domain\Player\Choker\ChokerStates\IChokerState.h" />
     <ClInclude Include="src\Domain\Player\Choker\ChokerStates\ChokerIdleState.h" />
     <ClInclude Include="src\Domain\Player\Choker\ChokerStates\ChokerFlyingState.h" />

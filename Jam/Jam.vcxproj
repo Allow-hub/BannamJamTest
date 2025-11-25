@@ -647,7 +647,7 @@
     <ClInclude Include="src\Domain\Editor\Base\EditorManagerBase.h" />
     <ClInclude Include="src\Domain\Editor\EnemyEditor\EnemyEditorManager.h" />
     <ClInclude Include="src\Domain\Editor\EnemyEditor\EnemyEditorTypes.h" />
-    <ClInclude Include="src\Domain\Editor\Base\EditorSettings.h" />
+    <ClInclude Include="src\Domain\Editor\EditorSettings.h" />
     <ClInclude Include="src\Domain\Editor\StageEditor\StageEditorManager.h" />
     <ClInclude Include="src\Domain\Editor\StageEditor\StageEditorTypes.h" />
     <ClInclude Include="src\Domain\Enemy\Bomb.h" />

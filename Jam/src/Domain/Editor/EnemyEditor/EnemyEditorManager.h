@@ -17,7 +17,7 @@ namespace Jam::Domain::Editor
     // 敵用のコマンド
     struct EnemyEditorCommand : EditorCommandBase<EnemyEditorObject>
     {
-        // 基底クラスのoldData/newDataを使用
+        // 基底クラスのoldData/newDataを使用するため空実装
     };
     
     // 敵エディタマネージャー

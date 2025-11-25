@@ -18,7 +18,7 @@ namespace Jam::Domain::Editor
     // ステージ用のコマンド
     struct StageEditorCommand : EditorCommandBase<StageEditorObject>
     {
-        // 基底クラスのoldData/newDataを使用
+        // 基底クラスのoldData/newDataを使用するため空実装
     };
     
     // ステージエディタマネージャー
