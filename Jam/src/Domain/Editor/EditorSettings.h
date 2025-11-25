@@ -7,6 +7,7 @@ namespace Jam::Domain::Editor
 	{
 		static constexpr int DEFAULT_GRID_SIZE = 50;
 		static constexpr double DEFAULT_CAMERA_SPEED = 5.0;
+		static constexpr double MIN_CAMERA_SPEED = 1.0;
 
 		int gridSize = DEFAULT_GRID_SIZE;
 		bool snapToGrid = true;
@@ -23,8 +24,6 @@ namespace Jam::Domain::Editor
 	public:
 		EditorSettings() = default;
 
-		static constexpr double MIN_CAMERA_SPEED = 1.0;
-
 		// ===== グリッド設定 =====
 		int getGridSize() const { return m_config.gridSize; }
 		void setGridSize(int size) { m_config.gridSize = size; }
@@ -37,7 +36,7 @@ namespace Jam::Domain::Editor
 
 		// ===== カメラ設定 =====
 		double getCameraSpeed() const { return m_config.cameraSpeed; }
-		void setCameraSpeed(double speed) { m_config.cameraSpeed = Max(MIN_CAMERA_SPEED, speed); }
+		void setCameraSpeed(double speed) { m_config.cameraSpeed = Max(m_config.MIN_CAMERA_SPEED, speed); }
 
 		// ===== リセット =====
 		void reset() { m_config = EditorConfig{}; }
