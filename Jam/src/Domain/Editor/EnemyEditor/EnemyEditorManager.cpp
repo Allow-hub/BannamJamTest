@@ -56,11 +56,11 @@ namespace Jam::Domain::Editor
     
     Optional<size_t> EnemyEditorManager::findObjectAt(const Vec2& pos) const
     {
-        constexpr double clickRadius = 20.0;
+        static constexpr double CLICK_RADIUS = 20.0;
         
         for (size_t i = m_objects.size(); i-- > 0;)
         {
-            if (pos.distanceFrom(m_objects[i].data.position) < clickRadius)
+            if (pos.distanceFrom(m_objects[i].data.position) < CLICK_RADIUS)
             {
                 return i;
             }

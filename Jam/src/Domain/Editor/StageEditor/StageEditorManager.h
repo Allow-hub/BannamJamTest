@@ -27,9 +27,13 @@ namespace Jam::Domain::Editor
     private:
         using Base = EditorManagerBase<StageEditorObject, StageEditorCommand>;
         
-        Vec2 m_playerSpawnPosition = Vec2(50, -5);
-        Vec2 m_goalPosition = Vec2(20650, 0);
-        Vec2 m_goalSize = Vec2(200, 200);
+        static constexpr Vec2 DEFAULT_PLAYER_SPAWN = Vec2(50, -5);
+        static constexpr Vec2 DEFAULT_GOAL_POSITION = Vec2(20650, 0);
+        static constexpr Vec2 DEFAULT_GOAL_SIZE = Vec2(200, 200);
+        
+        Vec2 m_playerSpawnPosition = DEFAULT_PLAYER_SPAWN;
+        Vec2 m_goalPosition = DEFAULT_GOAL_POSITION;
+        Vec2 m_goalSize = DEFAULT_GOAL_SIZE;
         
     public:
         // ===== ゴール・スポーン位置 =====

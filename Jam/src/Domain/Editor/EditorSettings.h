@@ -3,12 +3,16 @@
 
 namespace Jam::Domain::Editor
 {
+	static constexpr int DEFAULT_GRID_SIZE = 50;
+	static constexpr double DEFAULT_CAMERA_SPEED = 5.0;
+	static constexpr double MIN_CAMERA_SPEED = 1.0;
+	
 	struct EditorConfig
 	{
-		int gridSize = 50;
+		int gridSize = DEFAULT_GRID_SIZE;
 		bool snapToGrid = true;
 		bool showGrid = true;
-		double cameraSpeed = 5.0;
+		double cameraSpeed = DEFAULT_CAMERA_SPEED;
 	};
 
 	// StageEditorとEnemyEditorで共有される設定
@@ -32,7 +36,7 @@ namespace Jam::Domain::Editor
 
 		// ===== カメラ設定 =====
 		double getCameraSpeed() const { return m_config.cameraSpeed; }
-		void setCameraSpeed(double speed) { m_config.cameraSpeed = Max(1.0, speed); }
+		void setCameraSpeed(double speed) { m_config.cameraSpeed = Max(MIN_CAMERA_SPEED, speed); }
 
 		// ===== リセット =====
 		void reset() { m_config = EditorConfig{}; }

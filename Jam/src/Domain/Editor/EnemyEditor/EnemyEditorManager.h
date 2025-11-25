@@ -27,6 +27,8 @@ namespace Jam::Domain::Editor
         using Base = EditorManagerBase<EnemyEditorObject, EnemyEditorCommand>;
         
     public:
+        static constexpr double DEFAULT_MIN_DISTANCE = 50.0;
+        
         // ===== オブジェクト操作 =====
         
         size_t addObject(const EnemyObject& enemy) override;
@@ -36,7 +38,7 @@ namespace Jam::Domain::Editor
         // ===== 検索 =====
         
         Optional<size_t> findObjectAt(const Vec2& pos) const;
-        bool hasOverlappingEnemy(const Vec2& pos, double minDistance = 50.0) const;
+        bool hasOverlappingEnemy(const Vec2& pos, double minDistance = DEFAULT_MIN_DISTANCE) const;
         
         // ===== ファイルI/O =====
         

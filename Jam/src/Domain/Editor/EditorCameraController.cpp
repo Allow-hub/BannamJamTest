@@ -14,7 +14,8 @@ namespace Jam::Domain::Editor
     
     Vec2 EditorCameraController::screenToWorld(const Vec2& screenPos) const
     {
-        const Vec2 screenCenter(Scene::Width() * 0.5, Scene::Height() * 0.5);
+        static constexpr double HALF = 0.5;
+        const Vec2 screenCenter(Scene::Width() * HALF, Scene::Height() * HALF);
         return m_camera.getCenter() + (screenPos - screenCenter) / m_camera.getScale();
     }
     
@@ -39,7 +40,8 @@ namespace Jam::Domain::Editor
     void EditorCameraController::updateZoom()
     {
         // GUIパネル上ではズームしない
-        const int panelX = Scene::Width() - 300;
+        static constexpr int PANEL_WIDTH = 300;
+        const int panelX = Scene::Width() - PANEL_WIDTH;
         if (Cursor::Pos().x >= panelX) {
             return;
         }
