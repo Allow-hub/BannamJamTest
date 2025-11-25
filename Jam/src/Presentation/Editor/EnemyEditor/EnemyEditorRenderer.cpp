@@ -3,6 +3,72 @@
 
 namespace Jam::Presentation::Editor
 {
+    void EnemyEditorRenderer::setStageManager(const Domain::Editor::StageEditorManager* manager)
+    {
+        m_stageManager = manager;
+    }
+
+    void EnemyEditorRenderer::drawView() const
+    {
+        const auto& camera = this->m_service->getCamera();
+        auto transformer = camera.createTransformer();
+        
+        // グリッド描画
+        EditorGridUtil::drawGridWithAxes(camera, this->m_service->getSettings().getGridSize());
+        
+        // StageEditorManagerからスポーン位置を取得
+        Vec2 playerSpawnPos{0, 0};
+        if (m_stageManager)
+            playerSpawnPos = m_stageManager->getPlayerSpawnPosition();
+        
+        const double playerRadius = PLAYER_SPAWN_RADIUS;
+        Circle{playerSpawnPos, playerRadius}.draw(Palette::Cyan.withAlpha(0.5));
+        Circle{playerSpawnPos, playerRadius}.drawFrame(FRAME_THICKNESS, Palette::Cyan);
+        Circle{playerSpawnPos, PLAYER_SPAWN_CENTER_RADIUS}.draw(Palette::White);
+        
+        for (const auto& enemy : this->m_service->getManager().getAllObjects())
+        {
+            drawEnemy(enemy, enemy.isSelected);
+            if (!enemy.data.isBoss())
+                drawPatrolRange(enemy.data);
+        }
+    }
+
+    void EnemyEditorRenderer::drawGUIPanel() const
+    {
+        this->handlePanelScroll();
+        this->drawBasicPanel();
+        
+        // 折りたたみボタンとタイトル（スクロール対象外）
+        this->drawTitleAndToggle(U"敵エディタ");
+        
+        if (this->m_isPanelCollapsed) return;
+        
+        {
+            auto transformer = this->createPanelTransformer();
+            
+            int y = this->getContentStartY();
+            
+            if (SimpleGUI::Button(U"ステージエディタに切り替え", Vec2{this->getPanelX() + GUI_PADDING, y}, GUI_BUTTON_WIDTH_WIDE))
+                m_switchToStageEditor = true;
+				
+            y += GUI_SPACING_45;
+            
+            y = this->drawCameraSettings(y);
+            y = drawCurrentMode(y);
+            y = drawEnemyTypeSelector(y);
+            y = drawPatrolSettings(y);
+            y = drawChaseSettings(y);
+        }
+    }
+
+    bool EnemyEditorRenderer::isTextInputActive() const
+    {
+        return m_patrolDistanceTextEdit.active || m_waitTimeTextEdit.active ||
+               m_foundDistanceTextEdit.active || m_attackRangeTextEdit.active ||
+               m_loseRangeTextEdit.active || m_speedFactorTextEdit.active;
+    }
+
     int EnemyEditorRenderer::drawCurrentMode(int y) const
     {
         y = this->drawSectionHeader(U"現在のモード", y);
