@@ -32,19 +32,25 @@ namespace Jam::Domain::Enemy
 		void onAttackExit()override;
 
 	private:
-		void shootFireball(const Vec2& direction);
+		const int attackCooldown = 420;	// 攻撃後のクールタイム
+		const int shotInterval = 60;	// 鬼火を撃つ間隔
+		const int maxShotCount = 3;		// 鬼火を撃つ回数
 
-		double m_patrolTimer = 0.0;
+		const float shotFireBallDistance = 50.0f;	// 鬼火を撃つ位置の距離
+		const Vec2 size = { 40, 40 };	// 鬼火のサイズ
+		const double speed = 400.0;		// 鬼火の速度
 
-		int AttackWaitTime = 0;
-		int m_shotCount = 0;
+		int elapsedTime = 0;	// 経過時間
+		int shotCount = 0;		// 鬼火を撃った回数
 
-		enum class m_AttackStatus
+		enum class AttackState
 		{
 			IsAttackStart = 0,
 			IsFireBallLaunch,
 			IsAttackEnd,
 		};
-		m_AttackStatus m_attackStatus = m_AttackStatus::IsAttackStart;
+		AttackState attackState = AttackState::IsAttackStart;
+
+		void shootFireball(const Vec2& direction);
 	};
 }

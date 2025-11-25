@@ -66,16 +66,6 @@ namespace Jam::Domain::Enemy
 		}
 	}
 
-	/*
-	void Fireball::draw() const
-	{
-		if (m_body)
-		{
-			m_texture.scaled(m_size * m_scaled)
-				.drawAt(m_body->getPosition());
-		}
-	}
-	*/
 	void Fireball::draw() const
 	{
 		if (!m_body) return;

@@ -63,49 +63,49 @@ namespace Jam::Domain::Enemy
 
 		// 渡すためのベクトルを作成 (方向 × 速さ)
 		Vec2 throwVelocity = direction * speed;
-		switch (m_attackStatus)
+		switch (attackState)
 		{
-		case Jam::Domain::Enemy::GothicLolitaDoll::m_AttackStatus::IsAttackStart:
+		case Jam::Domain::Enemy::GothicLolitaDoll::AttackState::IsAttackStart:
 		{
-			m_attackStatus = m_AttackStatus::IsFireBallLaunch;
+			attackState = AttackState::IsFireBallLaunch;
 		}
 		break;
-		case Jam::Domain::Enemy::GothicLolitaDoll::m_AttackStatus::IsFireBallLaunch:
+		case Jam::Domain::Enemy::GothicLolitaDoll::AttackState::IsFireBallLaunch:
 		{
-			if (AttackWaitTime >= 90)
+			if (elapsedTime >= shotInterval)
 			{
 				Vec2 toPlayer = (getPlayerPos() - m_body->getPosition()).normalized();
 
 				shootFireball(toPlayer);
 
-				m_shotCount++;
-				AttackWaitTime = 0;
+				shotCount++;
+				elapsedTime = 0;
 			}
 			else
 			{
-				AttackWaitTime++;
+				elapsedTime++;
 			}
 
 			// 3発撃ち終わったら終了
-			if (m_shotCount >= 3)
+			if (shotCount >= 3)
 			{
-				m_shotCount = 0;
-				AttackWaitTime = 0;
-				m_attackStatus = m_AttackStatus::IsAttackEnd;
+				shotCount = 0;
+				elapsedTime = 0;
+				attackState = AttackState::IsAttackEnd;
 			}
 		}
 		break;
-		case Jam::Domain::Enemy::GothicLolitaDoll::m_AttackStatus::IsAttackEnd:
+		case Jam::Domain::Enemy::GothicLolitaDoll::AttackState::IsAttackEnd:
 		{
-			if (AttackWaitTime >= 660)
+			if (elapsedTime >= attackCooldown)
 			{
-				AttackWaitTime = 0;
-				m_attackStatus = m_AttackStatus::IsAttackStart;
+				elapsedTime = 0;
+				attackState = AttackState::IsAttackStart;
 				changeAI(AIType::Chase);
 			}
 			else
 			{
-				AttackWaitTime++;
+				elapsedTime++;
 			}
 		}
 		break;
@@ -151,9 +151,7 @@ namespace Jam::Domain::Enemy
 
 	void GothicLolitaDoll::shootFireball(const Vec2& direction)
 	{
-		Vec2 startPos = m_body->getPosition() + direction * 40.0;
-		Vec2 size = { 40, 40 };
-		double speed = 400.0;
+		Vec2 startPos = m_body->getPosition() + direction * shotFireBallDistance;
 
 		auto physicsFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getPhysicsFactory();
 
