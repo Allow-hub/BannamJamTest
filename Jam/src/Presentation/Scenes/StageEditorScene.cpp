@@ -553,6 +553,11 @@ namespace Jam::Presentation::Scenes
     
     void StageEditorScene::drawMovementGuide(const Domain::Stage::StageObject& obj) const
     {
+        static constexpr double GUIDE_LINE_WIDTH = 3.0;
+        static constexpr double GUIDE_POINT_RADIUS = 5.0;
+        static constexpr double GUIDE_POINT_FRAME_WIDTH = 2.0;
+        static constexpr double GUIDE_ARROW_SIZE = 8.0;
+        
         const Vec2 center = obj.rect.center();
         const double distance = obj.movementDistance;
         // ループのオン/オフで色を変える（オレンジ：ループ、シアン：往復）
@@ -567,21 +572,21 @@ namespace Jam::Presentation::Scenes
                 startPos = Vec2{center.x - distance / 2, center.y};
                 endPos = Vec2{center.x + distance / 2, center.y};
                 
-                Line{startPos, endPos}.draw(3.0, guideColor);
+                Line{startPos, endPos}.draw(GUIDE_LINE_WIDTH, guideColor);
                 
                 // ループする場合は塗りつぶした円、しない場合は中空の円
                 if (obj.loopMovement)
                 {
-                    Circle{startPos, 5.0}.draw(guideColor);
-                    Circle{endPos, 5.0}.draw(guideColor);
+                    Circle{startPos, GUIDE_POINT_RADIUS}.draw(guideColor);
+                    Circle{endPos, GUIDE_POINT_RADIUS}.draw(guideColor);
                 }
                 else
                 {
-                    Circle{startPos, 5.0}.drawFrame(2.0, guideColor);
-                    Circle{endPos, 5.0}.drawFrame(2.0, guideColor);
+                    Circle{startPos, GUIDE_POINT_RADIUS}.drawFrame(GUIDE_POINT_FRAME_WIDTH, guideColor);
+                    Circle{endPos, GUIDE_POINT_RADIUS}.drawFrame(GUIDE_POINT_FRAME_WIDTH, guideColor);
                     // 往復を示す矢印
-                    Triangle{startPos.movedBy(-8, 0), 8, 0_deg}.draw(guideColor);
-                    Triangle{endPos.movedBy(8, 0), 8, 180_deg}.draw(guideColor);
+                    Triangle{startPos.movedBy(-GUIDE_ARROW_SIZE, 0), GUIDE_ARROW_SIZE, 0_deg}.draw(guideColor);
+                    Triangle{endPos.movedBy(GUIDE_ARROW_SIZE, 0), GUIDE_ARROW_SIZE, 180_deg}.draw(guideColor);
                 }
             }
             break;
@@ -591,29 +596,29 @@ namespace Jam::Presentation::Scenes
                 startPos = Vec2{center.x, center.y - distance / 2};
                 endPos = Vec2{center.x, center.y + distance / 2};
                 
-                Line{startPos, endPos}.draw(3.0, guideColor);
+                Line{startPos, endPos}.draw(GUIDE_LINE_WIDTH, guideColor);
                 
                 // ループする場合は塗りつぶした円、しない場合は中空の円
                 if (obj.loopMovement)
                 {
-                    Circle{startPos, 5.0}.draw(guideColor);
-                    Circle{endPos, 5.0}.draw(guideColor);
+                    Circle{startPos, GUIDE_POINT_RADIUS}.draw(guideColor);
+                    Circle{endPos, GUIDE_POINT_RADIUS}.draw(guideColor);
                 }
                 else
                 {
-                    Circle{startPos, 5.0}.drawFrame(2.0, guideColor);
-                    Circle{endPos, 5.0}.drawFrame(2.0, guideColor);
+                    Circle{startPos, GUIDE_POINT_RADIUS}.drawFrame(GUIDE_POINT_FRAME_WIDTH, guideColor);
+                    Circle{endPos, GUIDE_POINT_RADIUS}.drawFrame(GUIDE_POINT_FRAME_WIDTH, guideColor);
                     // 往復を示す矢印
-                    Triangle{startPos.movedBy(0, -8), 8, 270_deg}.draw(guideColor);
-                    Triangle{endPos.movedBy(0, 8), 8, 90_deg}.draw(guideColor);
+                    Triangle{startPos.movedBy(0, -GUIDE_ARROW_SIZE), GUIDE_ARROW_SIZE, 270_deg}.draw(guideColor);
+                    Triangle{endPos.movedBy(0, GUIDE_ARROW_SIZE), GUIDE_ARROW_SIZE, 90_deg}.draw(guideColor);
                 }
             }
             break;
             
         case Domain::Stage::MovementType::Circular:
             {
-                Circle{center, distance / 2}.drawFrame(3.0, guideColor);
-                Circle{center, 5.0}.draw(guideColor);
+                Circle{center, distance / 2}.drawFrame(GUIDE_LINE_WIDTH, guideColor);
+                Circle{center, GUIDE_POINT_RADIUS}.draw(guideColor);
             }
             break;
             

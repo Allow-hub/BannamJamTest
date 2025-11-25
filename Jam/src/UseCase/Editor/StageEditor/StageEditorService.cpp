@@ -127,25 +127,30 @@ namespace Jam::UseCase::Editor
             if (MouseL.down())
             {
                 // 固定サイズで配置
+                static constexpr double GOAL_SIZE = 200.0;
+                static constexpr double FLAGMENT_SIZE = 150.0;
+                
                 RectF rect;
                 if (m_state.otherObjectType == OtherObjectType::Goal)
                 {
                     // ゴールのサイズ: 200x200
-                    rect = RectF{snappedPos.x - 100, snappedPos.y - 100, 200, 200};
+                    rect = RectF{snappedPos.x - GOAL_SIZE / 2, snappedPos.y - GOAL_SIZE / 2, GOAL_SIZE, GOAL_SIZE};
                 }
                 else // FlagmentMemory
                 {
                     // 記憶のかけらのサイズ: 150x150
-                    rect = RectF{snappedPos.x - 75, snappedPos.y - 75, 150, 150};
+                    rect = RectF{snappedPos.x - FLAGMENT_SIZE / 2, snappedPos.y - FLAGMENT_SIZE / 2, FLAGMENT_SIZE, FLAGMENT_SIZE};
                 }
                 
                 if (!m_manager.hasOverlappingObject(rect))
                 {
                     auto obj = createStageObjectFromCurrent(rect);
                     
-                    // 記憶のかけらの配置数制限（3つまで）
+                    // 記憶のかけらの配置数制限（MAX_FLAGMENTSつまで）
                     if (m_state.otherObjectType == OtherObjectType::FlagmentMemory)
                     {
+                        static constexpr size_t MAX_FLAGMENTS = 3;
+                        
                         // 既存の記憶のかけらを検索
                         Array<size_t> flagmentIndices;
                         const auto& objects = m_manager.getAllObjects();
@@ -157,8 +162,8 @@ namespace Jam::UseCase::Editor
                             }
                         }
                         
-                        // 3つ以上ある場合は最も古い（最初の）ものを削除
-                        if (flagmentIndices.size() >= 3)
+                        // MAX_FLAGMENTS以上ある場合は最も古い（最初の）ものを削除
+                        if (flagmentIndices.size() >= MAX_FLAGMENTS)
                         {
                             m_manager.removeObject(flagmentIndices[0]);
                         }
@@ -202,15 +207,17 @@ namespace Jam::UseCase::Editor
                     (obj.type == Domain::Stage::StageType::MovingPlatform || 
                      obj.type == Domain::Stage::StageType::MovingDamagePlatform))
                 {
+                    static constexpr double MOVEMENT_DISTANCE_MULTIPLIER = 2.0;
+                    
                     double suggestedDistance = m_state.movementDistance;
                     
                     if (obj.movementType == Domain::Stage::MovementType::Horizontal)
                     {
-                        suggestedDistance = w * 2.0;
+                        suggestedDistance = w * MOVEMENT_DISTANCE_MULTIPLIER;
                     }
                     else if (obj.movementType == Domain::Stage::MovementType::Vertical)
                     {
-                        suggestedDistance = h * 2.0;
+                        suggestedDistance = h * MOVEMENT_DISTANCE_MULTIPLIER;
                     }
                     else if (obj.movementType == Domain::Stage::MovementType::Circular)
                     {
@@ -248,11 +255,13 @@ namespace Jam::UseCase::Editor
         // ドラッグ終了
         if (MouseL.up() && m_selectDragStart)
         {
+            static constexpr double CLICK_THRESHOLD = 5.0;
+            
             const bool isAdditiveSelect = KeyControl.pressed() || KeyShift.pressed();
             
             // ドラッグが小さい場合はクリックとみなす
             const double dragDistance = m_selectDragStart->distanceFrom(mousePos);
-            if (dragDistance < 5.0)
+            if (dragDistance < CLICK_THRESHOLD)
             {
                 // クリック選択
                 auto index = m_manager.findObjectAt(mousePos);
