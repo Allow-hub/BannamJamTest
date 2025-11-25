@@ -7,7 +7,7 @@ namespace Jam::UseCase::Editor
 {
     struct EnemyEditorState
     {
-        Domain::Editor::EnemyType enemyType = Domain::Editor::EnemyType::LittleDevil;
+        Domain::EnemyType enemyType = Domain::EnemyType::LittleDevil;
         double patrolDistance = 300.0;
         double patrolWaitTime = 1.0;
         double foundDistance = 700.0;
@@ -30,8 +30,8 @@ namespace Jam::UseCase::Editor
         Domain::Editor::EditorSettings& getSettings() { return m_settings; }
         
         // ===== 敵タイプ設定 =====
-        void setEnemyType(Domain::Editor::EnemyType type) { m_state.enemyType = type; }
-        Domain::Editor::EnemyType getEnemyType() const { return m_state.enemyType; }
+        void setEnemyType(Domain::EnemyType type) { m_state.enemyType = type; }
+        Domain::EnemyType getEnemyType() const { return m_state.enemyType; }
         
         // ===== AI設定 =====
         void setPatrolDistance(double distance) { m_state.patrolDistance = distance; }

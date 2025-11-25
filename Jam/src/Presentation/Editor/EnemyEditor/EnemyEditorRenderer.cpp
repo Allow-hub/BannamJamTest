@@ -44,13 +44,14 @@ namespace Jam::Presentation::Editor
         
         if (m_isEnemyTypeDropdownOpen)
         {
-            Array<Domain::Editor::EnemyType> types = {
-                Domain::Editor::EnemyType::LittleDevil,
-                Domain::Editor::EnemyType::Spider,
-                Domain::Editor::EnemyType::Ribbon,
-                Domain::Editor::EnemyType::Eye,
-                Domain::Editor::EnemyType::Clown,
-                Domain::Editor::EnemyType::Boss1_3
+            Array<Domain::EnemyType> types = {
+                Domain::EnemyType::LittleDevil,
+                Domain::EnemyType::Spider,
+                Domain::EnemyType::Ribbon,
+                Domain::EnemyType::Eye,
+                Domain::EnemyType::Clown,
+                Domain::EnemyType::GothicLolitaDoll,
+                Domain::EnemyType::Boss1_3
             };
             
             for (const auto& type : types)
@@ -71,7 +72,7 @@ namespace Jam::Presentation::Editor
     
     int EnemyEditorRenderer::drawPatrolSettings(int y) const
     {
-        if (this->m_service->getEnemyType() == Domain::Editor::EnemyType::Boss1_3)
+        if (this->m_service->getEnemyType() == Domain::EnemyType::Boss1_3)
             return y;
             
         y = this->drawSectionHeader(U"巡回設定", y);
@@ -118,8 +119,8 @@ namespace Jam::Presentation::Editor
     
     int EnemyEditorRenderer::drawChaseSettings(int y) const
     {
-        if (this->m_service->getEnemyType() == Domain::Editor::EnemyType::Boss1_3 ||
-            this->m_service->getEnemyType() == Domain::Editor::EnemyType::LittleDevil)
+        if (this->m_service->getEnemyType() == Domain::EnemyType::Boss1_3 ||
+            this->m_service->getEnemyType() == Domain::EnemyType::LittleDevil)
             return y;
             
         y = this->drawSectionHeader(U"追跡設定", y);
@@ -164,30 +165,32 @@ namespace Jam::Presentation::Editor
         return y;
     }
     
-    String EnemyEditorRenderer::getEnemyTypeName(Domain::Editor::EnemyType type) const
+    String EnemyEditorRenderer::getEnemyTypeName(Domain::EnemyType type) const
     {
         switch (type)
         {
-        case Domain::Editor::EnemyType::LittleDevil: return U"リトルデビル";
-        case Domain::Editor::EnemyType::Spider: return U"スパイダー";
-        case Domain::Editor::EnemyType::Ribbon: return U"リボン";
-        case Domain::Editor::EnemyType::Eye: return U"アイ";
-        case Domain::Editor::EnemyType::Clown: return U"クラウン";
-        case Domain::Editor::EnemyType::Boss1_3: return U"ボス1-3";
+        case Domain::EnemyType::LittleDevil: return U"リトルデビル";
+        case Domain::EnemyType::Spider: return U"スパイダー";
+        case Domain::EnemyType::Ribbon: return U"リボン";
+        case Domain::EnemyType::Eye: return U"アイ";
+        case Domain::EnemyType::Clown: return U"クラウン";
+        case Domain::EnemyType::GothicLolitaDoll: return U"ゴシックロリータ人形";
+        case Domain::EnemyType::Boss1_3: return U"ボス1-3";
         default: return U"不明";
         }
     }
     
-    ColorF EnemyEditorRenderer::getEnemyColor(Domain::Editor::EnemyType type) const
+    ColorF EnemyEditorRenderer::getEnemyColor(Domain::EnemyType type) const
     {
         switch (type)
         {
-        case Domain::Editor::EnemyType::LittleDevil: return ColorF{1.0, 0.5, 0.5};
-        case Domain::Editor::EnemyType::Spider: return ColorF{0.5, 0.3, 0.8};
-        case Domain::Editor::EnemyType::Ribbon: return ColorF{1.0, 0.7, 0.8};
-        case Domain::Editor::EnemyType::Eye: return ColorF{0.3, 0.8, 1.0};
-        case Domain::Editor::EnemyType::Clown: return ColorF{0.9, 0.9, 0.3};
-        case Domain::Editor::EnemyType::Boss1_3: return ColorF{1.0, 0.0, 0.0};
+        case Domain::EnemyType::LittleDevil: return ColorF{1.0, 0.5, 0.5};
+        case Domain::EnemyType::Spider: return ColorF{0.5, 0.3, 0.8};
+        case Domain::EnemyType::Ribbon: return ColorF{1.0, 0.7, 0.8};
+        case Domain::EnemyType::Eye: return ColorF{0.3, 0.8, 1.0};
+        case Domain::EnemyType::Clown: return ColorF{0.9, 0.9, 0.3};
+        case Domain::EnemyType::GothicLolitaDoll: return ColorF{0.8, 0.5, 0.8};
+        case Domain::EnemyType::Boss1_3: return ColorF{1.0, 0.0, 0.0};
         default: return Palette::Gray;
         }
     }

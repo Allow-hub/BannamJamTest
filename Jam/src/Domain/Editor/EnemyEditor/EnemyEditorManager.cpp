@@ -177,7 +177,7 @@ namespace Jam::Domain::Editor
     {
         JSON json;
         
-        json[U"type"] = enemyTypeToString(enemy.type);
+        json[U"type"] = Domain::enemyTypeToString(enemy.type);
         
         JSON posJson;
         posJson[U"x"] = static_cast<int>(enemy.position.x);
@@ -227,7 +227,7 @@ namespace Jam::Domain::Editor
         EnemyObject enemy;
         
         if (!json.hasElement(U"type")) return none;
-        enemy.type = stringToEnemyType(json[U"type"].getString());
+        enemy.type = Domain::stringToEnemyType(json[U"type"].getString());
         
         if (json.hasElement(U"position"))
         {

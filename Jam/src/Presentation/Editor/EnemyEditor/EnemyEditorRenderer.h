@@ -108,7 +108,7 @@ namespace Jam::Presentation::Editor
         int drawEnemyTypeSelector(int y) const;
         int drawPatrolSettings(int y) const;
         int drawChaseSettings(int y) const;
-        String getEnemyTypeName(Domain::Editor::EnemyType type) const;
-        ColorF getEnemyColor(Domain::Editor::EnemyType type) const;
+        String getEnemyTypeName(Domain::EnemyType type) const;
+        ColorF getEnemyColor(Domain::EnemyType type) const;
     };
 }
