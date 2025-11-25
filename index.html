@@ -1,41 +1,183 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-<meta charset="UTF-8">
-<title>あなたのＨＰタイトル</title>
-<meta name="keywords" content="ページのキーワードA,B,C">
-<meta name="description" content="ページの説明">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="index.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>シン層シン理地雷ちゃん</title>
+    <link rel="stylesheet" href="index.css">
 </head>
+
 <body>
-<div id="outer">
-<header><div id="header-container"><div id="head-inner"><h1>あなたのＨＰタイトル</h1>
-<p class="description">あなたのＨＰの説明文</p></div></div>
-</header>
-<div id="content-wrapper">
-<main>
-<div id="inner">
-<h2>記事ページ見出し・大</h2>
-<p>文章あれこれ</p>
-<h3>記事ページ見出し・中</h3>
-<p>文章あれこれ</p>
-<h4>記事ページ見出し・小</h4>
-<p>文章あれこれ</p>
-</div>
-</main>
-<aside>
-<div id="middle-inner">
-<div class="side-title">menu</div>
-<div class="side">
-<ul>
-<li>記事ページへのリンク</li>
-<li>記事ページへのリンク</li>
-</ul>
-</div>
-</div>
-</aside>
-</div>
-<footer>© 2010 あなたのホームページ</footer>
-</div></body>
+    <!-- ローディング画面 -->
+    <div class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-heart">♡</div>
+            <div class="loading-text">Loading</div>
+            <div class="loading-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="loading-particles">
+                <span class="particle"></span>
+                <span class="particle"></span>
+                <span class="particle"></span>
+                <span class="particle"></span>
+                <span class="particle"></span>
+                <span class="particle"></span>
+                <span class="particle"></span>
+                <span class="particle"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="stars"></div>
+    <div class="stars2"></div>
+
+    <header>
+        <nav>
+            <div class="logo">✦ シン層シン理地雷ちゃん ✦</div>
+            <ul class="nav-menu">
+                <li><a href="#home">ホーム</a></li>
+                <li><a href="#about">ゲームについて</a></li>
+                <li><a href="#characters">キャラクター</a></li>
+                <li><a href="#download">ダウンロード</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1 class="glitch" data-text="闇カワワールドへようこそ">闇カワワールドへようこそ</h1>
+                <p class="subtitle">✧･ﾟ: *✧･ﾟ:* 病みかわいい世界で冒険を *:･ﾟ✧*:･ﾟ✧</p>
+                <button class="btn-primary">今すぐプレイ ♡</button>
+            </div>
+            <div class="floating-hearts">
+                <span class="heart">♡</span>
+                <span class="heart">♡</span>
+                <span class="heart">♡</span>
+                <span class="heart">♡</span>
+                <span class="heart">♡</span>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <h2>✦ ゲームについて ✦</h2>
+            <div class="about-content">
+                <div class="about-card">
+                    <div class="card-icon">🎮</div>
+                    <h3>ダークファンタジー</h3>
+                    <p>闇と光が交錯する不思議な世界で、あなただけの物語を紡ぎます</p>
+                </div>
+                <div class="about-card">
+                    <div class="card-icon">💜</div>
+                    <h3>病みかわキャラ</h3>
+                    <p>個性豊かな闇カワキャラクターたちと出会い、絆を深めよう</p>
+                </div>
+                <div class="about-card">
+                    <div class="card-icon">🌙</div>
+                    <h3>没入体験</h3>
+                    <p>美しいグラフィックと幻想的な音楽があなたを魅了します</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="characters" class="characters">
+            <h2>✦ キャラクター ✦</h2>
+            <div class="character-grid">
+                <div class="character-card">
+                    <div class="character-img">👻</div>
+                    <h3>ユメ</h3>
+                    <p class="character-type">闇属性</p>
+                    <p>夢と現実の狭間に生きる少女</p>
+                </div>
+                <div class="character-card">
+                    <div class="character-img">🦇</div>
+                    <h3>レイ</h3>
+                    <p class="character-type">月属性</p>
+                    <p>月夜に現れる謎めいた存在</p>
+                </div>
+                <div class="character-card">
+                    <div class="character-img">🎀</div>
+                    <h3>アイ</h3>
+                    <p class="character-type">愛属性</p>
+                    <p>病的なまでに純粋な心を持つ</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="download" class="download">
+            <div class="download-content">
+                <h2>✦ 無料ダウンロード ✦</h2>
+                <p>今すぐ闇カワワールドに飛び込もう</p>
+                <div class="download-buttons">
+                    <button class="btn-download">Windows版</button>
+                    <button class="btn-download">Mac版</button>
+                    <button class="btn-download">Steam版</button>
+                </div>
+                <p class="download-note">※ 対応OS: Windows 10以降 / macOS 11以降</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>♡ Dark Cute Game 2024 ♡</p>
+            <div class="social-links">
+                <a href="#">Twitter</a>
+                <a href="#">Discord</a>
+                <a href="#">Instagram</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let lastScrollTop = 0;
+        const header = document.querySelector('header');
+        window.addEventListener("load", () => {
+            const loading = document.querySelector(".loading-screen");
+            const startTime = Date.now(); // ロード開始時間
+            const minDisplayTime = 4000;  // 最低表示時間 4秒
+
+            const hideLoading = () => {
+                // main を表示させるために body に loaded クラスを付与
+                document.body.classList.add("loaded");
+
+                // フェードアウトクラスを付与
+                loading.classList.add("fade-out");
+
+                // CSS の transition と同じ 1s 後に display:none
+                setTimeout(() => {
+                    loading.style.display = "none";
+                }, 1000);
+            };
+
+            // 経過時間を計算
+            const elapsed = Date.now() - startTime;
+            const remaining = minDisplayTime - elapsed;
+
+            if (remaining > 0) {
+                setTimeout(hideLoading, remaining); // 最低時間に満たない場合は待つ
+            } else {
+                hideLoading(); // もう十分経過している場合はすぐ非表示
+            }
+        });
+
+        window.addEventListener('scroll', function () {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                // 下にスクロール
+                header.classList.add('header-hidden');
+            } else {
+                // 上にスクロール
+                header.classList.remove('header-hidden');
+            }
+
+            lastScrollTop = scrollTop;
+        });
+    </script>
+</body>
 </html>
