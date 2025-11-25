@@ -3,6 +3,12 @@
 #include "EnemyAI/ChaseAI.h"
 #include "EnemyAI/AttackAI.h"
 
+#include "../../Infrastructure/FactoryServiceLocator.h"
+#include "../../Infrastructure/IPhysicsBodyFactory.h"
+#include "../../Infrastructure/PhysicsFilterManager.h"
+#include "../../Infrastructure/IndependentObjectFactory.h"
+#include "FireBall.h"
+
 namespace Jam::Domain::Enemy
 {
 	GothicLolitaDoll::GothicLolitaDoll(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Physics::PhysicsBodyID playerId
@@ -27,24 +33,87 @@ namespace Jam::Domain::Enemy
 
 	void GothicLolitaDoll::onAIEvent(EnemyAIEvent e)
 	{
-		//switch (e)
-		//{
-		//case EnemyAIEvent::PlayerFound:
-		//	break;
-
-		//case EnemyAIEvent::PlayerLost:
-		//	break;
-
-		//default:
-		//	break;
-		//}
+		switch (e)
+		{
+		case Jam::Domain::Enemy::EnemyAIEvent::PlayerFound:
+			changeAI(AIType::Chase);
+			break;
+		case Jam::Domain::Enemy::EnemyAIEvent::PlayerLost:
+			changeAI(AIType::Patrol);
+			break;
+		case Jam::Domain::Enemy::EnemyAIEvent::ReachedGoal:
+			changeAI(AIType::Attack);
+			break;
+		default:
+			break;
+		}
 	}
 
-	void GothicLolitaDoll::onPatrolEnter()
+	void GothicLolitaDoll::onAttackEnter()
 	{
 	}
+	void GothicLolitaDoll::onAttackUpdate(double deltaTime)
+	{
+		// プレイヤーへの方向を計算
+		Vec2 playerPos = getPlayerPos();
+		Vec2 myPos = m_body->getPosition();
+		Vec2 direction = (playerPos - myPos).normalized();
 
-	void GothicLolitaDoll::onChaseEnter()
+		double speed = 10.0;
+
+		// 渡すためのベクトルを作成 (方向 × 速さ)
+		Vec2 throwVelocity = direction * speed;
+		switch (attackState)
+		{
+		case Jam::Domain::Enemy::GothicLolitaDoll::AttackState::IsAttackStart:
+		{
+			attackState = AttackState::IsFireBallLaunch;
+		}
+		break;
+		case Jam::Domain::Enemy::GothicLolitaDoll::AttackState::IsFireBallLaunch:
+		{
+			if (elapsedTime >= shotInterval)
+			{
+				Vec2 toPlayer = (getPlayerPos() - m_body->getPosition()).normalized();
+
+				shootFireball(toPlayer);
+
+				shotCount++;
+				elapsedTime = 0;
+			}
+			else
+			{
+				elapsedTime++;
+			}
+
+			// 3発撃ち終わったら終了
+			if (shotCount >= 3)
+			{
+				shotCount = 0;
+				elapsedTime = 0;
+				attackState = AttackState::IsAttackEnd;
+			}
+		}
+		break;
+		case Jam::Domain::Enemy::GothicLolitaDoll::AttackState::IsAttackEnd:
+		{
+			if (elapsedTime >= attackCooldown)
+			{
+				elapsedTime = 0;
+				attackState = AttackState::IsAttackStart;
+				changeAI(AIType::Chase);
+			}
+			else
+			{
+				elapsedTime++;
+			}
+		}
+		break;
+		default:
+			break;
+		}
+	}
+	void GothicLolitaDoll::onAttackExit()
 	{
 	}
 
@@ -52,11 +121,59 @@ namespace Jam::Domain::Enemy
 	void GothicLolitaDoll::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{
 		EnemyBase::onCollisionEnter(other);
+		switch (other->getLayer())
+		{
+		case Physics::PhysicsLayer::Player:
+			m_eventQueue.push(Events::PlayerDamagedEvent{
+				m_body->getID(),
+				m_playerId,
+				DamageInfo {
+				m_status.attackPower,
+				m_body->getPosition(),
+				(getPlayerPos() - m_body->getPosition()).normalized(),
+				true,
+				false
+				}
+				,0.0
+				,0.3
+				,15.0
+			});
+			m_body->setVelocity({ 0,0 });
+			break;
+		}
 	}
 
 	void GothicLolitaDoll::onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) {}
 	void GothicLolitaDoll::onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{
 		EnemyBase::onCollisionExit(other);
+	}
+
+	void GothicLolitaDoll::shootFireball(const Vec2& direction)
+	{
+		Vec2 startPos = m_body->getPosition() + direction * shotFireBallDistance;
+
+		auto physicsFactory = Jam::Infrastructure::Locator::FactoryServiceLocator::instance().getPhysicsFactory();
+
+		auto fireballBody = physicsFactory->createBody(
+			startPos,
+			size,
+			s3d::P2BodyType::Dynamic,
+			{ 0.1, 0.0, 1.0 },
+			Jam::Domain::Physics::PhysicsShape::Circle
+		);
+
+		auto fireball = std::make_shared<Jam::Domain::Enemy::Fireball>(
+			fireballBody,
+			m_playerId,
+			m_eventQueue,
+			m_status.attackPower,
+			3.0,
+			size,
+			direction * speed
+		);
+		fireball->init();
+
+		Jam::Infrastructure::IndependentObjectFactory::instance().registerObject(fireball);
 	}
 }
