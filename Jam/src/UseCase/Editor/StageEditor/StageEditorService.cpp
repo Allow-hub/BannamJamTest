@@ -176,14 +176,14 @@ namespace Jam::UseCase::Editor
         }
         
         // 通常のステージオブジェクトの場合はドラッグで配置
-        if (MouseL.down()) {
+        if (MouseL.down())
+        {
             m_dragStart = snappedPos;
             m_currentDragPos = snappedPos;
         }
         
-        if (MouseL.pressed() && m_dragStart) {
+        if (MouseL.pressed() && m_dragStart)
             m_currentDragPos = snappedPos;
-        }
         
         if (MouseL.up() && m_dragStart) {
             Vec2 start = *m_dragStart;
@@ -199,7 +199,8 @@ namespace Jam::UseCase::Editor
             
             RectF rect{x, y, w, h};
             
-            if (!m_manager.hasOverlappingObject(rect)) {
+            if (!m_manager.hasOverlappingObject(rect))
+            {
                 auto obj = createStageObjectFromCurrent(rect);
                 
                 // 自動計算モードの場合のみ、サイズに基づいて距離を設定
@@ -266,16 +267,17 @@ namespace Jam::UseCase::Editor
                 // クリック選択
                 auto index = m_manager.findObjectAt(mousePos);
                 
-                if (index) {
-                    if (KeyControl.pressed() && m_manager.getSelectedIndices().contains(*index)) {
+                if (index)
+                {
+                    if (KeyControl.pressed() && m_manager.getSelectedIndices().contains(*index))
                         m_manager.deselectObject(*index);
-                    } else {
+                    else
                         m_manager.selectObject(*index, isAdditiveSelect);
-                    }
-                } else {
-                    if (!isAdditiveSelect) {
+                }
+                else
+                {
+                    if (!isAdditiveSelect)
                         m_manager.clearSelection();
-                    }
                 }
             }
             else
@@ -284,18 +286,14 @@ namespace Jam::UseCase::Editor
                 if (auto rect = getSelectionDragRect())
                 {
                     if (!isAdditiveSelect)
-                    {
                         m_manager.clearSelection();
-                    }
                     
                     // 矩形内のオブジェクトをすべて選択
                     const auto& objects = m_manager.getAllObjects();
                     for (size_t i = 0; i < objects.size(); ++i)
                     {
                         if (rect->intersects(objects[i].data.rect))
-                        {
                             m_manager.selectObject(i, true);
-                        }
                     }
                 }
             }
@@ -307,7 +305,8 @@ namespace Jam::UseCase::Editor
     
     void StageEditorService::handleDeletion(const Vec2& mousePos)
     {
-        if (auto id = m_manager.findObjectAt(mousePos)) {
+        if (auto id = m_manager.findObjectAt(mousePos))
+        {
             m_manager.removeObject(*id);
             return;
         }
@@ -316,9 +315,8 @@ namespace Jam::UseCase::Editor
         // インデックスを降順にソートして後ろから削除
         Array<size_t> indices(selectedIndices.begin(), selectedIndices.end());
         indices.rsort();
-        for (auto index : indices) {
+        for (auto index : indices)
             m_manager.removeObject(index);
-        }
     }
     
     Domain::Stage::StageObject StageEditorService::createStageObjectFromCurrent(const RectF& rect) const

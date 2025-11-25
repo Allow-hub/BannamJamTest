@@ -4,8 +4,10 @@ namespace Jam::UseCase::Editor
 {
     void EnemyEditorService::handlePlacement(const Vec2& mousePos)
     {
-        if (MouseL.down()) {
-            if (!m_manager.hasOverlappingEnemy(mousePos)) {
+        if (MouseL.down())
+        {
+            if (!m_manager.hasOverlappingEnemy(mousePos))
+            {
                 auto enemy = createEnemyFromCurrent(mousePos);
                 m_manager.addObject(enemy);
             }
@@ -17,24 +19,24 @@ namespace Jam::UseCase::Editor
         auto index = m_manager.findObjectAt(mousePos);
         bool isAdditiveSelect = KeyControl.pressed() || KeyShift.pressed();
         
-        if (index) {
-            if (KeyControl.pressed() && m_manager.getSelectedIndices().contains(*index)) {
+        if (index)
+        {
+            if (KeyControl.pressed() && m_manager.getSelectedIndices().contains(*index))
                 m_manager.deselectObject(*index);
-            } else {
+            else
                 m_manager.selectObject(*index, isAdditiveSelect);
-            }
-        } else {
-            if (!isAdditiveSelect) {
+        }
+        else
+        {
+            if (!isAdditiveSelect)
                 m_manager.clearSelection();
-            }
         }
     }
     
     void EnemyEditorService::handleDeletion(const Vec2& mousePos)
     {
-        if (auto id = m_manager.findObjectAt(mousePos)) {
+        if (auto id = m_manager.findObjectAt(mousePos))
             m_manager.removeObject(*id);
-        }
     }
     
     Domain::Editor::EnemyObject EnemyEditorService::createEnemyFromCurrent(const Vec2& position) const

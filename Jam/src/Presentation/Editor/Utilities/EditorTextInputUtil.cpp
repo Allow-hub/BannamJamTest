@@ -103,16 +103,12 @@ namespace Jam::Presentation::Editor
 		{
 			// Enter または Escape でフォーカスを解除
 			if (KeyEnter.down() || KeyEscape.down())
-			{
 				textEdit.active = false;
-			}
 			// テキストボックスの外をクリックしたらフォーカスを解除
 			else if (MouseL.down())
 			{
 				if (!textBoxRect.contains(Cursor::Pos()))
-				{
 					textEdit.active = false;
-				}
 			}
 		}
 	}

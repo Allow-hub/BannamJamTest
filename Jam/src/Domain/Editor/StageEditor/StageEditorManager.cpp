@@ -114,10 +114,7 @@ namespace Jam::Domain::Editor
     {
         for (size_t i = m_objects.size(); i-- > 0;)
         {
-            if (m_objects[i].data.rect.contains(pos))
-            {
-                return i;
-            }
+            if (m_objects[i].data.rect.contains(pos)) return i;
         }
         return none;
     }
@@ -130,9 +127,7 @@ namespace Jam::Domain::Editor
                 obj.data.rect.y == rect.y &&
                 obj.data.rect.w == rect.w &&
                 obj.data.rect.h == rect.h)
-            {
                 return true;
-            }
         }
         return false;
     }
@@ -141,10 +136,7 @@ namespace Jam::Domain::Editor
     {
         for (const auto& obj : m_objects)
         {
-            if (obj.data.rect.intersects(rect))
-            {
-                return true;
-            }
+            if (obj.data.rect.intersects(rect))  return true;
         }
         return false;
     }
@@ -155,9 +147,7 @@ namespace Jam::Domain::Editor
         {
             if (m_objects[i].data.texturePath.includes(U"Goal.png") || 
                 m_objects[i].data.texturePath.includes(U"goal.png"))
-            {
                 return i;
-            }
         }
         return none;
     }
@@ -226,9 +216,7 @@ namespace Jam::Domain::Editor
         for (const auto& objJson : json[U"objects"].arrayView())
         {
             if (auto obj = jsonToStageObject(objJson))
-            {
                 addObject(*obj);
-            }
         }
         
         // ゴール情報を読み込み
@@ -239,17 +227,13 @@ namespace Jam::Domain::Editor
             {
                 const auto& posArray = goalJson[U"position"];
                 if (posArray.size() >= 2)
-                {
                     m_goalPosition = Vec2(posArray[0].get<double>(), posArray[1].get<double>());
-                }
             }
             if (goalJson.hasElement(U"size") && goalJson[U"size"].isArray())
             {
                 const auto& sizeArray = goalJson[U"size"];
                 if (sizeArray.size() >= 2)
-                {
                     m_goalSize = Vec2(sizeArray[0].get<double>(), sizeArray[1].get<double>());
-                }
             }
             
             // ゴールオブジェクトを作成して追加（エディタ上で表示・編集可能にする）
@@ -267,9 +251,7 @@ namespace Jam::Domain::Editor
         {
             const auto& spawnArray = json[U"playerSpawn"];
             if (spawnArray.size() >= 2)
-            {
                 m_playerSpawnPosition = Vec2(spawnArray[0].get<double>(), spawnArray[1].get<double>());
-            }
         }
         
         m_isExecutingCommand = false;
@@ -282,9 +264,7 @@ namespace Jam::Domain::Editor
         case StageEditorCommand::Type::Add:
             // 最後に追加されたオブジェクトを削除
             if (!m_objects.isEmpty())
-            {
                 m_objects.pop_back();
-            }
             break;
             
         case StageEditorCommand::Type::Delete:
@@ -500,9 +480,7 @@ namespace Jam::Domain::Editor
         Stage::StageObject obj;
         
         if (!json.hasElement(U"rect") || !json[U"rect"].isArray())
-        {
             return none;
-        }
         
         const auto& rectArray = json[U"rect"];
         if (rectArray.size() < 4) return none;

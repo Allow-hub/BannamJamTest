@@ -69,9 +69,7 @@ namespace Jam::Domain::Editor
             for (size_t idx : m_selectedIndices)
             {
                 if (idx < m_objects.size())
-                {
                     result.push_back(&m_objects[idx]);
-                }
             }
             return result;
         }
@@ -82,9 +80,7 @@ namespace Jam::Domain::Editor
         void selectObject(size_t index, bool additive = false)
         {
             if (!additive)
-            {
                 m_selectedIndices.clear();
-            }
             
             if (index < m_objects.size())
             {
@@ -99,9 +95,7 @@ namespace Jam::Domain::Editor
             m_selectedIndices.erase(index);
             
             if (index < m_objects.size())
-            {
                 m_objects[index].isSelected = false;
-            }
         }
         
         // すべての選択を解除
@@ -109,9 +103,7 @@ namespace Jam::Domain::Editor
         {
             m_selectedIndices.clear();
             for (auto& obj : m_objects)
-            {
                 obj.isSelected = false;
-            }
         }
         
         // ===== Undo/Redo =====
@@ -212,19 +204,8 @@ namespace Jam::Domain::Editor
         // インデックスでオブジェクトを検索
         TEditorObject* findObjectByIndex(size_t index)
         {
-            if (index < m_objects.size())
-            {
-                return &m_objects[index];
-            }
-            return nullptr;
-        }
-        
-        const TEditorObject* findObjectByIndex(size_t index) const
-        {
-            if (index < m_objects.size())
-            {
-                return &m_objects[index];
-            }
+            if (index < m_objects.size()) return &m_objects[index];
+                
             return nullptr;
         }
         
@@ -232,9 +213,7 @@ namespace Jam::Domain::Editor
         void updateSelectionStates()
         {
             for (size_t i = 0; i < m_objects.size(); ++i)
-            {
                 m_objects[i].isSelected = m_selectedIndices.contains(i);
-            }
         }
         
         // ===== 派生クラスで実装すべきコマンド実行 =====

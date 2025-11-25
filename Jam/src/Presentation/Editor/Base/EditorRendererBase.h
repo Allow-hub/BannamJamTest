@@ -44,17 +44,13 @@ namespace Jam::Presentation::Editor
         void handlePanelScroll() const
         {
             if (isMouseOverPanel())
-            {
                 m_scrollY = Max(0.0, m_scrollY + Mouse::Wheel() * SCROLL_SPEED);
-            }
         }
         
         void drawTitleAndToggle(const String& title) const
         {
             if (drawCollapseButton(getPanelX()))
-            {
                 m_isPanelCollapsed = !m_isPanelCollapsed;
-            }
             m_font(title).draw(getPanelX() + TITLE_OFFSET_X, TITLE_Y, Palette::White);
         }
         
@@ -75,9 +71,7 @@ namespace Jam::Presentation::Editor
             
             double cameraSpeed = m_service->getCameraSpeed();
             if (SimpleGUI::Slider(U"速度: {:.1f}"_fmt(cameraSpeed), cameraSpeed, MIN_CAMERA_SPEED, MAX_CAMERA_SPEED, Vec2{getPanelX() + GUI_PADDING, y}, SLIDER_LABEL_WIDTH, SLIDER_WIDTH))
-            {
                 m_service->setCameraSpeed(cameraSpeed);
-            }
             y += GUI_SPACING_40;
             
             m_smallFont(U"WASD: 移動").draw(getPanelX() + GUI_PADDING_15, y, Palette::White);

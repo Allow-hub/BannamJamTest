@@ -88,10 +88,12 @@ namespace Jam::UseCase::Editor
         // メイン更新処理（テンプレートメソッドパターン）
         void handleInput()
         {
-            if (MouseL.down()) {
+            if (MouseL.down())
+            {
                 const Vec2 mousePos = screenToWorld(Cursor::Pos());
                 
-                switch (m_mode) {
+                switch (m_mode)
+                {
                 case EditorMode::Place:
                     handlePlacement(mousePos);
                     break;

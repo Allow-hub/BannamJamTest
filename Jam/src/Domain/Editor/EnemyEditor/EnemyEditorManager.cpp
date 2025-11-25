@@ -61,9 +61,7 @@ namespace Jam::Domain::Editor
         for (size_t i = m_objects.size(); i-- > 0;)
         {
             if (pos.distanceFrom(m_objects[i].data.position) < CLICK_RADIUS)
-            {
                 return i;
-            }
         }
         return none;
     }
@@ -73,9 +71,7 @@ namespace Jam::Domain::Editor
         for (const auto& enemy : m_objects)
         {
             if (pos.distanceFrom(enemy.data.position) < minDistance)
-            {
                 return true;
-            }
         }
         return false;
     }
@@ -107,9 +103,7 @@ namespace Jam::Domain::Editor
         for (const auto& enemyJson : json.arrayView())
         {
             if (auto enemy = jsonToEnemyObject(enemyJson))
-            {
                 addObject(*enemy);
-            }
         }
         
         m_isExecutingCommand = false;
@@ -121,9 +115,7 @@ namespace Jam::Domain::Editor
         {
         case EnemyEditorCommand::Type::Add:
             if (!m_objects.isEmpty())
-            {
                 m_objects.pop_back();
-            }
             break;
             
         case EnemyEditorCommand::Type::Delete:

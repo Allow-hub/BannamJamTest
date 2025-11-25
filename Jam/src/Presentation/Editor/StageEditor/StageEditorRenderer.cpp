@@ -383,9 +383,7 @@ namespace Jam::Presentation::Editor
                 drawObject(obj, obj.isSelected);
                 
                 if (obj.data.type == Domain::Stage::StageType::MovingPlatform)
-                {
                     drawMovementGuide(obj.data);
-                }
             }
         }
     }
