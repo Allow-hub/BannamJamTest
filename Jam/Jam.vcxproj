@@ -145,6 +145,7 @@
     <ClCompile Include="src\Presentation\Scenes\SelectScene.cpp" />
     <ClCompile Include="src\Presentation\Scenes\StoryScene.cpp" />
     <ClCompile Include="src\Presentation\Scenes\TitleScene.cpp" />
+    <ClCompile Include="src\Presentation\Scenes\Transition\RectSlide.cpp" />
     <ClCompile Include="src\Presentation\SettingManager.cpp" />
     <ClCompile Include="src\Presentation\StoryManager.cpp" />
     <ClCompile Include="src\UseCase\AttackProcessor.cpp" />
@@ -718,6 +719,9 @@
     <ClInclude Include="src\Presentation\Scenes\StoryScene.h" />
     <ClInclude Include="src\Presentation\Scenes\TitleScene.h" />
     <ClInclude Include="src\Presentation\Scenes\TransitionManager.h" />
+    <ClInclude Include="src\Presentation\Scenes\Transition\ITransitionable.h" />
+    <ClInclude Include="src\Presentation\Scenes\Transition\RectSlide.h" />
+    <ClInclude Include="src\Presentation\Scenes\Transition\TransitionManager.h" />
     <ClInclude Include="src\Presentation\SettingManager.h" />
     <ClInclude Include="src\Presentation\Stage\BackgroundRenderer.h" />
     <ClInclude Include="src\Presentation\Stage\StageManager.h" />

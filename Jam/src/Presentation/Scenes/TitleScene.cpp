@@ -52,7 +52,6 @@ namespace Jam::Presentation::Scenes
 
 	void TitleScene::drawFadeIn(double t) const
 	{
-		Print << U"a";
 		draw();
 		Jam::Presentation::Scenes::TransitionManager::Instance().drawFadeIn(
 		Jam::Presentation::Scenes::TransitionType::RectSlide,
