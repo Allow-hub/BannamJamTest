@@ -68,10 +68,10 @@ namespace Jam::Presentation::Scenes
 			switch (type)
 			{
 			case TransitionType::RectSlide:
-				return std::make_unique<RectSlide>(Scene::Size(), 30);
+				return std::make_unique<RectSlide>(Scene::Size());
 
 			default:
-				return std::make_unique<RectSlide>(Scene::Size(), 30);
+				return std::make_unique<RectSlide>(Scene::Size());
 			}
 		}
 	};

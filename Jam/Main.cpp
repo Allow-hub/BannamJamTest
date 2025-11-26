@@ -45,11 +45,6 @@ void Main()
 	// === SEボリューム設定 ===
 	audioService.setSEVolume(core.audioSetting.seVolume); 
 
-	// === シーン遷移エフェクトの初期化 ===
-	Jam::Presentation::Scenes::TransitionManager::Instance().refresh(
-	Jam::Presentation::Scenes::TransitionType::RectSlide
-	);
-
 	App manager;
 	auto& settingMgr = Jam::Presentation::SettingManager::Instance();
 	settingMgr.init();
@@ -67,7 +62,7 @@ void Main()
 		Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::Result));
 
 	// GameSceneから開始するように明示的に指定
-	manager.init(Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::InGame));
+	manager.init(Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::Title));
 
 	while (System::Update())
 	{
