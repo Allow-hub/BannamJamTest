@@ -12,7 +12,6 @@ namespace Jam::Presentation::Scenes
 	class TransitionManager
 	{
 	public:
-
 		static TransitionManager& Instance()
 		{
 			static TransitionManager instance;
@@ -21,10 +20,7 @@ namespace Jam::Presentation::Scenes
 
 		void refresh(TransitionType type)
 		{
-			if (auto* p = getTransition(type))
-			{
-				p->refresh();
-			}
+			if (auto* p = getTransition(type)) p->refresh();
 		}
 
 		//共有エフェクトの FADE OUT 描画
@@ -37,10 +33,7 @@ namespace Jam::Presentation::Scenes
 				m_isFadingOut = true;
 			}
 
-			if (auto* p = getTransition(type))
-			{
-				p->drawFadeOut(t);
-			}
+			if (auto* p = getTransition(type)) p->drawFadeOut(t);
 		}
 
 		//共有エフェクトの FADE IN 描画
@@ -52,20 +45,17 @@ namespace Jam::Presentation::Scenes
 				m_isFadingOut = false;
 			}
 
-			if (auto* p = getTransition(type))
-			{
-				p->drawFadeIn(t);
-			}
+			if (auto* p = getTransition(type)) p->drawFadeIn(t);
 		}
 
 	private:
-		RectSlide m_rectSlide;
+		std::unordered_map<TransitionType, std::unique_ptr<ITransitionable>> m_transitions;
 
 		bool m_isFadingOut = false;
 
 		TransitionManager()
-			: m_rectSlide(Scene::Size(), 30) 
 		{
+			m_transitions[TransitionType::RectSlide] = std::make_unique<RectSlide>(Scene::Size(), 30);
 		}
 
 		~TransitionManager() = default;
@@ -74,18 +64,11 @@ namespace Jam::Presentation::Scenes
 
 		ITransitionable* getTransition(TransitionType type)
 		{
-			switch (type)
+			if (m_transitions.contains(type))
 			{
-			case TransitionType::RectSlide:
-				return &m_rectSlide;
-
-				// 将来エフェクトを追加する場合：
-				// case TransitionType::CircleWipe:
-				//    return &m_circleWipe;
-
-			default:
-				return nullptr;
+				return m_transitions[type].get();
 			}
+			return m_transitions[TransitionType::RectSlide].get();
 		}
 	};
 }
