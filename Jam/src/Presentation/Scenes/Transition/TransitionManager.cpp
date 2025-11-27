@@ -3,8 +3,6 @@
 
 namespace Jam::Presentation::Scenes
 {
-	constexpr int32 DefaultRectSlideAmount = 30;
-
 	TransitionManager& TransitionManager::Instance()
 	{
 		static TransitionManager instance;
