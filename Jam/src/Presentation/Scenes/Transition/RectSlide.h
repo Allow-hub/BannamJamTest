@@ -7,7 +7,10 @@ namespace Jam::Presentation::Scenes
 	class RectSlide : public ITransitionable
 	{
 	public:
-		RectSlide(Size s, int32 amount = 30);
+		// RectSlideの標準は30分割
+		static constexpr int32 DefaultSplitAmount = 30;
+
+		RectSlide(Size size, int32 amount = DefaultSplitAmount);
 
 		void refresh() override;
 

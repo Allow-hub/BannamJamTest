@@ -3,6 +3,8 @@
 
 namespace Jam::Presentation::Scenes
 {
+	constexpr int32 DefaultRectSlideAmount = 30;
+
 	TransitionManager& TransitionManager::Instance()
 	{
 		static TransitionManager instance;
@@ -12,8 +14,7 @@ namespace Jam::Presentation::Scenes
 	// 必要なエフェクトを登録
 	TransitionManager::TransitionManager()
 	{
-		// RectSlideを「画面サイズ」と「分割数30」で初期化して登録
-		m_transitions[TransitionType::RectSlide] = std::make_unique<RectSlide>(Scene::Size(), 30);
+		m_transitions[TransitionType::RectSlide] = std::make_unique<RectSlide>(Scene::Size());
 	}
 
 	TransitionManager::~TransitionManager() = default;
