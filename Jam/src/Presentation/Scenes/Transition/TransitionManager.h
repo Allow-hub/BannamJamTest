@@ -20,7 +20,8 @@ namespace Jam::Presentation::Scenes
 
 		void refresh(TransitionType type)
 		{
-			if (auto* p = getTransition(type)) p->refresh();
+			if (auto* p = getTransition(type))
+				p->refresh();
 		}
 
 		//共有エフェクトの FADE OUT 描画
@@ -33,7 +34,8 @@ namespace Jam::Presentation::Scenes
 				m_isFadingOut = true;
 			}
 
-			if (auto* p = getTransition(type)) p->drawFadeOut(t);
+			if (auto* p = getTransition(type))
+				p->drawFadeOut(t);
 		}
 
 		//共有エフェクトの FADE IN 描画
@@ -45,7 +47,8 @@ namespace Jam::Presentation::Scenes
 				m_isFadingOut = false;
 			}
 
-			if (auto* p = getTransition(type)) p->drawFadeIn(t);
+			if (auto* p = getTransition(type))
+				p->drawFadeIn(t);
 		}
 
 	private:
