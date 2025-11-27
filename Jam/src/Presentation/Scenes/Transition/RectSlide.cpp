@@ -2,7 +2,7 @@
 
 namespace Jam::Presentation::Scenes
 {
-	// コンストラクタ
+	// シーン遷移（フェードイン・フェードアウト）を演出するエフェクト
 	RectSlide::RectSlide(Size size, int32 amount)
 		: m_area(size)
 		, m_splitAmount(amount)
@@ -14,6 +14,7 @@ namespace Jam::Presentation::Scenes
 		refresh();
 	}
 
+	// ランダムな色を生成（テーマ：紫～ピンク系）
 	ColorF RectSlide::generateRandomColor() const
 	{
 		double hue = Random(270.0, 330.0);
