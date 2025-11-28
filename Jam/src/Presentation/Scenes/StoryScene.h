@@ -1,9 +1,8 @@
-﻿#pragma once
+#pragma once
 #include <Siv3D.hpp>
 #include "SceneName.h"
 #include "../../Foundation/CoreManager.h"
 #include "../AudioService.h"
-#include "TransitionManager.h"
 #include "../StoryManager.h"
 #include "../../Presentation/ResourceManager.h"
 

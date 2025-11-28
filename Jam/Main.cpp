@@ -8,7 +8,7 @@
 #include "src/Foundation/CoroutineUtil.h"
 #include "src/Presentation/AudioService.h"
 #include "src/Presentation/Scenes/ResultScene.h"
-#include "src/Presentation/Scenes/TransitionManager.h"
+#include "src/Presentation/Scenes/Transition/TransitionManager.h"
 #include "src/Presentation/SettingManager.h"
 
 using App = SceneManager<String>;
@@ -45,8 +45,6 @@ void Main()
 	// === SEボリューム設定 ===
 	audioService.setSEVolume(core.audioSetting.seVolume); 
 
-	Jam::Presentation::Scenes::TransitionManager::Instance().rec.init(30);
-
 	App manager;
 	auto& settingMgr = Jam::Presentation::SettingManager::Instance();
 	settingMgr.init();
@@ -64,7 +62,7 @@ void Main()
 		Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::Result));
 
 	// GameSceneから開始するように明示的に指定
-	manager.init(Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::InGame));
+	manager.init(Jam::Presentation::Scenes::ToSceneString(Jam::Presentation::Scenes::SceneName::Title));
 
 	while (System::Update())
 	{

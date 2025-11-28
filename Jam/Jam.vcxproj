@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -146,6 +146,8 @@
     <ClCompile Include="src\Presentation\Scenes\SelectScene.cpp" />
     <ClCompile Include="src\Presentation\Scenes\StoryScene.cpp" />
     <ClCompile Include="src\Presentation\Scenes\TitleScene.cpp" />
+    <ClCompile Include="src\Presentation\Scenes\Transition\RectSlide.cpp" />
+    <ClCompile Include="src\Presentation\Scenes\Transition\TransitionManager.cpp" />
     <ClCompile Include="src\Presentation\SettingManager.cpp" />
     <ClCompile Include="src\Presentation\StoryManager.cpp" />
     <ClCompile Include="src\UseCase\AttackProcessor.cpp" />
@@ -291,6 +293,7 @@
     <Image Include="App\Assets\Enemy\Eye\idle_0.png" />
     <Image Include="App\Assets\Enemy\Eye\idle_1.png" />
     <Image Include="App\Assets\Enemy\GothicLolitaDoll\idle_0.png" />
+    <Image Include="App\Assets\Enemy\GothicLolitaDoll\idle_1.png" />
     <Image Include="App\Assets\Enemy\LittleDevil\idle_0.png" />
     <Image Include="App\Assets\Enemy\Ribbon\idle_0.png" />
     <Image Include="App\Assets\Enemy\Spider\idle_0.png" />
@@ -720,6 +723,9 @@
     <ClInclude Include="src\Presentation\Scenes\StoryScene.h" />
     <ClInclude Include="src\Presentation\Scenes\TitleScene.h" />
     <ClInclude Include="src\Presentation\Scenes\TransitionManager.h" />
+    <ClInclude Include="src\Presentation\Scenes\Transition\ITransitionable.h" />
+    <ClInclude Include="src\Presentation\Scenes\Transition\RectSlide.h" />
+    <ClInclude Include="src\Presentation\Scenes\Transition\TransitionManager.h" />
     <ClInclude Include="src\Presentation\SettingManager.h" />
     <ClInclude Include="src\Presentation\Stage\BackgroundRenderer.h" />
     <ClInclude Include="src\Presentation\Stage\StageManager.h" />

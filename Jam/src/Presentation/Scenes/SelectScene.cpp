@@ -1,5 +1,6 @@
 ﻿#include "SelectScene.h"
 #include "../../Presentation/SettingManager.h"
+#include "../../Presentation/Scenes/Transition/TransitionManager.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -79,14 +80,20 @@ namespace Jam::Presentation::Scenes
 	void SelectScene::drawFadeIn(double t) const
 	{
 		draw();
-		Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeIn(t);
+		Jam::Presentation::Scenes::TransitionManager::Instance().drawFadeIn(
+		Jam::Presentation::Scenes::TransitionType::RectSlide,
+		t
+		);
 	}
 
 	// シーンがフェードアウトする（消える）ときの描画
 	void SelectScene::drawFadeOut(double t) const
 	{
 		draw();
-		Jam::Presentation::Scenes::TransitionManager::Instance().rec.drawFadeOut(t);
+		Jam::Presentation::Scenes::TransitionManager::Instance().drawFadeOut(
+		Jam::Presentation::Scenes::TransitionType::RectSlide,
+		t
+		);
 	}
 
 	// --- ワールド選択のロジック ---
