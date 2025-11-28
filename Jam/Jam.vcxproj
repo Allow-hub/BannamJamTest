@@ -244,7 +244,11 @@
     <Image Include="App\Assets\Select\stage1_1.png" />
     <Image Include="App\Assets\Select\stage1_2.png" />
     <Image Include="App\Assets\Select\stage1_3.png" />
+    <Image Include="App\Assets\Stage\DamageStage.jpg" />
     <Image Include="App\Assets\Stage\Goal.png" />
+    <Image Include="App\Assets\Stage\MovingPlatform.png" />
+    <Image Include="App\Assets\Stage\NormalStage_1.png" />
+    <Image Include="App\Assets\Stage\NormalStage_2.png" />
     <Image Include="App\Assets\Story\background_stage1_1_start.png" />
     <Image Include="App\Assets\Story\background_stage1_2_clear.png" />
     <Image Include="App\Assets\Story\background_stage1_2_start.png" />

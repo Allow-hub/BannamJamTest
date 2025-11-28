@@ -484,7 +484,7 @@ namespace Jam::Domain::Editor
         else
         {
             // texturePathがない場合はデフォルト値を設定
-            obj.texturePath = U"Assets/Stage/normal_stage.png";
+            obj.texturePath = U"Assets/Stage/NormalStage_1.png";
         }
         
         if (json.hasElement(U"movementType"))

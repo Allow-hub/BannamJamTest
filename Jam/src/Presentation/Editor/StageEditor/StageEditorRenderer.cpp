@@ -93,17 +93,17 @@ namespace Jam::Presentation::Editor
         switch (currentStageType) {
             case Domain::Stage::StageType::Normal:
             case Domain::Stage::StageType::OneWayPlatform:
-                textures.push_back({U"通常ステージ", U"Assets/Stage/normal_stage.png"});
-                textures.push_back({U"通常ステージ2", U"Assets/Stage/normal_stage2.png"});
+                textures.push_back({U"通常ステージ", U"Assets/Stage/NormalStage_1.png"});
+                textures.push_back({U"通常ステージ2", U"Assets/Stage/NormalStage_2.png"});
                 break;
                 
             case Domain::Stage::StageType::MovingPlatform:
-                textures.push_back({U"動く床", U"Assets/Stage/moving_platform.png"});
+                textures.push_back({U"動く床", U"Assets/Stage/MovingPlatform.png"});
                 break;
                 
             case Domain::Stage::StageType::DamagePlatform:
             case Domain::Stage::StageType::MovingDamagePlatform:
-                textures.push_back({U"ダメージ床", U"Assets/Stage/damage_Stage.jpg"});
+                textures.push_back({U"ダメージ床", U"Assets/Stage/DamageStage.jpg"});
                 break;
                 
             default:
@@ -445,8 +445,9 @@ namespace Jam::Presentation::Editor
                 }
                 hasTexture = true;
             }
-            else
-                assert(false && "Failed to load texture. Check if the texture file exists.");
+            else {
+                Console << U"[StageEditor] Failed to preload texture. Check if the texture file exists.";
+            }
         }
         
         // テクスチャがない場合は通常の色で描画

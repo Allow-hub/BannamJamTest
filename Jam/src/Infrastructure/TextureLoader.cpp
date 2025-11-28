@@ -17,16 +17,13 @@ namespace Jam::Infrastructure {
 		const FilePath resourcePath = getDefaultTexturePath(type);
 		Texture texture(Resource(resourcePath));
 
-		if (texture)
-		{
+		if (texture) {
 			s_stageTextures[type] = texture;
 			return texture;
 		}
-		else
-		{
-			assert(false && "Failed to load stage texture. Check if the texture file exists.");
-			return Texture{};
-		}
+
+		assert(false && "Failed to load stage texture. Check if the texture file exists.");
+		return Texture{};
 	}
 
 	void TextureLoader::preloadStageTextures() {
@@ -50,27 +47,24 @@ namespace Jam::Infrastructure {
 	bool TextureLoader::loadCustomTexture(Jam::Domain::Stage::StageType type, const FilePath& resourcePath) {
 		Texture texture(Resource(resourcePath));
 		
-		if (texture)
-		{
+		if (texture) {
 			s_stageTextures[type] = texture;
 			return true;
 		}
-		else
-		{
-			assert(false && "Failed to load custom texture. Check if the texture file exists.");
-			return false;
-		}
+
+		assert(false && "Failed to load custom texture. Check if the texture file exists.");
+		return false;
 	}
 
 	FilePath TextureLoader::getDefaultTexturePath(Jam::Domain::Stage::StageType type) {
 		const FilePath basePath = U"Assets/Stage/";
 		switch (type) {
-		case Jam::Domain::Stage::StageType::Normal: return basePath + U"normal_stage.png";
-		case Jam::Domain::Stage::StageType::MovingPlatform: return basePath + U"moving_platform.png";
-		case Jam::Domain::Stage::StageType::OneWayPlatform: return basePath + U"normal_stage.png";
-		case Jam::Domain::Stage::StageType::DamagePlatform: return basePath + U"damage_Stage.jpg";
-		case Jam::Domain::Stage::StageType::MovingDamagePlatform: return basePath + U"damage_Stage.jpg";
-		default: return basePath + U"normal_stage.png";
+		case Jam::Domain::Stage::StageType::Normal: return basePath + U"NormalStage_1.png";
+		case Jam::Domain::Stage::StageType::MovingPlatform: return basePath + U"MovingPlatform.png";
+		case Jam::Domain::Stage::StageType::OneWayPlatform: return basePath + U"NormalStage_1.png";
+		case Jam::Domain::Stage::StageType::DamagePlatform: return basePath + U"DamageStage.jpg";
+		case Jam::Domain::Stage::StageType::MovingDamagePlatform: return basePath + U"DamageStage.jpg";
+		default: return basePath + U"NormalStage_1.png";
 		}
 	}
 
@@ -82,16 +76,13 @@ namespace Jam::Infrastructure {
 		const FilePath resourcePath = getDefaultBackgroundTexturePath(textureName);
 		Texture texture(Resource(resourcePath));
 		
-		if (texture)
-		{
+		if (texture) {
 			s_backgroundTextures[textureName] = texture;
 			return texture;
 		}
-		else
-		{
-			assert(false && "Failed to load background texture. Check if the texture file exists.");
-			return none;
-		}
+
+		assert(false && "Failed to load background texture. Check if the texture file exists.");
+		return none;
 	}
 
 	void TextureLoader::preloadBackgroundTextures() {
@@ -102,25 +93,19 @@ namespace Jam::Infrastructure {
 	bool TextureLoader::loadBackgroundTexture(const String& name, const FilePath& resourcePath) {
 		Texture texture(Resource(resourcePath));
 		
-		if (texture)
-		{
+		if (texture) {
 			s_backgroundTextures[name] = texture;
 			return true;
 		}
-		else
-		{
-			assert(false && "Failed to load background texture. Check if the texture file exists.");
-			return false;
-		}
+
+		assert(false && "Failed to load background texture. Check if the texture file exists.");
+		return false;
 	}
 
 	FilePath TextureLoader::getDefaultBackgroundTexturePath(const String& textureName) {
 		const FilePath basePath = U"Assets/Stage/BG/";
-		if (textureName == U"BG") return basePath + U"BG.png";
-		if (textureName == U"BG1" || textureName == U"BG_back1") return basePath + U"BG_Back1.png";
-		if (textureName == U"BG2" || textureName == U"BG_back2") return basePath + U"BG_Back2.png";
-		if (textureName == U"BG3" || textureName == U"BG_back3") return basePath + U"BG_Back3.png";
-		return basePath + textureName + U".png";
+		// すべて現在存在するBackground.pngを使用
+		return basePath + U"Background.png";
 	}
 
 	void TextureLoader::initialize() {

@@ -15,17 +15,17 @@ namespace Jam::UseCase::Editor
         {
         case Domain::Stage::StageType::Normal:
         case Domain::Stage::StageType::OneWayPlatform:
-            m_state.texturePath = U"Assets/Stage/normal_stage.png";
+            m_state.texturePath = U"Assets/Stage/NormalStage_1.png";
             break;
         case Domain::Stage::StageType::MovingPlatform:
-            m_state.texturePath = U"Assets/Stage/moving_platform.png";
+            m_state.texturePath = U"Assets/Stage/MovingPlatform.png";
             break;
         case Domain::Stage::StageType::DamagePlatform:
         case Domain::Stage::StageType::MovingDamagePlatform:
-            m_state.texturePath = U"Assets/Stage/damage_Stage.jpg";
+            m_state.texturePath = U"Assets/Stage/DamageStage.jpg";
             break;
         default:
-            m_state.texturePath = U"Assets/Stage/normal_stage.png";
+            m_state.texturePath = U"Assets/Stage/NormalStage_1.png";
             break;
         }
     }

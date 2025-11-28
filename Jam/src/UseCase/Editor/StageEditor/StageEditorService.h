@@ -23,7 +23,7 @@ namespace Jam::UseCase::Editor
         bool loopMovement = true;
         double damageAmount = 10.0;
         String metadata = U"";  // TODO:現在は一時的に記憶のかけらの識別用で使用しているが、今後OtherObjectTypeフィールドをStageObjectに追加して型安全な管理に移行する
-        String texturePath = U"Assets/Stage/normal_stage.png";  // テクスチャファイルのパス（デフォルト値を設定）
+        String texturePath = U"Assets/Stage/NormalStage_1.png";  // テクスチャファイルのパス（デフォルト値を設定）
         bool autoCalculateDistance = true;  // 移動距離を自動計算するか
         OtherObjectType otherObjectType = OtherObjectType::None;  // その他のオブジェクトの種類
     };
