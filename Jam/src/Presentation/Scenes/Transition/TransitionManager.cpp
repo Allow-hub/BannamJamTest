@@ -1,5 +1,6 @@
 ﻿#include "TransitionManager.h"
-#include "RectSlide.h" 
+#include "RectSlide.h"
+#include "IrisTransition.h"
 
 namespace Jam::Presentation::Scenes
 {
@@ -13,6 +14,8 @@ namespace Jam::Presentation::Scenes
 	TransitionManager::TransitionManager()
 	{
 		m_transitions[TransitionType::RectSlide] = std::make_unique<RectSlide>(Scene::Size());
+		m_transitions[TransitionType::Iris]
+			= std::make_unique<IrisTransition>(Scene::Size(), Palette::Black);
 	}
 
 	TransitionManager::~TransitionManager() = default;
