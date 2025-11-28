@@ -146,6 +146,7 @@
     <ClCompile Include="src\Presentation\Scenes\SelectScene.cpp" />
     <ClCompile Include="src\Presentation\Scenes\StoryScene.cpp" />
     <ClCompile Include="src\Presentation\Scenes\TitleScene.cpp" />
+    <ClCompile Include="src\Presentation\Scenes\Transition\IrisTransition.cpp" />
     <ClCompile Include="src\Presentation\Scenes\Transition\RectSlide.cpp" />
     <ClCompile Include="src\Presentation\Scenes\Transition\TransitionManager.cpp" />
     <ClCompile Include="src\Presentation\SettingManager.cpp" />
@@ -723,6 +724,7 @@
     <ClInclude Include="src\Presentation\Scenes\StoryScene.h" />
     <ClInclude Include="src\Presentation\Scenes\TitleScene.h" />
     <ClInclude Include="src\Presentation\Scenes\TransitionManager.h" />
+    <ClInclude Include="src\Presentation\Scenes\Transition\IrisTransition.h" />
     <ClInclude Include="src\Presentation\Scenes\Transition\ITransitionable.h" />
     <ClInclude Include="src\Presentation\Scenes\Transition\RectSlide.h" />
     <ClInclude Include="src\Presentation\Scenes\Transition\TransitionManager.h" />

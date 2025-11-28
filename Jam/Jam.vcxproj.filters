@@ -45,6 +45,7 @@
     <ClCompile Include="src\Domain\Enemy\FireBall.cpp" />
     <ClCompile Include="src\Presentation\Scenes\Transition\RectSlide.cpp" />
     <ClCompile Include="src\Presentation\Scenes\Transition\TransitionManager.cpp" />
+    <ClCompile Include="src\Presentation\Scenes\Transition\IrisTransition.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
@@ -150,6 +151,7 @@
     <ClInclude Include="src\Presentation\Scenes\Transition\ITransitionable.h" />
     <ClInclude Include="src\Presentation\Scenes\Transition\RectSlide.h" />
     <ClInclude Include="src\Presentation\Scenes\Transition\TransitionManager.h" />
+    <ClInclude Include="src\Presentation\Scenes\Transition\IrisTransition.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />
