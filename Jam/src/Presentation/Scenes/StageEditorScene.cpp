@@ -580,7 +580,7 @@ namespace Jam::Presentation::Scenes
         const Vec2 center = obj.rect.center();
         const double distance = obj.movementDistance;
         // ループのオン/オフで色を変える（オレンジ：ループ、シアン：往復）
-        const ColorF guideColor = obj.loopMovement ? Palette::Orange.withAlpha(0.8) : Palette::Cyan.withAlpha(0.8);
+        const ColorF guideColor = obj.loopMovement ? Palette::Orange : Palette::Cyan;
         
         Vec2 startPos, endPos;
         
