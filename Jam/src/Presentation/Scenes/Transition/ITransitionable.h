@@ -6,6 +6,7 @@ namespace Jam::Presentation::Scenes
 	enum class TransitionType
 	{
 		RectSlide,
+		Iris,
 	};
 
 	//シーン遷移アニメーションのインターフェース（抽象クラス）
