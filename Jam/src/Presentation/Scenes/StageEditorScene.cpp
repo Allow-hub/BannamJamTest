@@ -220,6 +220,7 @@ namespace Jam::Presentation::Scenes
                     if (MouseL.down() || MouseL.pressed() || MouseL.up())
                     {
                         m_stageEditorService.handlePlacement(mousePos);
+                        m_stageEditorService.handleSelection(mousePos);
                         // 配置後、テクスチャを事前読み込み
                         preloadTextures();
                     }
@@ -439,7 +440,7 @@ namespace Jam::Presentation::Scenes
     
     void StageEditorScene::draw() const
     {
-        Scene::SetBackground(ColorF{0.1, 0.15, 0.25});
+        Scene::SetBackground(ColorF{0.1, 0.15, 0.25}); // Paletteでも表現できない色のためColorFを使用
         
         // アクティブなエディタのビューとGUIパネルを描画
         if (m_editorTarget == Domain::Editor::EditorType::Stage)
@@ -460,21 +461,23 @@ namespace Jam::Presentation::Scenes
                 drawEnemiesAsBackground();
                 
                 // ステージを描画
-                drawStageObjects();
+                drawStageObjects();   
+            }
+            
+            // 選択モードのドラッグ矩形をスクリーン座標で描画
+            if (auto selectionRect = m_stageEditorService.getSelectionDragRect())
+            {
+                // Camera2Dを使用してワールド座標をスクリーン座標に変換
+                const auto& camera = m_stageEditorService.getCamera();
+                const Mat3x2 transform = camera.getMat3x2();
                 
-                // ドラッグ矩形を描画
-                if (auto dragRect = m_stageEditorService.getDragRect())
-                {
-                    dragRect->draw(Palette::Lime.withAlpha(0.3));
-                    dragRect->drawFrame(2.0, Palette::Lime.withAlpha(0.8));
-                }
+                Vec2 topLeft = transform.transformPoint(selectionRect->pos);
+                Vec2 bottomRight = transform.transformPoint(selectionRect->pos + selectionRect->size);
+                RectF screenRect = RectF{topLeft, bottomRight - topLeft};
                 
-                // 選択モードのドラッグ矩形
-                if (auto selectionRect = m_stageEditorService.getSelectionDragRect())
-                {
-                    selectionRect->draw(Palette::Deepskyblue.withAlpha(0.2));
-                    selectionRect->drawFrame(2.0, Palette::Deepskyblue.withAlpha(0.8));
-                }
+				// Paletteでも表現できない色のためColorFを使用
+                screenRect.draw(ColorF{0.0, 0.5, 1.0, 0.2}); 
+                screenRect.drawFrame(2.0, ColorF{0.0, 0.5, 1.0, 0.8});
             }
             
             m_stageRenderer.drawGUIPanel();
@@ -490,10 +493,10 @@ namespace Jam::Presentation::Scenes
                 const int gridSize = m_enemyEditorService.getSettings().getGridSize();
                 Editor::EditorGridUtil::drawGridWithAxes(camera, gridSize);
                 
-                // ステージを背景として描画（カメラ変換は既に適用済み）
+                // ステージを背景として描画
                 drawStageBackground();
                 
-                // 敵を描画（カメラ変換は既に適用済み）
+                // 敵を描画
                 drawEnemies();
             }
             
