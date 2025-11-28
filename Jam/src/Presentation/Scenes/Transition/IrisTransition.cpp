@@ -46,6 +46,7 @@ namespace Jam::Presentation::Scenes
 	{
 		m_center = center;
 		// 中心が変わった場合、最大半径が変わる可能性があるため再計算
+		// dist: Distance, TL: Top-Left, TR: Top-Right
 		double distTL = m_center.distanceFrom(Vec2{ 0, 0 });
 		double distTR = m_center.distanceFrom(Vec2{ m_area.x, 0 });
 		double distBL = m_center.distanceFrom(Vec2{ 0, m_area.y });
