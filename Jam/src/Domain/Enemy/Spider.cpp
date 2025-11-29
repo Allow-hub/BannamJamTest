@@ -1,12 +1,12 @@
-﻿#include "Spider.h"
-#include "EnemyAI/PatrolAI.h"
-#include "EnemyAI/ChaseAI.h"
-#include "EnemyAI/AttackAI.h"
+﻿#include "Domain/Enemy/Spider.h"
+#include "Domain/Enemy/EnemyAI/PatrolAI.h"
+#include "Domain/Enemy/EnemyAI/ChaseAI.h"
+#include "Domain/Enemy/EnemyAI/AttackAI.h"
 
 // Siv3D.hpp (Vec2, Print のため)
 #include <Siv3D.hpp> 
 // IPhysicsBody.h (applyImpulse, getVelocity, setVelocity のため)
-#include "../Physics/IPhysicsBody.h"
+#include "Domain/Physics/IPhysicsBody.h"
 
 namespace Jam::Domain::Enemy
 {

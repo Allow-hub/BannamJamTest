@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "IChokerState.h"
+#include "Domain/Player/Choker/ChokerStates/IChokerState.h"
 
 using namespace Jam::Domain::Physics;
 

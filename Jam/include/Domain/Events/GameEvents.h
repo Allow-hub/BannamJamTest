@@ -3,9 +3,9 @@
 #include <variant>
 #include <queue>
 #include <memory>
-#include "../Physics/PhysicsBodyID.h"
-#include "../ITakeDamageable.h"
-#include "../Enemy/EnemyType.h"
+#include "Domain/Physics/PhysicsBodyID.h"
+#include "Domain/ITakeDamageable.h"
+#include "Domain/Enemy/EnemyType.h"
 
 // インクルードすると、循環してしまうため前方宣言
 namespace Jam::Domain::Enemy

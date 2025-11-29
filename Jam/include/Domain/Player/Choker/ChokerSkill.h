@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "../../Physics/ICollisionListener.h"
-#include "../../Events/GameEvents.h"
-#include "../../../Foundation/CoroutineUtil.h"
+#include "Domain/Physics/ICollisionListener.h"
+#include "Domain/Events/GameEvents.h"
+#include "Foundation/CoroutineUtil.h"
 #include "ChokerStates/IChokerState.h"
 
 namespace Jam::Domain::Player

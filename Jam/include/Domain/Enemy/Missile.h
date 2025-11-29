@@ -1,9 +1,9 @@
 ﻿#pragma once
 #include <memory>
-#include "../Physics/IPhysicsBody.h"
-#include "../Events/GameEvents.h"
-#include "../Physics/ICollisionListener.h"
-#include "../IIndependentObject.h"
+#include "Domain/Physics/IPhysicsBody.h"
+#include "Domain/Events/GameEvents.h"
+#include "Domain/Physics/ICollisionListener.h"
+#include "Domain/IIndependentObject.h"
 
 namespace Jam::Domain::Enemy
 {

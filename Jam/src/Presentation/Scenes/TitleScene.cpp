@@ -1,7 +1,7 @@
-﻿#include "TitleScene.h"
-#include "../../Presentation/AudioService.h"
-#include "../../Presentation/Scenes/Transition/TransitionManager.h"
-#include "../../Presentation/ResourceManager.h"
+﻿#include "Presentation/Scenes/TitleScene.h"
+#include "Presentation/AudioService.h"
+#include "Presentation/Scenes/Transition/TransitionManager.h"
+#include "Presentation/ResourceManager.h"
 
 namespace Jam::Presentation::Scenes
 {

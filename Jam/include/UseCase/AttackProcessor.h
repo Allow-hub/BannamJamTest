@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include <memory>
 #include <unordered_map>
-#include "../Domain/ITakeDamageable.h"
-#include "../Domain/Physics/IPhysicsBody.h"
+#include "Domain/ITakeDamageable.h"
+#include "Domain/Physics/IPhysicsBody.h"
 
 namespace Jam::UseCase
 {

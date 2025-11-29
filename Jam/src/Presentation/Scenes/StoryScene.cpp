@@ -1,6 +1,6 @@
-﻿#include "StoryScene.h"
-#include "../SettingManager.h"
-#include "../../Presentation/Scenes/Transition/TransitionManager.h"
+﻿#include "Presentation/Scenes/StoryScene.h"
+#include "Presentation/SettingManager.h"
+#include "Presentation/Scenes/Transition/TransitionManager.h"
 
 namespace Jam::Presentation::Scenes
 {

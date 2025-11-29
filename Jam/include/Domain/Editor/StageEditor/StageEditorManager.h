@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "../Base/EditorManagerBase.h"
-#include "StageEditorTypes.h"
-#include "../../Stage/StageTypes.h"
+#include "Domain/Editor/Base/EditorManagerBase.h"
+#include "Domain/Editor/StageEditor/StageEditorTypes.h"
+#include "Domain/Stage/StageTypes.h"
 
 namespace Jam::Domain::Editor
 {

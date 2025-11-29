@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
-#include "../../Domain/Stage/BackgroundTypes.h"
-#include "../../Infrastructure/TextureLoader.h"
+#include "Domain/Stage/BackgroundTypes.h"
+#include "Infrastructure/TextureLoader.h"
 
 /**
  * 背景描画クラス

@@ -1,12 +1,12 @@
 ﻿#pragma once
-#include "../Physics/ICollisionListener.h"
-#include "../Physics/PhysicsTypes.h"
-#include "../Physics/PhysicsBodyID.h"
+#include "Domain/Physics/ICollisionListener.h"
+#include "Domain/Physics/PhysicsTypes.h"
+#include "Domain/Physics/PhysicsBodyID.h"
 #include <functional>
 #include "EnemyAI/IEnemyAI.h"
-#include "../ITakeDamageable.h"
-#include "../../Foundation/CoroutineUtil.h"
-#include "../Events/GameEvents.h"
+#include "Domain/ITakeDamageable.h"
+#include "Foundation/CoroutineUtil.h"
+#include "Domain/Events/GameEvents.h"
 #include "EnemyAI/AISettings.h"
 
 namespace Jam::Infrastructure {

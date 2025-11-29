@@ -1,12 +1,12 @@
 ﻿#pragma once
-#include "../Domain/Stage/IStage.h"
-#include "../Domain/Stage/DamageStage.h"
-#include "../Domain/Stage/MovingDamagePlatformStage.h"
-#include "../Domain/Physics/IPhysicsBody.h"
-#include "../Domain/ITakeDamageable.h"
-#include "../Infrastructure/IPhysicsBodyFactory.h"
-#include "../Infrastructure/StageFactory.h"
-#include "../Infrastructure/Siv3DPhysicsBody.h"
+#include "Domain/Stage/IStage.h"
+#include "Domain/Stage/DamageStage.h"
+#include "Domain/Stage/MovingDamagePlatformStage.h"
+#include "Domain/Physics/IPhysicsBody.h"
+#include "Domain/ITakeDamageable.h"
+#include "Infrastructure/IPhysicsBodyFactory.h"
+#include "Infrastructure/StageFactory.h"
+#include "Infrastructure/Siv3DPhysicsBody.h"
 
 namespace Jam::UseCase {
     /**

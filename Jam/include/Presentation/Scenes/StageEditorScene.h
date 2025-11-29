@@ -1,11 +1,11 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
-#include "TitleScene.h"
-#include "../Editor/StageEditor/StageEditorRenderer.h"
-#include "../Editor/EnemyEditor/EnemyEditorRenderer.h"
-#include "../../UseCase/Editor/StageEditor/StageEditorService.h"
-#include "../../UseCase/Editor/EnemyEditor/EnemyEditorService.h"
-#include "../../Domain/Editor/EditorTypes.h"
+#include "Presentation/Scenes/TitleScene.h"
+#include "Presentation/Editor/StageEditor/StageEditorRenderer.h"
+#include "Presentation/Editor/EnemyEditor/EnemyEditorRenderer.h"
+#include "UseCase/Editor/StageEditor/StageEditorService.h"
+#include "UseCase/Editor/EnemyEditor/EnemyEditorService.h"
+#include "Domain/Editor/EditorTypes.h"
 
 namespace Jam::Presentation::Scenes
 {

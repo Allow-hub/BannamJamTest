@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include "IChokerState.h"
-#include "../../../../Presentation/AudioService.h"
-#include "HookedGroundState.h"
-#include "HookedEnemyState.h"
+#include "Domain/Player/Choker/ChokerStates/IChokerState.h"
+#include "Presentation/AudioService.h"
+#include "Domain/Player/Choker/ChokerStates/HookedGroundState.h"
+#include "Domain/Player/Choker/ChokerStates/HookedEnemyState.h"
 
 using namespace Jam::Domain::Physics;
 

@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
-#include "../../../Domain/Editor/EditorCameraController.h"
+#include "Domain/Editor/EditorCameraController.h"
 
 namespace Jam::UseCase::Editor
 {

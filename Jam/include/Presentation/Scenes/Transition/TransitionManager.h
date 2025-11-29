@@ -3,7 +3,7 @@
 #include <memory>
 #include <unordered_map> 
 #include <functional> 
-#include "ITransitionable.h"
+#include "Presentation/Scenes/Transition/ITransitionable.h"
 
 namespace Jam::Presentation::Scenes
 {

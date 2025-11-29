@@ -1,11 +1,11 @@
 ﻿#pragma once
 #include <memory>
-#include "../Physics/IPhysicsBody.h"
-#include "../Physics/ICollisionListener.h"
-#include "../Events/GameEvents.h"
-#include "../ITakeDamageable.h"
-#include "../../Foundation/CoroutineUtil.h"
-#include "../../Presentation/FadeManager.h"
+#include "Domain/Physics/IPhysicsBody.h"
+#include "Domain/Physics/ICollisionListener.h"
+#include "Domain/Events/GameEvents.h"
+#include "Domain/ITakeDamageable.h"
+#include "Foundation/CoroutineUtil.h"
+#include "Presentation/FadeManager.h"
 
 namespace Jam::Domain::Player
 {

@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <memory>
 #include <stdexcept>
-#include "../UseCase/EnemyFactory.h"
+#include "UseCase/EnemyFactory.h"
 
 namespace Jam::Infrastructure::Locator
 {

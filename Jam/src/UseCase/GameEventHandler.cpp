@@ -1,11 +1,11 @@
-﻿#include "GameEventHandler.h"
-#include "AttackProcessor.h"
-#include "../Presentation/AudioService.h"
-#include "../Presentation/EnemyManager.h"
-#include "../Domain/Enemy/Missile.h"
-#include "../Infrastructure/IndependentObjectFactory.h"
-#include "../Infrastructure/FactoryServiceLocator.h"
-#include "../Foundation/CoreManager.h"
+﻿#include "UseCase/GameEventHandler.h"
+#include "UseCase/AttackProcessor.h"
+#include "Presentation/AudioService.h"
+#include "Presentation/EnemyManager.h"
+#include "Domain/Enemy/Missile.h"
+#include "Infrastructure/IndependentObjectFactory.h"
+#include "Infrastructure/FactoryServiceLocator.h"
+#include "Foundation/CoreManager.h"
 
 using namespace Jam;
 

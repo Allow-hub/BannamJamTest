@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include "../Base/EditorRendererBase.h"
-#include "../../../UseCase/Editor/EnemyEditor/EnemyEditorService.h"
-#include "../../../Domain/Editor/StageEditor/StageEditorManager.h"
-#include "../Utilities/EditorGridUtil.h"
+#include "Presentation/Editor/Base/EditorRendererBase.h"
+#include "UseCase/Editor/EnemyEditor/EnemyEditorService.h"
+#include "Domain/Editor/StageEditor/StageEditorManager.h"
+#include "Presentation/Editor/Utilities/EditorGridUtil.h"
 
 namespace Jam::Presentation::Editor
 {

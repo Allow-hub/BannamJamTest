@@ -1,5 +1,5 @@
-﻿#include "EnemyEditorRenderer.h"
-#include "../Utilities/EditorTextInputUtil.h"
+﻿#include "Presentation/Editor/EnemyEditor/EnemyEditorRenderer.h"
+#include "Presentation/Editor/Utilities/EditorTextInputUtil.h"
 
 namespace Jam::Presentation::Editor
 {

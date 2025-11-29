@@ -1,4 +1,4 @@
-#include "EnemyEditorManager.h"
+#include "Domain/Editor/EnemyEditor/EnemyEditorManager.h"
 
 namespace Jam::Domain::Editor
 {

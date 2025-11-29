@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
-#include "../Domain/Physics/PhysicsTypes.h"
+#include "Domain/Physics/PhysicsTypes.h"
 
 namespace Jam::Infrastructure
 {

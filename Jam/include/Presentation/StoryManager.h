@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
-#include "../Domain/StoryData.h"
+#include "Domain/StoryData.h"
 
 namespace Jam::Presentation
 {

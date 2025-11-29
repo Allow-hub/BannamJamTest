@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "../Player.h"
-#include "../../Physics/IPhysicsBody.h"
-#include "../../Events/GameEvents.h"
+#include "Domain/Player/Player.h"
+#include "Domain/Physics/IPhysicsBody.h"
+#include "Domain/Events/GameEvents.h"
 
 namespace Jam::Domain::Player
 {

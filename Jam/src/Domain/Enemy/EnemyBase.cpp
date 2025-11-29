@@ -1,13 +1,13 @@
-﻿#include "EnemyBase.h"
-#include "../Physics/IPhysicsBody.h"
-#include "../Physics/PhysicsBodyID.h"
-#include "EnemyAI/IEnemyAI.h"
-#include "../../Infrastructure/FactoryServiceLocator.h"
-#include "../../Infrastructure/IPhysicsBodyFactory.h"
-#include "../../Infrastructure/PhysicsFilterManager.h"
-#include "../Events/GameEvents.h"
-#include "../../Foundation/CoreManager.h"
-#include "../../Presentation/AudioService.h"
+﻿#include "Domain/Enemy/EnemyBase.h"
+#include "Domain/Physics/IPhysicsBody.h"
+#include "Domain/Physics/PhysicsBodyID.h"
+#include "Domain/Enemy/EnemyAI/IEnemyAI.h"
+#include "Infrastructure/FactoryServiceLocator.h"
+#include "Infrastructure/IPhysicsBodyFactory.h"
+#include "Infrastructure/PhysicsFilterManager.h"
+#include "Domain/Events/GameEvents.h"
+#include "Foundation/CoreManager.h"
+#include "Presentation/AudioService.h"
 
 namespace Jam::Domain::Enemy
 {

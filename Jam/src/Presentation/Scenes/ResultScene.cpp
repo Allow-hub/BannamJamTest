@@ -1,8 +1,8 @@
-﻿#include "ResultScene.h"
-#include "../../Foundation/CoreManager.h"
-#include "../AudioService.h"
-#include "../../Presentation/Scenes/Transition/TransitionManager.h"
-#include "../../Presentation/SettingManager.h"
+﻿#include "Presentation/Scenes/ResultScene.h"
+#include "Foundation/CoreManager.h"
+#include "Presentation/AudioService.h"
+#include "Presentation/Scenes/Transition/TransitionManager.h"
+#include "Presentation/SettingManager.h"
 
 
 namespace Jam::Presentation::Scenes

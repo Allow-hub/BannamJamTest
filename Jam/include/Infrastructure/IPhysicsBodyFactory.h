@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include <memory>
-#include "../Domain/Physics/IPhysicsBody.h"
+#include "Domain/Physics/IPhysicsBody.h"
 #include <Siv3D.hpp>
-#include "../Domain/Physics/PhysicsBodyID.h"
+#include "Domain/Physics/PhysicsBodyID.h"
 
 namespace Jam::Infrastructure::Locator
 {

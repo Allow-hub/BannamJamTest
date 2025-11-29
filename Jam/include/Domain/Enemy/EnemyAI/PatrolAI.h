@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "IEnemyAI.h"
-#include "../../Physics/IPhysicsBody.h"
+#include "Domain/Enemy/EnemyAI/IEnemyAI.h"
+#include "Domain/Physics/IPhysicsBody.h"
 
 namespace Jam::Domain::Enemy
 {

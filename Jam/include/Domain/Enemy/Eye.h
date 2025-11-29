@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "EnemyBase.h"
-#include "../Events/GameEvents.h"
-#include "EyeBeam.h"
+#include "Domain/Enemy/EnemyBase.h"
+#include "Domain/Events/GameEvents.h"
+#include "Domain/Enemy/EyeBeam.h"
 
 namespace Jam::Domain::Enemy
 {

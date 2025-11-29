@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../Infrastructure/IndependentObjectFactory.h"
+#include "Infrastructure/IndependentObjectFactory.h"
 
 namespace Jam::UseCase
 {

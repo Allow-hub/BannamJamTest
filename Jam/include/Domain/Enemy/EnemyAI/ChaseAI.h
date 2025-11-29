@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "IEnemyAI.h"
+#include "Domain/Enemy/EnemyAI/IEnemyAI.h"
 
 namespace Jam::Domain::Enemy
 {

@@ -1,9 +1,9 @@
 ﻿#pragma once
-#include "../../UseCase/StageService.h"
-#include "../../Domain/Stage/StageTypes.h"
-#include "../../Domain/Stage/NormalStage.h"
-#include "../../Infrastructure/TextureLoader.h"
-#include "../TextureManager.h"
+#include "UseCase/StageService.h"
+#include "Domain/Stage/StageTypes.h"
+#include "Domain/Stage/NormalStage.h"
+#include "Infrastructure/TextureLoader.h"
+#include "Presentation/TextureManager.h"
 
 namespace Jam::Presentation::Stage {
     /**

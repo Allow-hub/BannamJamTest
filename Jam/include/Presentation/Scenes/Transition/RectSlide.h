@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <Siv3D.hpp>  
-#include "ITransitionable.h"
+#include "Presentation/Scenes/Transition/ITransitionable.h"
 namespace Jam::Presentation::Scenes
 {
 	//四角形がスライドするトランジション

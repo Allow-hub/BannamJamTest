@@ -1,9 +1,9 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
-#include "../Domain/Events/GameEvents.h"
-#include "CameraEvent.h"
-#include "EffectEvents.h"
-#include "../Foundation/CoroutineUtil.h"
+#include "Domain/Events/GameEvents.h"
+#include "UseCase/CameraEvent.h"
+#include "UseCase/EffectEvents.h"
+#include "Foundation/CoroutineUtil.h"
 
 namespace Jam::Presentation { class EnemyManager; }
 

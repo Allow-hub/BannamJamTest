@@ -1,15 +1,15 @@
 ﻿#pragma once
-#include "../Domain/Stage/IStage.h"
-#include "../Domain/Stage/NormalStage.h"
-#include "../Domain/Stage/MovingPlatformStage.h"
-#include "../Domain/Stage/OneWayPlatformStage.h"
-#include "../Domain/Stage/DamageStage.h"
-#include "../Domain/Stage/MovingDamagePlatformStage.h"
-#include "../Domain/Physics/IPhysicsBody.h"
-#include "../Domain/Events/GameEvents.h"
-#include "StageLoader.h"
-#include "IPhysicsBodyFactory.h"
-#include "PhysicsFilterManager.h"
+#include "Domain/Stage/IStage.h"
+#include "Domain/Stage/NormalStage.h"
+#include "Domain/Stage/MovingPlatformStage.h"
+#include "Domain/Stage/OneWayPlatformStage.h"
+#include "Domain/Stage/DamageStage.h"
+#include "Domain/Stage/MovingDamagePlatformStage.h"
+#include "Domain/Physics/IPhysicsBody.h"
+#include "Domain/Events/GameEvents.h"
+#include "Infrastructure/StageLoader.h"
+#include "Infrastructure/IPhysicsBodyFactory.h"
+#include "Infrastructure/PhysicsFilterManager.h"
 
 namespace Jam::Infrastructure {
     

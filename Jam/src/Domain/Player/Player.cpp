@@ -1,9 +1,9 @@
-﻿#include "Player.h"
-#include "../Physics/IPhysicsBody.h"
-#include "Choker/ChokerSkill.h"
-#include "../../Presentation/AudioService.h"
-#include "../../Infrastructure/PhysicsFilterManager.h"
-#include "../../Foundation/CoreManager.h"
+﻿#include "Domain/Player/Player.h"
+#include "Domain/Physics/IPhysicsBody.h"
+#include "Domain/Player/Choker/ChokerSkill.h"
+#include "Presentation/AudioService.h"
+#include "Infrastructure/PhysicsFilterManager.h"
+#include "Foundation/CoreManager.h"
 
 namespace Jam::Domain::Player
 {

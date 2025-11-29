@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
-#include "TextureManager.h"
-#include "AnimatorLoader.h"
+#include "Presentation/TextureManager.h"
+#include "Presentation/AnimatorLoader.h"
 
 namespace Jam::Presentation
 {

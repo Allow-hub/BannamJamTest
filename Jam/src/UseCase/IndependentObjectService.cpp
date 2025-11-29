@@ -1,4 +1,4 @@
-﻿#include "IndependentObjectService.h"
+﻿#include "UseCase/IndependentObjectService.h"
 
 namespace Jam::UseCase
 {

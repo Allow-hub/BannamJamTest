@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
-#include "../Domain/IInputService.h"
+#include "Domain/IInputService.h"
 
 namespace Jam::Infrastructure
 {

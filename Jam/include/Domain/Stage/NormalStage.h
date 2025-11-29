@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "IStage.h"
+#include "Domain/Stage/IStage.h"
 
 namespace Jam::Domain::Stage {
     /**

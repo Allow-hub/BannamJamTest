@@ -1,8 +1,8 @@
 #pragma once
-#include "IStage.h"
-#include "../Physics/ICollisionListener.h"
-#include "../Physics/IPhysicsBody.h"
-#include "../Events/GameEvents.h"
+#include "Domain/Stage/IStage.h"
+#include "Domain/Physics/ICollisionListener.h"
+#include "Domain/Physics/IPhysicsBody.h"
+#include "Domain/Events/GameEvents.h"
 #include <memory>
 
 namespace Jam::Domain::Stage {

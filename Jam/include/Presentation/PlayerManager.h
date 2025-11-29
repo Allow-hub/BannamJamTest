@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
 #include <memory>
-#include "../Domain/Player/Player.h"
-#include "Animator.h"
+#include "Domain/Player/Player.h"
+#include "Presentation/Animator.h"
 
 namespace Jam::Presentation
 {

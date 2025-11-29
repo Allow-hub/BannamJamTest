@@ -1,5 +1,5 @@
-﻿#include "GameScene.h"
-#include "../../Presentation/Scenes/Transition/TransitionManager.h"
+﻿#include "Presentation/Scenes/GameScene.h"
+#include "Presentation/Scenes/Transition/TransitionManager.h"
 
 namespace Jam::Presentation::Scenes
 {

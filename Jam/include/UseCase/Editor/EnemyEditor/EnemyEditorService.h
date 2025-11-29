@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "../Base/EditorServiceBase.h"
-#include "../../../Domain/Editor/EnemyEditor/EnemyEditorManager.h"
-#include "../../../Domain/Editor/EditorSettings.h"
+#include "UseCase/Editor/Base/EditorServiceBase.h"
+#include "Domain/Editor/EnemyEditor/EnemyEditorManager.h"
+#include "Domain/Editor/EditorSettings.h"
 
 namespace Jam::UseCase::Editor
 {

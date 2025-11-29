@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../../../Physics/IPhysicsBody.h"
+#include "Domain/Physics/IPhysicsBody.h"
 namespace Jam::Domain::Player
 {
 	struct CustomDistanceJoint

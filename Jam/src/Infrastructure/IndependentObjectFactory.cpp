@@ -1,4 +1,4 @@
-﻿#include "IndependentObjectFactory.h"
+﻿#include "Infrastructure/IndependentObjectFactory.h"
 
 namespace Jam::Infrastructure
 {

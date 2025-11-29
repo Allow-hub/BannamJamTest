@@ -1,13 +1,13 @@
-﻿#include "EnemyFactory.h"
-#include "../Domain/Enemy/LittleDevil.h"
-#include "AttackProcessor.h"
-#include "../Domain/Events/GameEvents.h"
-#include "../Domain/Enemy/Ribbon.h"
-#include "../Domain/Enemy/GothicLolitaDoll.h"
-#include "../Domain/Enemy/Spider.h"
-#include "../Domain/Enemy/Eye.h"
-#include "../Domain/Enemy/Clown.h"
-#include "../Domain/Enemy/Boss1_3.h"
+﻿#include "UseCase/EnemyFactory.h"
+#include "Domain/Enemy/LittleDevil.h"
+#include "UseCase/AttackProcessor.h"
+#include "Domain/Events/GameEvents.h"
+#include "Domain/Enemy/Ribbon.h"
+#include "Domain/Enemy/GothicLolitaDoll.h"
+#include "Domain/Enemy/Spider.h"
+#include "Domain/Enemy/Eye.h"
+#include "Domain/Enemy/Clown.h"
+#include "Domain/Enemy/Boss1_3.h"
 
 namespace Jam::UseCase
 {

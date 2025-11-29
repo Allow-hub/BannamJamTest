@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
-#include "../Infrastructure/IndependentObjectFactory.h"
+#include "Infrastructure/IndependentObjectFactory.h"
 
 namespace Jam::Presentation
 {

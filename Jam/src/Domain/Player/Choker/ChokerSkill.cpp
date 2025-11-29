@@ -1,14 +1,14 @@
-﻿#include "ChokerSkill.h"
-#include "../../../Infrastructure/Siv3DCursorUtil.h"
-#include "../../../Infrastructure/FactoryServiceLocator.h"
-#include "../../../Infrastructure/IPhysicsBodyFactory.h"
-#include "../../../Presentation/AudioService.h"
-#include "../../../Infrastructure/PhysicsFilterManager.h"
-#include "../Player.h"
+﻿#include "Domain/Player/Choker/ChokerSkill.h"
+#include "Infrastructure/Siv3DCursorUtil.h"
+#include "Infrastructure/FactoryServiceLocator.h"
+#include "Infrastructure/IPhysicsBodyFactory.h"
+#include "Presentation/AudioService.h"
+#include "Infrastructure/PhysicsFilterManager.h"
+#include "Domain/Player/Player.h"
 
 #include <Siv3D.hpp>
-#include "ChokerStates/ChokerIdleState.h"
-#include "ChokerStates/ChokerFlyingState.h"
+#include "Domain/Player/Choker/ChokerStates/ChokerIdleState.h"
+#include "Domain/Player/Choker/ChokerStates/ChokerFlyingState.h"
 
 using namespace Jam::Domain::Player;
 using namespace Jam::Domain::Physics;

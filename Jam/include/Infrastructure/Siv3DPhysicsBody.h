@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
-#include "../Domain/Physics/IPhysicsBody.h"
-#include "PhysicsConverter.h"
-#include "../Infrastructure/PhysicsFilterManager.h"
+#include "Domain/Physics/IPhysicsBody.h"
+#include "Infrastructure/PhysicsConverter.h"
+#include "Infrastructure/PhysicsFilterManager.h"
 
 namespace Jam::Infrastructure::Physics
 {

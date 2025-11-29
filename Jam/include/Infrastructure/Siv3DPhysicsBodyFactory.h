@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "IPhysicsBodyFactory.h"
-#include "Siv3DPhysicsBody.h"
+#include "Infrastructure/IPhysicsBodyFactory.h"
+#include "Infrastructure/Siv3DPhysicsBody.h"
 #include <unordered_map>
 
 namespace Jam::Infrastructure::Locator

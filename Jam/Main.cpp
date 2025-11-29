@@ -1,16 +1,16 @@
 ﻿#include <Siv3D.hpp> // Siv3D v0.6.16
-#include "src/Presentation/Scenes/SceneName.h"
-#include "src/Presentation/Scenes/TitleScene.h"
-#include "src/Presentation/Scenes/GameScene.h"
-#include "src/Presentation/Scenes/SelectScene.h"
-#include "src/Presentation/Scenes/StoryScene.h"
-#include "src/Presentation/Scenes/StageEditorScene.h"
-#include "src/Foundation/CoreManager.h"
-#include "src/Foundation/CoroutineUtil.h"
-#include "src/Presentation/AudioService.h"
-#include "src/Presentation/Scenes/ResultScene.h"
-#include "src/Presentation/Scenes/Transition/TransitionManager.h"
-#include "src/Presentation/SettingManager.h"
+#include "Presentation/Scenes/SceneName.h"
+#include "Presentation/Scenes/TitleScene.h"
+#include "Presentation/Scenes/GameScene.h"
+#include "Presentation/Scenes/SelectScene.h"
+#include "Presentation/Scenes/StoryScene.h"
+#include "Presentation/Scenes/StageEditorScene.h"
+#include "Foundation/CoreManager.h"
+#include "Foundation/CoroutineUtil.h"
+#include "Presentation/AudioService.h"
+#include "Presentation/Scenes/ResultScene.h"
+#include "Presentation/Scenes/Transition/TransitionManager.h"
+#include "Presentation/SettingManager.h"
 
 using App = SceneManager<String>;
 

@@ -2,13 +2,13 @@
 #include <Siv3D.hpp>
 #include <memory>
 #include <unordered_map>
-#include "../Domain/Enemy/EnemyBase.h"
-#include "../Presentation/EnemyManager.h"
-#include "../Domain/Physics/PhysicsTypes.h"
-#include "../UseCase/EnemyFactory.h"
-#include "../Infrastructure/FactoryServiceLocator.h"
-#include "../Infrastructure/IPhysicsBodyFactory.h"
-#include "../Domain/Events/GameEvents.h"
+#include "Domain/Enemy/EnemyBase.h"
+#include "Presentation/EnemyManager.h"
+#include "Domain/Physics/PhysicsTypes.h"
+#include "UseCase/EnemyFactory.h"
+#include "Infrastructure/FactoryServiceLocator.h"
+#include "Infrastructure/IPhysicsBodyFactory.h"
+#include "Domain/Events/GameEvents.h"
 
 namespace Jam::Infrastructure
 {

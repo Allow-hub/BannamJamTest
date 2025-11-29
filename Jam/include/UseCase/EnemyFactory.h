@@ -1,10 +1,10 @@
 ﻿#pragma once
 #include <memory>
 #include <unordered_map>
-#include "../Domain/Enemy/EnemyBase.h"
-#include "../Domain/Physics/IPhysicsBody.h"
-#include "../Domain/Physics/PhysicsBodyID.h"
-#include "../Domain/Events/GameEvents.h"
+#include "Domain/Enemy/EnemyBase.h"
+#include "Domain/Physics/IPhysicsBody.h"
+#include "Domain/Physics/PhysicsBodyID.h"
+#include "Domain/Events/GameEvents.h"
 
 namespace Jam::UseCase
 {

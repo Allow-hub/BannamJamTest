@@ -1,9 +1,9 @@
-﻿#include "Bomb.h"
-#include "../../Infrastructure/FactoryServiceLocator.h"
-#include "../../Infrastructure/IPhysicsBodyFactory.h"
-#include "../../Infrastructure/PhysicsFilterManager.h"
-#include "../../Infrastructure/IndependentObjectFactory.h"
-#include "../../Presentation/AudioService.h"
+﻿#include "Domain/Enemy/Bomb.h"
+#include "Infrastructure/FactoryServiceLocator.h"
+#include "Infrastructure/IPhysicsBodyFactory.h"
+#include "Infrastructure/PhysicsFilterManager.h"
+#include "Infrastructure/IndependentObjectFactory.h"
+#include "Presentation/AudioService.h"
 
 using namespace Jam::Domain::Physics;
 using namespace Jam::Infrastructure::Locator;

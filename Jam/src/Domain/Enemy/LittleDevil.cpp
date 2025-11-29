@@ -1,5 +1,5 @@
-﻿#include "LittleDevil.h"
-#include "EnemyAI/PatrolAI.h"
+﻿#include "Domain/Enemy/LittleDevil.h"
+#include "Domain/Enemy/EnemyAI/PatrolAI.h"
 
 namespace Jam::Domain::Enemy
 {

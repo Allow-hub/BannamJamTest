@@ -1,9 +1,9 @@
 ﻿#pragma once
-#include "IChokerState.h"
-#include "ChokerIdleState.h"
-#include "../../../Infrastructure/FactoryServiceLocator.h"
-#include "../../../Infrastructure/IPhysicsBodyFactory.h"
-#include "../../Events/GameEvents.h"
+#include "Domain/Player/Choker/ChokerStates/IChokerState.h"
+#include "Domain/Player/Choker/ChokerStates/ChokerIdleState.h"
+#include "Infrastructure/FactoryServiceLocator.h"
+#include "Infrastructure/IPhysicsBodyFactory.h"
+#include "Domain/Events/GameEvents.h"
 
 namespace Jam::Domain::Player
 {

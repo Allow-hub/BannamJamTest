@@ -1,11 +1,11 @@
 ﻿#pragma once
-#include "EnemyBase.h"
-#include "../Events/GameEvents.h"
-#include "../Physics/ICollisionListener.h"
-#include "../Physics/PhysicsBodyID.h"
-#include "../Physics/IPhysicsBody.h"
-#include "../../Infrastructure/FactoryServiceLocator.h"
-#include "../../Infrastructure/IPhysicsBodyFactory.h"
+#include "Domain/Enemy/EnemyBase.h"
+#include "Domain/Events/GameEvents.h"
+#include "Domain/Physics/ICollisionListener.h"
+#include "Domain/Physics/PhysicsBodyID.h"
+#include "Domain/Physics/IPhysicsBody.h"
+#include "Infrastructure/FactoryServiceLocator.h"
+#include "Infrastructure/IPhysicsBodyFactory.h"
 
 namespace Jam::Domain::Enemy
 {

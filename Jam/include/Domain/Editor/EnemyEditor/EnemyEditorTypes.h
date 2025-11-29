@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
-#include "../../Enemy/EnemyType.h"
-#include "../../Enemy/EnemyAI/AISettings.h"
+#include "Domain/Enemy/EnemyType.h"
+#include "Domain/Enemy/EnemyAI/AISettings.h"
 namespace Jam::Domain::Editor
 {
     // エディター用巡回ポイント

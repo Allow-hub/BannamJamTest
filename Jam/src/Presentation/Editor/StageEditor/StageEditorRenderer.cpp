@@ -1,6 +1,6 @@
-﻿#include "StageEditorRenderer.h"
-#include "../../TextureManager.h"
-#include "../Utilities/EditorTextInputUtil.h"
+﻿#include "Presentation/Editor/StageEditor/StageEditorRenderer.h"
+#include "Presentation/TextureManager.h"
+#include "Presentation/Editor/Utilities/EditorTextInputUtil.h"
 
 namespace Jam::Presentation::Editor
 {

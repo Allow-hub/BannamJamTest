@@ -1,6 +1,6 @@
-﻿#include "EnemyManager.h"
-#include "AnimatorLoader.h"
-#include "../Domain/Physics/IPhysicsBody.h"
+﻿#include "Presentation/EnemyManager.h"
+#include "Presentation/AnimatorLoader.h"
+#include "Domain/Physics/IPhysicsBody.h"
 
 namespace Jam::Presentation
 {

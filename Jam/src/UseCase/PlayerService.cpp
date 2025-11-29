@@ -1,5 +1,5 @@
-﻿#include "PlayerService.h"
-#include "../Foundation/CoreManager.h"
+﻿#include "UseCase/PlayerService.h"
+#include "Foundation/CoreManager.h"
 
 namespace Jam::UseCase
 {

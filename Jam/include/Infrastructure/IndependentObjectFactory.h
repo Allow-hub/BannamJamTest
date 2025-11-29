@@ -2,7 +2,7 @@
 #include <unordered_map>
 #include <memory>
 #include <vector>
-#include "../Domain/IIndependentObject.h"
+#include "Domain/IIndependentObject.h"
 
 namespace Jam::Infrastructure
 {

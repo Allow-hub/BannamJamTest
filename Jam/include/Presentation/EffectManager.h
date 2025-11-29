@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "../UseCase/EffectEvents.h"
-#include "../UseCase/EffectImplementations.h"
+#include "UseCase/EffectEvents.h"
+#include "UseCase/EffectImplementations.h"
 
 using namespace Jam::UseCase;
 

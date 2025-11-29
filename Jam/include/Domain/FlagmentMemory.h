@@ -1,9 +1,9 @@
 ﻿#pragma once
-#include "Physics/IPhysicsBody.h"
-#include "Physics/ICollisionListener.h"
-#include "../Infrastructure/FactoryServiceLocator.h"
-#include "../Infrastructure/IPhysicsBodyFactory.h"
-#include "../Presentation/AudioService.h"
+#include "Domain/Physics/IPhysicsBody.h"
+#include "Domain/Physics/ICollisionListener.h"
+#include "Infrastructure/FactoryServiceLocator.h"
+#include "Infrastructure/IPhysicsBodyFactory.h"
+#include "Presentation/AudioService.h"
 
 namespace Jam::Domain
 {

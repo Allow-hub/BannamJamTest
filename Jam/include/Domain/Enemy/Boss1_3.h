@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include "EnemyBase.h"
-#include "../Events/GameEvents.h"
-#include "ShockWave.h"
-#include "../../Foundation/CoroutineUtil.h"
+#include "Domain/Enemy/EnemyBase.h"
+#include "Domain/Events/GameEvents.h"
+#include "Domain/Enemy/ShockWave.h"
+#include "Foundation/CoroutineUtil.h"
 
 namespace Jam::Domain::Enemy
 {

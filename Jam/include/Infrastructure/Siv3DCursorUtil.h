@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
-#include "../Presentation/CameraManager.h"
+#include "Presentation/CameraManager.h"
 
 namespace Jam::Infrastructure
 {

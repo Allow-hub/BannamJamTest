@@ -1,6 +1,6 @@
 #pragma once
 #include <Siv3D.hpp>
-#include "SceneName.h"
+#include "Presentation/Scenes/SceneName.h"
 
 namespace Jam::Presentation::Scenes
 {

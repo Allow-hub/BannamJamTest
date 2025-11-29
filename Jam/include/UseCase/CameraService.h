@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "../Domain/Player/Player.h"
-#include "../Presentation/CameraManager.h"
-#include "CameraEvent.h"
+#include "Domain/Player/Player.h"
+#include "Presentation/CameraManager.h"
+#include "UseCase/CameraEvent.h"
 
 namespace Jam::UseCase
 {

@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include "../Domain/Player/Player.h"
-#include "../Domain/IInputService.h"
-#include "../Presentation/PlayerManager.h"
-#include "AttackProcessor.h"
+#include "Domain/Player/Player.h"
+#include "Domain/IInputService.h"
+#include "Presentation/PlayerManager.h"
+#include "UseCase/AttackProcessor.h"
 #include <Siv3D.hpp>
 
 namespace Jam::UseCase

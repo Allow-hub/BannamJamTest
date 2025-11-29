@@ -2,8 +2,8 @@
 #include <Siv3D.hpp>
 #include <unordered_map>
 #include <memory>
-#include "../Domain/Enemy/EnemyBase.h"
-#include "Animator.h"
+#include "Domain/Enemy/EnemyBase.h"
+#include "Presentation/Animator.h"
 
 namespace Jam::Presentation
 {

@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "../Base/EditorManagerBase.h"
-#include "EnemyEditorTypes.h"
+#include "Domain/Editor/Base/EditorManagerBase.h"
+#include "Domain/Editor/EnemyEditor/EnemyEditorTypes.h"
 
 namespace Jam::Domain::Editor
 {

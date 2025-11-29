@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <memory>
-#include "../../../Physics/IPhysicsBody.h"
-#include "../ChokerContext.h"
+#include "Domain/Physics/IPhysicsBody.h"
+#include "Domain/Player/Choker/ChokerContext.h"
 
 namespace Jam::Domain::Player
 {

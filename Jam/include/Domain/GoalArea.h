@@ -1,9 +1,9 @@
 ﻿#pragma once
-#include "IIndependentObject.h"
+#include "Domain/IIndependentObject.h"
 #include "Physics/IPhysicsBody.h"
 #include "Physics/ICollisionListener.h"
-#include "../Presentation/AudioService.h"
-#include "../Foundation/CoreManager.h"
+#include "Presentation/AudioService.h"
+#include "Foundation/CoreManager.h"
 
 namespace Jam::Domain
 {

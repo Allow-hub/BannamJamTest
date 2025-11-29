@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
-#include "../Domain/Stage/StageTypes.h"
+#include "Domain/Stage/StageTypes.h"
 
 namespace Jam::Infrastructure::Stage {
 	using StageObject = Jam::Domain::Stage::StageObject;

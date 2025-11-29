@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "PhysicsTypes.h"
-#include "PhysicsBodyID.h"
-#include "../../Infrastructure/PhysicsFilterManager.h"
+#include "Domain/Physics/PhysicsTypes.h"
+#include "Domain/Physics/PhysicsBodyID.h"
+#include "Infrastructure/PhysicsFilterManager.h"
 
 namespace Jam::Domain::Physics
 {

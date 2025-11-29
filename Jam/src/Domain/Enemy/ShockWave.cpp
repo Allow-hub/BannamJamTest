@@ -1,7 +1,7 @@
-﻿#include "ShockWave.h"
-#include "../../Infrastructure/FactoryServiceLocator.h"
-#include "../../Infrastructure/IPhysicsBodyFactory.h"
-#include "../../Infrastructure/PhysicsFilterManager.h"
+﻿#include "Domain/Enemy/ShockWave.h"
+#include "Infrastructure/FactoryServiceLocator.h"
+#include "Infrastructure/IPhysicsBodyFactory.h"
+#include "Infrastructure/PhysicsFilterManager.h"
 
 using namespace Jam::Domain::Physics;
 using namespace Jam::Infrastructure::Locator;

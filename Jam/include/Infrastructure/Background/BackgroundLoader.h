@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
-#include "../../Domain/Stage/BackgroundTypes.h"
-#include "../../Foundation/CoreManager.h"
+#include "Domain/Stage/BackgroundTypes.h"
+#include "Foundation/CoreManager.h"
 
 /**
  * 背景データの読み込みクラス
