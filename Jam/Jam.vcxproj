@@ -73,6 +73,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <ForcedIncludeFiles>stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <BuildStlModules>false</BuildStlModules>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)src;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -100,6 +101,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <ForcedIncludeFiles>stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <BuildStlModules>false</BuildStlModules>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)src;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
