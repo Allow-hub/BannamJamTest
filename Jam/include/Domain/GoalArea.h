@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "Domain/IIndependentObject.h"
-#include "Physics/IPhysicsBody.h"
-#include "Physics/ICollisionListener.h"
+#include "Domain/Physics/IPhysicsBody.h"
+#include "Domain/Physics/ICollisionListener.h"
 #include "Presentation/AudioService.h"
 #include "Foundation/CoreManager.h"
 

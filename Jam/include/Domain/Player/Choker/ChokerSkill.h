@@ -2,7 +2,7 @@
 #include "Domain/Physics/ICollisionListener.h"
 #include "Domain/Events/GameEvents.h"
 #include "Foundation/CoroutineUtil.h"
-#include "ChokerStates/IChokerState.h"
+#include "Domain/Player/Choker/ChokerStates/IChokerState.h"
 
 namespace Jam::Domain::Player
 {
