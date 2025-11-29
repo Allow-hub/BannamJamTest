@@ -604,10 +604,10 @@ namespace Jam::Presentation::Scenes
                 {
                     Circle{startPos, GUIDE_POINT_RADIUS}.drawFrame(GUIDE_POINT_FRAME_WIDTH, guideColor);
                     Circle{endPos, GUIDE_POINT_RADIUS}.drawFrame(GUIDE_POINT_FRAME_WIDTH, guideColor);
-                    Vec2 bedStart = Vec2{center.x, center.y};
-                    Vec2 bedEnd = Vec2{center.x + distance, center.y};
-                    Triangle{bedStart.movedBy(-GUIDE_ARROW_SIZE, 0), GUIDE_ARROW_SIZE, 0_deg}.draw(guideColor);
-                    Triangle{bedEnd.movedBy(GUIDE_ARROW_SIZE, 0), GUIDE_ARROW_SIZE, 180_deg}.draw(guideColor);
+                    Vec2 arrowStart = Vec2{center.x, center.y};
+                    Vec2 arrowEnd = Vec2{center.x + distance, center.y};
+                    Triangle{arrowStart.movedBy(-GUIDE_ARROW_SIZE, 0), GUIDE_ARROW_SIZE, 0_deg}.draw(guideColor);
+                    Triangle{arrowEnd.movedBy(GUIDE_ARROW_SIZE, 0), GUIDE_ARROW_SIZE, 180_deg}.draw(guideColor);
                 }
             }
             break;
@@ -630,10 +630,10 @@ namespace Jam::Presentation::Scenes
                 {
                     Circle{startPos, GUIDE_POINT_RADIUS}.drawFrame(GUIDE_POINT_FRAME_WIDTH, guideColor);
                     Circle{endPos, GUIDE_POINT_RADIUS}.drawFrame(GUIDE_POINT_FRAME_WIDTH, guideColor);
-                    Vec2 bedStartV = Vec2{center.x, center.y};
-                    Vec2 bedEndV = Vec2{center.x, center.y + distance};
-                    Triangle{bedStartV.movedBy(0, -GUIDE_ARROW_SIZE), GUIDE_ARROW_SIZE, 270_deg}.draw(guideColor);
-                    Triangle{bedEndV.movedBy(0, GUIDE_ARROW_SIZE), GUIDE_ARROW_SIZE, 90_deg}.draw(guideColor);
+                    Vec2 arrowStart = Vec2{center.x, center.y};
+                    Vec2 arrowEnd = Vec2{center.x, center.y + distance};
+                    Triangle{arrowStart.movedBy(0, -GUIDE_ARROW_SIZE), GUIDE_ARROW_SIZE, 270_deg}.draw(guideColor);
+                    Triangle{arrowEnd.movedBy(0, GUIDE_ARROW_SIZE), GUIDE_ARROW_SIZE, 90_deg}.draw(guideColor);
                 }
             }
             break;
