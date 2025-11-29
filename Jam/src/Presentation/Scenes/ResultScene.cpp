@@ -1,7 +1,7 @@
 ﻿#include "ResultScene.h"
 #include "../../Foundation/CoreManager.h"
 #include "../AudioService.h"
-#include "TransitionManager.h"
+#include "../../Presentation/Scenes/Transition/TransitionManager.h"
 #include "../../Presentation/SettingManager.h"
 
 
@@ -270,12 +270,18 @@ namespace Jam::Presentation::Scenes
 	void ResultScene::drawFadeIn(double t) const
 	{
 		draw();
-		TransitionManager::Instance().rec.drawFadeIn(t);
+		Jam::Presentation::Scenes::TransitionManager::Instance().drawFadeIn(
+		Jam::Presentation::Scenes::TransitionType::RectSlide,
+		t
+		);
 	}
 
 	void ResultScene::drawFadeOut(double t) const
 	{
 		draw();
-		TransitionManager::Instance().rec.drawFadeOut(t);
+		Jam::Presentation::Scenes::TransitionManager::Instance().drawFadeOut(
+		Jam::Presentation::Scenes::TransitionType::RectSlide,
+		t
+		);
 	}
 }

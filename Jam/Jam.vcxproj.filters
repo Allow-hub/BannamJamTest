@@ -53,6 +53,9 @@
     <ClCompile Include="src\Presentation\InGameUIManager.cpp" />
     <ClCompile Include="src\Domain\Editor\EditorCameraController.cpp" />
     <ClCompile Include="src\Domain\Enemy\FireBall.cpp" />
+    <ClCompile Include="src\Presentation\Scenes\Transition\RectSlide.cpp" />
+    <ClCompile Include="src\Presentation\Scenes\Transition\TransitionManager.cpp" />
+    <ClCompile Include="src\Presentation\Scenes\Transition\IrisTransition.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
@@ -170,6 +173,10 @@
     <ClInclude Include="src\Domain\Player\Choker\ChokerStates\CustomDistanceJoint.h" />
     <ClInclude Include="src\Domain\Editor\EditorCameraController.h" />
     <ClInclude Include="src\Domain\Enemy\FireBall.h" />
+    <ClInclude Include="src\Presentation\Scenes\Transition\ITransitionable.h" />
+    <ClInclude Include="src\Presentation\Scenes\Transition\RectSlide.h" />
+    <ClInclude Include="src\Presentation\Scenes\Transition\TransitionManager.h" />
+    <ClInclude Include="src\Presentation\Scenes\Transition\IrisTransition.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />
@@ -452,6 +459,7 @@
     <Image Include="App\Assets\Player\Damage\damage_28.png" />
     <Image Include="App\Assets\Player\Damage\damage_29.png" />
     <Image Include="App\Assets\Item\fireBall.png" />
+    <Image Include="App\Assets\Enemy\GothicLolitaDoll\idle_1.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />

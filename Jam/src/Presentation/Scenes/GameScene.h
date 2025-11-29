@@ -38,7 +38,6 @@
 #include "../../Presentation/IndependentObjectManager.h"
 #include "../../Domain/GoalArea.h"
 #include "SceneName.h"
-#include "TransitionManager.h"
 
 namespace Jam::Presentation::Scenes
 {
