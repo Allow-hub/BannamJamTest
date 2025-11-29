@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <memory>
 #include "../Physics/IPhysicsBody.h"
 #include "../Events/GameEvents.h"
@@ -56,7 +56,7 @@ namespace Jam::Domain::Enemy
 		// ベジェ曲線の計算
 		Vec2 calculateBezierPoint(double t) const;
 
-		// 反射処理
+		// 反射の処理
 		void reflect(Vec2 direction);
 
 		// 衝突検知

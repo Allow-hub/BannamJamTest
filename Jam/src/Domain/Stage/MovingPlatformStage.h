@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "IStage.h"
 
 namespace Jam::Domain::Stage {
@@ -12,7 +12,7 @@ namespace Jam::Domain::Stage {
         Vec2 m_baseCenter;             // 基準中心位置
         Vec2 m_currentOffset;          // 現在のオフセット
         MovementType m_movementType;   // 移動タイプ
-        double m_movementSpeed;        // 移動速度（ピクセル/秒）
+        double m_movementSpeed;        // 移動速度(ピクセル/秒)
         double m_movementDistance;     // 移動距離または半径
         bool m_loopMovement;           // ループするか
         double m_elapsedTime;          // 経過時間
@@ -46,7 +46,9 @@ namespace Jam::Domain::Stage {
         }
         
         RectF getRenderRect() const override {
-            return RectF(m_baseRect.pos + m_currentOffset, m_baseRect.size);
+            Vec2 currentCenter = m_baseCenter + m_currentOffset;
+            Vec2 topLeft = currentCenter - m_baseRect.size / 2.0;
+            return RectF(topLeft, m_baseRect.size);
         }
         
         StageType getType() const override {

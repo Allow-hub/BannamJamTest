@@ -690,6 +690,10 @@
       "loopMovement": true,
       "metadata": "移動床05"
     }
-
-  ]
+  ],
+  "goal": {
+    "position": [12800, 1600],
+    "size": [200, 200]
+  },
+  "playerSpawn": [50, -5]
 }

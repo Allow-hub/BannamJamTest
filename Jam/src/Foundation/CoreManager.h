@@ -36,6 +36,7 @@ namespace Jam::Foundation
 		inline static bool m_isDied = false;
 		inline static bool m_isPause = false;
 		inline static int m_defeatedEnemyCount = 0; // 敵撃破数を保持
+        inline static bool m_useEditorMode = false; // Editorモードかどうか
 
 	public:
 		static CoreManager& Instance()
@@ -43,6 +44,8 @@ namespace Jam::Foundation
 			static CoreManager instance;
 			return instance;
 		}
+
+		static bool isEditorMode() { return m_useEditorMode; }
 
 		static s3d::String stageNameToString(StageName stage)
 		{
@@ -86,7 +89,6 @@ namespace Jam::Foundation
 			{
 			case StageName::Stage1_1:
 				Instance().stageInfo.stageName = StageName::Stage1_2;
-				Print << U"aa";
 				break;
 			case StageName::Stage1_2:
 				Instance().stageInfo.stageName = StageName::Stage1_3;

@@ -9,12 +9,15 @@ namespace Jam::Presentation::Scenes
 		m_inputManager()
 	{
 		Jam::Presentation::AudioService::get().play(Jam::Presentation::AudioService::Sound::BGM_Game, true);
-		//デバッグ用
-		Jam::Foundation::CoreManager::Instance().stageInfo.stageName = Jam::Foundation::StageName::Stage1_1; // CoreManagerのenumに追加が必要
 
 		auto& core = Jam::Foundation::CoreManager::Instance();
-		core.reset();
-		String stageName = Jam::Foundation::CoreManager::stageNameToString(core.stageInfo.stageName);//ステージ名
+		
+		if (!core.isEditorMode()) core.reset();
+		
+		String stageName;
+		if (core.isEditorMode()) stageName = U"stage_edited.json";
+		else stageName = Jam::Foundation::CoreManager::stageNameToString(core.stageInfo.stageName);
+		
 		core.setCurrentStageData(core.getStageData(core.stageInfo.stageName));
 
 		// --- FactoryServiceLocator初期化 ---
@@ -80,7 +83,9 @@ namespace Jam::Presentation::Scenes
 
 		// ステージ名からJSONファイル名を生成
 		// イベントキューとプレイヤーIDを渡す（ダメージ床用）
-		m_stageService->initialize(stageName + U".json", bodyFactory, *m_gameEventQueue, playerBody->getID());
+		// stageName に .json が含まれていない場合のみ追加
+		String stageFilePath = stageName.ends_with(U".json") ? stageName : (stageName + U".json");
+		m_stageService->initialize(stageFilePath, bodyFactory, *m_gameEventQueue, playerBody->getID());
 
 		// ステージの物理ボディをGameSceneの物理ボディリストに追加（衝突検出用）
 		for (const auto& stageBody : m_stageService->getPhysicsBodies()) {
@@ -135,8 +140,14 @@ namespace Jam::Presentation::Scenes
 		);
 
 		// ステージ用敵配置 JSON をロードして敵を生成
+		String enemyFilePath;
+		if (core.isEditorMode())
+			enemyFilePath = U"Assets/Enemy/enemy_edited.json";
+		else
+			enemyFilePath = U"Assets/Enemy/enemy_" + stageName + U".json";
+		
 		if (!Jam::Infrastructure::EnemyLoader::loadEnemyForStageFromJSON(
-			U"Assets/Enemy/enemy_" + stageName + U".json",
+			enemyFilePath,
 			m_enemyFactory,
 			m_enemyManager,
 			playerBodyId, *m_gameEventQueue))
@@ -189,8 +200,37 @@ namespace Jam::Presentation::Scenes
 		}
 
 		// === Goal 初期化 ===
+		Vec2 goalPosition = core.getCurrentStageData().goalData.position;
+		Vec2 goalSize = core.getCurrentStageData().goalData.size;
+		
+		// エディタモードの場合、JSONからゴール位置を読み込み
+		if (core.isEditorMode())
+		{
+			const JSON stageJson = JSON::Load(U"Assets/Stage/stage_edited.json");
+			if (stageJson && stageJson.hasElement(U"goal"))
+			{
+				const auto& goalJson = stageJson[U"goal"];
+				if (goalJson.hasElement(U"position") && goalJson[U"position"].isArray())
+				{
+					const auto& posArray = goalJson[U"position"];
+					if (posArray.size() >= 2)
+					{
+						goalPosition = Vec2(posArray[0].get<double>(), posArray[1].get<double>());
+					}
+				}
+				if (goalJson.hasElement(U"size") && goalJson[U"size"].isArray())
+				{
+					const auto& sizeArray = goalJson[U"size"];
+					if (sizeArray.size() >= 2)
+					{
+						goalSize = Vec2(sizeArray[0].get<double>(), sizeArray[1].get<double>());
+					}
+				}
+			}
+		}
+		
 		auto goalBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
-			.getPhysicsFactory()->createRectSensor(core.getCurrentStageData().goalData.position, core.getCurrentStageData().goalData.size);
+			.getPhysicsFactory()->createRectSensor(goalPosition, goalSize);
 		auto goal = std::make_shared<Jam::Domain::GoalArea>(goalBody, [this]() { this->nextScene(); });
 		goalBody->setCollisionListener(goal);
 		Jam::Infrastructure::IndependentObjectFactory::instance().registerObject(goal);

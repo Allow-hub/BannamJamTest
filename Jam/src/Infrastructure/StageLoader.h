@@ -148,6 +148,11 @@ namespace Jam::Infrastructure::Stage {
 				}
 			}
 
+			// テクスチャパスの解析
+			if (objJson.hasElement(U"texturePath")) {
+				obj.texturePath = objJson[U"texturePath"].getString();
+			}
+
 			return obj;
 		}
 

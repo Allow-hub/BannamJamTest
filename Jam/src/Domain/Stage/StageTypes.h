@@ -49,11 +49,15 @@ namespace Jam::Domain::Stage {
 		// ダメージプラットフォーム用の追加データ
 		double damageAmount = 10.0;     // 与えるダメージ量
 
+		// テクスチャ情報
+		String texturePath;             // テクスチャファイルのパス（相対パスまたは絶対パス）
+
 		// デフォルトコンストラクタ(JSONパース時の安全な初期化用)
 		StageObject()
 			: rect(0, 0, 0, 0)
 			, type(StageType::None)
-			, metadata(U"") {
+			, metadata(U"")
+			, texturePath(U"") {
 		}
 	};
 
@@ -92,6 +96,29 @@ namespace Jam::Domain::Stage {
 		case StageType::DamagePlatform: return U"damage_platform";
 		case StageType::MovingDamagePlatform: return U"moving_damage_platform";
 		default: return U"none";
+		}
+	}
+
+	// MovementTypeから文字列への変換
+	inline String movementTypeToString(MovementType type) {
+		switch (type) {
+		case MovementType::Horizontal: return U"horizontal";
+		case MovementType::Vertical: return U"vertical";
+		case MovementType::Circular: return U"circular";
+		default: return U"horizontal";
+		}
+	}
+
+	// GroundSideから文字列への変換
+	inline String groundSideToString(GroundSide side) {
+		switch (side) {
+		case GroundSide::None: return U"none";
+		case GroundSide::Up: return U"up";
+		case GroundSide::Down: return U"down";
+		case GroundSide::Left: return U"left";
+		case GroundSide::Right: return U"right";
+		case GroundSide::All: return U"all";
+		default: return U"all";
 		}
 	}
 }

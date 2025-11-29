@@ -31,13 +31,15 @@ namespace Jam::Domain::Enemy
 
 	struct ChaseAISettings
 	{
-		double attackRange = 100;
-		double loseRange = 600.0;    // プレイヤーを見失う距離
+		double attackRange = 600.0;
+		double loseRange = 700.0;    // プレイヤーを見失う距離
 		double moveSpeedFactor = 1.2; // 通常移動より少し速い
 	};
 
 	struct PatrolAISettings
 	{
-		double foundDistance = 500.0;
+		double foundDistance = 700.0;
+		bool loop = true;
+		double waitTime = 1.0;
 	};
 }

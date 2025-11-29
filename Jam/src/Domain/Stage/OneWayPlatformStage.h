@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "IStage.h"
 
 namespace Jam::Domain::Stage {
@@ -32,7 +32,7 @@ namespace Jam::Domain::Stage {
         }
         
         /**
-         * 床の上面のY座標を取得
+         * 床の上端のY座標を取得
          */
         double getTopY() const {
             return m_rect.y;
