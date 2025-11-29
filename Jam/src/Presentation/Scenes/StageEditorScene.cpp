@@ -588,8 +588,9 @@ namespace Jam::Presentation::Scenes
         {
         case Domain::Stage::MovementType::Horizontal:
             {
-                startPos = Vec2{center.x - distance / 2, center.y};
-                endPos = Vec2{center.x + distance / 2, center.y};
+                const double halfWidth = obj.rect.w / 2.0;
+                startPos = Vec2{center.x - halfWidth, center.y};
+                endPos = Vec2{center.x + distance + halfWidth, center.y};
                 
                 Line{startPos, endPos}.draw(GUIDE_LINE_WIDTH, guideColor);
                 
@@ -603,17 +604,19 @@ namespace Jam::Presentation::Scenes
                 {
                     Circle{startPos, GUIDE_POINT_RADIUS}.drawFrame(GUIDE_POINT_FRAME_WIDTH, guideColor);
                     Circle{endPos, GUIDE_POINT_RADIUS}.drawFrame(GUIDE_POINT_FRAME_WIDTH, guideColor);
-                    // 往復を示す矢印
-                    Triangle{startPos.movedBy(-GUIDE_ARROW_SIZE, 0), GUIDE_ARROW_SIZE, 0_deg}.draw(guideColor);
-                    Triangle{endPos.movedBy(GUIDE_ARROW_SIZE, 0), GUIDE_ARROW_SIZE, 180_deg}.draw(guideColor);
+                    Vec2 bedStart = Vec2{center.x, center.y};
+                    Vec2 bedEnd = Vec2{center.x + distance, center.y};
+                    Triangle{bedStart.movedBy(-GUIDE_ARROW_SIZE, 0), GUIDE_ARROW_SIZE, 0_deg}.draw(guideColor);
+                    Triangle{bedEnd.movedBy(GUIDE_ARROW_SIZE, 0), GUIDE_ARROW_SIZE, 180_deg}.draw(guideColor);
                 }
             }
             break;
             
         case Domain::Stage::MovementType::Vertical:
             {
-                startPos = Vec2{center.x, center.y - distance / 2};
-                endPos = Vec2{center.x, center.y + distance / 2};
+                const double halfHeight = obj.rect.h / 2.0;
+                startPos = Vec2{center.x, center.y - halfHeight};
+                endPos = Vec2{center.x, center.y + distance + halfHeight};
                 
                 Line{startPos, endPos}.draw(GUIDE_LINE_WIDTH, guideColor);
                 
@@ -627,16 +630,19 @@ namespace Jam::Presentation::Scenes
                 {
                     Circle{startPos, GUIDE_POINT_RADIUS}.drawFrame(GUIDE_POINT_FRAME_WIDTH, guideColor);
                     Circle{endPos, GUIDE_POINT_RADIUS}.drawFrame(GUIDE_POINT_FRAME_WIDTH, guideColor);
-                    // 往復を示す矢印
-                    Triangle{startPos.movedBy(0, -GUIDE_ARROW_SIZE), GUIDE_ARROW_SIZE, 270_deg}.draw(guideColor);
-                    Triangle{endPos.movedBy(0, GUIDE_ARROW_SIZE), GUIDE_ARROW_SIZE, 90_deg}.draw(guideColor);
+                    Vec2 bedStartV = Vec2{center.x, center.y};
+                    Vec2 bedEndV = Vec2{center.x, center.y + distance};
+                    Triangle{bedStartV.movedBy(0, -GUIDE_ARROW_SIZE), GUIDE_ARROW_SIZE, 270_deg}.draw(guideColor);
+                    Triangle{bedEndV.movedBy(0, GUIDE_ARROW_SIZE), GUIDE_ARROW_SIZE, 90_deg}.draw(guideColor);
                 }
             }
             break;
             
         case Domain::Stage::MovementType::Circular:
             {
-                Circle{center, distance / 2}.drawFrame(GUIDE_LINE_WIDTH, guideColor);
+                const double maxObjectRadius = Math::Max(obj.rect.w, obj.rect.h) / 2.0;
+                const double adjustedRadius = distance + maxObjectRadius;
+                Circle{center, adjustedRadius}.drawFrame(GUIDE_LINE_WIDTH, guideColor);
                 Circle{center, GUIDE_POINT_RADIUS}.draw(guideColor);
             }
             break;

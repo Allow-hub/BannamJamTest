@@ -46,7 +46,6 @@ namespace Jam::Domain::Stage {
         }
         
         RectF getRenderRect() const override {
-            // 🔧 修正: 中心基準でオフセットを適用してから、左上座標に変換
             Vec2 currentCenter = m_baseCenter + m_currentOffset;
             Vec2 topLeft = currentCenter - m_baseRect.size / 2.0;
             return RectF(topLeft, m_baseRect.size);
