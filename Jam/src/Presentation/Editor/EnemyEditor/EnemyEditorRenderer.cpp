@@ -304,17 +304,20 @@ namespace Jam::Presentation::Editor
                 }
             }
             
-            if (enemy.patrol.loop && enemy.patrol.patrolPoints.size() > 0)
+            // AI設定のloop判定を直接取得
+            Domain::Enemy::PatrolAISettings patrolSettings;
+            if (patrolSettings.loop && enemy.patrol.patrolPoints.size() > 0)
             {
                 Line{enemy.patrol.patrolPoints.back().position, enemy.patrol.patrolPoints.front().position}
                     .draw(2.0, ColorF{0.0, 1.0, 0.0, 0.7});
             }
         }
         
-        if (enemy.chase)
+        if (enemy.hasChaseAI())
         {
-            Circle{enemy.position, enemy.chase->attackRange}.drawFrame(2.0, ColorF{1.0, 0.0, 0.0, 0.5});
-            Circle{enemy.position, enemy.chase->loseRange}.drawFrame(2.0, ColorF{1.0, 1.0, 0.0, 0.3});
+            Domain::Enemy::ChaseAISettings chaseSettings;
+            Circle{enemy.position, chaseSettings.attackRange}.drawFrame(2.0, ColorF{1.0, 0.0, 0.0, 0.5});
+            Circle{enemy.position, chaseSettings.loseRange}.drawFrame(2.0, ColorF{1.0, 1.0, 0.0, 0.3});
         }
     }
 }

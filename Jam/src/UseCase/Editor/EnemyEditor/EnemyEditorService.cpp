@@ -57,19 +57,7 @@ namespace Jam::UseCase::Editor
             
             enemy.patrol.patrolPoints.push_back(point1);
             enemy.patrol.patrolPoints.push_back(point2);
-            enemy.patrol.loop = true;
-            enemy.patrol.waitTime = m_state.patrolWaitTime;
-            enemy.patrol.foundDistance = m_state.foundDistance;
-            
-            if (enemy.hasChaseAI()) {
-                Domain::Editor::ChaseAI chase;
-                chase.attackRange = m_state.attackRange;
-                chase.loseRange = m_state.loseRange;
-                chase.moveSpeedFactor = m_state.moveSpeedFactor;
-                enemy.chase = chase;
-            }
         }
-        
         return enemy;
     }
 }

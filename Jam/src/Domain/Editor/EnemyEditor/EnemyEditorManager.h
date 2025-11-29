@@ -60,6 +60,5 @@ namespace Jam::Domain::Editor
         // ===== JSONパースヘルパー =====
         
         void parsePatrolAI(EnemyObject& enemy, const JSON& aiJson) const;
-        void parseChaseAI(EnemyObject& enemy, const JSON& aiJson) const;
     };
 }

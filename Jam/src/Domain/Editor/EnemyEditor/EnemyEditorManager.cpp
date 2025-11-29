@@ -210,18 +210,22 @@ namespace Jam::Domain::Editor
             }
             
             patrolJson[U"patrolPoints"] = patrolPointsArray;
-            patrolJson[U"loop"] = enemy.patrol.loop;
-            patrolJson[U"waitTime"] = enemy.patrol.waitTime;
-            patrolJson[U"foundDistance"] = enemy.patrol.foundDistance;
+            // AI設定値は直接AISettingsから取得
+            Domain::Enemy::PatrolAISettings patrolSettings;
+            patrolJson[U"loop"] = patrolSettings.loop;
+            patrolJson[U"waitTime"] = patrolSettings.waitTime;
+            patrolJson[U"foundDistance"] = patrolSettings.foundDistance;
             aiJson[U"patrol"] = patrolJson;
             
-            if (enemy.chase)
+            if (enemy.hasChaseAI())
             {
                 JSON chaseJson;
                 
-                chaseJson[U"attackRange"] = enemy.chase->attackRange;
-                chaseJson[U"loseRange"] = enemy.chase->loseRange;
-                chaseJson[U"moveSpeedFactor"] = enemy.chase->moveSpeedFactor;
+                // AI設定値は直接ChaseAISettingsから取得
+                Domain::Enemy::ChaseAISettings chaseSettings;
+                chaseJson[U"attackRange"] = chaseSettings.attackRange;
+                chaseJson[U"loseRange"] = chaseSettings.loseRange;
+                chaseJson[U"moveSpeedFactor"] = chaseSettings.moveSpeedFactor;
                 aiJson[U"chase"] = chaseJson;
             }
             
@@ -250,7 +254,6 @@ namespace Jam::Domain::Editor
         {
             const auto& aiJson = json[U"extra"][U"ai"];
             parsePatrolAI(enemy, aiJson);
-            parseChaseAI(enemy, aiJson);
         }
         
         return enemy;
@@ -274,33 +277,7 @@ namespace Jam::Domain::Editor
             }
         }
         
-        if (patrolJson.hasElement(U"loop"))
-            enemy.patrol.loop = patrolJson[U"loop"].get<bool>();
-        
-        if (patrolJson.hasElement(U"waitTime"))
-            enemy.patrol.waitTime = patrolJson[U"waitTime"].get<double>();
-        
-        if (patrolJson.hasElement(U"foundDistance"))
-            enemy.patrol.foundDistance = patrolJson[U"foundDistance"].get<double>();
     }
     
-    // 追跡AI情報をJSONからパース
-    void EnemyEditorManager::parseChaseAI(EnemyObject& enemy, const JSON& aiJson) const
-    {
-        if (!enemy.hasChaseAI() || !aiJson.hasElement(U"chase")) return;
-        
-        ChaseAI chase;
-        const auto& chaseJson = aiJson[U"chase"];
-        
-        if (chaseJson.hasElement(U"attackRange"))
-            chase.attackRange = chaseJson[U"attackRange"].get<double>();
-        
-        if (chaseJson.hasElement(U"loseRange"))
-            chase.loseRange = chaseJson[U"loseRange"].get<double>();
-        
-        if (chaseJson.hasElement(U"moveSpeedFactor"))
-            chase.moveSpeedFactor = chaseJson[U"moveSpeedFactor"].get<double>();
-        
-        enemy.chase = chase;
-    }
+
 }
