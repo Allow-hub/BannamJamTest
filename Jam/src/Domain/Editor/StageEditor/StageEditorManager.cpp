@@ -1,4 +1,4 @@
-#include "StageEditorManager.h"
+#include "Domain/Editor/StageEditor/StageEditorManager.h"
 
 namespace Jam::Domain::Editor
 {

@@ -1,7 +1,7 @@
-﻿#include "StageEditorScene.h"
-#include "../../Foundation/CoreManager.h"
-#include "../ResourceManager.h"
-#include "../Editor/Utilities/EditorGridUtil.h"
+﻿#include "Presentation/Scenes/StageEditorScene.h"
+#include "Foundation/CoreManager.h"
+#include "Presentation/ResourceManager.h"
+#include "Presentation/Editor/Utilities/EditorGridUtil.h"
 
 namespace Jam::Presentation::Scenes
 {

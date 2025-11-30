@@ -1,6 +1,6 @@
-﻿#include "InGameUIManager.h"
-#include "../Domain/Player/Player.h"
-#include "../Foundation/CoreManager.h"
+﻿#include "Presentation/InGameUIManager.h"
+#include "Domain/Player/Player.h"
+#include "Foundation/CoreManager.h"
 
 namespace Jam::Presentation
 {

@@ -1,8 +1,8 @@
-﻿#include "Fireball.h"
-#include "../../Infrastructure/FactoryServiceLocator.h"
-#include "../../Infrastructure/IPhysicsBodyFactory.h"
-#include "../../Infrastructure/PhysicsFilterManager.h"
-#include "../../Presentation/AudioService.h"
+﻿#include "Domain/Enemy/FireBall.h"
+#include "Infrastructure/FactoryServiceLocator.h"
+#include "Infrastructure/IPhysicsBodyFactory.h"
+#include "Infrastructure/PhysicsFilterManager.h"
+#include "Presentation/AudioService.h"
 
 using namespace Jam::Domain::Physics;
 using namespace Jam::Infrastructure::Locator;

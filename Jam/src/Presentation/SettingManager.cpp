@@ -1,6 +1,6 @@
-﻿#include "SettingManager.h"
-#include "../Foundation/CoreManager.h"
-#include "AudioService.h"
+﻿#include "Presentation/SettingManager.h"
+#include "Foundation/CoreManager.h"
+#include "Presentation/AudioService.h"
 
 namespace Jam::Presentation
 {

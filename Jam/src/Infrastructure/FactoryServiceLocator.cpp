@@ -1,5 +1,5 @@
-﻿#include "FactoryServiceLocator.h"
-#include "../Infrastructure/IPhysicsBodyFactory.h"
+﻿#include "Infrastructure/FactoryServiceLocator.h"
+#include "Infrastructure/IPhysicsBodyFactory.h"
 
 namespace Jam::Infrastructure::Locator
 {

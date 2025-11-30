@@ -1,4 +1,4 @@
-﻿#include "StageFactory.h"
+﻿#include "Infrastructure/StageFactory.h"
 
 namespace Jam::Infrastructure {
     

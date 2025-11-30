@@ -1,11 +1,11 @@
-﻿#include "Eye.h"
-#include "EyeBeam.h"
-#include "EnemyAI/PatrolAI.h"
-#include "EnemyAI/ChaseAI.h"
-#include "EnemyAI/AttackAI.h"
-#include "../../Infrastructure/FactoryServiceLocator.h"
-#include "../../Infrastructure/IPhysicsBodyFactory.h"
-#include "../../Infrastructure/PhysicsFilterManager.h"
+﻿#include "Domain/Enemy/Eye.h"
+#include "Domain/Enemy/EyeBeam.h"
+#include "Domain/Enemy/EnemyAI/PatrolAI.h"
+#include "Domain/Enemy/EnemyAI/ChaseAI.h"
+#include "Domain/Enemy/EnemyAI/AttackAI.h"
+#include "Infrastructure/FactoryServiceLocator.h"
+#include "Infrastructure/IPhysicsBodyFactory.h"
+#include "Infrastructure/PhysicsFilterManager.h"
 
 namespace Jam::Domain::Enemy
 {

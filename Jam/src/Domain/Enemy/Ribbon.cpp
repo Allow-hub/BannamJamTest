@@ -1,7 +1,7 @@
-﻿#include "Ribbon.h"
-#include "EnemyAI/PatrolAI.h"
-#include "EnemyAI/ChaseAI.h"
-#include "EnemyAI/AttackAI.h"
+﻿#include "Domain/Enemy/Ribbon.h"
+#include "Domain/Enemy/EnemyAI/PatrolAI.h"
+#include "Domain/Enemy/EnemyAI/ChaseAI.h"
+#include "Domain/Enemy/EnemyAI/AttackAI.h"
 
 namespace Jam::Domain::Enemy
 {

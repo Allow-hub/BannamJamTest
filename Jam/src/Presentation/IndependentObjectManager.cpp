@@ -1,4 +1,4 @@
-﻿#include "IndependentObjectManager.h"
+﻿#include "Presentation/IndependentObjectManager.h"
 
 namespace Jam::Presentation
 {

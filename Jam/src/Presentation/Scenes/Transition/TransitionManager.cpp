@@ -1,6 +1,6 @@
-﻿#include "TransitionManager.h"
-#include "RectSlide.h"
-#include "IrisTransition.h"
+﻿#include "Presentation/Scenes/Transition/TransitionManager.h"
+#include "Presentation/Scenes/Transition/RectSlide.h"
+#include "Presentation/Scenes/Transition/IrisTransition.h"
 
 namespace Jam::Presentation::Scenes
 {

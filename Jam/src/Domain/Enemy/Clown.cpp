@@ -1,13 +1,13 @@
-﻿#include "Clown.h"
-#include "EnemyAI/PatrolAI.h"
-#include "EnemyAI/ChaseAI.h"
-#include "EnemyAI/AttackAI.h"
-#include "EnemyAI/RunAwayAI.h"
-#include "../../Infrastructure/FactoryServiceLocator.h"
-#include "../../Infrastructure/IPhysicsBodyFactory.h"
-#include "../../Infrastructure/PhysicsFilterManager.h"
-#include "../../Infrastructure/IndependentObjectFactory.h"
-#include "Bomb.h"
+﻿#include "Domain/Enemy/Clown.h"
+#include "Domain/Enemy/EnemyAI/PatrolAI.h"
+#include "Domain/Enemy/EnemyAI/ChaseAI.h"
+#include "Domain/Enemy/EnemyAI/AttackAI.h"
+#include "Domain/Enemy/EnemyAI/RunAwayAI.h"
+#include "Infrastructure/FactoryServiceLocator.h"
+#include "Infrastructure/IPhysicsBodyFactory.h"
+#include "Infrastructure/PhysicsFilterManager.h"
+#include "Infrastructure/IndependentObjectFactory.h"
+#include "Domain/Enemy/Bomb.h"
 
 namespace Jam::Domain::Enemy
 {

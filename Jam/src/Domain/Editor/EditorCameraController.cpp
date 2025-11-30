@@ -1,4 +1,4 @@
-#include "EditorCameraController.h"
+#include "Domain/Editor/EditorCameraController.h"
 
 namespace Jam::Domain::Editor
 {

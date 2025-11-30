@@ -1,14 +1,14 @@
-﻿#include "Boss1_3.h"
-#include "Missile.h"
-#include "../../Infrastructure/FactoryServiceLocator.h"
-#include "../../Infrastructure/IPhysicsBodyFactory.h"
-#include "../../Infrastructure/PhysicsFilterManager.h"
-#include "../../Infrastructure/IndependentObjectFactory.h"
-#include "../../Foundation/CoroutineUtil.h"
+﻿#include "Domain/Enemy/Boss1_3.h"
+#include "Domain/Enemy/Missile.h"
+#include "Infrastructure/FactoryServiceLocator.h"
+#include "Infrastructure/IPhysicsBodyFactory.h"
+#include "Infrastructure/PhysicsFilterManager.h"
+#include "Infrastructure/IndependentObjectFactory.h"
+#include "Foundation/CoroutineUtil.h"
 #include <random>
-#include "Bomb.h"
-#include "../../UseCase/AttackProcessor.h"
-#include "../../Presentation/AudioService.h"
+#include "Domain/Enemy/Bomb.h"
+#include "UseCase/AttackProcessor.h"
+#include "Presentation/AudioService.h"
 
 namespace Jam::Domain::Enemy
 {

@@ -1,13 +1,13 @@
-﻿#include "GothicLolitaDoll.h"
-#include "EnemyAI/PatrolAI.h"
-#include "EnemyAI/ChaseAI.h"
-#include "EnemyAI/AttackAI.h"
+﻿#include "Domain/Enemy/GothicLolitaDoll.h"
+#include "Domain/Enemy/EnemyAI/PatrolAI.h"
+#include "Domain/Enemy/EnemyAI/ChaseAI.h"
+#include "Domain/Enemy/EnemyAI/AttackAI.h"
 
-#include "../../Infrastructure/FactoryServiceLocator.h"
-#include "../../Infrastructure/IPhysicsBodyFactory.h"
-#include "../../Infrastructure/PhysicsFilterManager.h"
-#include "../../Infrastructure/IndependentObjectFactory.h"
-#include "FireBall.h"
+#include "Infrastructure/FactoryServiceLocator.h"
+#include "Infrastructure/IPhysicsBodyFactory.h"
+#include "Infrastructure/PhysicsFilterManager.h"
+#include "Infrastructure/IndependentObjectFactory.h"
+#include "Domain/Enemy/FireBall.h"
 
 namespace Jam::Domain::Enemy
 {
