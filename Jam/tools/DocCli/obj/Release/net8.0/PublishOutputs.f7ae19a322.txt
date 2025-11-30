@@ -1,0 +1,5 @@
+C:\Users\PC_User\Documents\BannamJamTest\Jam\Tools\DocCli\bin\Release\net8.0\publish\DocCli.exe
+C:\Users\PC_User\Documents\BannamJamTest\Jam\Tools\DocCli\bin\Release\net8.0\publish\DocCli.dll
+C:\Users\PC_User\Documents\BannamJamTest\Jam\Tools\DocCli\bin\Release\net8.0\publish\DocCli.deps.json
+C:\Users\PC_User\Documents\BannamJamTest\Jam\Tools\DocCli\bin\Release\net8.0\publish\DocCli.runtimeconfig.json
+C:\Users\PC_User\Documents\BannamJamTest\Jam\Tools\DocCli\bin\Release\net8.0\publish\DocCli.pdb

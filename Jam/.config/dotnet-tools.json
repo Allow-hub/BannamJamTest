@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "doccli": {
+      "version": "1.0.3",
+      "commands": [
+        "doc"
+      ],
+      "rollForward": false
+    }
+  }
+}

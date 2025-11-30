@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "snCCNXvf5Xk=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\PC_User\\Documents\\BannamJamTest\\Jam\\tools\\DocCli\\DocCli.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\PC_User\\.nuget\\packages\\spectre.console\\0.49.1\\spectre.console.0.49.1.nupkg.sha512"
+  ],
+  "logs": []
+}
