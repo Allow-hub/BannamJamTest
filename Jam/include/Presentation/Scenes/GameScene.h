@@ -50,6 +50,8 @@ namespace Jam::Presentation::Scenes
 		std::vector<std::shared_ptr<Infrastructure::Physics::Siv3DPhysicsBody>> m_physicsBodies;
 		double m_accumulatedTime = 0.0;
 
+		std::vector<std::function<void()>> m_deferredActions;
+
 		// Player
 		std::shared_ptr<Domain::Player::Player> m_player;
 		std::unique_ptr<Jam::UseCase::PlayerService> m_playerService;
@@ -92,6 +94,9 @@ namespace Jam::Presentation::Scenes
 		void nextScene();
 		void drawFadeIn(double t) const override;
 		void drawFadeOut(double t) const override;
+		void pushDeferredAction(std::function<void()> action) {
+			m_deferredActions.push_back(std::move(action));
+		}
 
 	private:
 		void resetScene();

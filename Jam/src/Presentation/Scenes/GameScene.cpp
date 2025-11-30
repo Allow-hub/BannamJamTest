@@ -231,7 +231,12 @@ namespace Jam::Presentation::Scenes
 		
 		auto goalBody = Jam::Infrastructure::Locator::FactoryServiceLocator::instance()
 			.getPhysicsFactory()->createRectSensor(goalPosition, goalSize);
-		auto goal = std::make_shared<Jam::Domain::GoalArea>(goalBody, [this]() { this->nextScene(); });
+		auto goal = std::make_shared<Jam::Domain::GoalArea>(
+			goalBody,
+			[this]() { this->pushDeferredAction([this]() { this->nextScene(); }); },	// nextSceneをDeferredActionとして登録
+			*m_effectEventQueue,
+			*m_cameraEventQueue
+		);
 		goalBody->setCollisionListener(goal);
 		Jam::Infrastructure::IndependentObjectFactory::instance().registerObject(goal);
 
@@ -319,6 +324,12 @@ namespace Jam::Presentation::Scenes
 			flagment->update(Scene::DeltaTime());
 		}
 		m_inGameUIManager->update();
+
+		//DeferredActionの実行
+		for (auto& action : m_deferredActions) {
+			if (action) action();
+		}
+		m_deferredActions.clear();
 
 		//デバッグ用
 		if (KeyR.down())
