@@ -15,6 +15,7 @@ namespace Jam::Domain
 		bool m_collected = false;
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_body;
 		std::function<void()> m_onClear;
+		std::function<void()> m_onPlayerClear;   // プレイヤーにゴールを通知する即時コールバック
 		Texture m_texture;
 		double m_scale = 0.3;
 		Vec2 m_offset = Vec2(100, 100);
@@ -22,7 +23,7 @@ namespace Jam::Domain
 		Jam::UseCase::CameraEventQueue& m_cameraQueue;
 
 		double m_elapsed = 0.0;      // 経過時間（秒）
-		const double m_waitTime = 1.0; // 待機時間（秒）
+		const double m_waitTime = 2.0; // 待機時間（秒）
 		enum GoalState
 		{
 			Idle = 0,
@@ -53,7 +54,7 @@ namespace Jam::Domain
 				{
 					if (m_onClear)
 					{
-						m_onClear;
+						m_onClear();
 					}
 				}
 				break;
@@ -107,6 +108,13 @@ namespace Jam::Domain
 					.duration = m_waitTime + 0.5,
 					.zoom = 0.5
 				});
+
+				// プレイヤーへの通知
+				if (m_onPlayerClear)
+				{
+					m_onPlayerClear();
+				}
+				break;
 				break;
 			default:
 				break;

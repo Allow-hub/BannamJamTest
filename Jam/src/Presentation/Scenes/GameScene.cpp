@@ -325,18 +325,18 @@ namespace Jam::Presentation::Scenes
 		}
 		m_inGameUIManager->update();
 
-		//DeferredActionの実行
-		for (auto& action : m_deferredActions) {
-			if (action) action();
-		}
-		m_deferredActions.clear();
-
 		//デバッグ用
 		if (KeyR.down())
 		{
 			resetScene();
 			changeScene(ToSceneString(SceneName::InGame));
 		}
+
+		//DeferredActionの実行
+		for (auto& action : m_deferredActions) {
+			if (action) action();
+		}
+		m_deferredActions.clear();
 	}
 
 	void GameScene::draw() const
