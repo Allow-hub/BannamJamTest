@@ -8,10 +8,11 @@
 ##　使い方
  dotnet doc 確認したいクラス名.h  
  をターミナルで打つと以下のように出力されます
- 
+ ![alt text](DocCli.png)
 
 ## 更新方法
 ツール自体の更新方法  
+csprojのバージョンも更新して書き換えてください  
 dotnet pack tools/DocCli -o nupkg  
 dotnet tool update --add-source ./nupkg doccli --no-cache  
 
