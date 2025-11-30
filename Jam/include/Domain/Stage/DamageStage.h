@@ -31,94 +31,30 @@ namespace Jam::Domain::Stage {
 		DamageStage(const StageObject& obj,
 				   std::shared_ptr<Physics::IPhysicsBody> body,
 				   Events::GameEventQueue& eventQueue,
-				   Physics::PhysicsBodyID playerId)
-			: m_rect(obj.rect)
-			, m_damageAmount(obj.damageAmount)
-			, m_body(body)
-			, m_eventQueue(eventQueue)
-			, m_playerId(playerId)
-		{
-		}
+				   Physics::PhysicsBodyID playerId);
 
 		/**
 		 * 初期化メソッド
 		 * コンストラクタ後、ステージがunique_ptrで管理された後に呼び出す必要がある
 		 */
-		void init() {
-			if (!m_body) {
-				return;
-			}
+		void init();
 
-			// 自身へのshared_ptrを作成（ライフタイム管理はunique_ptrが行う）
-			// カスタムデリーター: 削除時に何もしない（unique_ptrが破棄を担当）
-			auto noOpDeleter = [](DamageStage*) {
-				// 何もしない: unique_ptrがオブジェクトの破棄を担当する
-				};
-			m_selfPtr = std::shared_ptr<DamageStage>(this, noOpDeleter);
+		void update(double deltaTime) override;
 
-			// ICollisionListenerとしてキャスト
-			auto listener = std::dynamic_pointer_cast<Physics::ICollisionListener>(m_selfPtr);
+		RectF getRenderRect() const override;
 
-			// 物理ボディに衝突リスナーを設定
-			m_body->setCollisionListener(listener);
-		}
+		StageType getType() const override;
 
-		void update(double deltaTime) override {
-			m_elapsedTime += deltaTime;
-		}
-
-		RectF getRenderRect() const override {
-			return m_rect;
-		}
-
-		StageType getType() const override {
-			return StageType::DamagePlatform;
-		}
-
-		Vec2 getCurrentCenter() const override {
-			return m_rect.center();
-		}
+		Vec2 getCurrentCenter() const override;
 
 		// ICollisionListener実装
-		void onCollisionEnter(std::shared_ptr<Physics::IPhysicsBody> other) override {
-			handleCollision(other);
-		}
+		void onCollisionEnter(std::shared_ptr<Physics::IPhysicsBody> other) override;
 
-		void onCollisionStay(std::shared_ptr<Physics::IPhysicsBody> other) override {
-			handleCollision(other);
-		}
+		void onCollisionStay(std::shared_ptr<Physics::IPhysicsBody> other) override;
 
-		void onCollisionExit(std::shared_ptr<Physics::IPhysicsBody> other) override {}
+		void onCollisionExit(std::shared_ptr<Physics::IPhysicsBody> other) override;
 
 	private:
-		void handleCollision(std::shared_ptr<Physics::IPhysicsBody> other) {
-			// プレイヤーとの衝突のみ処理
-			if (other->getLayer() != Physics::PhysicsLayer::Player) {
-				return;
-			}
-
-			// ダメージ間隔チェック
-			if (m_elapsedTime - m_lastDamageTime < m_damageInterval) {
-				return;
-			}
-
-			// ダメージイベントを発行
-			m_eventQueue.push(Events::PlayerDamagedEvent{
-				m_body->getID(),
-				m_playerId,
-				DamageInfo{
-					m_damageAmount,
-					m_body->getPosition(),
-					Vec2(0, -1),  // 上向き
-					false,  // クリティカルではない
-					false   // 貫通しない
-				},
-				0.0,   // ヒットストップ時間
-				0.3,   // 無敵時間
-				15.0   // ノックバック力
-			});
-
-			m_lastDamageTime = m_elapsedTime;
-		}
+		void handleCollision(std::shared_ptr<Physics::IPhysicsBody> other);
 	};
 }

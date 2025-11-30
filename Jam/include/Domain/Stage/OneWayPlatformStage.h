@@ -11,31 +11,19 @@ namespace Jam::Domain::Stage {
         RectF m_rect;
         
     public:
-        OneWayPlatformStage(const StageObject& obj)
-            : m_rect(obj.rect)
-        {}
+        OneWayPlatformStage(const StageObject& obj);
         
-        void update(double deltaTime) override {
-            // すり抜け床は位置が固定
-        }
+        void update(double deltaTime) override;
         
-        RectF getRenderRect() const override {
-            return m_rect;
-        }
+        RectF getRenderRect() const override;
         
-        StageType getType() const override {
-            return StageType::OneWayPlatform;
-        }
+        StageType getType() const override;
         
-        Vec2 getCurrentCenter() const override {
-            return m_rect.center();
-        }
+        Vec2 getCurrentCenter() const override;
         
         /**
          * 床の上端のY座標を取得
          */
-        double getTopY() const {
-            return m_rect.y;
-        }
+        double getTopY() const;
     };
 }

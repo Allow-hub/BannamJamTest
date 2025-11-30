@@ -13,30 +13,18 @@ namespace Jam::Domain::Stage {
         String m_texturePath;
         
     public:
-        NormalStage(const StageObject& obj)
-            : m_rect(obj.rect)
-            , m_type(obj.type)
-            , m_texturePath(obj.texturePath)
-        {}
+        NormalStage(const StageObject& obj);
         
         // 静的なので何もしない
-        void update(double deltaTime) override {}
+        void update(double deltaTime) override;
         
-        RectF getRenderRect() const override {
-            return m_rect;
-        }
+        RectF getRenderRect() const override;
         
-        StageType getType() const override {
-            return m_type;
-        }
+        StageType getType() const override;
         
-        Vec2 getCurrentCenter() const override {
-            return m_rect.center();
-        }
+        Vec2 getCurrentCenter() const override;
         
         // NormalStage固有のメソッド: テクスチャパスを取得
-        String getTexturePath() const {
-            return m_texturePath;
-        }
+        String getTexturePath() const;
     };
 }
