@@ -21,12 +21,43 @@ namespace Jam::UseCase
 		m_input.Update();
 		Domain::InputState inputState = m_input.GetState();
 
+		auto& core = Jam::Foundation::CoreManager::Instance();
+		const bool isClearing = core.getClear();
+
+		// クリア状態での処理
+		if (isClearing)
+		{
+			// ゴールから1秒遅延してクリアアニメを開始
+			if (m_clearAnimPending && !m_clearAnimationPlayed)
+			{
+				m_clearAnimDelayTimer += deltaTime;
+				if (m_clearAnimDelayTimer >= m_clearAnimDelay)
+				{
+					m_manager.setAnim(U"clearAnimationPlayed", true);
+					m_clearAnimationPlayed = true;
+					m_clearAnimPending = false;
+				}
+			}
+			// 入力は無効化されたままなので操作系はスキップ
+			// 代わりに現在状態からアニメフラグのみ更新
+			const bool isJumping = (!m_player->getGrounded());
+			const bool isChokerThrow = m_player->getIsChokering();
+
+			m_manager.setAnim(U"isWalking", false);
+			m_manager.setAnim(U"isRunning", false);
+			m_manager.setAnim(U"isJumping", isJumping);
+			m_manager.setAnim(U"isChokerThrow", isChokerThrow);
+
+			// 物理処理は継続
+			m_player->update(deltaTime);
+			return;
+		}
+
 		if (m_player->getIsRespawning()) return;
 		if (!m_player->getCanControl()) return;
 
 		if (inputState.settting)
 		{
-			auto& core = Jam::Foundation::CoreManager::Instance();
 			core.setPause(!core.getPause());
 			return;
 		}
@@ -86,6 +117,24 @@ namespace Jam::UseCase
 
 		m_player->update(deltaTime);
 	}
+
+	void PlayerService::onGoalReached(const Vec2& goalPos)
+	{
+		// 入力無効化
+		m_player->setCanControl(false);
+
+		// 停止とワープ
+		const Vec2 offset{ 0.0, -50.0 };
+		if (auto body = m_player->getPhysicsBody())
+		{
+			body->setVelocity({ 0.0, 0.0 });
+			body->setPos(goalPos + offset);// ゴールより少し上にワープさせる
+		}
+		// クリアアニメーション再生待ち状態に設定
+		m_clearAnimPending = true;
+		m_clearAnimDelayTimer = 0.0;
+	}
+
 	void PlayerService::onPlayerDamaged()
 	{
 		// ダメージを受けたときの処理

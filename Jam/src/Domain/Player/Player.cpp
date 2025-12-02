@@ -25,7 +25,10 @@ namespace Jam::Domain::Player
 
 	void Player::update(double deltaTime)
 	{
-		if (m_isRespawning || !m_canControl) return;
+		// クリア演出時に入力不可にする
+		const bool isClearing = Jam::Foundation::CoreManager::Instance().getClear();
+		if (m_isRespawning) return;
+		if (!m_canControl && !isClearing) return;
 
 		// 落下加速
 		auto velocity = m_body->getVelocity();

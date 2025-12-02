@@ -207,6 +207,7 @@
     <Image Include="App\Assets\Player\ChokerThrow\choker_throw_27.png" />
     <Image Include="App\Assets\Player\ChokerThrow\choker_throw_28.png" />
     <Image Include="App\Assets\Player\ChokerThrow\choker_throw_29.png" />
+    <Image Include="App\Assets\Player\Clear\clear_00.png" />
     <Image Include="App\Assets\Player\Damage\damage_00.png" />
     <Image Include="App\Assets\Player\Damage\damage_01.png" />
     <Image Include="App\Assets\Player\Damage\damage_02.png" />
@@ -619,7 +620,9 @@
     <None Include="App\Assets\Story\stage1_1_clear.csv" />
     <None Include="App\Assets\Story\stage1_1_start.csv" />
     <None Include="App\Assets\Story\stage1_2_start.csv" />
+    <None Include="include\Domain\GoalArea" />
     <None Include="src\Domain\Stage\Imata_Task.md" />
+    <None Include="src\UseCase\Player" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="App\Assets\Sounds\bgm_hauntedHouse.mp3" />

@@ -118,6 +118,10 @@ namespace Jam::Domain::Player
 		void onDeath();
 		Jam::Util::Task respawn();
 
+		// ステージクリア時の演出
+		bool isClear = false;
+		bool clearAnimationStart = false;
+
 		DamageCallback m_onDamaged;
 	};
 }

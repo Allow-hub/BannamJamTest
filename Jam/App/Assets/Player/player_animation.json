@@ -781,6 +781,17 @@
                     "scale": 0.04
                 }
             ]
+        },
+        {
+          "name": "Clear",
+          "loop": false,
+          "frames": [
+            {
+              "path": "Assets/Player/Clear/clear_00.png",
+              "duration": 0.02222222222,
+              "scale": 0.04
+            }
+          ]
         }
     ]
 }

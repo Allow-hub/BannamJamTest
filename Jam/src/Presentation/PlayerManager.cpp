@@ -16,6 +16,7 @@ namespace Jam::Presentation
 		anim.addCondition({ { {U"isJumping", true} }, U"Jump", 2 });
 		anim.addCondition({ { {U"isChokerThrow", true} }, U"Choker_Throw", 3 });
 		anim.addCondition({ { {U"isDamage", true} }, U"Damage", 4 });
+		anim.addCondition({ { {U"clearAnimationPlayed", true} }, U"Clear", 5 });
 
 		//anim.setBool(U"isRunning", false);
 		anim.setBool(U"isJumping", false);

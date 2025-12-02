@@ -397,6 +397,9 @@ Resource(Assets/Player/Damage/damage_27.png)
 Resource(Assets/Player/Damage/damage_28.png)
 Resource(Assets/Player/Damage/damage_29.png)
 
+// Clear
+Resource(Assets/Player/Clear/clear_00.png)
+
 //Enemy
 Resource(Assets/Enemy/Boss1_3/idle_0.png)
 Resource(Assets/Enemy/Boss1_3/idle_1.png)

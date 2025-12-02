@@ -23,7 +23,7 @@ namespace Jam::Domain
 		Jam::UseCase::CameraEventQueue& m_cameraQueue;
 
 		double m_elapsed = 0.0;      // 経過時間（秒）
-		const double m_waitTime = 2.0; // 待機時間（秒）
+		const double m_waitTime = 3.0; // 待機時間（秒）
 		enum GoalState
 		{
 			Idle = 0,
@@ -42,6 +42,12 @@ namespace Jam::Domain
 			m_texture = Texture(Resource(U"Assets/Stage/goal.png"));
 		}
 
+		// プレイヤーへ即時通知コールバックを設定
+		void setOnPlayerClear(std::function<void()> cb)
+		{
+			m_onPlayerClear = std::move(cb);
+		}
+
 		void update(double deltaTime)override
 		{
 			switch (m_state)
@@ -54,6 +60,17 @@ namespace Jam::Domain
 				{
 					if (m_onClear)
 					{
+						// ゴールエフェクト発生
+						m_effectQueue.push(Jam::UseCase::StarEffectEvent{
+							.position = m_body->getPosition(),
+							.hue = 50.0,
+							.starCount = 8,
+							.radius = 100.0,
+							.duration = 0.6,
+							.starSize = 48.0,
+							.gravity = {0, 160},
+							.hueVariation = 12.0
+						});
 						m_onClear();
 					}
 				}
@@ -102,11 +119,11 @@ namespace Jam::Domain
 				m_state = GoalState::Cleared;
 				m_elapsed = 0.0;
 
-				// カメラをゴールにフォーカスしてズーム
+				// カメラをゴールにフォーカス
 				m_cameraQueue.push(Jam::UseCase::CameraFocusEvent{
 					.target = m_body->getPosition(),
-					.duration = m_waitTime + 0.5,
-					.zoom = 0.5
+					.duration = 3.5,
+					.zoom = 2.0
 				});
 
 				// プレイヤーへの通知
@@ -114,7 +131,6 @@ namespace Jam::Domain
 				{
 					m_onPlayerClear();
 				}
-				break;
 				break;
 			default:
 				break;

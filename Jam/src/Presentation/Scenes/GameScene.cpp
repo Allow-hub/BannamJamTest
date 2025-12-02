@@ -237,6 +237,15 @@ namespace Jam::Presentation::Scenes
 			*m_effectEventQueue,
 			*m_cameraEventQueue
 		);
+		// プレイヤーへ即時通知
+		goal->setOnPlayerClear([this, goalBody]() {
+			if (m_playerService)
+			{
+				// ゴールの物理ボディ座標
+				m_playerService->onGoalReached(goalBody->getPosition());
+			}
+		});
+
 		goalBody->setCollisionListener(goal);
 		Jam::Infrastructure::IndependentObjectFactory::instance().registerObject(goal);
 
@@ -373,6 +382,9 @@ namespace Jam::Presentation::Scenes
 				m_stageService->drawPhysicsLayerDebug();
 			}
 
+			//単体オブジェクトの描画
+			Jam::Presentation::IndependentObjectManager::draw();
+
 			// プレイヤーの描画
 			m_playerManager->draw();				// === 前景背景描画 (プレイヤーより手前) ===
 			if (m_backgroundRenderer && m_backgroundRenderer->isLoaded()) {
@@ -384,9 +396,6 @@ namespace Jam::Presentation::Scenes
 			{
 				m_enemyManager->draw();
 			}
-
-			//単体オブジェクトの描画
-			Jam::Presentation::IndependentObjectManager::draw();
 
 			m_effectManager->draw();
 
