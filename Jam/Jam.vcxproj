@@ -156,6 +156,7 @@
     <ClCompile Include="src\Infrastructure\IndependentObjectFactory.cpp" />
     <ClCompile Include="src\Infrastructure\StageFactory.cpp" />
     <ClCompile Include="src\Infrastructure\TextureLoader.cpp" />
+    <ClCompile Include="src\Infrastructure\PhysicsConverter.cpp" />
     <ClCompile Include="src\Presentation\Animator.cpp" />
     <ClCompile Include="src\Presentation\AudioService.cpp" />
     <ClCompile Include="src\Presentation\CameraManager.cpp" />
