@@ -143,6 +143,7 @@
     <ClCompile Include="src\Presentation\Editor\Utilities\EditorTextInputUtil.cpp" />
     <ClCompile Include="src\Presentation\Scenes\StageEditorScene.cpp" />
     <ClCompile Include="src\Presentation\Stage\BackgroundRenderer.cpp" />
+    <ClCompile Include="src\Presentation\Stage\StageManager.cpp" />
     <ClCompile Include="src\UseCase\Editor\EnemyEditor\EnemyEditorService.cpp" />
     <ClCompile Include="src\UseCase\Editor\StageEditor\StageEditorService.cpp" />
     <ClCompile Include="src\Domain\Player\Choker\ChokerSkill.cpp" />
