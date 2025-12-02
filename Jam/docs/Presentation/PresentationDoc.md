@@ -1,4 +1,4 @@
-# Presentation層の設計
+﻿# Presentation層の設計
 Presentation層は 画面への描画やアニメーションの制御を担当します。  
 Domain層やUseCase層の処理結果を元に、実際にプレイヤーや敵、背景などを画面に表示します。
 
@@ -145,7 +145,7 @@ Domain層やUseCase層の処理結果を元に、実際にプレイヤーや敵�
 
 ### ResultScene.h
 - 役割: リザルト画面の描画・UI操作
-- メリット: 結果と次の選択を提示
+- メリット: UIロジックの分離
 - **制作者**: kinako
 
 ### SceneName.h
@@ -153,7 +153,7 @@ Domain層やUseCase層の処理結果を元に、実際にプレイヤーや敵�
 - メリット: タイプミス防止・可読性向上
 
 ### SelectScene.h
-- 役割: キャラ／ステージ選択画面の管理
+- 役割: ワールド・ステージ選択画面の管理
 - **制作者**: kinako
 
 ### StageEditorScene.h
@@ -172,10 +172,24 @@ Domain層やUseCase層の処理結果を元に、実際にプレイヤーや敵�
 
 ## Transitionフォルダ
 
-- IrisTransition.h — 円形トランジション演出
-- RectSlide.h — 矩形スライド演出
-- ITransitionable.h — 遷移対応インターフェース
-- TransitionManager.h — シーン遷移ロジック一元管理
+### IrisTransition.h 
+- 役割: 画面の中心から円形に穴が広がる・閉じることでシーンを切り替える演出(アイリスワイプ)
+- メリット: ITransitionable を継承している
+- **制作者**: kinako
+
+### RectSlide.h 
+— 役割: 短冊をスライドさせてシーンを切り替える演出（フェードイン・フェードアウト）
+- メリット: ITransitionable を継承している
+- **制作者**: kinako
+
+### ITransitionable.h 
+- 役割: トランジションのインターフェース
+- メリット: 差し替えが簡単
+- **制作者**: kinako
+
+### TransitionManager.h 
+- 役割: シーン遷移エフェクトの管理
+- メリット: シングルトンパターンを使用してプログラムのどこからでも呼び出せる
 - **制作者**: kinako
 
 
