@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>DocCli</id>
+    <version>1.0.4</version>
+    <authors>DocCli</authors>
+    <description>Package Description</description>
+    <packageTypes>
+      <packageType name="DotnetTool" />
+    </packageTypes>
+    <repository type="git" commit="2778aa71894e894d55c24838fb20e922ef7d35c2" />
+  </metadata>
+  <files>
+    <file src="C:\Users\student\Documents\BannamJamTest\Jam\tools\DocCli\obj\Release\net8.0\DotnetToolSettings.xml" target="tools\net8.0\any\DotnetToolSettings.xml" />
+    <file src="C:\Users\student\Documents\BannamJamTest\Jam\tools\DocCli\bin\Release\net8.0\publish\DocCli.dll" target="tools\net8.0\any\DocCli.dll" />
+    <file src="C:\Users\student\Documents\BannamJamTest\Jam\tools\DocCli\bin\Release\net8.0\publish\DocCli.deps.json" target="tools\net8.0\any\DocCli.deps.json" />
+    <file src="C:\Users\student\Documents\BannamJamTest\Jam\tools\DocCli\bin\Release\net8.0\publish\DocCli.runtimeconfig.json" target="tools\net8.0\any\DocCli.runtimeconfig.json" />
+    <file src="C:\Users\student\Documents\BannamJamTest\Jam\tools\DocCli\bin\Release\net8.0\publish\DocCli.pdb" target="tools\net8.0\any\DocCli.pdb" />
+    <file src="C:\Users\student\Documents\BannamJamTest\Jam\tools\DocCli\bin\Release\net8.0\publish\Spectre.Console.dll" target="tools\net8.0\any\Spectre.Console.dll" />
+  </files>
+</package>

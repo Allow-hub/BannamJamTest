@@ -13,11 +13,11 @@ using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("DocCli")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.3.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.3+fe43de06751fa79b1a1bcb298e5f3edced08a76d")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.6.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.6+2778aa71894e894d55c24838fb20e922ef7d35c2")]
 [assembly: System.Reflection.AssemblyProductAttribute("DocCli")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DocCli")]
-[assembly: System.Reflection.AssemblyVersionAttribute("1.0.3.0")]
+[assembly: System.Reflection.AssemblyVersionAttribute("1.0.6.0")]
 
 // MSBuild WriteCodeFragment クラスによって生成されました。
 
