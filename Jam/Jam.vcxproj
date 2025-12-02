@@ -149,6 +149,8 @@
     <ClCompile Include="src\Domain\Player\Choker\ChokerSkill.cpp" />
     <ClCompile Include="src\Infrastructure\AudioLoader.cpp" />
     <ClCompile Include="src\Infrastructure\EnemyLoader.cpp" />
+    <ClCompile Include="src\Infrastructure\StageLoader.cpp" />
+    <ClCompile Include="src\Infrastructure\Background\BackgroundLoader.cpp" />
     <ClCompile Include="src\Infrastructure\FactoryServiceLocator.cpp" />
     <ClCompile Include="src\Infrastructure\IndependentObjectFactory.cpp" />
     <ClCompile Include="src\Infrastructure\StageFactory.cpp" />
