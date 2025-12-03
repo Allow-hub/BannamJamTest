@@ -116,7 +116,14 @@ namespace Jam::Presentation
 			}
 			else
 			{
-				m_camera.setScale(Math::Lerp(currentZoom, 1.0, 0.1));
+				if (m_mode == CameraMode::FocusPoint)
+				{
+					m_camera.setScale(Math::Lerp(currentZoom, m_targetZoom, 0.2));
+				}
+				else
+				{
+					m_camera.setScale(Math::Lerp(currentZoom, 1.0, 0.1));
+				}
 			}
 		}
 		else

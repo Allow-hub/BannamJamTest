@@ -31,11 +31,21 @@ namespace Jam::UseCase
 		// プレイヤー追従に戻す
 	};
 
+	//ターゲット,フォーカス継続時間,目標ズーム倍率,ズーム補間時間
+	struct CameraFocusZoomTransitionEvent
+	{
+		Vec2 target;
+		double focusDuration;
+		double zoom;
+		double zoomDuration;
+	};
+
 	using CameraEvent = std::variant<
 		CameraShakeEvent,
 		CameraFocusEvent,
 		CameraZoomEvent,
-		CameraFollowPlayerEvent
+		CameraFollowPlayerEvent,
+		CameraFocusZoomTransitionEvent
 	>;
 
 	// カメラServiceに渡すQueue

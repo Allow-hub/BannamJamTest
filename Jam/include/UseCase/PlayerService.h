@@ -18,13 +18,12 @@ namespace Jam::UseCase
 		Timer damageTimer{ 1.0s };
 		void onPlayerDamaged();
 
-		// クリア演出が既に再生されたかのフラグ
-		bool m_clearAnimationPlayed = false;
-
-		// クリアアニメーション遅延関連
-		bool m_clearAnimPending = false;        // 再生待ち状態か
-		double m_clearAnimDelayTimer = 0.0;     // 経過時間
-		double m_clearAnimDelay = 1.0;          // 遅延秒数
+		int m_clearAnimFase = 0;
+		// クリアアニメーション関連
+		double m_clearAnimDelayTimer = 0.0;	// 経過時間
+		double m_clearJumpDelay = 0.5;		// ゴールしてからジャンプするまでの時間
+		double m_clearJumpAnimDelay = 1.1;	// クリア時にジャンプアニメを再生する時間 
+		double m_clearAnimDelay = 1.5;		// クリアアニメを再生する時間
 
 	public:
 		PlayerService(const std::shared_ptr<Domain::Player::Player>& player,

@@ -56,6 +56,11 @@ namespace Jam::UseCase
 				{
 					m_cameraManager.resetToFollow();
 				}
+				else if constexpr (std::is_same_v<T, CameraFocusZoomTransitionEvent>)
+				{
+					m_cameraManager.focusOn(e.target, e.focusDuration, e.zoom);
+					m_cameraManager.setZoom(e.zoom, e.zoomDuration);
+				}
 			}, event);
 		}
 	}

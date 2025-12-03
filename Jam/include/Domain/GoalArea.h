@@ -120,10 +120,12 @@ namespace Jam::Domain
 				m_elapsed = 0.0;
 
 				// カメラをゴールにフォーカス
-				m_cameraQueue.push(Jam::UseCase::CameraFocusEvent{
+				// 0.4秒かけて5倍へズームし、そのまま3秒維持する
+				m_cameraQueue.push(Jam::UseCase::CameraFocusZoomTransitionEvent{
 					.target = m_body->getPosition(),
-					.duration = 3.5,
-					.zoom = 2.0
+					.focusDuration = 3.5,
+					.zoom = 5.0,
+					.zoomDuration = 0.4
 				});
 
 				// プレイヤーへの通知

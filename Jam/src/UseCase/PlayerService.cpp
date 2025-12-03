@@ -27,29 +27,43 @@ namespace Jam::UseCase
 		// クリア状態での処理
 		if (isClearing)
 		{
-			// ゴールから1秒遅延してクリアアニメを開始
-			if (m_clearAnimPending && !m_clearAnimationPlayed)
+			m_clearAnimDelayTimer += deltaTime;
+			switch (m_clearAnimFase)
 			{
-				m_clearAnimDelayTimer += deltaTime;
+			case 0:
+				// ジャンプ
+				if (m_clearAnimDelayTimer >= m_clearJumpDelay)
+				{
+					auto body = m_player->getPhysicsBody();
+					body->setVelocity({ 0.0, 0.0 });
+					body->applyImpulse({ 0.0, -800.0 });
+					m_manager.setAnim(U"isJumping", true);
+					m_clearAnimFase = 1;
+				}
+				break;
+			case 1:
+				// クリアアニメ再生
 				if (m_clearAnimDelayTimer >= m_clearAnimDelay)
 				{
 					m_manager.setAnim(U"clearAnimationPlayed", true);
-					m_clearAnimationPlayed = true;
-					m_clearAnimPending = false;
+					m_clearAnimFase = 2;
 				}
+				break;
+			case 2:
+				// 再生終了
+				break;
+			default:
+				break;
 			}
-			// 入力は無効化されたままなので操作系はスキップ
-			// 代わりに現在状態からアニメフラグのみ更新
-			const bool isJumping = (!m_player->getGrounded());
-			const bool isChokerThrow = m_player->getIsChokering();
+			// 物理処理とアニメーションのみ更新
+			m_player->update(deltaTime);
 
+			// クリア演出1への以降直後は	ジャンプ状態を維持
+			const bool isJumping =((m_clearAnimFase == 1) && (m_clearAnimDelayTimer <= m_clearJumpAnimDelay))|| (!m_player->getGrounded());
 			m_manager.setAnim(U"isWalking", false);
 			m_manager.setAnim(U"isRunning", false);
 			m_manager.setAnim(U"isJumping", isJumping);
-			m_manager.setAnim(U"isChokerThrow", isChokerThrow);
-
-			// 物理処理は継続
-			m_player->update(deltaTime);
+			m_manager.setAnim(U"isChokerThrow", false);
 			return;
 		}
 
@@ -118,20 +132,21 @@ namespace Jam::UseCase
 		m_player->update(deltaTime);
 	}
 
+	// ゴールからの通知を受け取ったときの即時処理
 	void PlayerService::onGoalReached(const Vec2& goalPos)
 	{
 		// 入力無効化
 		m_player->setCanControl(false);
-
+		// チョーカー解除
+		m_player->chokerReleased();
+		m_manager.setAnim(U"isChokerThrow", false);
 		// 停止とワープ
-		const Vec2 offset{ 0.0, -50.0 };
+		const Vec2 offset{ 0.0, -20.0 };
 		if (auto body = m_player->getPhysicsBody())
 		{
 			body->setVelocity({ 0.0, 0.0 });
 			body->setPos(goalPos + offset);// ゴールより少し上にワープさせる
 		}
-		// クリアアニメーション再生待ち状態に設定
-		m_clearAnimPending = true;
 		m_clearAnimDelayTimer = 0.0;
 	}
 
