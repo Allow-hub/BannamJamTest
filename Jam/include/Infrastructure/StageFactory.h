@@ -1,15 +1,12 @@
 ﻿#pragma once
+#include <memory>
+#include <Siv3D.hpp>
 #include "Domain/Stage/IStage.h"
-#include "Domain/Stage/NormalStage.h"
-#include "Domain/Stage/MovingPlatformStage.h"
-#include "Domain/Stage/OneWayPlatformStage.h"
-#include "Domain/Stage/DamageStage.h"
-#include "Domain/Stage/MovingDamagePlatformStage.h"
+#include "Domain/Stage/StageTypes.h"
 #include "Domain/Physics/IPhysicsBody.h"
-#include "Domain/Events/GameEvents.h"
-#include "Infrastructure/StageLoader.h"
+#include "Domain/Physics/PhysicsBodyID.h"
 #include "Infrastructure/IPhysicsBodyFactory.h"
-#include "Infrastructure/PhysicsFilterManager.h"
+#include "Domain/Events/GameEvents.h"
 
 namespace Jam::Infrastructure {
     

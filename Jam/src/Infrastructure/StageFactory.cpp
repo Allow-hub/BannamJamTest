@@ -1,4 +1,12 @@
 ﻿#include "Infrastructure/StageFactory.h"
+#include "Domain/Stage/NormalStage.h"
+#include "Domain/Stage/MovingPlatformStage.h"
+#include "Domain/Stage/OneWayPlatformStage.h"
+#include "Domain/Stage/DamageStage.h"
+#include "Domain/Stage/MovingDamagePlatformStage.h"
+#include "Domain/Events/GameEvents.h"
+#include "Infrastructure/StageLoader.h"
+#include "Infrastructure/PhysicsFilterManager.h"
 
 namespace Jam::Infrastructure {
     
