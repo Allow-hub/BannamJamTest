@@ -21,8 +21,8 @@ namespace Jam::UseCase
 		m_input.Update();
 		Domain::InputState inputState = m_input.GetState();
 
-		if (m_player->getIsRespawning()) return;
-		if (!m_player->getCanControl()) return;
+		if (m_player->getIsRespawning()) return;// リスポーン中は操作不可
+		if (!m_player->getCanControl()) return;// 操作不可状態なら何もしない
 
 		if (inputState.settting)
 		{
@@ -67,9 +67,7 @@ namespace Jam::UseCase
 		}
 
 		if (damageTimer.reachedZero())
-		{
 			m_manager.setAnim(U"isDamage", false);
-		}
 
 		if (inputState.chokerPush) m_player->chokerPush();
 		if (inputState.chokerReleased) m_player->chokerReleased();
