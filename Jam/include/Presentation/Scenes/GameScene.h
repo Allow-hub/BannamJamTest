@@ -1,43 +1,55 @@
 ﻿#pragma once
+
+// 標準ライブラリ
 #include <Siv3D.hpp>
 #include <HamFramework.hpp>
+
+// Foundation層
 #include "Foundation/CoreManager.h"
-#include "Presentation/PlayerManager.h"
+
+// Domain層
+#include "Domain/FlagmentMemory.h"
+#include "Domain/GoalArea.h"
+
+// UseCase層
+#include "UseCase/AttackProcessor.h"
+#include "UseCase/CameraService.h"
+#include "UseCase/EffectEvents.h"
+#include "UseCase/EnemyFactory.h"
+#include "UseCase/GameEventHandler.h"
+#include "UseCase/IndependentObjectService.h"
 #include "UseCase/PlayerService.h"
+#include "UseCase/StageService.h"
+
+// Infrastructure層
+#include "Infrastructure/Background/BackgroundLoader.h"
+#include "Infrastructure/EnemyLoader.h"
+#include "Infrastructure/FactoryServiceLocator.h"
+#include "Infrastructure/GridRenderer.h"
+#include "Infrastructure/IndependentObjectFactory.h"
+#include "Infrastructure/PhysicsConverter.h"
+#include "Infrastructure/PhysicsFilterManager.h"
+#include "Infrastructure/Siv3DCursorUtil.h"
 #include "Infrastructure/Siv3DInputManager.h"
 #include "Infrastructure/Siv3DPhysicsBody.h"
-#include "Infrastructure/StageLoader.h"
-#include "Presentation/Stage/StageManager.h"
-#include "UseCase/StageService.h"
-#include "Infrastructure/PhysicsConverter.h"
-#include "Presentation/EnemyManager.h"
-#include "UseCase/EnemyFactory.h"
-#include "Infrastructure/EnemyLoader.h"
-#include "Presentation/CameraManager.h"
-#include "UseCase/CameraService.h"
-#include "UseCase/GameEventHandler.h"
 #include "Infrastructure/Siv3DPhysicsBodyFactory.h"
-#include "Infrastructure/FactoryServiceLocator.h"
-#include "Infrastructure/Siv3DCursorUtil.h"
-#include "Presentation/AudioService.h"
-#include "Infrastructure/PhysicsFilterManager.h"
+#include "Infrastructure/StageLoader.h"
 #include "Infrastructure/TextureLoader.h"
-#include "Presentation/Stage/BackgroundRenderer.h"
-#include "Infrastructure/Background/BackgroundLoader.h"
-#include "UseCase/AttackProcessor.h"
-#include "Infrastructure/GridRenderer.h"
-#include "UseCase/EffectEvents.h"
+
+// Presentation層
+#include "Presentation/AudioService.h"
+#include "Presentation/CameraManager.h"
 #include "Presentation/EffectManager.h"
+#include "Presentation/EnemyManager.h"
 #include "Presentation/FadeManager.h"
-#include "Presentation/PostEffect/BloomManager.h"
-#include "Presentation/SettingManager.h"
-#include "Domain/FlagmentMemory.h"
 #include "Presentation/InGameUIManager.h"
-#include "Infrastructure/IndependentObjectFactory.h"
-#include "UseCase/IndependentObjectService.h"
 #include "Presentation/IndependentObjectManager.h"
-#include "Domain/GoalArea.h"
+#include "Presentation/PlayerManager.h"
+#include "Presentation/PostEffect/BloomManager.h"
 #include "Presentation/Scenes/SceneName.h"
+#include "Presentation/SettingManager.h"
+#include "Presentation/Stage/BackgroundRenderer.h"
+#include "Presentation/Stage/StageManager.h"
 
 namespace Jam::Presentation::Scenes
 {
