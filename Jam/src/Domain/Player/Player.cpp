@@ -44,23 +44,17 @@ namespace Jam::Domain::Player
 			m_choker->update(deltaTime);
 		}
 		else
-		{
 			m_isChokering = false;
-		}
 
 		// 落下判定
 		if (getPosition().y >= m_fallLimitY)
-		{
 			respawn();
-		}
 	}
 
 	void Player::draw() const
 	{
 		if (m_choker && m_choker->needUpdate())
-		{
 			m_choker->draw();
-		}
 	}
 
 	void Player::moveLeft(double dt)
@@ -101,9 +95,7 @@ namespace Jam::Domain::Player
 			double jumpPower = m_stats.jumpPower;
 
 			if (m_jumpCount == 1)
-			{
 				jumpPower *= 1.5;
-			}
 
 			m_body->setVelocity({ m_body->getVelocity().x, 0.0 });
 			m_body->applyImpulse({ 0, -m_stats.jumpPower });
@@ -170,9 +162,7 @@ namespace Jam::Domain::Player
 			onDeath();
 		}
 		else
-		{
 			onDamaged(info);
-		}
 	}
 	void Player::addOnDamagedCallback(DamageCallback callback)
 	{
@@ -212,26 +202,28 @@ namespace Jam::Domain::Player
 	{
 		switch (other->getLayer())
 		{
-		case Jam::Domain::Physics::PhysicsLayer::Ground:
-		{
-			auto v = m_body->getVelocity();
-			if (v.y >= 0) {
-				m_body->setVelocity({ v.x, 0.0 });
-				m_isGrounded = true;
-				m_jumpCount = 0;
+			case Jam::Domain::Physics::PhysicsLayer::Ground:
+			{
+				//caseをブロック化して変数のスコープを限定
+				auto v = m_body->getVelocity();
+				if (v.y >= 0)
+				{
+					m_body->setVelocity({ v.x, 0.0 });
+					m_isGrounded = true;
+					m_jumpCount = 0;
+				}
 			}
-		}
-		break;
-		case Jam::Domain::Physics::PhysicsLayer::Wall:
-		{
-			auto v = m_body->getVelocity();
-			m_body->setVelocity({ v.x, 0.0 });
-		}
-		break;
-		case Jam::Domain::Physics::PhysicsLayer::Enemy:
 			break;
-		default:
+			case Jam::Domain::Physics::PhysicsLayer::Wall:
+			{
+				auto v = m_body->getVelocity();
+				m_body->setVelocity({ v.x, 0.0 });
+			}
 			break;
+			case Jam::Domain::Physics::PhysicsLayer::Enemy:
+				break;
+			default:
+				break;
 		}
 	}
 

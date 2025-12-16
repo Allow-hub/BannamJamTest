@@ -45,23 +45,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\PC_User\\.nuget\\packages\\": {},
+    "C:\\Users\\student\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "1.0.3",
+    "version": "1.0.6",
     "restore": {
-      "projectUniqueName": "C:\\Users\\PC_User\\Documents\\BannamJamTest\\Jam\\tools\\DocCli\\DocCli.csproj",
+      "projectUniqueName": "C:\\Users\\student\\Documents\\BannamJamTest\\Jam\\tools\\DocCli\\DocCli.csproj",
       "projectName": "DocCli",
-      "projectPath": "C:\\Users\\PC_User\\Documents\\BannamJamTest\\Jam\\tools\\DocCli\\DocCli.csproj",
-      "packagesPath": "C:\\Users\\PC_User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\PC_User\\Documents\\BannamJamTest\\Jam\\tools\\DocCli\\obj\\",
+      "projectPath": "C:\\Users\\student\\Documents\\BannamJamTest\\Jam\\tools\\DocCli\\DocCli.csproj",
+      "packagesPath": "C:\\Users\\student\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\student\\Documents\\BannamJamTest\\Jam\\tools\\DocCli\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\PC_User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\student\\Documents\\BannamJamTest\\Jam\\NuGet.Config",
+        "C:\\Users\\student\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -70,6 +71,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Users\\student\\Documents\\BannamJamTest\\Jam\\nupkg": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -115,7 +117,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
