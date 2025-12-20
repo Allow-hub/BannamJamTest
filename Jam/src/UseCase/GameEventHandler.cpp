@@ -33,8 +33,8 @@ namespace Jam::UseCase
 			auto event = m_gameEventQueue.pop();
 
 			std::visit([this](auto&& e)
-				{
-					using T = std::decay_t<decltype(e)>;
+			{
+				using T = std::decay_t<decltype(e)>;
 
 					if constexpr (std::is_same_v<T, Domain::Events::EnemyDamagedEvent>)
 						handleEnemyDamaged(e);
@@ -112,7 +112,7 @@ namespace Jam::UseCase
 	{
 		m_cameraEventQueue.push(CameraZoomEvent{ e.zoom, e.duration });
 		m_effectEventQueue.push(ChokerSkillEffectEvent{
-			e.position, e.direction});	
+			e.position, e.direction });
 	}
 
 	void GameEventHandler::handlePlayerDamaged(const Domain::Events::PlayerDamagedEvent& e)

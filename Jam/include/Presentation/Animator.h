@@ -7,27 +7,31 @@
 namespace Jam::Presentation
 {
 	// --- 1フレームの情報 ---
-	struct FrameData {
+	struct FrameData
+	{
 		Texture texture;   // このフレームで表示する画像
 		double duration;   // 表示時間（秒）
 		double scale = 1.0;
 	};
 
 	// --- アニメーションクリップ ---
-	struct AnimationClip {
+	struct AnimationClip
+	{
 		std::vector<FrameData> frames; // クリップに含まれるフレーム
 		bool loop = true;              // ループするかどうか
 	};
 
 	// --- Boolパラメータに基づく再生条件 ---
-	struct BoolCondition {
+	struct BoolCondition
+	{
 		std::unordered_map<String, bool> conditions; // Bool名 -> 必須値（条件）
 		String clipName;                             // 条件に一致したときの再生クリップ名
 		int priority = 0;                            // 条件の優先度。大きいほど優先
 	};
 
 	// --- アニメーター ---
-	class Animator {
+	class Animator
+	{
 	private:
 		String defaultClip = U"Idle";
 		std::unordered_map<String, AnimationClip> clips;
