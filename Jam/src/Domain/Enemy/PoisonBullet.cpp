@@ -32,31 +32,25 @@ namespace Jam::Domain::Enemy
 		m_homingTimer =0.0;
 
 		m_body->setBodyType(Jam::Domain::Physics::PhysicsType::Dynamic);
-
 		m_body->setGravityScale(0.0);
-
 		m_body->setFilter(Jam::Infrastructure::PhysicsFilter::EnemyWeapon);
 		m_body->setLayer(Jam::Domain::Physics::PhysicsLayer::Enemy);
 
+		setupStatusAilment();
 		fbTex = Texture(Resource(U"Assets/Item/PoisonBullet_Poison.png"));
+	}
+
+	void PoisonBullet::setupStatusAilment()
+	{
+		m_statusType = Jam::Domain::Player::StatusAilmentType::Poison;
+		m_statusDuration = 30.0;      // 毒の持続時間
+		m_statusPower = 10.0;       // 毒の1回あたりのダメージ
+		m_statusTickInterval = 3.0; // ダメージを受ける間隔
 	}
 
 	void PoisonBullet::init()
 	{
 		m_body->setCollisionListener(shared_from_this());
-	}
-
-	// 状態異常ごとにテクスチャを切り替える
-	void PoisonBullet::setStatusAilment(
-		Jam::Domain::Player::StatusAilmentType type,
-		double duration,
-		double power,
-		double tickInterval)
-	{
-		m_statusType = type;
-		m_statusDuration = duration;
-		m_statusPower = power;
-		m_statusTickInterval = tickInterval;
 	}
 
 	PoisonBullet::~PoisonBullet()
@@ -73,7 +67,7 @@ namespace Jam::Domain::Enemy
 	{
 		m_timer += dt;
 
-		// ホーミング処理
+		// ホーミング
 		switch (m_state)
 		{
 		case HomingState::Homing:
@@ -81,7 +75,6 @@ namespace Jam::Domain::Enemy
 			m_homingTimer += dt;
 			if (m_homingTimer >= m_homingTime)
 			{
-				// ホーミング終了して直進状態へ
 				m_state = HomingState::Straight;
 				break;
 			}
@@ -129,6 +122,7 @@ namespace Jam::Domain::Enemy
 		fbTex.scaled(m_size * m_scaled)
 			.drawAt(m_body->getPosition());
 	}
+
 	void PoisonBullet::onCollisionEnter(std::shared_ptr<IPhysicsBody> other)
 	{
 		if (m_isHit) return;

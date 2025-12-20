@@ -20,7 +20,7 @@ namespace Jam::Domain::Enemy
 		aiList.emplace_back(AIType::Chase, std::make_unique<ChaseAI>());
 		aiList.emplace_back(AIType::Attack, std::make_unique<AttackAI>());
 
-		setAIList(std::move(aiList));//setしたときにそのAIのEnterも入ります
+		setAIList(std::move(aiList));	//setしたときにそのAIのEnterも入ります
 		m_enemyType = EnemyType::ToxicPlant;
 		m_body->setGravityScale(3.0);
 	}
@@ -163,30 +163,6 @@ namespace Jam::Domain::Enemy
 			size,
 			direction * speed
 		);
-
-		// ToxicPlant/ParalysisPlantなどから指定された状態異常を弾に設定
-		// 毒:power = 毒ダメージ量, tickIntervalごとに継続ダメージ
-		// 麻痺:power = 鈍化率, tickIntervalは0でOK
-		if (m_bulletStatusType == Jam::Domain::Player::StatusAilmentType::Poison)
-		{
-			//例:30秒間、5秒毎に攻撃力をダメージとして与える
-			poisonBullet->setStatusAilment(
-				Jam::Domain::Player::StatusAilmentType::Poison,
-				30.0, // duration
-				m_status.attackPower, // power(毒ダメージ量)
-				2.0 // tickInterval
-			);
-		}
-		else if (m_bulletStatusType == Jam::Domain::Player::StatusAilmentType::Paralysis)
-		{
-			//例:25秒間、移動速度 / ジャンプ力が50%になる
-			poisonBullet->setStatusAilment(
-				Jam::Domain::Player::StatusAilmentType::Paralysis,
-				25.0,// duration
-				0.5,// power (鈍化率0.0〜1.0)
-				0.0	// tickInterval
-			);
-		}
 
 		poisonBullet->init();
 

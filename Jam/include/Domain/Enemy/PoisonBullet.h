@@ -8,13 +8,13 @@
 
 namespace Jam::Domain::Enemy
 {
-	// 毒の弾
-	// 毒の植物が放つ、プレイヤーに数秒間ホーミングする弾
+	// 毒 / 麻痺などの状態異常弾の共通実装
+	// ToxicPlant 用の毒弾、および ParalysisPlant 用の麻痺弾の共通基底
 	class PoisonBullet : public Jam::Domain::IIndependentObject
 		, public Jam::Domain::Physics::ICollisionListener
 		, public std::enable_shared_from_this<PoisonBullet>
 	{
-	private:
+	protected:
 		Texture fbTex;
 
 		std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> m_body;
@@ -28,7 +28,7 @@ namespace Jam::Domain::Enemy
 		double m_homingTimer; // ホーミング時間計測
 
 		Vec2 m_size;
-		Vec2 m_scaled = Vec2{0.0015 ,0.0015 };
+		Vec2 m_scaled = Vec2{0.0015,0.0015 };
 
 		Vec2 m_Velocity;
 
@@ -49,6 +49,9 @@ namespace Jam::Domain::Enemy
 		double m_statusPower{0.0 };
 		double m_statusTickInterval{0.0 };
 
+		// 派生クラスでテクスチャと状態異常パラメータを設定するためのフック
+		virtual void setupStatusAilment();
+
 	public:
 		PoisonBullet(
 			std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body,
@@ -61,21 +64,15 @@ namespace Jam::Domain::Enemy
 			Vec2 Velocity
 		);
 
-		// 状態異常を指定する用のセッター
-		void setStatusAilment(Jam::Domain::Player::StatusAilmentType type,
-			double duration,
-			double power,
-			double tickInterval = 0.0);
+		virtual ~PoisonBullet();
 
-		~PoisonBullet();
-
-		void init();
-		void update(double deltaTime) override;
-		void draw() const override;
+		virtual void init();
+		virtual void update(double deltaTime) override;
+		virtual void draw() const override;
 
 		// 衝突検知
-		void onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
-		void onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
-		void onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
+		virtual void onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
+		virtual void onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
+		virtual void onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) override;
 	};
 }

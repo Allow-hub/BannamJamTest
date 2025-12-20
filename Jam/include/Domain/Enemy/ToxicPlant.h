@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "Domain/Enemy/EnemyBase.h"
 #include "Domain/Events/GameEvents.h"
-#include "Domain/Player/StatusAilment.h"
 
 namespace Jam::Domain::Enemy
 {
@@ -27,41 +26,32 @@ namespace Jam::Domain::Enemy
 
 		void onAIEvent(EnemyAIEvent e) override;
 
-		// 弾が付与する状態異常の種類設定（デフォルトは毒）
-		void setBulletStatusAilment(Jam::Domain::Player::StatusAilmentType type)
-		{
-			m_bulletStatusType = type;
-		}
-
 	protected:
 		void onAttackEnter()override;
 		void onAttackUpdate(double deltaTime)override;
 		void onAttackExit()override;
 
-	private:
-		const int attackCooldown = 500;	// 攻撃後のクールタイム
-		const int shotInterval = 60;	// 弾を撃つ間隔
-		const int maxShotCount = 1;		// 弾を撃つ回数
+		// 毒弾生成処理（派生クラスからも利用・上書き可能）
+		virtual void shootPoisonBullet(const Vec2& direction);
 
-		const float shotBulletDistance = 50.0f;	// 弾を撃つ位置の距離
-		const Vec2 size = { 40, 40 };	// 弾のサイズ
-		const double speed = 150.0;		// 弾の速度
+		// 弾関連定数や状態
+		const int attackCooldown =500; 	// 攻撃後のクールタイム
+		const int shotInterval =60; 	// 弾を撃つ間隔
+		const int maxShotCount =1; 		// 弾を撃つ回数
 
-		int elapsedTime = 0;	// 経過時間
-		int shotCount = 0;		// 弾を撃った回数
+		const float shotBulletDistance =50.0f; 	// 弾を撃つ位置の距離
+		const Vec2 size = {40,40 }; 	// 弾のサイズ
+		const double speed =150.0; 		// 弾の速度
 
-		// この敵が撃つ弾の状態異常タイプ
-		Jam::Domain::Player::StatusAilmentType m_bulletStatusType
-			= Jam::Domain::Player::StatusAilmentType::Poison;
+		int elapsedTime =0; 	// 経過時間
+		int shotCount =0; 		// 弾を撃った回数
 
 		enum class AttackState
 		{
-			IsAttackStart = 0,
+			IsAttackStart =0,
 			IsBulletLaunch,
 			IsAttackEnd,
 		};
 		AttackState attackState = AttackState::IsAttackStart;
-
-		void shootPoisonBullet(const Vec2& direction);
 	};
 }

@@ -4,7 +4,7 @@
 namespace Jam::Domain::Enemy
 {
 	//しびれの弾を撃つ植物
-	//ToxicPlantを継承し、弾に麻痺状態異常を付与する
+	// ToxicPlant を継承し、麻痺弾（ParalysisBullet）を発射する
 	class ParalysisPlant : public ToxicPlant
 	{
 	public:
@@ -13,11 +13,12 @@ namespace Jam::Domain::Enemy
 			Jam::Domain::Events::GameEventQueue& eventQueue)
 			: ToxicPlant(body, playerId, eventQueue)
 		{
-			// 弾が付与する状態異常を "麻痺" に変更
-			setBulletStatusAilment(Jam::Domain::Player::StatusAilmentType::Paralysis);
 			m_enemyType = Jam::Domain::EnemyType::ParalysisPlant;
 		}
 
 		virtual ~ParalysisPlant() = default;
+
+	protected:
+		void shootPoisonBullet(const Vec2& direction) override;
 	};
 }

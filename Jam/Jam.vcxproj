@@ -126,6 +126,7 @@
     <ClCompile Include="src\Domain\Enemy\GothicLolitaDoll.cpp" />
     <ClCompile Include="src\Domain\Enemy\LittleDevil.cpp" />
     <ClCompile Include="src\Domain\Enemy\Missile.cpp" />
+    <ClCompile Include="src\Domain\Enemy\ParalysisBullet.cpp" />
     <ClCompile Include="src\Domain\Enemy\ParalysisPlant.cpp" />
     <ClCompile Include="src\Domain\Enemy\PoisonBullet.cpp" />
     <ClCompile Include="src\Domain\Enemy\Ribbon.cpp" />
@@ -591,6 +592,7 @@
     <ClInclude Include="include\Domain\Enemy\GothicLolitaDoll.h" />
     <ClInclude Include="include\Domain\Enemy\LittleDevil.h" />
     <ClInclude Include="include\Domain\Enemy\Missile.h" />
+    <ClInclude Include="include\Domain\Enemy\ParalysisBullet.h" />
     <ClInclude Include="include\Domain\Enemy\ParalysisPlant.h" />
     <ClInclude Include="include\Domain\Enemy\PoisonBullet.h" />
     <ClInclude Include="include\Domain\Enemy\Ribbon.h" />

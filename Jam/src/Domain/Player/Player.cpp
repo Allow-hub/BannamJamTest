@@ -303,6 +303,11 @@ namespace Jam::Domain::Player
 		info.position = getPosition();
 		info.direction = {0,0 };
 		takeDamage(info);
+
+		// エフェクト発生
+		m_eventQueue.push(Events::ExplosionEvent{
+			getPosition(), ColorF{0.6,0.3,0.6,0.8},60.0,0.3,15
+		});
 	}
 
 	void Player::applyParalysisEffect()

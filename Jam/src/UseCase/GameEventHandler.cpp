@@ -136,6 +136,24 @@ namespace Jam::UseCase
 			if (player)
 			{
 				player->applyStatusAilment(e.type, e.duration, e.power, e.tickInterval);
+
+				// 状態異常適用時の視覚効果（色分け）
+				const Vec2 pos = player->getPosition();
+				ColorF color = Palette::White;
+				switch (e.type)
+				{
+				case Domain::Player::StatusAilmentType::Poison:
+					color = ColorF{0.6,0.3,0.6,0.9 }; // 紫
+					break;
+				case Domain::Player::StatusAilmentType::Paralysis:
+					color = ColorF{1.0,1.0,0.0,0.9 }; // 黄
+					break;
+				default:
+					break;
+				}
+
+				m_effectEventQueue.push(RingEffectEvent{ pos, color,80.0,0.35,5.0 });
+				m_effectEventQueue.push(ParticleEffectEvent{ pos, Vec2::Zero(), color,25,180.0,0.5, true, false });
 			}
 		}
 	}
