@@ -50,6 +50,9 @@ namespace Jam::UseCase
 		//プレイヤーがダメージを受けた時
 		void handlePlayerDamaged(const Domain::Events::PlayerDamagedEvent& e);
 
+		//プレイヤーが状態異常になった時
+		void handlePlayerStatusAilment(const Domain::Events::PlayerStatusAilmentEvent& e);
+
 		//プレイヤーが死んだとき
 		void handlePlayerDeath(const Domain::Events::PlayerDeathEvent& e);
 

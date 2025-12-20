@@ -11,6 +11,8 @@ namespace Jam::Domain
 		Spider,
 		Eye,
 		Clown,
+		ToxicPlant,
+		ParalysisPlant,
 		Boss1_3
 	};
 
@@ -25,6 +27,8 @@ namespace Jam::Domain
 		case EnemyType::Spider: return U"Spider";
 		case EnemyType::Eye: return U"Eye";
 		case EnemyType::Clown: return U"Clown";
+		case EnemyType::ToxicPlant: return U"ToxicPlant";
+		case EnemyType::ParalysisPlant: return U"ParalysisPlant";
 		case EnemyType::Boss1_3: return U"Boss1_3";
 		default: return U"LittleDevil";
 		}
@@ -39,6 +43,8 @@ namespace Jam::Domain
 		if (str == U"Spider") return EnemyType::Spider;
 		if (str == U"Eye") return EnemyType::Eye;
 		if (str == U"Clown") return EnemyType::Clown;
+		if (str == U"ToxicPlant") return EnemyType::ToxicPlant;
+		if (str == U"ParalysisPlant") return EnemyType::ParalysisPlant;
 		if (str == U"Boss1_3") return EnemyType::Boss1_3;
 		return EnemyType::LittleDevil;
 	}

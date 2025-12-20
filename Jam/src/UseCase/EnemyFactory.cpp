@@ -8,6 +8,8 @@
 #include "Domain/Enemy/Eye.h"
 #include "Domain/Enemy/Clown.h"
 #include "Domain/Enemy/Boss1_3.h"
+#include "Domain/Enemy/ToxicPlant.h"
+#include "Domain/Enemy/ParalysisPlant.h"
 
 namespace Jam::UseCase
 {
@@ -40,6 +42,12 @@ namespace Jam::UseCase
 			break;
 		case Jam::Domain::EnemyType::Clown:
 			enemy = std::make_shared<Clown>(body, playerId, eventQueue);
+			break;
+		case Jam::Domain::EnemyType::ToxicPlant:
+			enemy = std::make_shared<ToxicPlant>(body, playerId, eventQueue);
+			break;
+		case Jam::Domain::EnemyType::ParalysisPlant:
+			enemy = std::make_shared<ParalysisPlant>(body, playerId, eventQueue);
 			break;
 		case Jam::Domain::EnemyType::Boss1_3:
 			enemy = std::make_shared<Boss1_3>(body, playerId, eventQueue);

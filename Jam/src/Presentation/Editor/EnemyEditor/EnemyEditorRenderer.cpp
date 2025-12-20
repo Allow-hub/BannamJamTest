@@ -123,6 +123,8 @@ namespace Jam::Presentation::Editor
                 Domain::EnemyType::Eye,
                 Domain::EnemyType::Clown,
                 Domain::EnemyType::GothicLolitaDoll,
+                Domain::EnemyType::ToxicPlant,
+                Domain::EnemyType::ParalysisPlant,
                 Domain::EnemyType::Boss1_3
             };
             
@@ -250,6 +252,8 @@ namespace Jam::Presentation::Editor
         case Domain::EnemyType::Eye: return U"アイ";
         case Domain::EnemyType::Clown: return U"クラウン";
         case Domain::EnemyType::GothicLolitaDoll: return U"ゴシックロリータ人形";
+        case Domain::EnemyType::ToxicPlant: return U"トキシックプラント";
+        case Domain::EnemyType::ParalysisPlant: return U"パラライズプラント";
         case Domain::EnemyType::Boss1_3: return U"ボス1-3";
         default: return U"不明";
         }
@@ -266,6 +270,8 @@ namespace Jam::Presentation::Editor
         case Domain::EnemyType::Eye: return ColorF{0.3, 0.8, 1.0};
         case Domain::EnemyType::Clown: return ColorF{0.9, 0.9, 0.3};
         case Domain::EnemyType::GothicLolitaDoll: return ColorF{0.8, 0.5, 0.8};
+        case Domain::EnemyType::ToxicPlant: return ColorF{0.0, 1.0, 0.0};
+        case Domain::EnemyType::ParalysisPlant: return ColorF{0.0, 0.7, 1.0};
         case Domain::EnemyType::Boss1_3: return ColorF{1.0, 0.0, 0.0};
         default: return Palette::Gray;
         }

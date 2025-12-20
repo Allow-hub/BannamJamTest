@@ -6,6 +6,7 @@
 #include "Infrastructure/IndependentObjectFactory.h"
 #include "Infrastructure/FactoryServiceLocator.h"
 #include "Foundation/CoreManager.h"
+#include "Domain/Player/Player.h"
 
 using namespace Jam;
 
@@ -45,6 +46,8 @@ namespace Jam::UseCase
 						handlePlayerChokerSkilled(e);
 					else if constexpr (std::is_same_v<T, Domain::Events::PlayerDamagedEvent>)
 						handlePlayerDamaged(e);
+					else if constexpr (std::is_same_v<T, Domain::Events::PlayerStatusAilmentEvent>)
+						handlePlayerStatusAilment(e);
 					else if constexpr (std::is_same_v<T, Domain::Events::PlayerDeathEvent>)
 						handlePlayerDeath(e);
 					else if constexpr (std::is_same_v<T, Domain::Events::PlayerFallOutEvent>)
@@ -116,6 +119,25 @@ namespace Jam::UseCase
 	{
 		UseCase::AttackProcessor::getInstance().executeAttack(e.attacker, e.target, e.damageInfo);
 		m_cameraEventQueue.push(CameraShakeEvent{ e.intensity, e.duration });
+	}
+
+	void GameEventHandler::handlePlayerStatusAilment(const Domain::Events::PlayerStatusAilmentEvent& e)
+	{
+		// AttackProcessor に登録されている Player を取得して状態異常を付与する
+		auto attacker = e.attacker; // 未使用だが将来的な拡張のため保持
+		auto target = e.target;
+
+		// Player は ITakeDamageable として登録されているので dynamic_pointer_cast
+		auto damageable = UseCase::AttackProcessor::getInstance().getDamageable(target);
+		if (damageable)
+		{
+			// 実体が Playerか確認
+			auto player = std::dynamic_pointer_cast<Domain::Player::Player>(damageable);
+			if (player)
+			{
+				player->applyStatusAilment(e.type, e.duration, e.power, e.tickInterval);
+			}
+		}
 	}
 
 	void GameEventHandler::handlePlayerDeath(const Domain::Events::PlayerDeathEvent& e)

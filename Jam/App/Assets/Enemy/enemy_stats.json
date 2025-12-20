@@ -83,6 +83,34 @@
       "restitutionThreshold": 100.0
     }
   },
+  "ToxicPlant": {
+    "hp": 150,
+    "attackPower": 15.0,
+    "moveSpeed": 0.0,
+    "jumpPower": 0.0,
+    "colX": 120.0,
+    "colY": 150.0,
+    "physicsMaterial": {
+      "density": 20.0,
+      "friction": 0.4,
+      "restitution": 0.0,
+      "restitutionThreshold": 100.0
+    }
+  },
+  "ParalysisPlant": {
+    "hp": 150,
+    "attackPower": 0.0,
+    "moveSpeed": 0.0,
+    "jumpPower": 0.0,
+    "colX": 120.0,
+    "colY": 150.0,
+    "physicsMaterial": {
+      "density": 20.0,
+      "friction": 0.4,
+      "restitution": 0.0,
+      "restitutionThreshold": 100.0
+    }
+  },
   "Boss1_3": {
     "hp": 300,
     "attackPower": 90.0,

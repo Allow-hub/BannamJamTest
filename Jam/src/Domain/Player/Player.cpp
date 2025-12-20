@@ -4,6 +4,7 @@
 #include "Presentation/AudioService.h"
 #include "Infrastructure/PhysicsFilterManager.h"
 #include "Foundation/CoreManager.h"
+#include "Domain/Player/StatusAilment.h"
 
 namespace Jam::Domain::Player
 {
@@ -25,7 +26,12 @@ namespace Jam::Domain::Player
 
 	void Player::update(double deltaTime)
 	{
-		if (m_isRespawning || !m_canControl) return;
+		if (m_isRespawning) return;
+
+		// 状態異常更新
+		updateStatusAilments(deltaTime);
+
+		if (!m_canControl) return;
 
 		// 落下加速
 		auto velocity = m_body->getVelocity();
@@ -65,19 +71,33 @@ namespace Jam::Domain::Player
 
 	void Player::moveLeft(double dt)
 	{
+		double speed = m_stats.moveSpeed;
+		if (m_paralysis.active && m_paralysis.type == StatusAilmentType::Paralysis)
+		{
+			// power を鈍化率 (0.0〜1.0) として使う
+			// しびれ状態なら移動速度が低下
+			speed *= (1.0 - m_paralysis.power);
+		}
+
 		if (m_choker && m_choker->m_state->isHookedGround() && m_isDashing)
-			m_body->applyForce({ -m_stats.moveSpeed * 6 * dt, 0 });
+			m_body->applyForce({ -speed *6 * dt,0 });
 		else
-			m_body->applyForce({ -m_stats.moveSpeed * dt, 0 });
+			m_body->applyForce({ -speed * dt,0 });
 		m_facingRight = false;
 	}
 
 	void Player::moveRight(double dt)
 	{
+		double speed = m_stats.moveSpeed;
+		if (m_paralysis.active && m_paralysis.type == StatusAilmentType::Paralysis)
+		{
+			speed *= (1.0 - m_paralysis.power);
+		}
+
 		if (m_choker && m_choker->m_state->isHookedGround() && m_isDashing)
-			m_body->applyForce({ m_stats.moveSpeed * 6 * dt, 0 });
+			m_body->applyForce({ speed *6 * dt,0 });
 		else
-			m_body->applyForce({ m_stats.moveSpeed * dt, 0 });
+			m_body->applyForce({ speed * dt,0 });
 		m_facingRight = true;
 	}
 
@@ -99,14 +119,18 @@ namespace Jam::Domain::Player
 		{
 			Jam::Presentation::AudioService::get().playOneShot(Jam::Presentation::AudioService::Sound::SE_Jump, 1.0);
 			double jumpPower = m_stats.jumpPower;
-
-			if (m_jumpCount == 1)
+			if (m_paralysis.active && m_paralysis.type == StatusAilmentType::Paralysis)
 			{
-				jumpPower *= 1.5;
+				jumpPower *= (1.0 - m_paralysis.power);
 			}
 
-			m_body->setVelocity({ m_body->getVelocity().x, 0.0 });
-			m_body->applyImpulse({ 0, -m_stats.jumpPower });
+			if (m_jumpCount ==1)
+			{
+				jumpPower *=1.5;
+			}
+
+			m_body->setVelocity({ m_body->getVelocity().x,0.0 });
+			m_body->applyImpulse({0, -jumpPower });
 			m_jumpCount++;
 			m_isGrounded = false;
 		}
@@ -238,4 +262,77 @@ namespace Jam::Domain::Player
 	void Player::onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) {}
 
 	void Player::onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) {}
+
+	void Player::updateStatusAilments(double deltaTime)
+	{
+		// 毒
+		if (m_poison.active && m_poison.type == StatusAilmentType::Poison)
+		{
+			m_poison.duration -= deltaTime;
+			if (m_poison.duration <=0.0)
+			{
+				m_poison.clear();
+			}
+			else
+			{
+				m_poison.tickTimer += deltaTime;
+				if (m_poison.tickInterval >0.0 && m_poison.tickTimer >= m_poison.tickInterval)
+				{
+					m_poison.tickTimer =0.0;
+					applyPoisonTick(deltaTime);
+				}
+			}
+		}
+
+		//しびれ（鈍化効果の時間管理のみ。実際の移動制御は move/jump 内で参照）
+		if (m_paralysis.active && m_paralysis.type == StatusAilmentType::Paralysis)
+		{
+			m_paralysis.duration -= deltaTime;
+			if (m_paralysis.duration <=0.0)
+			{
+				m_paralysis.clear();
+			}
+		}
+	}
+
+	void Player::applyPoisonTick(double)
+	{
+		if (!m_isAlive) return;
+		DamageInfo info;
+		info.amount = m_poison.power;
+		info.position = getPosition();
+		info.direction = {0,0 };
+		takeDamage(info);
+	}
+
+	void Player::applyParalysisEffect()
+	{
+		// 移動やジャンプ時に m_paralysis を参照して鈍化を適用するための関数。
+	}
+
+	void Player::applyStatusAilment(StatusAilmentType type, double duration, double power, double tickInterval)
+	{
+		StatusAilment* target = nullptr;
+		switch (type)
+		{
+		case StatusAilmentType::Poison:
+			target = &m_poison;
+			break;
+		case StatusAilmentType::Paralysis:
+			target = &m_paralysis;
+			break;
+		default:
+			return;
+		}
+
+		if (!target)
+			return;
+
+		target->type = type;
+		target->active = true;
+		target->duration = duration;
+		target->power = power;
+		target->tickInterval = tickInterval;
+		target->tickTimer =0.0;
+	}
 }

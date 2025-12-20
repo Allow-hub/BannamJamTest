@@ -6,6 +6,7 @@
 #include "Domain/ITakeDamageable.h"
 #include "Foundation/CoroutineUtil.h"
 #include "Presentation/FadeManager.h"
+#include "Domain/Player/StatusAilment.h"
 
 namespace Jam::Domain::Player
 {
@@ -89,6 +90,9 @@ namespace Jam::Domain::Player
 		std::vector<DamageCallback> m_onDamagedCallbacks;
 		void addOnDamagedCallback(DamageCallback callback);
 
+		// 状態異常の付与
+		void applyStatusAilment(StatusAilmentType type, double duration, double power = 0.0, double tickInterval = 0.0);
+
 	private:
 		// 基本情報
 		PlayerStats m_stats;
@@ -109,6 +113,13 @@ namespace Jam::Domain::Player
 
 		// チョーカー
 		std::shared_ptr<ChokerSkill> m_choker;
+
+		// 状態異常
+		StatusAilment m_poison;    // 毒
+		StatusAilment m_paralysis; // しびれ
+		void updateStatusAilments(double deltaTime);
+		void applyPoisonTick(double deltaTime);
+		void applyParalysisEffect();
 
 		// 生存・ダメージ
 		bool m_isAlive = true;

@@ -32,6 +32,8 @@ namespace Jam::Infrastructure
 			else if (typeStr == U"Spider") type = Jam::Domain::EnemyType::Spider;
 			else if (typeStr == U"Eye") type = Jam::Domain::EnemyType::Eye;
 			else if (typeStr == U"Clown") type = Jam::Domain::EnemyType::Clown;
+			else if (typeStr == U"ToxicPlant") type = Jam::Domain::EnemyType::ToxicPlant;
+			else if (typeStr == U"ParalysisPlant") type = Jam::Domain::EnemyType::ParalysisPlant;
 			else if (typeStr == U"Boss1_3") type = Jam::Domain::EnemyType::Boss1_3;
 			else assert(false && "Unknown enemy type");
 
@@ -134,6 +136,8 @@ namespace Jam::Infrastructure
 			else if (key == U"Spider") outTable[EnemyType::Spider] = status;
 			else if (key == U"Eye") outTable[EnemyType::Eye] = status;
 			else if (key == U"Clown") outTable[EnemyType::Clown] = status;
+			else if (key == U"ToxicPlant") outTable[EnemyType::ToxicPlant] = status;
+			else if (key == U"ParalysisPlant") outTable[EnemyType::ParalysisPlant] = status;
 			else if (key == U"Boss1_3") outTable[EnemyType::Boss1_3] = status;
 			else assert(false && "Unknown enemy type");
 		}
