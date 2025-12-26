@@ -133,6 +133,8 @@
     <ClCompile Include="src\Domain\Enemy\ShockWave.cpp" />
     <ClCompile Include="src\Domain\Enemy\Spider.cpp" />
     <ClCompile Include="src\Domain\Enemy\PoisonPlant.cpp" />
+    <ClCompile Include="src\Domain\Enemy\ToxicityBulletBase.cpp" />
+    <ClCompile Include="src\Domain\Enemy\ToxicityPlantBase.cpp" />
     <ClCompile Include="src\Domain\Player\Player.cpp" />
     <ClCompile Include="src\Domain\Editor\EnemyEditor\EnemyEditorManager.cpp" />
     <ClCompile Include="src\Domain\Editor\StageEditor\StageEditorManager.cpp" />
@@ -599,6 +601,8 @@
     <ClInclude Include="include\Domain\Enemy\ShockWave.h" />
     <ClInclude Include="include\Domain\Enemy\Spider.h" />
     <ClInclude Include="include\Domain\Enemy\PoisonPlant.h" />
+    <ClInclude Include="include\Domain\Enemy\ToxicityBulletBase.h" />
+    <ClInclude Include="include\Domain\Enemy\ToxicityPlantBase.h" />
     <ClInclude Include="include\Domain\Events\GameEvents.h" />
     <ClInclude Include="include\Domain\FlagmentMemory.h" />
     <ClInclude Include="include\Domain\GoalArea.h" />

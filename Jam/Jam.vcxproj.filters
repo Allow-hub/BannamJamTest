@@ -58,8 +58,10 @@
     <ClCompile Include="src\Presentation\Scenes\Transition\IrisTransition.cpp" />
     <ClCompile Include="src\Domain\Enemy\PoisonBullet.cpp" />
     <ClCompile Include="src\Domain\Enemy\PoisonPlant.cpp" />
-    <ClCompile Include="src\Domain\Enemy\ParalysisPlant.cpp" />
     <ClCompile Include="src\Domain\Enemy\ParalysisBullet.cpp" />
+    <ClCompile Include="src\Domain\Enemy\ToxicityPlantBase.cpp" />
+    <ClCompile Include="src\Domain\Enemy\ToxicityBulletBase.cpp" />
+    <ClCompile Include="src\Domain\Enemy\ParalysisPlant.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
@@ -307,6 +309,8 @@
     <ClInclude Include="include\Domain\Player\StatusAilment.h" />
     <ClInclude Include="include\Domain\Enemy\ParalysisPlant.h" />
     <ClInclude Include="include\Domain\Enemy\ParalysisBullet.h" />
+    <ClInclude Include="include\Domain\Enemy\ToxicityBulletBase.h" />
+    <ClInclude Include="include\Domain\Enemy\ToxicityPlantBase.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />

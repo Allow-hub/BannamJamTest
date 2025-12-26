@@ -1,4 +1,8 @@
 ﻿#include "Domain/Enemy/ParalysisPlant.h"
+#include "Domain/Enemy/EnemyAI/PatrolAI.h"
+#include "Domain/Enemy/EnemyAI/ChaseAI.h"
+#include "Domain/Enemy/EnemyAI/AttackAI.h"
+
 #include "Infrastructure/FactoryServiceLocator.h"
 #include "Infrastructure/IPhysicsBodyFactory.h"
 #include "Infrastructure/PhysicsFilterManager.h"
@@ -7,6 +11,14 @@
 
 namespace Jam::Domain::Enemy
 {
+	ParalysisPlant::ParalysisPlant(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body,
+		Jam::Domain::Physics::PhysicsBodyID playerId,
+		Jam::Domain::Events::GameEventQueue& eventQueue)
+		: ToxicityPlantBase(body, playerId, eventQueue)
+	{
+		m_enemyType = EnemyType::ParalysisPlant;
+	}
+
 	void ParalysisPlant::shootBullet(const Vec2& direction)
 	{
 		Vec2 startPos = m_body->getPosition() + direction * shotBulletDistance;
@@ -26,8 +38,8 @@ namespace Jam::Domain::Enemy
 			m_playerId,
 			m_eventQueue,
 			m_status.attackPower,
-			5.0, // 弾の寿命
-			3.0, // ホーミングする時間
+			5.0,
+			3.0,
 			size,
 			direction * speed
 		);

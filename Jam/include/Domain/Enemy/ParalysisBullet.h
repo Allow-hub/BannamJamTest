@@ -1,11 +1,9 @@
 ﻿#pragma once
-#include "Domain/Enemy/PoisonBullet.h"
+#include "Domain/Enemy/ToxicityBulletBase.h"
 
 namespace Jam::Domain::Enemy
 {
-	// 麻痺弾
-	// 基本挙動は PoisonBullet と同じで、与える状態異常とテクスチャのみ異なる
-	class ParalysisBullet : public PoisonBullet
+	class ParalysisBullet : public ToxicityBulletBase
 	{
 	public:
 		ParalysisBullet(
@@ -20,7 +18,6 @@ namespace Jam::Domain::Enemy
 		);
 
 	protected:
-		// テクスチャパスと状態異常パラメータを差し替え
 		void setupStatusAilment() override;
 	};
 }
