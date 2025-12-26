@@ -8,7 +8,7 @@
 #include "Domain/Enemy/Eye.h"
 #include "Domain/Enemy/Clown.h"
 #include "Domain/Enemy/Boss1_3.h"
-#include "Domain/Enemy/ToxicPlant.h"
+#include "Domain/Enemy/PoisonPlant.h"
 #include "Domain/Enemy/ParalysisPlant.h"
 
 namespace Jam::UseCase
@@ -43,8 +43,8 @@ namespace Jam::UseCase
 		case Jam::Domain::EnemyType::Clown:
 			enemy = std::make_shared<Clown>(body, playerId, eventQueue);
 			break;
-		case Jam::Domain::EnemyType::ToxicPlant:
-			enemy = std::make_shared<ToxicPlant>(body, playerId, eventQueue);
+		case Jam::Domain::EnemyType::PoisonPlant:
+			enemy = std::make_shared<PoisonPlant>(body, playerId, eventQueue);
 			break;
 		case Jam::Domain::EnemyType::ParalysisPlant:
 			enemy = std::make_shared<ParalysisPlant>(body, playerId, eventQueue);

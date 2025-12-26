@@ -57,8 +57,9 @@
     <ClCompile Include="src\Presentation\Scenes\Transition\TransitionManager.cpp" />
     <ClCompile Include="src\Presentation\Scenes\Transition\IrisTransition.cpp" />
     <ClCompile Include="src\Domain\Enemy\PoisonBullet.cpp" />
-    <ClCompile Include="src\Domain\Enemy\ToxicPlant.cpp" />
+    <ClCompile Include="src\Domain\Enemy\PoisonPlant.cpp" />
     <ClCompile Include="src\Domain\Enemy\ParalysisPlant.cpp" />
+    <ClCompile Include="src\Domain\Enemy\ParalysisBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
@@ -302,9 +303,10 @@
     <ClInclude Include="include\UseCase\PlayerService.h" />
     <ClInclude Include="include\UseCase\StageService.h" />
     <ClInclude Include="include\Domain\Enemy\PoisonBullet.h" />
-    <ClInclude Include="include\Domain\Enemy\ToxicPlant.h" />
+    <ClInclude Include="include\Domain\Enemy\PoisonPlant.h" />
     <ClInclude Include="include\Domain\Player\StatusAilment.h" />
     <ClInclude Include="include\Domain\Enemy\ParalysisPlant.h" />
+    <ClInclude Include="include\Domain\Enemy\ParalysisBullet.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />
@@ -563,7 +565,7 @@
     <Image Include="App\Assets\Stage\MovingPlatform.png" />
     <Image Include="App\Assets\Stage\NormalStage_1.png" />
     <Image Include="App\Assets\Stage\NormalStage_2.png" />
-    <Image Include="App\Assets\Enemy\ToxicPlant\idle_0.png" />
+    <Image Include="App\Assets\Enemy\PoisonPlant\idle_0.png" />
     <Image Include="App\Assets\Item\PoisonBullet_Poison.png" />
     <Image Include="App\Assets\Item\PoisonBullet_Paralysis.png" />
     <Image Include="App\Assets\Enemy\LittleDevil\idle_0.png" />
@@ -680,7 +682,7 @@
     <None Include="App\Assets\Story\stage1_3_clear.csv" />
     <None Include="App\Assets\Story\stage1_3_start.csv" />
     <None Include="App\Assets\Player\player_animation_dummy.json" />
-    <None Include="App\Assets\Enemy\ToxicPlant\ToxicPlant_animation.json" />
+    <None Include="App\Assets\Enemy\PoisonPlant\PoisonPlant_animation.json" />
     <None Include="App\Assets\Enemy\ParalysisPlant\ParalysisPlant_animation.json" />
   </ItemGroup>
   <ItemGroup>

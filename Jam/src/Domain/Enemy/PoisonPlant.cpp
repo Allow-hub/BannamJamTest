@@ -1,4 +1,4 @@
-﻿#include "Domain/Enemy/ToxicPlant.h"
+﻿#include "Domain/Enemy/PoisonPlant.h"
 #include "Domain/Enemy/EnemyAI/PatrolAI.h"
 #include "Domain/Enemy/EnemyAI/ChaseAI.h"
 #include "Domain/Enemy/EnemyAI/AttackAI.h"
@@ -11,8 +11,9 @@
 
 namespace Jam::Domain::Enemy
 {
-	ToxicPlant::ToxicPlant(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body, Jam::Domain::Physics::PhysicsBodyID playerId
-	, Jam::Domain::Events::GameEventQueue& eventQueue)
+	PlantBase::PlantBase(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body,
+		Jam::Domain::Physics::PhysicsBodyID playerId,
+		Jam::Domain::Events::GameEventQueue& eventQueue)
 		: EnemyBase(body, playerId, eventQueue)
 	{
 		std::vector<std::pair<AIType, std::unique_ptr<IEnemyAI>>> aiList;
@@ -20,18 +21,17 @@ namespace Jam::Domain::Enemy
 		aiList.emplace_back(AIType::Chase, std::make_unique<ChaseAI>());
 		aiList.emplace_back(AIType::Attack, std::make_unique<AttackAI>());
 
-		setAIList(std::move(aiList));	//setしたときにそのAIのEnterも入ります
-		m_enemyType = EnemyType::ToxicPlant;
+		setAIList(std::move(aiList));
 		m_body->setGravityScale(3.0);
 	}
 
-	void ToxicPlant::update(double deltaTime)
+	void PlantBase::update(double deltaTime)
 	{
 		if (!isAlive()) return;
 		m_currentAI->update(*this, deltaTime);
 	}
 
-	void ToxicPlant::onAIEvent(EnemyAIEvent e)
+	void PlantBase::onAIEvent(EnemyAIEvent e)
 	{
 		switch (e)
 		{
@@ -49,28 +49,29 @@ namespace Jam::Domain::Enemy
 		}
 	}
 
-	void ToxicPlant::onAttackEnter()
+	void PlantBase::onAttackEnter()
 	{
 	}
-	void ToxicPlant::onAttackUpdate(double deltaTime)
+
+	void PlantBase::onAttackUpdate(double)
 	{
 		switch (attackState)
 		{
-		case Jam::Domain::Enemy::ToxicPlant::AttackState::IsAttackStart:
+		case AttackState::IsAttackStart:
 		{
 			attackState = AttackState::IsBulletLaunch;
 		}
 		break;
-		case Jam::Domain::Enemy::ToxicPlant::AttackState::IsBulletLaunch:
+		case AttackState::IsBulletLaunch:
 		{
 			if (elapsedTime >= shotInterval)
 			{
 				Vec2 toPlayer = (getPlayerPos() - m_body->getPosition()).normalized();
 
-				shootPoisonBullet(toPlayer);
+				shootBullet(toPlayer);
 
 				shotCount++;
-				elapsedTime = 0;
+				elapsedTime =0;
 			}
 			else
 			{
@@ -79,17 +80,17 @@ namespace Jam::Domain::Enemy
 
 			if (shotCount >= maxShotCount)
 			{
-				shotCount = 0;
-				elapsedTime = 0;
+				shotCount =0;
+				elapsedTime =0;
 				attackState = AttackState::IsAttackEnd;
 			}
 		}
 		break;
-		case Jam::Domain::Enemy::ToxicPlant::AttackState::IsAttackEnd:
+		case AttackState::IsAttackEnd:
 		{
 			if (elapsedTime >= attackCooldown)
 			{
-				elapsedTime = 0;
+				elapsedTime =0;
 				attackState = AttackState::IsAttackStart;
 				changeAI(AIType::Chase);
 			}
@@ -103,12 +104,12 @@ namespace Jam::Domain::Enemy
 			break;
 		}
 	}
-	void ToxicPlant::onAttackExit()
+
+	void PlantBase::onAttackExit()
 	{
 	}
 
-
-	void ToxicPlant::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
+	void PlantBase::onCollisionEnter(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{
 		EnemyBase::onCollisionEnter(other);
 		switch (other->getLayer())
@@ -128,18 +129,27 @@ namespace Jam::Domain::Enemy
 				,0.3
 				,15.0
 			});
-			m_body->setVelocity({ 0,0 });
+			m_body->setVelocity({0,0 });
 			break;
 		}
 	}
 
-	void ToxicPlant::onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) {}
-	void ToxicPlant::onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
+	void PlantBase::onCollisionStay(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other) {}
+
+	void PlantBase::onCollisionExit(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> other)
 	{
 		EnemyBase::onCollisionExit(other);
 	}
 
-	void ToxicPlant::shootPoisonBullet(const Vec2& direction)
+	PoisonPlant::PoisonPlant(std::shared_ptr<Jam::Domain::Physics::IPhysicsBody> body,
+		Jam::Domain::Physics::PhysicsBodyID playerId,
+		Jam::Domain::Events::GameEventQueue& eventQueue)
+		: PlantBase(body, playerId, eventQueue)
+	{
+		m_enemyType = EnemyType::PoisonPlant;
+	}
+
+	void PoisonPlant::shootBullet(const Vec2& direction)
 	{
 		Vec2 startPos = m_body->getPosition() + direction * shotBulletDistance;
 
@@ -149,7 +159,7 @@ namespace Jam::Domain::Enemy
 			startPos,
 			size,
 			s3d::P2BodyType::Dynamic,
-			{ 0.1, 0.0, 1.0 },
+			{0.1,0.0,1.0 },
 			Jam::Domain::Physics::PhysicsShape::Circle
 		);
 
@@ -158,8 +168,8 @@ namespace Jam::Domain::Enemy
 			m_playerId,
 			m_eventQueue,
 			m_status.attackPower,
-			5.0, // 弾の寿命
-			3.0, // ホーミングする時間
+			5.0,
+			3.0,
 			size,
 			direction * speed
 		);

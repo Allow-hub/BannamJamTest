@@ -7,7 +7,7 @@
 
 namespace Jam::Domain::Enemy
 {
-	void ParalysisPlant::shootPoisonBullet(const Vec2& direction)
+	void ParalysisPlant::shootBullet(const Vec2& direction)
 	{
 		Vec2 startPos = m_body->getPosition() + direction * shotBulletDistance;
 

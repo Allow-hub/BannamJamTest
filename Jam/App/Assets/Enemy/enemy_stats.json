@@ -83,7 +83,7 @@
       "restitutionThreshold": 100.0
     }
   },
-  "ToxicPlant": {
+  "PoisonPlant": {
     "hp": 150,
     "attackPower": 15.0,
     "moveSpeed": 0.0,

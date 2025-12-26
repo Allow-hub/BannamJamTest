@@ -132,7 +132,7 @@
     <ClCompile Include="src\Domain\Enemy\Ribbon.cpp" />
     <ClCompile Include="src\Domain\Enemy\ShockWave.cpp" />
     <ClCompile Include="src\Domain\Enemy\Spider.cpp" />
-    <ClCompile Include="src\Domain\Enemy\ToxicPlant.cpp" />
+    <ClCompile Include="src\Domain\Enemy\PoisonPlant.cpp" />
     <ClCompile Include="src\Domain\Player\Player.cpp" />
     <ClCompile Include="src\Domain\Editor\EnemyEditor\EnemyEditorManager.cpp" />
     <ClCompile Include="src\Domain\Editor\StageEditor\StageEditorManager.cpp" />
@@ -181,7 +181,7 @@
   <ItemGroup>
     <Image Include="App\Assets\Enemy\LittleDevil\idle_0.png" />
     <Image Include="App\Assets\Enemy\ParalysisPlant\idle_0.png" />
-    <Image Include="App\Assets\Enemy\ToxicPlant\idle_0.png" />
+    <Image Include="App\Assets\Enemy\PoisonPlant\idle_0.png" />
     <Image Include="App\Assets\Item\fireBall.png" />
     <Image Include="App\Assets\Item\Missile.png" />
     <Image Include="App\Assets\Item\PoisonBullet_Paralysis.png" />
@@ -446,7 +446,7 @@
   <ItemGroup>
     <None Include=".editorconfig" />
     <None Include="App\Assets\Enemy\ParalysisPlant\ParalysisPlant_animation.json" />
-    <None Include="App\Assets\Enemy\ToxicPlant\ToxicPlant_animation.json" />
+    <None Include="App\Assets\Enemy\PoisonPlant\PoisonPlant_animation.json" />
     <None Include="App\Assets\Player\player_animation_dummy.json" />
     <None Include="App\Assets\Story\stage1_2_clear.csv" />
     <None Include="App\Assets\Story\stage1_3_clear.csv" />
@@ -598,7 +598,7 @@
     <ClInclude Include="include\Domain\Enemy\Ribbon.h" />
     <ClInclude Include="include\Domain\Enemy\ShockWave.h" />
     <ClInclude Include="include\Domain\Enemy\Spider.h" />
-    <ClInclude Include="include\Domain\Enemy\ToxicPlant.h" />
+    <ClInclude Include="include\Domain\Enemy\PoisonPlant.h" />
     <ClInclude Include="include\Domain\Events\GameEvents.h" />
     <ClInclude Include="include\Domain\FlagmentMemory.h" />
     <ClInclude Include="include\Domain\GoalArea.h" />
