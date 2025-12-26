@@ -56,6 +56,12 @@
     <ClCompile Include="src\Presentation\Scenes\Transition\RectSlide.cpp" />
     <ClCompile Include="src\Presentation\Scenes\Transition\TransitionManager.cpp" />
     <ClCompile Include="src\Presentation\Scenes\Transition\IrisTransition.cpp" />
+    <ClCompile Include="src\Domain\Enemy\PoisonBullet.cpp" />
+    <ClCompile Include="src\Domain\Enemy\PoisonPlant.cpp" />
+    <ClCompile Include="src\Domain\Enemy\ParalysisBullet.cpp" />
+    <ClCompile Include="src\Domain\Enemy\ToxicityPlantBase.cpp" />
+    <ClCompile Include="src\Domain\Enemy\ToxicityBulletBase.cpp" />
+    <ClCompile Include="src\Domain\Enemy\ParalysisPlant.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Domain\Enemy\EnemyAI\ChaseAI.h" />
@@ -298,6 +304,13 @@
     <ClInclude Include="include\UseCase\IndependentObjectService.h" />
     <ClInclude Include="include\UseCase\PlayerService.h" />
     <ClInclude Include="include\UseCase\StageService.h" />
+    <ClInclude Include="include\Domain\Enemy\PoisonBullet.h" />
+    <ClInclude Include="include\Domain\Enemy\PoisonPlant.h" />
+    <ClInclude Include="include\Domain\Player\StatusAilment.h" />
+    <ClInclude Include="include\Domain\Enemy\ParalysisPlant.h" />
+    <ClInclude Include="include\Domain\Enemy\ParalysisBullet.h" />
+    <ClInclude Include="include\Domain\Enemy\ToxicityBulletBase.h" />
+    <ClInclude Include="include\Domain\Enemy\ToxicityPlantBase.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />
@@ -328,7 +341,6 @@
     <Image Include="App\engine\texture\box-shadow\8.png" />
     <Image Include="App\icon.ico" />
     <Image Include="App\Assets\Cursor\GameCursor.png" />
-    <Image Include="App\Assets\Enemy\LittleDevil\idle_0.png" />
     <Image Include="App\Assets\Player\Skill\Bomb\Bomb.png" />
     <Image Include="App\Assets\Stage\White_Test.png" />
     <Image Include="App\Assets\Story\background_stage1_1_clear.png" />
@@ -557,6 +569,11 @@
     <Image Include="App\Assets\Stage\MovingPlatform.png" />
     <Image Include="App\Assets\Stage\NormalStage_1.png" />
     <Image Include="App\Assets\Stage\NormalStage_2.png" />
+    <Image Include="App\Assets\Enemy\PoisonPlant\idle_0.png" />
+    <Image Include="App\Assets\Item\PoisonBullet_Poison.png" />
+    <Image Include="App\Assets\Item\PoisonBullet_Paralysis.png" />
+    <Image Include="App\Assets\Enemy\LittleDevil\idle_0.png" />
+    <Image Include="App\Assets\Enemy\ParalysisPlant\idle_0.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="App\Assets\Font\PixelMplus12-Bold.ttf" />
@@ -669,6 +686,8 @@
     <None Include="App\Assets\Story\stage1_3_clear.csv" />
     <None Include="App\Assets\Story\stage1_3_start.csv" />
     <None Include="App\Assets\Player\player_animation_dummy.json" />
+    <None Include="App\Assets\Enemy\PoisonPlant\PoisonPlant_animation.json" />
+    <None Include="App\Assets\Enemy\ParalysisPlant\ParalysisPlant_animation.json" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="App\dll\soundtouch\COPYING.TXT" />

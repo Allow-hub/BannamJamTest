@@ -1,0 +1,15 @@
+{
+  "clips": [
+    {
+      "name": "Idle",
+      "loop": true,
+      "frames": [
+        {
+          "path": "Assets/Enemy/PoisonPlant/idle_0.png",
+          "duration": 1.5,
+          "scale": 0.5
+        }
+      ]
+    }
+  ]
+}

@@ -126,9 +126,15 @@
     <ClCompile Include="src\Domain\Enemy\GothicLolitaDoll.cpp" />
     <ClCompile Include="src\Domain\Enemy\LittleDevil.cpp" />
     <ClCompile Include="src\Domain\Enemy\Missile.cpp" />
+    <ClCompile Include="src\Domain\Enemy\ParalysisBullet.cpp" />
+    <ClCompile Include="src\Domain\Enemy\ParalysisPlant.cpp" />
+    <ClCompile Include="src\Domain\Enemy\PoisonBullet.cpp" />
     <ClCompile Include="src\Domain\Enemy\Ribbon.cpp" />
     <ClCompile Include="src\Domain\Enemy\ShockWave.cpp" />
     <ClCompile Include="src\Domain\Enemy\Spider.cpp" />
+    <ClCompile Include="src\Domain\Enemy\PoisonPlant.cpp" />
+    <ClCompile Include="src\Domain\Enemy\ToxicityBulletBase.cpp" />
+    <ClCompile Include="src\Domain\Enemy\ToxicityPlantBase.cpp" />
     <ClCompile Include="src\Domain\Player\Player.cpp" />
     <ClCompile Include="src\Domain\Editor\EnemyEditor\EnemyEditorManager.cpp" />
     <ClCompile Include="src\Domain\Editor\StageEditor\StageEditorManager.cpp" />
@@ -175,8 +181,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="App\Assets\Enemy\LittleDevil\idle_0.png" />
+    <Image Include="App\Assets\Enemy\ParalysisPlant\idle_0.png" />
+    <Image Include="App\Assets\Enemy\PoisonPlant\idle_0.png" />
     <Image Include="App\Assets\Item\fireBall.png" />
     <Image Include="App\Assets\Item\Missile.png" />
+    <Image Include="App\Assets\Item\PoisonBullet_Paralysis.png" />
+    <Image Include="App\Assets\Item\PoisonBullet_Poison.png" />
     <Image Include="App\Assets\Player\ChokerThrow\choker_throw_00.png" />
     <Image Include="App\Assets\Player\ChokerThrow\choker_throw_01.png" />
     <Image Include="App\Assets\Player\ChokerThrow\choker_throw_02.png" />
@@ -294,7 +305,6 @@
     <Image Include="App\Assets\Enemy\Eye\idle_1.png" />
     <Image Include="App\Assets\Enemy\GothicLolitaDoll\idle_0.png" />
     <Image Include="App\Assets\Enemy\GothicLolitaDoll\idle_1.png" />
-    <Image Include="App\Assets\Enemy\LittleDevil\idle_0.png" />
     <Image Include="App\Assets\Enemy\Ribbon\idle_0.png" />
     <Image Include="App\Assets\Enemy\Spider\idle_0.png" />
     <Image Include="Assets\Enemy\Spider\idle_1.png" />
@@ -437,6 +447,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
+    <None Include="App\Assets\Enemy\ParalysisPlant\ParalysisPlant_animation.json" />
+    <None Include="App\Assets\Enemy\PoisonPlant\PoisonPlant_animation.json" />
     <None Include="App\Assets\Player\player_animation_dummy.json" />
     <None Include="App\Assets\Story\stage1_2_clear.csv" />
     <None Include="App\Assets\Story\stage1_3_clear.csv" />
@@ -582,9 +594,15 @@
     <ClInclude Include="include\Domain\Enemy\GothicLolitaDoll.h" />
     <ClInclude Include="include\Domain\Enemy\LittleDevil.h" />
     <ClInclude Include="include\Domain\Enemy\Missile.h" />
+    <ClInclude Include="include\Domain\Enemy\ParalysisBullet.h" />
+    <ClInclude Include="include\Domain\Enemy\ParalysisPlant.h" />
+    <ClInclude Include="include\Domain\Enemy\PoisonBullet.h" />
     <ClInclude Include="include\Domain\Enemy\Ribbon.h" />
     <ClInclude Include="include\Domain\Enemy\ShockWave.h" />
     <ClInclude Include="include\Domain\Enemy\Spider.h" />
+    <ClInclude Include="include\Domain\Enemy\PoisonPlant.h" />
+    <ClInclude Include="include\Domain\Enemy\ToxicityBulletBase.h" />
+    <ClInclude Include="include\Domain\Enemy\ToxicityPlantBase.h" />
     <ClInclude Include="include\Domain\Events\GameEvents.h" />
     <ClInclude Include="include\Domain\FlagmentMemory.h" />
     <ClInclude Include="include\Domain\GoalArea.h" />
@@ -604,6 +622,7 @@
     <ClInclude Include="include\Domain\Player\Choker\ChokerStates\HookedGroundState.h" />
     <ClInclude Include="include\Domain\Player\Choker\ChokerStates\IChokerState.h" />
     <ClInclude Include="include\Domain\Player\Player.h" />
+    <ClInclude Include="include\Domain\Player\StatusAilment.h" />
     <ClInclude Include="include\Domain\Stage\BackgroundTypes.h" />
     <ClInclude Include="include\Domain\Stage\DamageStage.h" />
     <ClInclude Include="include\Domain\Stage\IStage.h" />

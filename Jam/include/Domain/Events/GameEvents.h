@@ -6,6 +6,7 @@
 #include "Domain/Physics/PhysicsBodyID.h"
 #include "Domain/ITakeDamageable.h"
 #include "Domain/Enemy/EnemyType.h"
+#include "Domain/Player/StatusAilment.h"
 
 // インクルードすると、循環してしまうため前方宣言
 namespace Jam::Domain::Enemy
@@ -107,12 +108,24 @@ namespace Jam::Domain::Events
 		double barrierRadius = 150.0; // バリアの半径
 	};
 
+	// プレイヤーに状態異常を付与するイベント
+	struct PlayerStatusAilmentEvent
+	{
+		Jam::Domain::Physics::PhysicsBodyID attacker;
+		Jam::Domain::Physics::PhysicsBodyID target;
+		Jam::Domain::Player::StatusAilmentType type;
+		double duration;
+		double power;
+		double tickInterval; // 毒ダメージなどの間隔、しびれのときは0でもよい
+	};
+
 	using GameEvent = std::variant<
 		EnemyDamagedEvent,
 		EnemyDefeatedEvent,
 		PlayerAttackedEvent,
 		PlayerChokerSkillEvent,
 		PlayerDamagedEvent,
+		PlayerStatusAilmentEvent,
 		PlayerDeathEvent,
 		PlayerFallOutEvent,
 		BossAppearedEvent,

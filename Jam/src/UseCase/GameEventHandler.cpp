@@ -6,6 +6,7 @@
 #include "Infrastructure/IndependentObjectFactory.h"
 #include "Infrastructure/FactoryServiceLocator.h"
 #include "Foundation/CoreManager.h"
+#include "Domain/Player/Player.h"
 
 using namespace Jam;
 
@@ -35,31 +36,33 @@ namespace Jam::UseCase
 			{
 				using T = std::decay_t<decltype(e)>;
 
-				if constexpr (std::is_same_v<T, Domain::Events::EnemyDamagedEvent>)
-					handleEnemyDamaged(e);
-				else if constexpr (std::is_same_v<T, Domain::Events::EnemyDefeatedEvent>)
-					handleEnemyDefeated(e);
-				else if constexpr (std::is_same_v<T, Domain::Events::PlayerAttackedEvent>)
-					handlePlayerAttacked(e);
-				else if constexpr (std::is_same_v<T, Domain::Events::PlayerChokerSkillEvent>)
-					handlePlayerChokerSkilled(e);
-				else if constexpr (std::is_same_v<T, Domain::Events::PlayerDamagedEvent>)
-					handlePlayerDamaged(e);
-				else if constexpr (std::is_same_v<T, Domain::Events::PlayerDeathEvent>)
-					handlePlayerDeath(e);
-				else if constexpr (std::is_same_v<T, Domain::Events::PlayerFallOutEvent>)
-					handlePlayerFallOut(e);
-				else if constexpr (std::is_same_v<T, Domain::Events::BossAppearedEvent>)
-					handleBossAppeared(e);
-				else if constexpr (std::is_same_v<T, Domain::Events::ItemCollectedEvent>)
-					handleItemCollected(e);
-				else if constexpr (std::is_same_v<T, Domain::Events::EnemySpawnedEvent>)
-					handleEnemySpawned(e);
-				else if constexpr (std::is_same_v<T, Domain::Events::ExplosionEvent>)
-					handleExplosion(e);
-				else if constexpr (std::is_same_v<T, Domain::Events::BarrierShatteredEvent>)
-					handleBarrierShattered(e);
-			}, event);
+					if constexpr (std::is_same_v<T, Domain::Events::EnemyDamagedEvent>)
+						handleEnemyDamaged(e);
+					else if constexpr (std::is_same_v<T, Domain::Events::EnemyDefeatedEvent>)
+						handleEnemyDefeated(e);
+					else if constexpr (std::is_same_v<T, Domain::Events::PlayerAttackedEvent>)
+						handlePlayerAttacked(e);
+					else if constexpr (std::is_same_v<T, Domain::Events::PlayerChokerSkillEvent>)
+						handlePlayerChokerSkilled(e);
+					else if constexpr (std::is_same_v<T, Domain::Events::PlayerDamagedEvent>)
+						handlePlayerDamaged(e);
+					else if constexpr (std::is_same_v<T, Domain::Events::PlayerStatusAilmentEvent>)
+						handlePlayerStatusAilment(e);
+					else if constexpr (std::is_same_v<T, Domain::Events::PlayerDeathEvent>)
+						handlePlayerDeath(e);
+					else if constexpr (std::is_same_v<T, Domain::Events::PlayerFallOutEvent>)
+						handlePlayerFallOut(e);
+					else if constexpr (std::is_same_v<T, Domain::Events::BossAppearedEvent>)
+						handleBossAppeared(e);
+					else if constexpr (std::is_same_v<T, Domain::Events::ItemCollectedEvent>)
+						handleItemCollected(e);
+					else if constexpr (std::is_same_v<T, Domain::Events::EnemySpawnedEvent>)
+						handleEnemySpawned(e);
+					else if constexpr (std::is_same_v<T, Domain::Events::ExplosionEvent>)
+						handleExplosion(e);
+					else if constexpr (std::is_same_v<T, Domain::Events::BarrierShatteredEvent>)
+						handleBarrierShattered(e);
+				}, event);
 		}
 	}
 
@@ -116,6 +119,43 @@ namespace Jam::UseCase
 	{
 		UseCase::AttackProcessor::getInstance().executeAttack(e.attacker, e.target, e.damageInfo);
 		m_cameraEventQueue.push(CameraShakeEvent{ e.intensity, e.duration });
+	}
+
+	void GameEventHandler::handlePlayerStatusAilment(const Domain::Events::PlayerStatusAilmentEvent& e)
+	{
+		// AttackProcessor に登録されている Player を取得して状態異常を付与する
+		auto attacker = e.attacker; // 未使用だが将来的な拡張のため保持
+		auto target = e.target;
+
+		// Player は ITakeDamageable として登録されているので dynamic_pointer_cast
+		auto damageable = UseCase::AttackProcessor::getInstance().getDamageable(target);
+		if (damageable)
+		{
+			// 実体が Playerか確認
+			auto player = std::dynamic_pointer_cast<Domain::Player::Player>(damageable);
+			if (player)
+			{
+				player->applyStatusAilment(e.type, e.duration, e.power, e.tickInterval);
+
+				// 状態異常適用時の視覚効果（色分け）
+				const Vec2 pos = player->getPosition();
+				ColorF color = Palette::White;
+				switch (e.type)
+				{
+				case Domain::Player::StatusAilmentType::Poison:
+					color = ColorF{0.6,0.3,0.6,0.9 }; // 紫
+					break;
+				case Domain::Player::StatusAilmentType::Paralysis:
+					color = ColorF{1.0,1.0,0.0,0.9 }; // 黄
+					break;
+				default:
+					break;
+				}
+
+				m_effectEventQueue.push(RingEffectEvent{ pos, color,80.0,0.35,5.0 });
+				m_effectEventQueue.push(ParticleEffectEvent{ pos, Vec2::Zero(), color,25,180.0,0.5, true, false });
+			}
+		}
 	}
 
 	void GameEventHandler::handlePlayerDeath(const Domain::Events::PlayerDeathEvent& e)

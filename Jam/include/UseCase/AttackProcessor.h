@@ -36,6 +36,15 @@ namespace Jam::UseCase
 						   PhysicsBodyID targetBodyId,
 						   const Jam::Domain::DamageInfo& damageInfo);
 
+		// 登録済みの Damageable を取得（状態異常付与など非ダメージ用途）
+		std::shared_ptr<Jam::Domain::ITakeDamageable> getDamageable(PhysicsBodyID bodyId)
+		{
+			auto it = m_damageableMap.find(bodyId);
+			if (it == m_damageableMap.end())
+				return nullptr;
+			return it->second.lock();
+		}
+
 		void cleanup();
 		void reset();
 		size_t getRegisteredCount() const;
