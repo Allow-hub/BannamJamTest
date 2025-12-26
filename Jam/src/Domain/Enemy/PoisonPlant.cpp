@@ -71,7 +71,7 @@ namespace Jam::Domain::Enemy
 				shootBullet(toPlayer);
 
 				shotCount++;
-				elapsedTime =0;
+				elapsedTime = 0;
 			}
 			else
 			{
@@ -80,8 +80,8 @@ namespace Jam::Domain::Enemy
 
 			if (shotCount >= maxShotCount)
 			{
-				shotCount =0;
-				elapsedTime =0;
+				shotCount = 0;
+				elapsedTime = 0;
 				attackState = AttackState::IsAttackEnd;
 			}
 		}
@@ -90,7 +90,7 @@ namespace Jam::Domain::Enemy
 		{
 			if (elapsedTime >= attackCooldown)
 			{
-				elapsedTime =0;
+				elapsedTime = 0;
 				attackState = AttackState::IsAttackStart;
 				changeAI(AIType::Chase);
 			}
@@ -129,7 +129,7 @@ namespace Jam::Domain::Enemy
 				,0.3
 				,15.0
 			});
-			m_body->setVelocity({0,0 });
+			m_body->setVelocity({ 0,0 });
 			break;
 		}
 	}
@@ -159,7 +159,7 @@ namespace Jam::Domain::Enemy
 			startPos,
 			size,
 			s3d::P2BodyType::Dynamic,
-			{0.1,0.0,1.0 },
+			{ 0.1,0.0,1.0 },
 			Jam::Domain::Physics::PhysicsShape::Circle
 		);
 

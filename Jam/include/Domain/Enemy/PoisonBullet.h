@@ -28,7 +28,7 @@ namespace Jam::Domain::Enemy
 		double m_homingTimer; // ホーミング時間計測
 
 		Vec2 m_size;
-		Vec2 m_scaled = Vec2{0.0015,0.0015 };
+		Vec2 m_scaled = Vec2{ 0.0015,0.0015 };
 
 		Vec2 m_Velocity;
 
@@ -45,9 +45,9 @@ namespace Jam::Domain::Enemy
 
 		// 命中時に付与する状態異常
 		Jam::Domain::Player::StatusAilmentType m_statusType{ Jam::Domain::Player::StatusAilmentType::Poison };
-		double m_statusDuration{0.0 };
-		double m_statusPower{0.0 };
-		double m_statusTickInterval{0.0 };
+		double m_statusDuration{ 0.0 };
+		double m_statusPower{ 0.0 };
+		double m_statusTickInterval{ 0.0 };
 
 		// 派生クラスでテクスチャと状態異常パラメータを設定するためのフック
 		virtual void setupStatusAilment();

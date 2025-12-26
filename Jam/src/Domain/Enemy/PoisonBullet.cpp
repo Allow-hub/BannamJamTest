@@ -28,8 +28,8 @@ namespace Jam::Domain::Enemy
 		, m_size(size)
 		, m_Velocity(Velocity)
 	{
-		m_timer =0.0;
-		m_homingTimer =0.0;
+		m_timer = 0.0;
+		m_homingTimer = 0.0;
 
 		m_body->setBodyType(Jam::Domain::Physics::PhysicsType::Dynamic);
 		m_body->setGravityScale(0.0);
@@ -92,7 +92,7 @@ namespace Jam::Domain::Enemy
 				// 現在の進行方向
 				Vec2 currentDir = m_Velocity.normalized();
 
-				double homingStrength =1.2 * dt;
+				double homingStrength = 1.2 * dt;
 
 				Vec2 newDir = (currentDir + toTarget * homingStrength).normalized();
 

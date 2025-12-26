@@ -17,7 +17,7 @@ namespace Jam::Domain::Enemy
 			startPos,
 			size,
 			s3d::P2BodyType::Dynamic,
-			{0.1,0.0,1.0 },
+			{ 0.1,0.0,1.0 },
 			Jam::Domain::Physics::PhysicsShape::Circle
 		);
 

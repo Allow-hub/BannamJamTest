@@ -32,23 +32,23 @@ namespace Jam::Domain::Enemy
 		void onAttackExit() override;
 
 		// 弾生成処理。派生クラスで実際の弾種（毒 / 麻痺）を生成する
-		virtual void shootBullet(const Vec2& direction) =0;
+		virtual void shootBullet(const Vec2& direction) = 0;
 
 		// 弾関連定数や状態
-		const int attackCooldown =500;
-		const int shotInterval =60;
-		const int maxShotCount =1;
+		const int attackCooldown = 500;
+		const int shotInterval = 60;
+		const int maxShotCount = 1;
 
-		const float shotBulletDistance =50.0f;
-		const Vec2 size = {40,40 };
-		const double speed =150.0;
+		const float shotBulletDistance = 50.0f;
+		const Vec2 size = { 40,40 };
+		const double speed = 150.0;
 
-		int elapsedTime =0;
-		int shotCount =0;
+		int elapsedTime = 0;
+		int shotCount = 0;
 
 		enum class AttackState
 		{
-			IsAttackStart =0,
+			IsAttackStart = 0,
 			IsBulletLaunch,
 			IsAttackEnd,
 		};

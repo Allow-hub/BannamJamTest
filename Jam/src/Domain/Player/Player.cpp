@@ -74,7 +74,7 @@ namespace Jam::Domain::Player
 		}
 
 		if (m_choker && m_choker->m_state->isHookedGround() && m_isDashing)
-			m_body->applyForce({ -speed *6 * dt,0 });
+			m_body->applyForce({ -speed * 6 * dt,0 });
 		else
 			m_body->applyForce({ -speed * dt,0 });
 		m_facingRight = false;
@@ -89,7 +89,7 @@ namespace Jam::Domain::Player
 		}
 
 		if (m_choker && m_choker->m_state->isHookedGround() && m_isDashing)
-			m_body->applyForce({ speed *6 * dt,0 });
+			m_body->applyForce({ speed * 6 * dt,0 });
 		else
 			m_body->applyForce({ speed * dt,0 });
 		m_facingRight = true;
@@ -113,20 +113,20 @@ namespace Jam::Domain::Player
 		{
 			Jam::Presentation::AudioService::get().playOneShot(Jam::Presentation::AudioService::Sound::SE_Jump, 1.0);
 			double jumpPower = m_stats.jumpPower;
+
+			if (m_jumpCount == 1)
+				jumpPower *= 1.2;
+
+			// マヒ中のみジャンプ力を減少させる
 			if (m_paralysis.active && m_paralysis.type == StatusAilmentType::Paralysis)
 			{
 				jumpPower *= (1.0 - m_paralysis.power);
 			}
 
-			if (m_jumpCount ==1)
-			{
-				jumpPower *=1.5;
-			}
-			if (m_jumpCount == 1)
-				jumpPower *= 1.5;
+			auto v = m_body->getVelocity();
+			m_body->setVelocity({ v.x,0.0 });
 
-			m_body->setVelocity({ m_body->getVelocity().x,0.0 });
-			m_body->applyImpulse({0, -jumpPower });
+			m_body->applyImpulse({ 0, -jumpPower });
 			m_jumpCount++;
 			m_isGrounded = false;
 		}
@@ -230,28 +230,28 @@ namespace Jam::Domain::Player
 	{
 		switch (other->getLayer())
 		{
-			case Jam::Domain::Physics::PhysicsLayer::Ground:
+		case Jam::Domain::Physics::PhysicsLayer::Ground:
+		{
+			//caseをブロック化して変数のスコープを限定
+			auto v = m_body->getVelocity();
+			if (v.y >= 0)
 			{
-				//caseをブロック化して変数のスコープを限定
-				auto v = m_body->getVelocity();
-				if (v.y >= 0)
-				{
-					m_body->setVelocity({ v.x, 0.0 });
-					m_isGrounded = true;
-					m_jumpCount = 0;
-				}
-			}
-			break;
-			case Jam::Domain::Physics::PhysicsLayer::Wall:
-			{
-				auto v = m_body->getVelocity();
 				m_body->setVelocity({ v.x, 0.0 });
+				m_isGrounded = true;
+				m_jumpCount = 0;
 			}
+		}
+		break;
+		case Jam::Domain::Physics::PhysicsLayer::Wall:
+		{
+			auto v = m_body->getVelocity();
+			m_body->setVelocity({ v.x, 0.0 });
+		}
+		break;
+		case Jam::Domain::Physics::PhysicsLayer::Enemy:
 			break;
-			case Jam::Domain::Physics::PhysicsLayer::Enemy:
-				break;
-			default:
-				break;
+		default:
+			break;
 		}
 	}
 
@@ -265,16 +265,16 @@ namespace Jam::Domain::Player
 		if (m_poison.active && m_poison.type == StatusAilmentType::Poison)
 		{
 			m_poison.duration -= deltaTime;
-			if (m_poison.duration <=0.0)
+			if (m_poison.duration <= 0.0)
 			{
 				m_poison.clear();
 			}
 			else
 			{
 				m_poison.tickTimer += deltaTime;
-				if (m_poison.tickInterval >0.0 && m_poison.tickTimer >= m_poison.tickInterval)
+				if (m_poison.tickInterval > 0.0 && m_poison.tickTimer >= m_poison.tickInterval)
 				{
-					m_poison.tickTimer =0.0;
+					m_poison.tickTimer = 0.0;
 					applyPoisonTick(deltaTime);
 				}
 			}
@@ -284,7 +284,7 @@ namespace Jam::Domain::Player
 		if (m_paralysis.active && m_paralysis.type == StatusAilmentType::Paralysis)
 		{
 			m_paralysis.duration -= deltaTime;
-			if (m_paralysis.duration <=0.0)
+			if (m_paralysis.duration <= 0.0)
 			{
 				m_paralysis.clear();
 			}
@@ -297,7 +297,7 @@ namespace Jam::Domain::Player
 		DamageInfo info;
 		info.amount = m_poison.power;
 		info.position = getPosition();
-		info.direction = {0,0 };
+		info.direction = { 0,0 };
 		takeDamage(info);
 
 		// エフェクト発生
@@ -334,6 +334,6 @@ namespace Jam::Domain::Player
 		target->duration = duration;
 		target->power = power;
 		target->tickInterval = tickInterval;
-		target->tickTimer =0.0;
+		target->tickTimer = 0.0;
 	}
 }
