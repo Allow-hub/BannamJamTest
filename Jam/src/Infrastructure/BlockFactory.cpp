@@ -1,25 +1,25 @@
-﻿#include "Infrastructure/StageFactory.h"
-#include "Domain/Stage/NormalStage.h"
-#include "Domain/Stage/MovingPlatformStage.h"
-#include "Domain/Stage/OneWayPlatformStage.h"
-#include "Domain/Stage/DamageStage.h"
-#include "Domain/Stage/MovingDamagePlatformStage.h"
+﻿#include "Infrastructure/BlockFactory.h"
+#include "Domain/Block/NormalBlock.h"
+#include "Domain/Block/MovingBlock.h"
+#include "Domain/Block/OneWayBlock.h"
+#include "Domain/Block/DamageBlock.h"
+#include "Domain/Block/MovingDamageBlock.h"
 #include "Domain/Events/GameEvents.h"
-#include "Infrastructure/StageLoader.h"
+#include "Infrastructure/BlockLoader.h"
 #include "Infrastructure/PhysicsFilterManager.h"
 
 namespace Jam::Infrastructure {
     
-    StageCreationResult StageFactory::createStagesFromFile(
+    BlockCreationResult BlockFactory::createBlocksFromFile(
         const String& filename,
         std::shared_ptr<Locator::IPhysicsBodyFactory> bodyFactory,
         Domain::Events::GameEventQueue& eventQueue,
         Domain::Physics::PhysicsBodyID playerId
     ) {
-        StageCreationResult result;
+        BlockCreationResult result;
         
-        Array<Domain::Stage::StageObject> objects;
-        if (!Stage::StageLoader::loadStageFromFile(filename, objects)) {
+        Array<Domain::Block::BlockObject> objects;
+        if (!Jam::Infrastructure::Block::BlockLoader::loadBlockFromFile(filename, objects)) {
             return result;
         }
         
@@ -31,7 +31,7 @@ namespace Jam::Infrastructure {
             
             if (!createdObjects.isEmpty()) {
                 std::shared_ptr<Domain::Physics::IPhysicsBody> body;
-                auto stage = createStage(createdObjects[0], bodyFactory, body, eventQueue, playerId);
+                auto stage = createBlock(createdObjects[0], bodyFactory, body, eventQueue, playerId);
                 
                 if (stage && body) {
                     size_t bodyIndex = result.physicsBodies.size();
@@ -46,7 +46,7 @@ namespace Jam::Infrastructure {
                     // ※ダメージ床にはgroundSideがないため、このループは通常のステージのみ
                     for (size_t i = 1; i < createdObjects.size(); ++i) {
                         std::shared_ptr<Domain::Physics::IPhysicsBody> additionalBody;
-                        createStage(createdObjects[i], bodyFactory, additionalBody, eventQueue, playerId);
+                        createBlock(createdObjects[i], bodyFactory, additionalBody, eventQueue, playerId);
                         if (additionalBody) {
                             size_t additionalBodyIndex = result.physicsBodies.size();
                             result.physicsBodies.push_back(additionalBody);
@@ -67,8 +67,8 @@ namespace Jam::Infrastructure {
         return result;
     }
     
-    std::unique_ptr<Domain::Stage::IStage> StageFactory::createStage(
-        const Domain::Stage::StageObject& obj,
+    std::unique_ptr<Domain::Block::IBlock> BlockFactory::createBlock(
+        const Domain::Block::BlockObject& obj,
         std::shared_ptr<Locator::IPhysicsBodyFactory> bodyFactory,
         std::shared_ptr<Domain::Physics::IPhysicsBody>& outBody,
         Domain::Events::GameEventQueue& eventQueue,
@@ -80,8 +80,8 @@ namespace Jam::Infrastructure {
         
         auto physicsLayer = getPhysicsLayerFromType(obj.type, obj.groundSide);
         
-        P2BodyType bodyType = (obj.type == Domain::Stage::StageType::MovingPlatform || 
-                               obj.type == Domain::Stage::StageType::MovingDamagePlatform)
+        P2BodyType bodyType = (obj.type == Domain::Block::BlockType::MovingPlatform || 
+                               obj.type == Domain::Block::BlockType::MovingDamagePlatform)
             ? P2BodyType::Kinematic
             : P2BodyType::Static;
         
@@ -100,46 +100,46 @@ namespace Jam::Infrastructure {
         
         // OneWayPlatform全体にすり抜けフィルターを適用
         // 着地判定は手動で行う
-        if (obj.type == Domain::Stage::StageType::OneWayPlatform) {
+        if (obj.type == Domain::Block::BlockType::OneWayPlatform) {
             outBody->setFilter(Jam::Infrastructure::PhysicsFilter::OneWayPlatform);
         }
         
         switch (obj.type) {
-            case Domain::Stage::StageType::MovingPlatform:
-                return std::make_unique<Domain::Stage::MovingPlatformStage>(obj);
+            case Domain::Block::BlockType::MovingPlatform:
+                return std::make_unique<Domain::Block::MovingBlock>(obj);
                 
-            case Domain::Stage::StageType::OneWayPlatform:
-                return std::make_unique<Domain::Stage::OneWayPlatformStage>(obj);
+            case Domain::Block::BlockType::OneWayPlatform:
+                return std::make_unique<Domain::Block::OneWayBlock>(obj);
                 
-            case Domain::Stage::StageType::DamagePlatform:
+            case Domain::Block::BlockType::DamagePlatform:
             {
-                auto damageStage = std::make_unique<Domain::Stage::DamageStage>(obj, outBody, eventQueue, playerId);
+                auto damageStage = std::make_unique<Domain::Block::DamageBlock>(obj, outBody, eventQueue, playerId);
                 damageStage->init();  // unique_ptrのまま、生ポインタでinit()を呼ぶ
                 return damageStage;
             }
                 
-            case Domain::Stage::StageType::MovingDamagePlatform:
+            case Domain::Block::BlockType::MovingDamagePlatform:
             {
-                auto movingDamageStage = std::make_unique<Domain::Stage::MovingDamagePlatformStage>(obj, outBody, eventQueue, playerId);
+                auto movingDamageStage = std::make_unique<Domain::Block::MovingDamageBlock>(obj, outBody, eventQueue, playerId);
                 movingDamageStage->init();  // unique_ptrのまま、生ポインタでinit()を呼ぶ
                 return movingDamageStage;
             }
                 
-            case Domain::Stage::StageType::Normal:
+            case Domain::Block::BlockType::Normal:
             default:
-                return std::make_unique<Domain::Stage::NormalStage>(obj);
+                return std::make_unique<Domain::Block::NormalBlock>(obj);
         }
     }
     
-    Domain::Physics::PhysicsLayer StageFactory::getPhysicsLayerFromType(
-        Domain::Stage::StageType type, 
-        Domain::Stage::GroundSide groundSide
+    Domain::Physics::PhysicsLayer BlockFactory::getPhysicsLayerFromType(
+        Domain::Block::BlockType type, 
+        Domain::Block::GroundSide groundSide
     ) {
         using namespace Domain::Physics;
         
         // OneWayPlatformの場合
-        if (type == Domain::Stage::StageType::OneWayPlatform) {
-            if (groundSide == Domain::Stage::GroundSide::None) {
+        if (type == Domain::Block::BlockType::OneWayPlatform) {
+            if (groundSide == Domain::Block::GroundSide::None) {
                 // 本体: OneWayPlatformレイヤー(青色)
                 return PhysicsLayer::OneWayPlatform;
             } else {
@@ -149,26 +149,26 @@ namespace Jam::Infrastructure {
         }
         
         // 通常のステージ
-        if (groundSide == Domain::Stage::GroundSide::None) {
+        if (groundSide == Domain::Block::GroundSide::None) {
             return PhysicsLayer::Wall;
         }
         return PhysicsLayer::Ground;
     }
 
-    Array<Domain::Stage::StageObject> StageFactory::expandObjectByGroundSide(const Domain::Stage::StageObject& obj) {
-        using namespace Domain::Stage;
-        Array<StageObject> result;
+    Array<Domain::Block::BlockObject> BlockFactory::expandObjectByGroundSide(const Domain::Block::BlockObject& obj) {
+        using namespace Domain::Block;
+        Array<BlockObject> result;
 
         constexpr double groundThickness = 5.0;
         
 		if (obj.groundSide == GroundSide::All) {
 			// 中央の壁部分
-			StageObject wallObj = obj;
+			BlockObject wallObj = obj;
 			wallObj.groundSide = GroundSide::None;
 			result.push_back(wallObj);
 
 			// 左面（全高さ）
-			StageObject leftGround = obj;
+			BlockObject leftGround = obj;
 			leftGround.groundSide = GroundSide::Left;
 			leftGround.rect = RectF(
 				obj.rect.x,
@@ -179,7 +179,7 @@ namespace Jam::Infrastructure {
 			result.push_back(leftGround);
 
 			// 右面（全高さ）
-			StageObject rightGround = obj;
+			BlockObject rightGround = obj;
 			rightGround.groundSide = GroundSide::Right;
 			rightGround.rect = RectF(
 				obj.rect.x + obj.rect.w - groundThickness,
@@ -190,7 +190,7 @@ namespace Jam::Infrastructure {
 			result.push_back(rightGround);
 
 			// 上面（左右のgroundThicknessを除く）
-			StageObject topGround = obj;
+			BlockObject topGround = obj;
 			topGround.groundSide = GroundSide::Up;
 			topGround.rect = RectF(
 				obj.rect.x + groundThickness,
@@ -201,7 +201,7 @@ namespace Jam::Infrastructure {
 			result.push_back(topGround);
 
 			// 下面（左右のgroundThicknessを除く）
-			StageObject bottomGround = obj;
+			BlockObject bottomGround = obj;
 			bottomGround.groundSide = GroundSide::Down;
 			bottomGround.rect = RectF(
 				obj.rect.x + groundThickness,
@@ -216,13 +216,13 @@ namespace Jam::Infrastructure {
 
 		// None以外の場合、壁部分を追加
 		if (obj.groundSide != GroundSide::None) {
-			StageObject wallObj = obj;
+			BlockObject wallObj = obj;
 			wallObj.groundSide = GroundSide::None;
 			result.push_back(wallObj);
 		}
 
 		// 地面判定を作成
-		StageObject groundObj = obj;
+		BlockObject groundObj = obj;
 
 		switch (obj.groundSide) {
 		case GroundSide::Up:
