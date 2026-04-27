@@ -1,22 +1,22 @@
 ﻿#pragma once
-#include "Domain/Stage/StageTypes.h"
+#include "Domain/Block/BlockTypes.h"
 
-namespace Jam::Domain::Stage {
+namespace Jam::Domain::Block {
     /**
-     * ステージインターフェース
-     * 1つのステージオブジェクト（床・壁・動く床など）を表す
+     * ブロックインターフェース
+     * 1つのブロックオブジェクト（床・壁・動く床など）を表す
      */
-    class IStage {
+    class IBlock {
     public:
-        virtual ~IStage() = default;
-        
-        // 更新処理（動くステージで使用）
+        virtual ~IBlock() = default;
+
+        // 更新処理（動くブロックで使用）
         virtual void update(double deltaTime) = 0;
-        
+
         // 描画情報の取得
         virtual RectF getRenderRect() const = 0;
-        virtual StageType getType() const = 0;
-        
+        virtual BlockType getType() const = 0;
+
         // 現在の中心位置を取得（物理同期用）
         virtual Vec2 getCurrentCenter() const = 0;
     };

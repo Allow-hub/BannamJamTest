@@ -1,30 +1,30 @@
-#include "Domain/Stage/OneWayPlatformStage.h"
+﻿#include "Domain/Block/OneWayBlock.h"
 
-namespace Jam::Domain::Stage {
-    OneWayPlatformStage::OneWayPlatformStage(const StageObject& obj)
+namespace Jam::Domain::Block {
+    OneWayBlock::OneWayBlock(const BlockObject& obj)
         : m_rect(obj.rect)
     {}
     
-    void OneWayPlatformStage::update(double deltaTime) {
+    void OneWayBlock::update(double deltaTime) {
         // すり抜け床は位置が固定
     }
-    
-    RectF OneWayPlatformStage::getRenderRect() const {
+
+    RectF OneWayBlock::getRenderRect() const {
         return m_rect;
     }
     
-    StageType OneWayPlatformStage::getType() const {
-        return StageType::OneWayPlatform;
+    BlockType OneWayBlock::getType() const {
+        return BlockType::OneWayPlatform;
     }
     
-    Vec2 OneWayPlatformStage::getCurrentCenter() const {
+    Vec2 OneWayBlock::getCurrentCenter() const {
         return m_rect.center();
     }
     
     /**
      * 床の上端のY座標を取得
      */
-    double OneWayPlatformStage::getTopY() const {
+    double OneWayBlock::getTopY() const {
         return m_rect.y;
     }
 }

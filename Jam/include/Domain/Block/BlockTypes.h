@@ -2,12 +2,12 @@
 #include <Siv3D.hpp>
 
 /**
- * ステージ関連の型定義
- * 当たり判定種別とステージオブジェクト構造体
+ * ブロック関連の型定義
+ * 当たり判定種別とブロックオブジェクト構造体
  */
-namespace Jam::Domain::Stage {
+namespace Jam::Domain::Block {
 	// 当たり判定の種類
-	enum class StageType {
+	enum class BlockType {
 		None = 0,
 		Normal = 1,          // 壁・床(完全ブロック)
 		MovingPlatform = 2,  // 動く足場
@@ -33,10 +33,10 @@ namespace Jam::Domain::Stage {
 		All     // 全面Ground（デフォルト）
 	};
 
-	// ステージオブジェクト(床・壁・足場など)
-	struct StageObject {
+	// ブロックオブジェクト(床・壁・足場など)
+	struct BlockObject {
 		RectF rect;                     // 位置・サイズ
-		StageType type;                 // 当たり判定種別
+		BlockType type;                 // 当たり判定種別
 		String metadata;                // 識別用ID(破壊時などで使用)
 		GroundSide groundSide = GroundSide::Up;  // 地上判定を付ける面
 
@@ -53,22 +53,22 @@ namespace Jam::Domain::Stage {
 		String texturePath;             // テクスチャファイルのパス（相対パスまたは絶対パス）
 
 		// デフォルトコンストラクタ(JSONパース時の安全な初期化用)
-		StageObject()
+		BlockObject()
 			: rect(0, 0, 0, 0)
-			, type(StageType::None)
+			, type(BlockType::None)
 			, metadata(U"")
 			, texturePath(U"") {
 		}
 	};
 
-	// 文字列からCollisionTypeへの変換(StageLoaderで使用)
-	inline StageType stringToCollisionType(const String& typeStr) {
-		if (typeStr == U"normal" || typeStr == U"solid") return StageType::Normal;
-		if (typeStr == U"moving_platform" || typeStr == U"moving" || typeStr == U"move") return StageType::MovingPlatform;
-		if (typeStr == U"oneway_platform" || typeStr == U"oneway") return StageType::OneWayPlatform;
-		if (typeStr == U"damage_platform" || typeStr == U"damage") return StageType::DamagePlatform;
-		if (typeStr == U"moving_damage_platform" || typeStr == U"movingDamage") return StageType::MovingDamagePlatform;
-		return StageType::None;
+	// 文字列からBlockTypeへの変換(BlockLoaderで使用)
+	inline BlockType stringToCollisionType(const String& typeStr) {
+		if (typeStr == U"normal" || typeStr == U"solid") return BlockType::Normal;
+		if (typeStr == U"moving_platform" || typeStr == U"moving" || typeStr == U"move") return BlockType::MovingPlatform;
+		if (typeStr == U"oneway_platform" || typeStr == U"oneway") return BlockType::OneWayPlatform;
+		if (typeStr == U"damage_platform" || typeStr == U"damage") return BlockType::DamagePlatform;
+		if (typeStr == U"moving_damage_platform" || typeStr == U"movingDamage") return BlockType::MovingDamagePlatform;
+		return BlockType::None;
 	}
 
 	// 文字列からMovementTypeへの変換
@@ -87,14 +87,14 @@ namespace Jam::Domain::Stage {
 		return GroundSide::All;  // デフォルトは全面Ground
 	}
 
-	// CollisionTypeから文字列への変換(デバッグ用)
-	inline String collisionTypeToString(StageType type) {
+	// BlockTypeから文字列への変換(デバッグ用)
+	inline String collisionTypeToString(BlockType type) {
 		switch (type) {
-		case StageType::Normal: return U"normal";
-		case StageType::MovingPlatform: return U"moving_platform";
-		case StageType::OneWayPlatform: return U"oneway_platform";
-		case StageType::DamagePlatform: return U"damage_platform";
-		case StageType::MovingDamagePlatform: return U"moving_damage_platform";
+		case BlockType::Normal: return U"normal";
+		case BlockType::MovingPlatform: return U"moving_platform";
+		case BlockType::OneWayPlatform: return U"oneway_platform";
+		case BlockType::DamagePlatform: return U"damage_platform";
+		case BlockType::MovingDamagePlatform: return U"moving_damage_platform";
 		default: return U"none";
 		}
 	}

@@ -1,17 +1,17 @@
-#include "stdafx.h"
-#include "Infrastructure/StageLoader.h"
-#include "Domain/Stage/StageTypes.h"
+﻿#include "stdafx.h"
+#include "Infrastructure/BlockLoader.h"
+#include "Domain/Block/BlockTypes.h"
 
-namespace Jam::Infrastructure::Stage {
+namespace Jam::Infrastructure::Block {
 
-    bool StageLoader::loadStageFromFile(const String& stageFileName, Array<StageObject>& outObjects) {
+    bool BlockLoader::loadBlockFromFile(const String& stageFileName, Array<BlockObject>& outObjects) {
         const String stagePath = U"Assets/Stage/" + stageFileName;
         return loadFromJson(stagePath, outObjects);
     }
 
-    bool StageLoader::loadStageFromFile(const String& stageFileName, Array<StageObject>& outNormalObjects, Array<StageObject>& outMovingObjects) {
-        Array<StageObject> allObjects;
-        if (!loadStageFromFile(stageFileName, allObjects)) {
+    bool BlockLoader::loadBlockFromFile(const String& stageFileName, Array<BlockObject>& outNormalObjects, Array<BlockObject>& outMovingObjects) {
+        Array<BlockObject> allObjects;
+        if (!loadBlockFromFile(stageFileName, allObjects)) {
             return false;
         }
 
@@ -20,8 +20,8 @@ namespace Jam::Infrastructure::Stage {
         outMovingObjects.clear();
 
         for (const auto& obj : allObjects) {
-            if (obj.type == Jam::Domain::Stage::StageType::MovingPlatform ||
-                obj.type == Jam::Domain::Stage::StageType::MovingDamagePlatform) {
+            if (obj.type == Jam::Domain::Block::BlockType::MovingPlatform ||
+                obj.type == Jam::Domain::Block::BlockType::MovingDamagePlatform) {
                 outMovingObjects.push_back(obj);
             }
             else {
@@ -32,7 +32,7 @@ namespace Jam::Infrastructure::Stage {
         return true;
     }
 
-    bool StageLoader::loadFromJson(const String& jsonPath, Array<StageObject>& outObjects) {
+    bool BlockLoader::loadFromJson(const String& jsonPath, Array<BlockObject>& outObjects) {
         // ファイル存在確認
         if (!FileSystem::Exists(jsonPath)) {
             Print << U"ステージファイルが見つかりません: " + jsonPath;
@@ -59,7 +59,7 @@ namespace Jam::Infrastructure::Stage {
 
         for (const auto& objJson : objectsArray) {
             totalCount++;
-            if (auto obj = parseStageObject(objJson)) {
+            if (auto obj = parseBlockObject(objJson)) {
                 outObjects << *obj;
                 successCount++;
             }
@@ -72,8 +72,8 @@ namespace Jam::Infrastructure::Stage {
         return !outObjects.empty();
     }
 
-    Optional<StageObject> StageLoader::parseStageObject(const JSON& objJson) {
-        StageObject obj;
+    Optional<BlockObject> BlockLoader::parseBlockObject(const JSON& objJson) {
+        BlockObject obj;
 
         // 矩形データ解析（必須項目）
         if (!parseRect(objJson, obj.rect)) {
@@ -82,8 +82,8 @@ namespace Jam::Infrastructure::Stage {
 
         // 当たり判定タイプ解析
         obj.type = objJson.hasElement(U"type")
-            ? Jam::Domain::Stage::stringToCollisionType(objJson[U"type"].getString())
-            : Jam::Domain::Stage::StageType::None;
+            ? Jam::Domain::Block::stringToCollisionType(objJson[U"type"].getString())
+            : Jam::Domain::Block::BlockType::None;
 
         // メタデータ解析
         obj.metadata = objJson.hasElement(U"metadata")
@@ -92,18 +92,18 @@ namespace Jam::Infrastructure::Stage {
 
         // 地上判定の面を解析(デフォルトは上面のみ)
         obj.groundSide = objJson.hasElement(U"groundSide")
-            ? Jam::Domain::Stage::stringToGroundSide(objJson[U"groundSide"].getString())
-            : Jam::Domain::Stage::GroundSide::Up;
+            ? Jam::Domain::Block::stringToGroundSide(objJson[U"groundSide"].getString())
+            : Jam::Domain::Block::GroundSide::Up;
 
         // 動くプラットフォーム用のデータ解析
-        if (obj.type == Jam::Domain::Stage::StageType::MovingPlatform ||
-            obj.type == Jam::Domain::Stage::StageType::MovingDamagePlatform) {
+        if (obj.type == Jam::Domain::Block::BlockType::MovingPlatform ||
+            obj.type == Jam::Domain::Block::BlockType::MovingDamagePlatform) {
             // 移動タイプの解析
             if (objJson.hasElement(U"movementType")) {
-                obj.movementType = Jam::Domain::Stage::stringToMovementType(objJson[U"movementType"].getString());
+                obj.movementType = Jam::Domain::Block::stringToMovementType(objJson[U"movementType"].getString());
             }
             else {
-                obj.movementType = Jam::Domain::Stage::MovementType::Horizontal;
+                obj.movementType = Jam::Domain::Block::MovementType::Horizontal;
             }
 
             // 移動速度の解析
@@ -123,8 +123,8 @@ namespace Jam::Infrastructure::Stage {
         }
 
         // ダメージプラットフォーム用のデータ解析
-        if (obj.type == Jam::Domain::Stage::StageType::DamagePlatform ||
-            obj.type == Jam::Domain::Stage::StageType::MovingDamagePlatform) {
+        if (obj.type == Jam::Domain::Block::BlockType::DamagePlatform ||
+            obj.type == Jam::Domain::Block::BlockType::MovingDamagePlatform) {
             // ダメージ量の解析
             if (objJson.hasElement(U"damageAmount")) {
                 obj.damageAmount = objJson[U"damageAmount"].get<double>();
@@ -139,7 +139,7 @@ namespace Jam::Infrastructure::Stage {
         return obj;
     }
 
-    bool StageLoader::parseRect(const JSON& objJson, RectF& rect) {
+    bool BlockLoader::parseRect(const JSON& objJson, RectF& rect) {
         if (!objJson.hasElement(U"rect") || !objJson[U"rect"].isArray()) {
             return false;
         }

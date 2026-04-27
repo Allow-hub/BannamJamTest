@@ -1,16 +1,16 @@
 #pragma once
-#include "Domain/Stage/IStage.h"
+#include "Domain/Block/IBlock.h"
 #include "Domain/Physics/ICollisionListener.h"
 #include "Domain/Physics/IPhysicsBody.h"
 #include "Domain/Events/GameEvents.h"
 #include <memory>
 
-namespace Jam::Domain::Stage {
+namespace Jam::Domain::Block {
 	/**
 	 * ダメージを与える床
-	 * プレイヤーが触れるとダメージを受ける静的なステージオブジェクト
+	 * プレイヤーが触れるとダメージを受ける静的なブロックオブジェクト
 	 */
-	class DamageStage : public IStage
+	class DamageBlock : public IBlock
 		, public Physics::ICollisionListener {
 	private:
 		RectF m_rect;
@@ -20,7 +20,7 @@ namespace Jam::Domain::Stage {
 		Physics::PhysicsBodyID m_playerId;  // プレイヤーID
 
 		// 自身へのshared_ptr（ライフタイム管理用）
-		std::shared_ptr<DamageStage> m_selfPtr;
+		std::shared_ptr<DamageBlock> m_selfPtr;
 
 		// ダメージ間隔管理
 		double m_damageInterval = 0.5;  // ダメージを与える間隔（秒）
@@ -28,14 +28,14 @@ namespace Jam::Domain::Stage {
 		double m_elapsedTime = 0.0;  // 経過時間
 
 	public:
-		DamageStage(const StageObject& obj,
+		DamageBlock(const BlockObject& obj,
 				   std::shared_ptr<Physics::IPhysicsBody> body,
 				   Events::GameEventQueue& eventQueue,
 				   Physics::PhysicsBodyID playerId);
 
 		/**
 		 * 初期化メソッド
-		 * コンストラクタ後、ステージがunique_ptrで管理された後に呼び出す必要がある
+		 * コンストラクタ後、ブロックがunique_ptrで管理された後に呼び出す必要がある
 		 */
 		void init();
 
@@ -43,7 +43,7 @@ namespace Jam::Domain::Stage {
 
 		RectF getRenderRect() const override;
 
-		StageType getType() const override;
+		BlockType getType() const override;
 
 		Vec2 getCurrentCenter() const override;
 

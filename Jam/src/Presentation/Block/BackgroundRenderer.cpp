@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Presentation/Stage/BackgroundRenderer.h"
+#include "Presentation/Block/BackgroundRenderer.h"
 #include "Infrastructure/TextureLoader.h"
 
 namespace Jam::Presentation::Background {

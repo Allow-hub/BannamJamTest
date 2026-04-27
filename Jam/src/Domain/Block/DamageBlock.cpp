@@ -1,7 +1,7 @@
-#include "Domain/Stage/DamageStage.h"
+#include "Domain/Block/DamageBlock.h"
 
-namespace Jam::Domain::Stage {
-	DamageStage::DamageStage(const StageObject& obj,
+namespace Jam::Domain::Block {
+	DamageBlock::DamageBlock(const BlockObject& obj,
 			   std::shared_ptr<Physics::IPhysicsBody> body,
 			   Events::GameEventQueue& eventQueue,
 			   Physics::PhysicsBodyID playerId)
@@ -13,17 +13,17 @@ namespace Jam::Domain::Stage {
 	{
 	}
 
-	void DamageStage::init() {
+	void DamageBlock::init() {
 		if (!m_body) {
 			return;
 		}
 
 		// 自身へのshared_ptrを作成（ライフタイム管理はunique_ptrが行う）
 		// カスタムデリーター: 削除時に何もしない（unique_ptrが破棄を担当）
-		auto noOpDeleter = [](DamageStage*) {
+		auto noOpDeleter = [](DamageBlock*) {
 			// 何もしない: unique_ptrがオブジェクトの破棄を担当する
 			};
-		m_selfPtr = std::shared_ptr<DamageStage>(this, noOpDeleter);
+		m_selfPtr = std::shared_ptr<DamageBlock>(this, noOpDeleter);
 
 		// ICollisionListenerとしてキャスト
 		auto listener = std::dynamic_pointer_cast<Physics::ICollisionListener>(m_selfPtr);
@@ -32,34 +32,34 @@ namespace Jam::Domain::Stage {
 		m_body->setCollisionListener(listener);
 	}
 
-	void DamageStage::update(double deltaTime) {
+	void DamageBlock::update(double deltaTime) {
 		m_elapsedTime += deltaTime;
 	}
 
-	RectF DamageStage::getRenderRect() const {
+	RectF DamageBlock::getRenderRect() const {
 		return m_rect;
 	}
 
-	StageType DamageStage::getType() const {
-		return StageType::DamagePlatform;
+	BlockType DamageBlock::getType() const {
+		return BlockType::DamagePlatform;
 	}
 
-	Vec2 DamageStage::getCurrentCenter() const {
+	Vec2 DamageBlock::getCurrentCenter() const {
 		return m_rect.center();
 	}
 
 	// ICollisionListener実装
-	void DamageStage::onCollisionEnter(std::shared_ptr<Physics::IPhysicsBody> other) {
+	void DamageBlock::onCollisionEnter(std::shared_ptr<Physics::IPhysicsBody> other) {
 		handleCollision(other);
 	}
 
-	void DamageStage::onCollisionStay(std::shared_ptr<Physics::IPhysicsBody> other) {
+	void DamageBlock::onCollisionStay(std::shared_ptr<Physics::IPhysicsBody> other) {
 		handleCollision(other);
 	}
 
-	void DamageStage::onCollisionExit(std::shared_ptr<Physics::IPhysicsBody> other) {}
+	void DamageBlock::onCollisionExit(std::shared_ptr<Physics::IPhysicsBody> other) {}
 
-	void DamageStage::handleCollision(std::shared_ptr<Physics::IPhysicsBody> other) {
+	void DamageBlock::handleCollision(std::shared_ptr<Physics::IPhysicsBody> other) {
 		// プレイヤーとの衝突のみ処理
 		if (other->getLayer() != Physics::PhysicsLayer::Player) {
 			return;

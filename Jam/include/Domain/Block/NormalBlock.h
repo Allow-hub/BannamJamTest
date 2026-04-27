@@ -1,30 +1,30 @@
 ﻿#pragma once
-#include "Domain/Stage/IStage.h"
+#include "Domain/Block/IBlock.h"
 
-namespace Jam::Domain::Stage {
+namespace Jam::Domain::Block {
     /**
-     * 通常の静的ステージ
-     * 壁・床などの動かないステージオブジェクト
+     * 通常の静的ブロック
+     * 壁・床などの動かないブロックオブジェクト
      */
-    class NormalStage : public IStage {
+    class NormalBlock : public IBlock {
     private:
         RectF m_rect;
-        StageType m_type;
+        BlockType m_type;
         String m_texturePath;
-        
+
     public:
-        NormalStage(const StageObject& obj);
-        
+        NormalBlock(const BlockObject& obj);
+
         // 静的なので何もしない
         void update(double deltaTime) override;
-        
+
         RectF getRenderRect() const override;
-        
-        StageType getType() const override;
-        
+
+        BlockType getType() const override;
+
         Vec2 getCurrentCenter() const override;
-        
-        // NormalStage固有のメソッド: テクスチャパスを取得
+
+        // NormalBlock固有のメソッド: テクスチャパスを取得
         String getTexturePath() const;
     };
 }

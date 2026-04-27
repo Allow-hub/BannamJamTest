@@ -1,26 +1,26 @@
 ﻿#pragma once
-#include "Domain/Stage/IStage.h"
+#include "Domain/Block/IBlock.h"
 
-namespace Jam::Domain::Stage {
+namespace Jam::Domain::Block {
     /**
      * すり抜ける床
      * 下から上への移動時は通過可能、上から着地可能
      */
-    class OneWayPlatformStage : public IStage {
+    class OneWayBlock : public IBlock {
     private:
         RectF m_rect;
-        
+
     public:
-        OneWayPlatformStage(const StageObject& obj);
-        
+        OneWayBlock(const BlockObject& obj);
+
         void update(double deltaTime) override;
-        
+
         RectF getRenderRect() const override;
-        
-        StageType getType() const override;
-        
+
+        BlockType getType() const override;
+
         Vec2 getCurrentCenter() const override;
-        
+
         /**
          * 床の上端のY座標を取得
          */

@@ -1,18 +1,18 @@
 #include "stdafx.h"
-#include "UseCase/StageService.h"
+#include "UseCase/BlockService.h"
 #include "Domain/Events/GameEvents.h"
-#include "Infrastructure/StageFactory.h"
+#include "Infrastructure/BlockFactory.h"
 #include "Infrastructure/Siv3DPhysicsBody.h"
 
 namespace Jam::UseCase {
 
-    bool StageService::initialize(
+    bool BlockService::initialize(
         const String& filename,
         std::shared_ptr<Infrastructure::Locator::IPhysicsBodyFactory> bodyFactory,
         Domain::Events::GameEventQueue& eventQueue,
         Domain::Physics::PhysicsBodyID playerId
     ) {
-        auto result = Infrastructure::StageFactory::createStagesFromFile(filename, bodyFactory, eventQueue, playerId);
+        auto result = Infrastructure::BlockFactory::createBlocksFromFile(filename, bodyFactory, eventQueue, playerId);
         m_stages = std::move(result.stages);
         m_physicsBodies = std::move(result.physicsBodies);
         m_bodyIndices = std::move(result.bodyIndices);
@@ -22,7 +22,7 @@ namespace Jam::UseCase {
         return !m_stages.isEmpty();
     }
 
-    void StageService::update(double deltaTime) {
+    void BlockService::update(double deltaTime) {
         for (auto& stage : m_stages) {
             stage->update(deltaTime);
         }
@@ -30,7 +30,7 @@ namespace Jam::UseCase {
         syncPhysicsBodies();
     }
 
-    void StageService::syncPhysicsBodies() {
+    void BlockService::syncPhysicsBodies() {
         for (size_t i = 0; i < m_stages.size(); ++i) {
             if (i >= m_bodyIndices.size()) continue;
             
@@ -47,22 +47,22 @@ namespace Jam::UseCase {
         }
     }
 
-    const Array<std::unique_ptr<Domain::Stage::IStage>>& StageService::getStages() const {
+    const Array<std::unique_ptr<Domain::Block::IBlock>>& BlockService::getStages() const {
         return m_stages;
     }
 
-    const Array<std::shared_ptr<Domain::Physics::IPhysicsBody>>& StageService::getPhysicsBodies() const {
+    const Array<std::shared_ptr<Domain::Physics::IPhysicsBody>>& BlockService::getPhysicsBodies() const {
         return m_physicsBodies;
     }
 
-    void StageService::clear() {
+    void BlockService::clear() {
         m_stages.clear();
         m_physicsBodies.clear();
         m_bodyIndices.clear();
         m_bodyOffsets.clear();
     }
 
-    bool StageService::checkOneWayPlatformLanding(
+    bool BlockService::checkOneWayPlatformLanding(
         std::shared_ptr<Domain::Physics::IPhysicsBody> playerBody,
         bool isPressingDown,
         double playerHeight
@@ -80,7 +80,7 @@ namespace Jam::UseCase {
         constexpr double landingThreshold = 5.0;
         
         for (const auto& stage : m_stages) {
-            if (stage->getType() != Domain::Stage::StageType::OneWayPlatform) continue;
+            if (stage->getType() != Domain::Block::BlockType::OneWayPlatform) continue;
             
             auto platformRect = stage->getRenderRect();
             double platformTop = platformRect.y;
@@ -98,7 +98,7 @@ namespace Jam::UseCase {
         return false;
     }
 
-    void StageService::drawPhysicsLayerDebug() const {
+    void BlockService::drawPhysicsLayerDebug() const {
         for (size_t bodyIdx = 0; bodyIdx < m_physicsBodies.size(); ++bodyIdx) {
             const auto& body = m_physicsBodies[bodyIdx];
             if (!body) continue;
@@ -122,7 +122,7 @@ namespace Jam::UseCase {
                     const auto groundSide = m_bodyGroundSides[bodyIdx];
                     
                     // 上面・下面ともに緑色で描画
-                    if (groundSide == Domain::Stage::GroundSide::Up || groundSide == Domain::Stage::GroundSide::Down) {
+                    if (groundSide == Domain::Block::GroundSide::Up || groundSide == Domain::Block::GroundSide::Down) {
                         color = ColorF(0.0, 1.0, 0.0, 0.1);  // 緑 = チョーカー可能（上面・下面）
                         shouldDraw = true;
                     }

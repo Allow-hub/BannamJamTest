@@ -1,20 +1,20 @@
-#include "Presentation/Stage/StageManager.h"
-#include "Domain/Stage/StageTypes.h"
-#include "Domain/Stage/NormalStage.h"
+#include "Presentation/Block/BlockManager.h"
+#include "Domain/Block/BlockTypes.h"
+#include "Domain/Block/NormalBlock.h"
 #include "Infrastructure/TextureLoader.h"
 #include "Presentation/TextureManager.h"
 
-namespace Jam::Presentation::Stage {
+namespace Jam::Presentation::Block {
 
-    void StageManager::setService(std::shared_ptr<UseCase::StageService> service) {
+    void BlockManager::setService(std::shared_ptr<UseCase::BlockService> service) {
         m_stageService = service;
     }
 
-    void StageManager::loadTextures() {
-        Infrastructure::TextureLoader::preloadStageTextures();
+    void BlockManager::loadTextures() {
+        Infrastructure::TextureLoader::preloadBlockTextures();
     }
 
-    void StageManager::draw() const {
+    void BlockManager::draw() const {
         if (!m_stageService) return;
         
         for (const auto& stage : m_stageService->getStages()) {
@@ -22,7 +22,7 @@ namespace Jam::Presentation::Stage {
         }
     }
 
-    void StageManager::drawStage(const Domain::Stage::IStage* stage) const {
+    void BlockManager::drawStage(const Domain::Block::IBlock* stage) const {
         if (!stage) return;
 
         const RectF rect = stage->getRenderRect();
@@ -34,8 +34,8 @@ namespace Jam::Presentation::Stage {
         Texture texture;
         
         // NormalStageの場合、texturePathを取得して使用
-        if (type == Domain::Stage::StageType::Normal) {
-            const auto* normalStage = dynamic_cast<const Domain::Stage::NormalStage*>(stage);
+        if (type == Domain::Block::BlockType::Normal) {
+            const auto* normalStage = dynamic_cast<const Domain::Block::NormalBlock*>(stage);
             if (normalStage && !normalStage->getTexturePath().isEmpty()) {
                 texture = TextureManager::Load(normalStage->getTexturePath());
             }

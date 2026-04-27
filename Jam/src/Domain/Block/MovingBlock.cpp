@@ -1,7 +1,7 @@
-#include "Domain/Stage/MovingPlatformStage.h"
+#include "Domain/Block/MovingBlock.h"
 
-namespace Jam::Domain::Stage {
-    MovingPlatformStage::MovingPlatformStage(const StageObject& obj)
+namespace Jam::Domain::Block {
+    MovingBlock::MovingBlock(const BlockObject& obj)
         : m_baseRect(obj.rect)
         , m_baseCenter(obj.rect.center())
         , m_currentOffset(0, 0)
@@ -12,7 +12,7 @@ namespace Jam::Domain::Stage {
         , m_elapsedTime(0.0)
     {}
     
-    void MovingPlatformStage::update(double deltaTime) {
+    void MovingBlock::update(double deltaTime) {
         m_elapsedTime += deltaTime;
         
         switch (m_movementType) {
@@ -28,22 +28,22 @@ namespace Jam::Domain::Stage {
         }
     }
     
-    RectF MovingPlatformStage::getRenderRect() const {
+    RectF MovingBlock::getRenderRect() const {
         Vec2 currentCenter = m_baseCenter + m_currentOffset;
         Vec2 topLeft = currentCenter - m_baseRect.size / 2.0;
         return RectF(topLeft, m_baseRect.size);
     }
     
-    StageType MovingPlatformStage::getType() const {
-        return StageType::MovingPlatform;
+    BlockType MovingBlock::getType() const {
+        return BlockType::MovingPlatform;
     }
     
-    Vec2 MovingPlatformStage::getCurrentCenter() const {
+    Vec2 MovingBlock::getCurrentCenter() const {
         return m_baseCenter + m_currentOffset;
     }
     
     // 横移動の更新
-    void MovingPlatformStage::updateHorizontal(double deltaTime) {
+    void MovingBlock::updateHorizontal(double deltaTime) {
         double progress = (m_movementSpeed * m_elapsedTime) / m_movementDistance;
         
         if (m_loopMovement) {
@@ -60,7 +60,7 @@ namespace Jam::Domain::Stage {
     }
     
     // 縦移動の更新
-    void MovingPlatformStage::updateVertical(double deltaTime) {
+    void MovingBlock::updateVertical(double deltaTime) {
         double progress = (m_movementSpeed * m_elapsedTime) / m_movementDistance;
         
         if (m_loopMovement) {
@@ -77,7 +77,7 @@ namespace Jam::Domain::Stage {
     }
     
     // 円運動の更新
-    void MovingPlatformStage::updateCircular(double deltaTime) {
+    void MovingBlock::updateCircular(double deltaTime) {
         double circumference = 2.0 * Math::Pi * m_movementDistance;
         double angle = (m_movementSpeed * m_elapsedTime / circumference) * 2.0 * Math::Pi;
         

@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <memory>
-#include "Domain/Stage/IStage.h"
-#include "Domain/Stage/StageTypes.h"
+#include "Domain/Block/IBlock.h"
+#include "Domain/Block/BlockTypes.h"
 #include "Domain/Physics/IPhysicsBody.h"
 #include "Domain/Physics/PhysicsBodyID.h"
 #include "Infrastructure/IPhysicsBodyFactory.h"
@@ -13,16 +13,16 @@ namespace Jam::UseCase {
      * ステージの配列管理と更新を担当
      * 物理ボディも別途管理し、同期処理を実施
      */
-    class StageService {
+    class BlockService {
     private:
-        Array<std::unique_ptr<Domain::Stage::IStage>> m_stages;
+        Array<std::unique_ptr<Domain::Block::IBlock>> m_stages;
         Array<std::shared_ptr<Domain::Physics::IPhysicsBody>> m_physicsBodies;
         // 各ステージに対応する物理ボディのインデックス
         Array<Array<size_t>> m_bodyIndices;
         // 各物理ボディの基準位置からのオフセット
         Array<Vec2> m_bodyOffsets;
         // 各物理ボディのGroundSide情報（デバッグ描画用）
-        Array<Domain::Stage::GroundSide> m_bodyGroundSides;
+        Array<Domain::Block::GroundSide> m_bodyGroundSides;
         
     public:
         /**
@@ -53,7 +53,7 @@ namespace Jam::UseCase {
         /**
          * ステージ配列の取得（読み取り専用）
          */
-        const Array<std::unique_ptr<Domain::Stage::IStage>>& getStages() const;
+        const Array<std::unique_ptr<Domain::Block::IBlock>>& getStages() const;
         
         /**
          * 物理ボディ配列の取得（読み取り専用）

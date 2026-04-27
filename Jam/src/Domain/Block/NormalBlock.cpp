@@ -1,29 +1,29 @@
-#include "Domain/Stage/NormalStage.h"
+#include "Domain/Block/NormalBlock.h"
 
-namespace Jam::Domain::Stage {
-    NormalStage::NormalStage(const StageObject& obj)
+namespace Jam::Domain::Block {
+    NormalBlock::NormalBlock(const BlockObject& obj)
         : m_rect(obj.rect)
         , m_type(obj.type)
         , m_texturePath(obj.texturePath)
     {}
-    
+
     // 静的なので何もしない
-    void NormalStage::update(double deltaTime) {}
-    
-    RectF NormalStage::getRenderRect() const {
+    void NormalBlock::update(double deltaTime) {}
+
+    RectF NormalBlock::getRenderRect() const {
         return m_rect;
     }
-    
-    StageType NormalStage::getType() const {
+
+    BlockType NormalBlock::getType() const {
         return m_type;
     }
-    
-    Vec2 NormalStage::getCurrentCenter() const {
+
+    Vec2 NormalBlock::getCurrentCenter() const {
         return m_rect.center();
     }
-    
-    // NormalStage固有のメソッド: テクスチャパスを取得
-    String NormalStage::getTexturePath() const {
+
+    // NormalBlock固有のメソッド: テクスチャパスを取得
+    String NormalBlock::getTexturePath() const {
         return m_texturePath;
     }
 }
