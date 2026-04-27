@@ -19,7 +19,7 @@
 #include "UseCase/GameEventHandler.h"
 #include "UseCase/IndependentObjectService.h"
 #include "UseCase/PlayerService.h"
-#include "UseCase/StageService.h"
+#include "UseCase/BlockService.h"
 
 // Infrastructure層
 #include "Infrastructure/Background/BackgroundLoader.h"

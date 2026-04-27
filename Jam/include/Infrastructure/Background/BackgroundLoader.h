@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
-#include "Domain/Stage/BackgroundTypes.h"
+#include "Domain/Block/BackgroundTypes.h"
 #include "Foundation/CoreManager.h"
 
 /**

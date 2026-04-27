@@ -1,18 +1,18 @@
 ﻿#pragma once
 #include "Domain/Editor/Base/EditorManagerBase.h"
 #include "Domain/Editor/StageEditor/StageEditorTypes.h"
-#include "Domain/Stage/StageTypes.h"
+#include "Domain/Block/BlockTypes.h"
 
 namespace Jam::Domain::Editor
 {
     // ステージ用のエディタオブジェクト
-    struct StageEditorObject : EditorObjectBase<Stage::StageObject>
+    struct StageEditorObject : EditorObjectBase<Block::BlockObject>
     {
-        using DataType = Stage::StageObject;
-        
+        using DataType = Block::BlockObject;
+
         StageEditorObject() = default;
-        explicit StageEditorObject(const Stage::StageObject& obj) 
-            : EditorObjectBase<Stage::StageObject>(obj) {}
+        explicit StageEditorObject(const Block::BlockObject& obj)
+            : EditorObjectBase<Block::BlockObject>(obj) {}
     };
     
     // ステージ用のコマンド
@@ -49,14 +49,14 @@ namespace Jam::Domain::Editor
         
         // ===== オブジェクト操作 =====
         
-        size_t addObject(const Stage::StageObject& obj) override;
+        size_t addObject(const Block::BlockObject& obj) override;
         void removeObject(size_t index) override;
         void moveObject(size_t index, const Vec2& newPos);
-        void modifyObject(size_t index, const Stage::StageObject& newObj);
+        void modifyObject(size_t index, const Block::BlockObject& newObj);
         
         // ===== 選択オブジェクトの一括更新 =====
         
-        void updateSelectedObjectsMovement(double distance, double speed, Stage::MovementType type);
+        void updateSelectedObjectsMovement(double distance, double speed, Block::MovementType type);
         void updateSelectedObjectsDamage(double damage);
         
         // ===== 検索 =====
@@ -81,14 +81,14 @@ namespace Jam::Domain::Editor
     private:
         // ===== ユーティリティ =====
         
-        Array<Stage::StageObject> mergeAdjacentObjects() const;
-        JSON stageObjectToJSON(const Stage::StageObject& obj) const;
-        Optional<Stage::StageObject> jsonToStageObject(const JSON& json) const;
+        Array<Block::BlockObject> mergeAdjacentObjects() const;
+        JSON stageObjectToJSON(const Block::BlockObject& obj) const;
+        Optional<Block::BlockObject> jsonToStageObject(const JSON& json) const;
         
         // ===== マージヘルパー =====
         
-        RectF findAndMergeAdjacentObjects(const Stage::StageObject& obj, RectF mergedRect, HashSet<size_t>& merged, double epsilon) const;
-        bool canMergeObjects(const Stage::StageObject& obj, const Stage::StageObject& other, double epsilon) const;
+        RectF findAndMergeAdjacentObjects(const Block::BlockObject& obj, RectF mergedRect, HashSet<size_t>& merged, double epsilon) const;
+        bool canMergeObjects(const Block::BlockObject& obj, const Block::BlockObject& other, double epsilon) const;
         bool tryMergeHorizontally(RectF& mergedRect, const RectF& otherRect, HashSet<size_t>& merged, size_t index, bool& foundMerge, double epsilon) const;
         bool tryMergeVertically(RectF& mergedRect, const RectF& otherRect, HashSet<size_t>& merged, size_t index, bool& foundMerge, double epsilon) const;
     };
